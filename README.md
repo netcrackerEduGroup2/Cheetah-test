@@ -1,1 +1,1 @@
-# Cheetah-test
+# Cheetah-test application
