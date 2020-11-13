@@ -1,4 +1,4 @@
-package com.ncedu.cheetahtest.mail.model;
+package com.ncedu.cheetahtest.mail.entity;
 
 public class Email {
 

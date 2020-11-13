@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.developer.entity;
 
-
 public class Developer {
 
     private int id;
@@ -12,6 +11,16 @@ public class Developer {
     private int resetPassToken;
 
     public Developer() {
+    }
+
+    public Developer(int id, String login, String pass, String name, String type, String status, int resetPassToken) {
+        this.id = id;
+        this.login = login;
+        this.pass = pass;
+        this.name = name;
+        this.type = type;
+        this.status = status;
+        this.resetPassToken = resetPassToken;
     }
 
     public Developer(int id) {

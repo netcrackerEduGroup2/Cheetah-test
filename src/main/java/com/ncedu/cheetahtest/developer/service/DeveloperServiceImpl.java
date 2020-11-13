@@ -3,12 +3,13 @@ package com.ncedu.cheetahtest.developer.service;
 import com.ncedu.cheetahtest.developer.entity.Developer;
 import com.ncedu.cheetahtest.developer.dao.DeveloperDao;
 import com.ncedu.cheetahtest.developer.entity.ResetToken;
-import com.ncedu.cheetahtest.mail.model.PasswordResetToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
+
 
 @Service
 public class DeveloperServiceImpl implements DeveloperService {
@@ -22,12 +23,6 @@ public class DeveloperServiceImpl implements DeveloperService {
 
     @Override
     @Transactional
-    public List<Developer> getDevelopers() {
-        return developerDao.getDevelopers();
-    }
-
-    @Override
-    @Transactional
     public Developer findDeveloperByEmail(String email) {
         return developerDao.findDeveloperByEmail(email);
     }
@@ -35,7 +30,14 @@ public class DeveloperServiceImpl implements DeveloperService {
     @Override
     @Transactional
     public void createPasswordResetTokenForUser(Developer developer, String token) {
-        ResetToken myToken = new ResetToken(token, developer);
+        ResetToken myToken = new ResetToken(token, developer.getId(), new Date());
         developerDao.saveToken(myToken);
     }
+
+    @Override
+    @Transactional
+    public ResetToken findByToken(String token) {
+        return developerDao.findByToken(token);
+    }
+
 }

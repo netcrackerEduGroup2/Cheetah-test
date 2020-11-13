@@ -1,17 +1,16 @@
 package com.ncedu.cheetahtest.mail.controller;
 
-import com.ncedu.cheetahtest.mail.exception.DeveloperNotFoundException;
-import com.ncedu.cheetahtest.mail.model.Email;
+import com.ncedu.cheetahtest.developer.entity.ResetToken;
+import com.ncedu.cheetahtest.mail.entity.Email;
 import com.ncedu.cheetahtest.mail.service.EmailService;
 import com.ncedu.cheetahtest.developer.entity.Developer;
 import com.ncedu.cheetahtest.developer.service.DeveloperService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -19,6 +18,7 @@ import java.util.UUID;
 @RequestMapping("/api")
 public class MailRestController {
 
+    public static final String FRONT_URL = "http://localhost:8080/api/change-password?token=";
     private final EmailService emailService;
     private final DeveloperService developerService;
 
@@ -29,10 +29,12 @@ public class MailRestController {
     }
 
     @GetMapping("/reset-password")
-    public Developer resetPassword(@RequestBody Email email) {
+    public Developer resetPassword(@RequestBody Email email,
+                                   HttpServletResponse response) {
         Developer developer = developerService.findDeveloperByEmail(email.getEmailAddress());
         if (developer == null) {
-            throw new DeveloperNotFoundException("Developer doesn't exist.");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
         }
 
         String token = UUID.randomUUID().toString();
@@ -43,14 +45,43 @@ public class MailRestController {
         return developer;
     }
 
+    @GetMapping("/change-password")
+    public Developer changePassword(@RequestParam("token") String token) {
+        String result = validatePasswordResetToken(token);
+        if (result == null) {
+            //TODO
+        } else {
+            //TODO
+        }
+        return null;
+    }
+
     private String constructUrl(String token) {
-        return "http://localhost:8080/api/change-password?token=" + token;
+        return FRONT_URL + token;
     }
 
-    @GetMapping("/developers")
-    public List<Developer> getDevelopers() {
-        List<Developer> developers = developerService.getDevelopers();
 
-        return developers;
+    public String validatePasswordResetToken(String token) {
+        final ResetToken passToken = developerService.findByToken(token);
+
+        return !isTokenFound(passToken) ? "invalidToken"
+                : isTokenExpired(passToken) ? "expired"
+                : null;
+
     }
+
+    private boolean isTokenFound(ResetToken token) {
+        return token != null;
+    }
+
+    private boolean isTokenExpired(ResetToken passToken) {
+        Calendar calendarExpiry = Calendar.getInstance();
+        calendarExpiry.setTime(passToken.getExpiryDate());
+
+        Calendar calendarCurrent = Calendar.getInstance();
+        calendarCurrent.setTime(new Date());
+
+        return calendarExpiry.before(calendarCurrent);
+    }
+
 }

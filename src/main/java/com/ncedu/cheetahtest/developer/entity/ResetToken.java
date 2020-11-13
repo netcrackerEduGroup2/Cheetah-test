@@ -1,21 +1,27 @@
 package com.ncedu.cheetahtest.developer.entity;
 
+
+import java.util.Calendar;
 import java.util.Date;
 
 public class ResetToken {
-    private static final int EXPIRATION = 60 * 24;
+    private static final int EXPIRATION = 3600 * 24 * 1000;
 
     private int id;
 
     private String token;
 
-    private Developer developer;
+    private int developerId;
 
     private Date expiryDate;
 
-    public ResetToken(String token, Developer developer) {
+    public ResetToken() {
+    }
+
+    public ResetToken(String token, int developerId, Date expiryDate) {
         this.token = token;
-        this.developer = developer;
+        this.developerId = developerId;
+        this.expiryDate = expiryDate;
     }
 
     public int getId() {
@@ -34,12 +40,12 @@ public class ResetToken {
         this.token = token;
     }
 
-    public Developer getDeveloper() {
-        return developer;
+    public int getDeveloperId() {
+        return developerId;
     }
 
-    public void setDeveloper(Developer developer) {
-        this.developer = developer;
+    public void setDeveloperId(int developerId) {
+        this.developerId = developerId;
     }
 
     public Date getExpiryDate() {
@@ -52,5 +58,15 @@ public class ResetToken {
 
     public static int getEXPIRATION() {
         return EXPIRATION;
+    }
+
+    @Override
+    public String toString() {
+        return "ResetToken{" +
+                "id=" + id +
+                ", token='" + token + '\'' +
+                ", developerId=" + developerId +
+                ", expiryDate=" + expiryDate +
+                '}';
     }
 }
