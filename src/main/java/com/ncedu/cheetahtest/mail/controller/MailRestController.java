@@ -23,7 +23,7 @@ import java.util.UUID;
 @Slf4j
 public class MailRestController {
 
-    public static final String FRONT_URL = "http://localhost:8080/api/change-password?token=";
+    public static final String FRONT_URL = "http://localhost:4200/reset-password?token=";
     private final EmailService emailService;
     private final DeveloperService developerService;
     private final AuthService authService;
@@ -57,6 +57,7 @@ public class MailRestController {
 
         String result = validatePasswordResetToken(token);
         if (result != null) {
+            log.info("Result of validating of reset token: " + result);
             return new ResponseEntity<>(new GenericResponse(result), HttpStatus.BAD_REQUEST);
         }
 
@@ -86,8 +87,8 @@ public class MailRestController {
     public String validatePasswordResetToken(String token) {
         final ResetToken passToken = developerService.findByToken(token);
 
-        return !isTokenFound(passToken) ? "invalidToken"
-                : isTokenExpired(passToken) ? "expired"
+        return !isTokenFound(passToken) ? "token.invalid"
+                : isTokenExpired(passToken) ? "token.expired"
                 : null;
 
     }
