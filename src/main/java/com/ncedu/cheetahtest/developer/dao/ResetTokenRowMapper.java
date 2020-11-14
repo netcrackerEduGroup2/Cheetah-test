@@ -5,8 +5,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
 
 public class ResetTokenRowMapper implements RowMapper<ResetToken> {
     public static final String ID = "id";

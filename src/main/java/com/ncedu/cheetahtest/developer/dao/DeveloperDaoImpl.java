@@ -69,4 +69,24 @@ public class DeveloperDaoImpl implements DeveloperDao {
 
         return null;
     }
+
+    @Override
+    public void changeUserPassword(ResetToken resetToken, String password) {
+        String sql = "UPDATE developer SET pass = ? WHERE id_reset_token = ?";
+
+        jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
+            preparedStatement.setString(1, password);
+            preparedStatement.setInt(2, resetToken.getId());
+
+            return preparedStatement.execute();
+        });
+    }
+
+    @Override
+    public String findDeveloperByToken(String token) {
+        String sql = "SELECT pass FROM developer WHERE id_reset_token IN (SELECT id FROM reset_token WHERE token = ?)";
+
+        return jdbcTemplate.queryForObject(sql, new Object[]{token}, String.class);
+    }
+
 }

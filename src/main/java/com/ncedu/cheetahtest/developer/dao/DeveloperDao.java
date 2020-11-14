@@ -10,4 +10,8 @@ public interface DeveloperDao {
     void saveToken(ResetToken myToken);
 
     ResetToken findByToken(String token);
+
+    void changeUserPassword(ResetToken resetToken, String password);
+
+    String findDeveloperByToken(String token);
 }

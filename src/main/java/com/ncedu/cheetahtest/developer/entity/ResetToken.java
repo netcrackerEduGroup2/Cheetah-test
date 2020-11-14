@@ -1,7 +1,5 @@
 package com.ncedu.cheetahtest.developer.entity;
 
-
-import java.util.Calendar;
 import java.util.Date;
 
 public class ResetToken {
