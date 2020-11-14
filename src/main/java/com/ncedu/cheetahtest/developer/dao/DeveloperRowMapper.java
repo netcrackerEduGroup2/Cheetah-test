@@ -10,11 +10,11 @@ public class DeveloperRowMapper implements RowMapper<Developer> {
 
     public static final String ID = "id";
     public static final String EMAIL = "email";
-    public static final String PASS = "pass";
+    public static final String PASS = "password";
     public static final String NAME = "name";
     public static final String ROLE = "role";
     public static final String STATUS = "status";
-    public static final String ID_RESET_TOKEN = "id_reset_token";
+    public static final String RESET_TOKEN_ID = "reset_token_id";
 
     @Override
     public Developer mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -26,7 +26,7 @@ public class DeveloperRowMapper implements RowMapper<Developer> {
         employee.setName(rs.getString(NAME));
         employee.setRole(rs.getString(ROLE));
         employee.setStatus(rs.getString(STATUS));
-        employee.setResetPassToken(rs.getInt(ID_RESET_TOKEN));
+        employee.setResetPassToken(rs.getInt(RESET_TOKEN_ID));
 
         return employee;
     }
