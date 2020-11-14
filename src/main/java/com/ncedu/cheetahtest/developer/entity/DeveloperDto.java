@@ -5,14 +5,14 @@ import lombok.Data;
 @Data
 public class DeveloperDto {
     private int id;
-    private String login;
+    private String email;
     private String name;
     private String role;
     private String status;
 
-    public DeveloperDto(int id, String login, String name, String role, String status) {
+    public DeveloperDto(int id, String email, String name, String role, String status) {
         this.id = id;
-        this.login = login;
+        this.email = email;
         this.name = name;
         this.role = role;
         this.status = status;
@@ -25,7 +25,7 @@ public class DeveloperDto {
     public static final class DeveloperDtoBuilder {
 
         private int id;
-        private String login;
+        private String email;
         private String name;
         private String role;
         private String status;
@@ -34,7 +34,7 @@ public class DeveloperDto {
             return this;
         }
 
-        public DeveloperDtoBuilder setLogin(String login) {
+        public DeveloperDtoBuilder setEmail(String email) {
             return this;
         }
 
@@ -51,7 +51,7 @@ public class DeveloperDto {
         }
 
         public DeveloperDto build() {
-            return new DeveloperDto(id, login, name, role, status);
+            return new DeveloperDto(id, email, name, role, status);
         }
     }
 }

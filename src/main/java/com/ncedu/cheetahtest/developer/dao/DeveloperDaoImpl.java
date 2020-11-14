@@ -27,7 +27,7 @@ public class DeveloperDaoImpl implements DeveloperDao {
 
     @Override
     public Developer findDeveloperByEmail(String email) {
-        String sql = "SELECT id, login, pass, name, role, status, id_reset_token FROM developer WHERE login = ?";
+        String sql = "SELECT id, email, pass, name, role, status, id_reset_token FROM developer WHERE email = ?";
         List<Developer> developers = jdbcTemplate.query(
                 sql,
                 preparedStatement -> preparedStatement.setString(1, email),

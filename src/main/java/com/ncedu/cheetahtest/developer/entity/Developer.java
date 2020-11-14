@@ -4,7 +4,7 @@ package com.ncedu.cheetahtest.developer.entity;
 public class Developer {
 
     private int id;
-    private String login;
+    private String email;
     private String pass;
     private String name;
     private String role;
@@ -14,9 +14,9 @@ public class Developer {
     public Developer() {
     }
 
-    public Developer(int id, String login, String pass, String name, String type, String status, int resetPassToken) {
+    public Developer(int id, String email, String pass, String name, String type, String status, int resetPassToken) {
         this.id = id;
-        this.login = login;
+        this.email = email;
         this.pass = pass;
         this.name = name;
         this.role = type;
@@ -36,12 +36,12 @@ public class Developer {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPass() {
@@ -88,7 +88,7 @@ public class Developer {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", login='" + login + '\'' +
+                ", email='" + email + '\'' +
                 ", pass='" + pass + '\'' +
                 ", name='" + name + '\'' +
                 ", type='" + role + '\'' +

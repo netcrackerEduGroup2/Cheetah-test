@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class DeveloperRowMapper implements RowMapper<Developer> {
 
     public static final String ID = "id";
-    public static final String LOGIN = "login";
+    public static final String EMAIL = "email";
     public static final String PASS = "pass";
     public static final String NAME = "name";
     public static final String ROLE = "role";
@@ -21,7 +21,7 @@ public class DeveloperRowMapper implements RowMapper<Developer> {
         Developer employee = new Developer();
 
         employee.setId(rs.getInt(ID));
-        employee.setLogin(rs.getString(LOGIN));
+        employee.setEmail(rs.getString(EMAIL));
         employee.setPass(rs.getString(PASS));
         employee.setName(rs.getString(NAME));
         employee.setRole(rs.getString(ROLE));
