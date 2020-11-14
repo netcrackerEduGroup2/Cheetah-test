@@ -4,6 +4,7 @@ import com.ncedu.cheetahtest.developer.entity.Developer;
 import com.ncedu.cheetahtest.developer.dao.DeveloperDao;
 import com.ncedu.cheetahtest.developer.entity.ResetToken;
 import com.ncedu.cheetahtest.mail.entity.PasswordDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 
 @Service
+@Slf4j
 public class DeveloperServiceImpl implements DeveloperService {
 
     private DeveloperDao developerDao;
@@ -30,24 +32,24 @@ public class DeveloperServiceImpl implements DeveloperService {
     @Transactional
     public void createPasswordResetTokenForUser(Developer developer, String token) {
         ResetToken myToken = new ResetToken(token, developer.getId(), new Date());
-        developerDao.saveToken(myToken);
+
+        ResetToken resetToken = developerDao.findResetTokenByDeveloperId(developer.getId());
+
+        if (resetToken == null) {
+            developerDao.createToken(myToken);
+
+            log.info("Token has been successfully created: " + myToken);
+        } else {
+            developerDao.saveToken(myToken);
+
+            log.info("Token has been successfully updated: " + myToken);
+        }
     }
 
     @Override
     @Transactional
     public ResetToken findByToken(String token) {
-        return developerDao.findByToken(token);
+        return developerDao.findResetTokenByToken(token);
     }
-
-    @Override
-    public void changeUserPassword(ResetToken resetToken, String password) {
-        developerDao.changeUserPassword(resetToken, password);
-    }
-
-    @Override
-    public boolean validatePassword(PasswordDTO passwordDTO, String token) {
-        return developerDao.findDeveloperByToken(token).equals(passwordDTO.getPassword());
-    }
-
 
 }

@@ -2,6 +2,8 @@ package com.ncedu.cheetahtest.security.service;
 
 import com.ncedu.cheetahtest.developer.dao.DeveloperDao;
 import com.ncedu.cheetahtest.developer.entity.Developer;
+import com.ncedu.cheetahtest.developer.entity.ResetToken;
+import com.ncedu.cheetahtest.mail.entity.PasswordDTO;
 import com.ncedu.cheetahtest.security.entity.AccessTokenDto;
 import com.ncedu.cheetahtest.security.entity.LoginDto;
 import com.ncedu.cheetahtest.security.entity.RegisterDto;
@@ -71,5 +73,23 @@ public class AuthServiceImpl implements AuthService{
         
         String token = jwtTokenProvider.createToken(developer);
         return new AccessTokenDto(token);
+    }
+
+
+    @Override
+    @Transactional
+    public void changeUserPassword(ResetToken resetToken, String password) {
+
+        String encodedPasswordWithSalt = passwordEncoder.encode(password + passwordSalt);
+        developerDao.changeUserPassword(resetToken, encodedPasswordWithSalt);
+    }
+
+    @Override
+    @Transactional
+    public boolean validatePassword(PasswordDTO passwordDTO) {
+        Developer theDeveloper = developerDao.findDeveloperByToken(passwordDTO.getToken());
+        String encodedPasswordWithSalt = passwordDTO.getPassword() + passwordSalt;
+
+        return passwordEncoder.matches(encodedPasswordWithSalt, theDeveloper.getPass());
     }
 }

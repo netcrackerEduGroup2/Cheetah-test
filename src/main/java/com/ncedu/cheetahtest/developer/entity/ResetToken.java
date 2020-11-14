@@ -1,7 +1,10 @@
 package com.ncedu.cheetahtest.developer.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 public class ResetToken {
     private static final int EXPIRATION = 3600 * 24 * 1000;
 
@@ -22,49 +25,8 @@ public class ResetToken {
         this.expiryDate = expiryDate;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public int getDeveloperId() {
-        return developerId;
-    }
-
-    public void setDeveloperId(int developerId) {
-        this.developerId = developerId;
-    }
-
-    public Date getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(Date expiryDate) {
-        this.expiryDate = expiryDate;
-    }
-
     public static int getEXPIRATION() {
         return EXPIRATION;
     }
 
-    @Override
-    public String toString() {
-        return "ResetToken{" +
-                "id=" + id +
-                ", token='" + token + '\'' +
-                ", developerId=" + developerId +
-                ", expiryDate=" + expiryDate +
-                '}';
-    }
 }
