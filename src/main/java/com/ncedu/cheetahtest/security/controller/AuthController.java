@@ -33,9 +33,5 @@ public class AuthController {
 
         return  ResponseEntity.ok(accessTokenDto);
     }
-
-    @GetMapping("/test")
-    public ResponseEntity test() {
-        return ResponseEntity.ok("hello");
-    }
+    
 }
