@@ -1,12 +1,13 @@
 package com.ncedu.cheetahtest.developer.entity;
 
+
 public class Developer {
 
     private int id;
     private String login;
     private String pass;
     private String name;
-    private String type;
+    private String role;
     private String status;
     private int resetPassToken;
 
@@ -18,7 +19,7 @@ public class Developer {
         this.login = login;
         this.pass = pass;
         this.name = name;
-        this.type = type;
+        this.role = type;
         this.status = status;
         this.resetPassToken = resetPassToken;
     }
@@ -59,12 +60,12 @@ public class Developer {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public String getRole() {
+        return role;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getStatus() {
@@ -90,7 +91,7 @@ public class Developer {
                 ", login='" + login + '\'' +
                 ", pass='" + pass + '\'' +
                 ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
+                ", type='" + role + '\'' +
                 ", status='" + status + '\'' +
                 ", resetPassToken='" + resetPassToken + '\'' +
                 '}';

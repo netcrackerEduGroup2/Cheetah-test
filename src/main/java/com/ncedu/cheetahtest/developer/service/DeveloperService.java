@@ -16,4 +16,6 @@ public interface DeveloperService {
     void changeUserPassword(ResetToken resetToken, String password);
 
     boolean validatePassword(PasswordDTO passwordDTO, String token);
+
+
 }

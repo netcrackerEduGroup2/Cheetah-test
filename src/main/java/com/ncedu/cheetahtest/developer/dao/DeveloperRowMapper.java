@@ -24,7 +24,7 @@ public class DeveloperRowMapper implements RowMapper<Developer> {
         employee.setLogin(rs.getString(LOGIN));
         employee.setPass(rs.getString(PASS));
         employee.setName(rs.getString(NAME));
-        employee.setType(rs.getString(ROLE));
+        employee.setRole(rs.getString(ROLE));
         employee.setStatus(rs.getString(STATUS));
         employee.setResetPassToken(rs.getInt(ID_RESET_TOKEN));
 
