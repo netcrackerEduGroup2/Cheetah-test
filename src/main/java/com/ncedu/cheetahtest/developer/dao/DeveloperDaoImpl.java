@@ -55,6 +55,25 @@ public class DeveloperDaoImpl implements DeveloperDao {
     }
 
     @Override
+    public Developer findDeveloperByEmailAndPassword(String email, String password) {
+        String sql = "SELECT id, email, password, name, role, status, reset_token_id FROM developer WHERE email = ? AND password = ?";
+
+        List<Developer> developers = jdbcTemplate.query(
+                sql,
+                preparedStatement -> {
+                    preparedStatement.setString(1, email);
+                    preparedStatement.setString(2, password);
+                },
+                new DeveloperRowMapper());
+
+        if (developers.size() == 1) {
+            return developers.get(0);
+        }
+
+        return null;
+    }
+
+    @Override
     public void saveToken(ResetToken myToken) {
 
         String sql = "UPDATE reset_token SET token = ?, expiry_date = ? WHERE developer_id = ?";

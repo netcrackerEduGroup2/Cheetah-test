@@ -10,6 +10,8 @@ public interface DeveloperDao {
 
     Developer findDeveloperByEmail(String email);
 
+    Developer findDeveloperByEmailAndPassword(String email, String password);
+
     void saveToken(ResetToken myToken);
 
     ResetToken findByToken(String token);
