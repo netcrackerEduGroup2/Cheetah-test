@@ -1,5 +1,6 @@
 package com.ncedu.cheetahtest.mail.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,11 @@ import java.io.FileNotFoundException;
 import java.util.Objects;
 
 @Service
+@Slf4j
 public class EmailServiceImpl implements EmailService{
 
     public static final String NET_CRACKER_USERNAME = "spring.mail.username";
     public static final String SUBJECT = "Password reset";
-
-    private final Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
-
     private final JavaMailSender emailSender;
     private final HtmlMail htmlMail;
     private final Environment environment;
@@ -63,10 +62,12 @@ public class EmailServiceImpl implements EmailService{
             helper.setText("", htmlString);
             emailSender.send(message);
 
+            log.info("Email has been sent to " + to);
+
         } catch (MessagingException e) {
-            logger.error(String.format("Couldn't send message: %s", e.getMessage()));
+            log.error(String.format("Couldn't send message: %s", e.getMessage()));
         } catch (FileNotFoundException e) {
-            logger.error(String.format("Couldn't find html file by given path: %s", e.getMessage()));
+            log.error(String.format("Couldn't find html file by given path: %s", e.getMessage()));
         }
     }
 }

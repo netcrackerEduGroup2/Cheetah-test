@@ -1,21 +1,15 @@
 package com.ncedu.cheetahtest.mail.entity;
 
+import lombok.Data;
+
+@Data
 public class Email {
+    private String email;
 
-    private String emailAddress;
-
-    @Override
-    public String toString() {
-        return "Email{" +
-                "email='" + emailAddress + '\'' +
-                '}';
+    public Email() {
     }
 
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public Email(String email) {
+        this.email = email;
     }
 }

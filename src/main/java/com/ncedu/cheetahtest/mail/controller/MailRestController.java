@@ -7,24 +7,25 @@ import com.ncedu.cheetahtest.mail.entity.PasswordDTO;
 import com.ncedu.cheetahtest.mail.service.EmailService;
 import com.ncedu.cheetahtest.developer.entity.Developer;
 import com.ncedu.cheetahtest.developer.service.DeveloperService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
-
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class MailRestController {
 
     public static final String FRONT_URL = "http://localhost:8080/api/change-password?token=";
     private final EmailService emailService;
     private final DeveloperService developerService;
+
 
     @Autowired
     public MailRestController(EmailService emailService, DeveloperService developerService) {
@@ -32,44 +33,46 @@ public class MailRestController {
         this.developerService = developerService;
     }
 
-    @GetMapping("/reset-password")
+    @PostMapping("/reset-password")
     public ResponseEntity<GenericResponse> resetPassword(@RequestBody Email email) {
-        Developer developer = developerService.findDeveloperByEmail(email.getEmailAddress());
+        Developer developer = developerService.findDeveloperByEmail(email.getEmail());
         if (developer == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new GenericResponse("invalid.email"),HttpStatus.BAD_REQUEST);
         }
 
         String token = UUID.randomUUID().toString();
 
         developerService.createPasswordResetTokenForUser(developer, token);
-        emailService.sendMessageWithAttachment(email.getEmailAddress(), constructUrl(token));
+        emailService.sendMessageWithAttachment(email.getEmail(), constructUrl(token));
 
         return new ResponseEntity<>(new GenericResponse("user.fetched"), HttpStatus.OK);
     }
 
-    @GetMapping("/change-password")
-    public ResponseEntity<GenericResponse> changePassword(@RequestParam("token") String token,
-                                          HttpServletResponse response,
-                                                          @RequestBody PasswordDTO passwordDTO) {
+    @PostMapping("/save-password")
+    public ResponseEntity<GenericResponse> changePassword(@RequestBody PasswordDTO passwordDTO) {
+
+        String token = passwordDTO.getToken();
 
         String result = validatePasswordResetToken(token);
         if (result != null) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return new ResponseEntity<>(new GenericResponse(result), HttpStatus.BAD_REQUEST);
         }
 
-        boolean isPasswordSame = developerService.validatePassword(passwordDTO, token);
+        boolean isPasswordSame = developerService.validatePassword(passwordDTO);
         if (isPasswordSame) {
+            log.info("Same password as before");
             return new ResponseEntity<>(new GenericResponse("same.password"), HttpStatus.BAD_REQUEST);
         }
 
-        passwordDTO.setToken(token);
-        ResetToken resetToken = developerService.findByToken(passwordDTO.getToken());
+        ResetToken resetToken = developerService.findByToken(token);
 
         if (resetToken != null) {
             developerService.changeUserPassword(resetToken, passwordDTO.getPassword());
+
+            log.info("Password has been successfully reset");
             return new ResponseEntity<>(new GenericResponse("message.resetPasswordSuc"), HttpStatus.OK);
         } else {
+            log.info("Reset token doesn't exist");
             return new ResponseEntity<>(new GenericResponse("reset.token.null"), HttpStatus.BAD_REQUEST);
         }
     }

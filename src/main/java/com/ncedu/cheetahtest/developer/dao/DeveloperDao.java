@@ -1,7 +1,6 @@
 package com.ncedu.cheetahtest.developer.dao;
 
 import com.ncedu.cheetahtest.developer.entity.Developer;
-import com.ncedu.cheetahtest.developer.entity.DeveloperDto;
 import com.ncedu.cheetahtest.developer.entity.ResetToken;
 
 public interface DeveloperDao {
@@ -14,9 +13,13 @@ public interface DeveloperDao {
 
     void saveToken(ResetToken myToken);
 
-    ResetToken findByToken(String token);
+    ResetToken findResetTokenByToken(String token);
 
     void changeUserPassword(ResetToken resetToken, String password);
 
-    String findDeveloperByToken(String token);
+    Developer findDeveloperByToken(String token);
+
+    ResetToken findResetTokenByDeveloperId(int id);
+
+    void createToken(ResetToken myToken);
 }

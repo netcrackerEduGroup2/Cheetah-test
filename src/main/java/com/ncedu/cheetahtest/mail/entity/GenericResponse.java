@@ -1,24 +1,12 @@
 package com.ncedu.cheetahtest.mail.entity;
 
+import lombok.Data;
+
+@Data
 public class GenericResponse {
-    private String message;
+    private String status;
 
-    public GenericResponse(String message) {
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    @Override
-    public String toString() {
-        return "GenericResponse{" +
-                "message='" + message + '\'' +
-                '}';
+    public GenericResponse(String status) {
+        this.status = status;
     }
 }
