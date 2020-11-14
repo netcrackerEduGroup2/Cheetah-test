@@ -7,6 +7,7 @@ import com.ncedu.cheetahtest.mail.entity.PasswordDTO;
 import com.ncedu.cheetahtest.mail.service.EmailService;
 import com.ncedu.cheetahtest.developer.entity.Developer;
 import com.ncedu.cheetahtest.developer.service.DeveloperService;
+import com.ncedu.cheetahtest.security.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,12 +26,13 @@ public class MailRestController {
     public static final String FRONT_URL = "http://localhost:8080/api/change-password?token=";
     private final EmailService emailService;
     private final DeveloperService developerService;
-
+    private final AuthService authService;
 
     @Autowired
-    public MailRestController(EmailService emailService, DeveloperService developerService) {
+    public MailRestController(EmailService emailService, DeveloperService developerService, AuthService authService) {
         this.emailService = emailService;
         this.developerService = developerService;
+        this.authService = authService;
     }
 
     @PostMapping("/reset-password")
@@ -58,7 +60,7 @@ public class MailRestController {
             return new ResponseEntity<>(new GenericResponse(result), HttpStatus.BAD_REQUEST);
         }
 
-        boolean isPasswordSame = developerService.validatePassword(passwordDTO);
+        boolean isPasswordSame = authService.validatePassword(passwordDTO);
         if (isPasswordSame) {
             log.info("Same password as before");
             return new ResponseEntity<>(new GenericResponse("same.password"), HttpStatus.BAD_REQUEST);
@@ -67,7 +69,7 @@ public class MailRestController {
         ResetToken resetToken = developerService.findByToken(token);
 
         if (resetToken != null) {
-            developerService.changeUserPassword(resetToken, passwordDTO.getPassword());
+            authService.changeUserPassword(resetToken, passwordDTO.getPassword());
 
             log.info("Password has been successfully reset");
             return new ResponseEntity<>(new GenericResponse("message.resetPasswordSuc"), HttpStatus.OK);

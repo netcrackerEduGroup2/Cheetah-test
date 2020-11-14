@@ -12,9 +12,4 @@ public interface DeveloperService {
 
     ResetToken findByToken(String token);
 
-    void changeUserPassword(ResetToken resetToken, String password);
-
-    boolean validatePassword(PasswordDTO passwordDTO);
-
-
 }

@@ -52,19 +52,4 @@ public class DeveloperServiceImpl implements DeveloperService {
         return developerDao.findResetTokenByToken(token);
     }
 
-    @Override
-    @Transactional
-    public void changeUserPassword(ResetToken resetToken, String password) {
-        developerDao.changeUserPassword(resetToken, password);
-    }
-
-    @Override
-    @Transactional
-    public boolean validatePassword(PasswordDTO passwordDTO) {
-        return developerDao.findDeveloperByToken(
-                passwordDTO.getToken()).getPass()
-                .equals(passwordDTO.getPassword());
-    }
-
-
 }
