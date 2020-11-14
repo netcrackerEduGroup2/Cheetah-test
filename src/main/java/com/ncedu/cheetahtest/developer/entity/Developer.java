@@ -1,24 +1,25 @@
 package com.ncedu.cheetahtest.developer.entity;
 
+
 public class Developer {
 
     private int id;
-    private String login;
+    private String email;
     private String pass;
     private String name;
-    private String type;
+    private String role;
     private String status;
     private int resetPassToken;
 
     public Developer() {
     }
 
-    public Developer(int id, String login, String pass, String name, String type, String status, int resetPassToken) {
+    public Developer(int id, String email, String pass, String name, String type, String status, int resetPassToken) {
         this.id = id;
-        this.login = login;
+        this.email = email;
         this.pass = pass;
         this.name = name;
-        this.type = type;
+        this.role = type;
         this.status = status;
         this.resetPassToken = resetPassToken;
     }
@@ -35,12 +36,12 @@ public class Developer {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPass() {
@@ -59,12 +60,12 @@ public class Developer {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public String getRole() {
+        return role;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getStatus() {
@@ -87,10 +88,10 @@ public class Developer {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", login='" + login + '\'' +
+                ", email='" + email + '\'' +
                 ", pass='" + pass + '\'' +
                 ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
+                ", type='" + role + '\'' +
                 ", status='" + status + '\'' +
                 ", resetPassToken='" + resetPassToken + '\'' +
                 '}';
