@@ -21,6 +21,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api")
 @Slf4j
+@CrossOrigin(origins = "http://localhost:4200")
 public class MailRestController {
 
     public static final String FRONT_URL = "http://localhost:4200/reset-password?token=";
