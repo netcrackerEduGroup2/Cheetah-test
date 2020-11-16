@@ -161,4 +161,14 @@ public class DeveloperDaoImpl implements DeveloperDao {
         });
     }
 
+    @Override
+    public void makeTokenExpired(ResetToken resetToken) {
+        String sql = "UPDATE reset_token SET expiry_date = current_timestamp WHERE token = ?";
+
+        jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
+            preparedStatement.setString(1, resetToken.getToken());
+
+            return preparedStatement.execute();
+        });
+    }
 }

@@ -12,4 +12,5 @@ public interface DeveloperService {
 
     ResetToken findByToken(String token);
 
+    void makeTokenExpired(ResetToken resetToken);
 }
