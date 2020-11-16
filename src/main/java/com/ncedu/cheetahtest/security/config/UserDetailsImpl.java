@@ -1,6 +1,6 @@
 package com.ncedu.cheetahtest.security.config;
 
-import com.ncedu.cheetahtest.developer.entity.Developer;
+import com.ncedu.cheetahtest.user.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,12 +15,12 @@ public class UserDetailsImpl implements UserDetails {
     private String status;
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
-    public static UserDetailsImpl fromUserEntityToCustomUserDetails(Developer developer) {
+    public static UserDetailsImpl fromUserEntityToCustomUserDetails(User userEntity) {
         UserDetailsImpl user = new UserDetailsImpl();
-        user.email = developer.getEmail();
-        user.password = developer.getPass();
-        user.status = developer.getStatus();
-        user.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(developer.getRole()));
+        user.email = userEntity.getEmail();
+        user.password = userEntity.getPass();
+        user.status = userEntity.getStatus();
+        user.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(userEntity.getRole()));
         return user;
     }
 

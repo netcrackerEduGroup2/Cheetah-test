@@ -1,12 +1,12 @@
 package com.ncedu.cheetahtest.mail.controller;
 
-import com.ncedu.cheetahtest.developer.entity.ResetToken;
+import com.ncedu.cheetahtest.user.entity.ResetToken;
 import com.ncedu.cheetahtest.mail.entity.Email;
 import com.ncedu.cheetahtest.mail.entity.GenericResponse;
 import com.ncedu.cheetahtest.mail.entity.PasswordDTO;
 import com.ncedu.cheetahtest.mail.service.EmailService;
-import com.ncedu.cheetahtest.developer.entity.Developer;
-import com.ncedu.cheetahtest.developer.service.DeveloperService;
+import com.ncedu.cheetahtest.user.entity.User;
+import com.ncedu.cheetahtest.user.service.UserService;
 import com.ncedu.cheetahtest.security.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,26 +27,26 @@ public class MailRestController {
     public static final String SUBJECT = "Password reset";
     public static final String FRONT_URL = "http://localhost:4200/reset-password?token=";
     private final EmailService emailService;
-    private final DeveloperService developerService;
+    private final UserService userService;
     private final AuthService authService;
 
     @Autowired
-    public MailRestController(EmailService emailService, DeveloperService developerService, AuthService authService) {
+    public MailRestController(EmailService emailService, UserService userService, AuthService authService) {
         this.emailService = emailService;
-        this.developerService = developerService;
+        this.userService = userService;
         this.authService = authService;
     }
 
     @PostMapping("/reset-password")
     public ResponseEntity<GenericResponse> resetPassword(@RequestBody Email email) {
-        Developer developer = developerService.findDeveloperByEmail(email.getEmail());
-        if (developer == null) {
+        User user = userService.findUserByEmail(email.getEmail());
+        if (user == null) {
             return new ResponseEntity<>(new GenericResponse("invalid.email"),HttpStatus.BAD_REQUEST);
         }
 
         String token = UUID.randomUUID().toString();
 
-        developerService.createPasswordResetTokenForUser(developer, token);
+        userService.createPasswordResetTokenForUser(user, token);
         emailService.sendMessageWithAttachment(email.getEmail(), constructUrl(token), SUBJECT);
 
         return new ResponseEntity<>(new GenericResponse("user.fetched"), HttpStatus.OK);
@@ -69,11 +69,11 @@ public class MailRestController {
             return new ResponseEntity<>(new GenericResponse("same.password"), HttpStatus.BAD_REQUEST);
         }
 
-        ResetToken resetToken = developerService.findByToken(token);
+        ResetToken resetToken = userService.findByToken(token);
 
         if (resetToken != null) {
             authService.changeUserPassword(resetToken, passwordDTO.getPassword());
-            developerService.makeTokenExpired(resetToken);
+            userService.makeTokenExpired(resetToken);
             log.info("Password has been successfully reset");
             return new ResponseEntity<>(new GenericResponse("message.resetPasswordSuc"), HttpStatus.OK);
         } else {
@@ -87,7 +87,7 @@ public class MailRestController {
     }
 
     public String validatePasswordResetToken(String token) {
-        final ResetToken passToken = developerService.findByToken(token);
+        final ResetToken passToken = userService.findByToken(token);
 
         return !isTokenFound(passToken) ? "token.invalid"
                 : isTokenExpired(passToken) ? "token.expired"
@@ -108,5 +108,4 @@ public class MailRestController {
 
         return calendarExpiry.before(calendarCurrent);
     }
-
 }

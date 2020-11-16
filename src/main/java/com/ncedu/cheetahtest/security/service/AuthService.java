@@ -1,6 +1,6 @@
 package com.ncedu.cheetahtest.security.service;
 
-import com.ncedu.cheetahtest.developer.entity.ResetToken;
+import com.ncedu.cheetahtest.user.entity.ResetToken;
 import com.ncedu.cheetahtest.mail.entity.PasswordDTO;
 import com.ncedu.cheetahtest.security.entity.AccessTokenDto;
 import com.ncedu.cheetahtest.security.entity.LoginDto;
