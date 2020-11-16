@@ -1,5 +1,5 @@
-create type developer_role as enum ('admin', 'manager', 'engineer');
-create type developer_status as enum ('active', 'inactive');
+create type user_role as enum ('admin', 'manager', 'engineer');
+create type user_status as enum ('active', 'inactive');
 
 create table user (
     id              serial primary key not null ,
@@ -16,5 +16,5 @@ create table reset_token
     id           serial primary key,
     token        varchar(50),
     expiry_date  timestamp,
-    developer_id integer
+    user_id integer
 );
