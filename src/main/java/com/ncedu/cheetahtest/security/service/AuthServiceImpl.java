@@ -1,8 +1,8 @@
 package com.ncedu.cheetahtest.security.service;
 
-import com.ncedu.cheetahtest.developer.dao.DeveloperDao;
-import com.ncedu.cheetahtest.developer.entity.Developer;
-import com.ncedu.cheetahtest.developer.entity.ResetToken;
+import com.ncedu.cheetahtest.user.dao.UserDao;
+import com.ncedu.cheetahtest.user.entity.User;
+import com.ncedu.cheetahtest.user.entity.ResetToken;
 import com.ncedu.cheetahtest.mail.entity.PasswordDTO;
 import com.ncedu.cheetahtest.security.entity.AccessTokenDto;
 import com.ncedu.cheetahtest.security.entity.LoginDto;
@@ -19,59 +19,59 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AuthServiceImpl implements AuthService{
 
-    private DeveloperDao developerDao;
+    private UserDao userDao;
 
     private PasswordEncoder passwordEncoder;
 
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public AuthServiceImpl(DeveloperDao developerDao, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
-        this.developerDao = developerDao;
+    public AuthServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+        this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @Value("${db.developers.salt}")
+    @Value("${db.users.salt}")
     private String passwordSalt;
 
     @Override
     @Transactional
     public void register(RegisterDto registerDto) {
 
-        if (developerDao.findDeveloperByEmail(registerDto.getEmail()) != null) {
+        if (userDao.findUserByEmail(registerDto.getEmail()) != null) {
             throw new UserAlreadyExistsException();
         }
 
         String passwordWithSalt = registerDto.getPassword() + passwordSalt;
 
-        Developer newDeveloper = new Developer();
+        User newUser = new User();
 
-        newDeveloper.setEmail(registerDto.getEmail());
-        newDeveloper.setName(registerDto.getName());
-        newDeveloper.setPass(passwordEncoder.encode(passwordWithSalt));
-        newDeveloper.setStatus("active");
-        newDeveloper.setRole(registerDto.getRole());
+        newUser.setEmail(registerDto.getEmail());
+        newUser.setName(registerDto.getName());
+        newUser.setPass(passwordEncoder.encode(passwordWithSalt));
+        newUser.setStatus("active");
+        newUser.setRole(registerDto.getRole());
 
-        developerDao.createDeveloper(newDeveloper);
+        userDao.createDeveloper(newUser);
     }
 
     @Override
     public AccessTokenDto login(LoginDto loginDto) {
 
-        Developer developer = developerDao.findDeveloperByEmail(loginDto.getEmail());
+        User user = userDao.findUserByEmail(loginDto.getEmail());
 
-        if (developer == null) {
+        if (user == null) {
             throw new BadCredentialsException();
         }
 
         String loginDtoPasswordWithSalt = loginDto.getPassword() + passwordSalt;
 
-        if (!passwordEncoder.matches(loginDtoPasswordWithSalt, developer.getPass())) {
+        if (!passwordEncoder.matches(loginDtoPasswordWithSalt, user.getPass())) {
             throw new BadCredentialsException();
         }
         
-        String token = jwtTokenProvider.createToken(developer);
+        String token = jwtTokenProvider.createToken(user);
         return new AccessTokenDto(token);
     }
 
@@ -81,15 +81,15 @@ public class AuthServiceImpl implements AuthService{
     public void changeUserPassword(ResetToken resetToken, String password) {
 
         String encodedPasswordWithSalt = passwordEncoder.encode(password + passwordSalt);
-        developerDao.changeUserPassword(resetToken, encodedPasswordWithSalt);
+        userDao.changeUserPassword(resetToken, encodedPasswordWithSalt);
     }
 
     @Override
     @Transactional
     public boolean validatePassword(PasswordDTO passwordDTO) {
-        Developer theDeveloper = developerDao.findDeveloperByToken(passwordDTO.getToken());
+        User theUser = userDao.findUserByToken(passwordDTO.getToken());
         String encodedPasswordWithSalt = passwordDTO.getPassword() + passwordSalt;
 
-        return passwordEncoder.matches(encodedPasswordWithSalt, theDeveloper.getPass());
+        return passwordEncoder.matches(encodedPasswordWithSalt, theUser.getPass());
     }
 }

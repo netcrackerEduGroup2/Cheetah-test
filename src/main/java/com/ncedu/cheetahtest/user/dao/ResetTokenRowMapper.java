@@ -1,6 +1,6 @@
-package com.ncedu.cheetahtest.developer.dao;
+package com.ncedu.cheetahtest.user.dao;
 
-import com.ncedu.cheetahtest.developer.entity.ResetToken;
+import com.ncedu.cheetahtest.user.entity.ResetToken;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -10,14 +10,14 @@ public class ResetTokenRowMapper implements RowMapper<ResetToken> {
     public static final String ID = "id";
     public static final String TOKEN = "token";
     public static final String EXPIRY_DATE = "expiry_date";
-    public static final String ID_DEVELOPER = "developer_id";
+    public static final String USER_ID = "user_id";
 
     @Override
     public ResetToken mapRow(ResultSet rs, int i) throws SQLException {
         ResetToken resetToken = new ResetToken();
         resetToken.setId(rs.getInt(ID));
         resetToken.setToken(rs.getString(TOKEN));
-        resetToken.setDeveloperId(rs.getInt(ID_DEVELOPER));
+        resetToken.setDeveloperId(rs.getInt(USER_ID));
         resetToken.setExpiryDate(rs.getTimestamp(EXPIRY_DATE));
 
         return resetToken;
