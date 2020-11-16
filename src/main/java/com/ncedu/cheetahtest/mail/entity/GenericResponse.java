@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class GenericResponse {
-    private String status;
+    private String message;
 
-    public GenericResponse(String status) {
-        this.status = status;
+    public GenericResponse(String message) {
+        this.message = message;
     }
 }

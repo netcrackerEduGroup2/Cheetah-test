@@ -1,11 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title></title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .block-title {
+            display: flex;
+            align-items: center;
+            height: 150px;
+        }
+        h2 {
+            font-family: 'Lato', sans-serif;
+            font-size: 39px;
+        }
+        .block {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 652px;
+            height: 578px;
+            font-size: 24px;
+            background-color: white;
+            border: 7px solid #F8F8F8;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 0px 10px rgba(230, 230, 230, 0.5);
+        }
+        .intro {
+            font-weight: bold;
+        }
+
+    </style>
+
 </head>
 <body>
-    <h3>Click on the link below to recover your password.</h3>
-    <p>%s</p>
+<div class="block-title"><h2>Password reset</h2></div>
+<div class="block">
+    <div class="wrapper">
+        <div class="intro">Dear user,</div>
+        <div>This letter is to notify you that for your account
+            has been initiated a password reset.<br/>
+            If you want to proceed with resetting your password,
+            please click to the “Password reset” link below.</div>
+        <p>%s</p>
+        <div>In case you wasn’t requesting password reset, just ignore this letter.</div>
+        <div>Thankfully, Cheetah Test.</div>
+    </div>
+</div>
 </body>
 </html>

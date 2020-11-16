@@ -24,6 +24,7 @@ import java.util.UUID;
 @CrossOrigin(origins = "http://localhost:4200")
 public class MailRestController {
 
+    public static final String SUBJECT = "Password reset";
     public static final String FRONT_URL = "http://localhost:4200/reset-password?token=";
     private final EmailService emailService;
     private final DeveloperService developerService;
@@ -46,7 +47,7 @@ public class MailRestController {
         String token = UUID.randomUUID().toString();
 
         developerService.createPasswordResetTokenForUser(developer, token);
-        emailService.sendMessageWithAttachment(email.getEmail(), constructUrl(token));
+        emailService.sendMessageWithAttachment(email.getEmail(), constructUrl(token), SUBJECT);
 
         return new ResponseEntity<>(new GenericResponse("user.fetched"), HttpStatus.OK);
     }
