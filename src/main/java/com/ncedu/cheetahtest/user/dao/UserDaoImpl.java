@@ -1,7 +1,7 @@
-package com.ncedu.cheetahtest.developer.dao;
+package com.ncedu.cheetahtest.user.dao;
 
-import com.ncedu.cheetahtest.developer.entity.Developer;
-import com.ncedu.cheetahtest.developer.entity.ResetToken;
+import com.ncedu.cheetahtest.user.entity.User;
+import com.ncedu.cheetahtest.user.entity.ResetToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
@@ -13,60 +13,60 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public class DeveloperDaoImpl implements DeveloperDao {
+public class UserDaoImpl implements UserDao {
 
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public DeveloperDaoImpl(DataSource dataSource) {
+    public UserDaoImpl(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
-    public void createDeveloper(Developer developer) {
-        String sql = "INSERT INTO developer (email, password, name, role, status) VALUES (?,?,?,?::developer_role,?::developer_status)";
+    public void createDeveloper(User user) {
+        String sql = "INSERT INTO users (email, password, name, role, status) VALUES (?,?,?,?::user_role,?::user_status)";
 
         jdbcTemplate.update(
                 sql,
-                developer.getEmail(),
-                developer.getPass(),
-                developer.getName(),
-                developer.getRole(),
-                developer.getStatus()
+                user.getEmail(),
+                user.getPass(),
+                user.getName(),
+                user.getRole(),
+                user.getStatus()
         );
 
     }
 
     @Override
-    public Developer findDeveloperByEmail(String email) {
-        String sql = "SELECT id, email, password, name, role, status, reset_token_id FROM developer WHERE email = ?";
+    public User findUserByEmail(String email) {
+        String sql = "SELECT id, email, password, name, role, status, reset_token_id FROM users WHERE email = ?";
 
-        List<Developer> developers = jdbcTemplate.query(
+        List<User> users = jdbcTemplate.query(
                 sql,
                 preparedStatement -> preparedStatement.setString(1, email),
-                new DeveloperRowMapper());
+                new UserRowMapper());
 
-        if (developers.size() == 1) {
-            return developers.get(0);
+        if (users.size() == 1) {
+            return users.get(0);
         }
 
         return null;
     }
 
     @Override
-    public Developer findDeveloperByEmailAndPassword(String email, String password) {
-        String sql = "SELECT id, email, password, name, role, status, reset_token_id FROM developer WHERE email = ? AND password = ?";
+    public User findUserByEmailAndPassword(String email, String password) {
+        String sql = "SELECT id, email, password, name, role, status, reset_token_id FROM users WHERE email = ? AND password = ?";
 
-        List<Developer> developers = jdbcTemplate.query(
+        List<User> users = jdbcTemplate.query(
                 sql,
                 preparedStatement -> {
                     preparedStatement.setString(1, email);
                     preparedStatement.setString(2, password);
                 },
-                new DeveloperRowMapper());
+                new UserRowMapper());
 
-        if (developers.size() == 1) {
-            return developers.get(0);
+        if (users.size() == 1) {
+            return users.get(0);
         }
 
         return null;
@@ -75,7 +75,7 @@ public class DeveloperDaoImpl implements DeveloperDao {
     @Override
     public void saveToken(ResetToken myToken) {
 
-        String sql = "UPDATE reset_token SET token = ?, expiry_date = ? WHERE developer_id = ?";
+        String sql = "UPDATE reset_token SET token = ?, expiry_date = ? WHERE user_id = ?";
 
         jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
             preparedStatement.setString(1, myToken.getToken());
@@ -88,7 +88,7 @@ public class DeveloperDaoImpl implements DeveloperDao {
 
     @Override
     public ResetToken findResetTokenByToken(String token) {
-        String sql = "SELECT id, token, expiry_date, developer_id FROM reset_token WHERE token = ?";
+        String sql = "SELECT id, token, expiry_date, user_id FROM reset_token WHERE token = ?";
 
         List<ResetToken> resetTokens = jdbcTemplate.query(
                 sql,
@@ -104,7 +104,7 @@ public class DeveloperDaoImpl implements DeveloperDao {
 
     @Override
     public void changeUserPassword(ResetToken resetToken, String password) {
-        String sql = "UPDATE developer SET password = ? WHERE id = ?";
+        String sql = "UPDATE users SET password = ? WHERE id = ?";
 
         jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
             preparedStatement.setString(1, password);
@@ -115,27 +115,27 @@ public class DeveloperDaoImpl implements DeveloperDao {
     }
 
     @Override
-    public Developer findDeveloperByToken(String token) {
-        String sql = "SELECT id, email, password, name, role, status, reset_token_id FROM developer WHERE id IN (SELECT developer_id FROM reset_token WHERE token = ?)";
+    public User findUserByToken(String token) {
+        String sql = "SELECT id, email, password, name, role, status, reset_token_id FROM users WHERE id IN (SELECT user_id FROM reset_token WHERE token = ?)";
 
-        List<Developer> developers = jdbcTemplate.query(
+        List<User> users = jdbcTemplate.query(
                 sql,
                 preparedStatement -> {
                     preparedStatement.setString(1, token);
                 },
-                new DeveloperRowMapper()
+                new UserRowMapper()
         );
 
-        if (developers.size() == 1) {
-            return developers.get(0);
+        if (users.size() == 1) {
+            return users.get(0);
         }
 
         return null;
     }
 
     @Override
-    public ResetToken findResetTokenByDeveloperId(int id) {
-        String sql = "SELECT id, token, expiry_date, developer_id FROM reset_token WHERE developer_id = ?";
+    public ResetToken findResetTokenByUserId(int id) {
+        String sql = "SELECT id, token, expiry_date, user_id FROM reset_token WHERE user_id = ?";
 
         List<ResetToken> resetTokens = jdbcTemplate.query(sql,
                                         preparedStatement -> preparedStatement.setInt(1, id),
@@ -150,7 +150,7 @@ public class DeveloperDaoImpl implements DeveloperDao {
 
     @Override
     public void createToken(ResetToken myToken) {
-        String sql = "INSERT INTO reset_token (token, expiry_date, developer_id) VALUES (?,?,?)";
+        String sql = "INSERT INTO reset_token (token, expiry_date, user_id) VALUES (?,?,?)";
 
         jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
             preparedStatement.setString(1, myToken.getToken());
@@ -161,4 +161,14 @@ public class DeveloperDaoImpl implements DeveloperDao {
         });
     }
 
+    @Override
+    public void makeTokenExpired(ResetToken resetToken) {
+        String sql = "UPDATE reset_token SET expiry_date = current_timestamp WHERE token = ?";
+
+        jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
+            preparedStatement.setString(1, resetToken.getToken());
+
+            return preparedStatement.execute();
+        });
+    }
 }

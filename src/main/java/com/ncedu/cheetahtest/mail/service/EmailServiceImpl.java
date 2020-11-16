@@ -1,8 +1,6 @@
 package com.ncedu.cheetahtest.mail.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
@@ -20,7 +18,7 @@ import java.util.Objects;
 public class EmailServiceImpl implements EmailService{
 
     public static final String NET_CRACKER_USERNAME = "spring.mail.username";
-    public static final String SUBJECT = "Password reset";
+
     private final JavaMailSender emailSender;
     private final HtmlMail htmlMail;
     private final Environment environment;
@@ -33,28 +31,27 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
-    public void sendSimpleMessage(String to, String text) {
+    public void sendSimpleMessage(String to, String text, String subject) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(Objects.requireNonNull(environment.getProperty(NET_CRACKER_USERNAME)));
         message.setTo(to);
-        message.setSubject(SUBJECT);
+        message.setSubject(subject);
         message.setText(text);
 
         emailSender.send(message);
     }
 
     @Override
-    public void sendMessageWithAttachment(String to, String text) {
+    public void sendMessageWithAttachment(String to, String text, String subject) {
 
         MimeMessage message = emailSender.createMimeMessage();
-
         try {
 
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
             helper.setFrom(Objects.requireNonNull(environment.getProperty(NET_CRACKER_USERNAME)));
             helper.setTo(to);
-            helper.setSubject(SUBJECT);
+            helper.setSubject(subject);
 
             String htmlString = htmlMail.getHtmlWithStringInside(text)
                     .orElseThrow(FileNotFoundException::new);

@@ -1,16 +1,12 @@
 package com.ncedu.cheetahtest.security.jwt;
 
-import com.ncedu.cheetahtest.developer.entity.Developer;
-import com.ncedu.cheetahtest.developer.entity.DeveloperDto;
-import com.ncedu.cheetahtest.security.entity.AccessTokenDto;
-import com.ncedu.cheetahtest.security.exceptions.JwtAuthenticationException;
+import com.ncedu.cheetahtest.user.entity.User;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
 
@@ -30,9 +26,9 @@ public class JwtTokenProviderImpl implements JwtTokenProvider{
     }
 
     @Override
-    public String createToken(Developer developer) {
-        Claims claims = Jwts.claims().setSubject(developer.getEmail());
-        claims.put("role", developer.getRole());
+    public String createToken(User user) {
+        Claims claims = Jwts.claims().setSubject(user.getEmail());
+        claims.put("role", user.getRole());
 
         Date now = new Date();
         Date expiredMs = new Date(now.getTime() + expirationTime);

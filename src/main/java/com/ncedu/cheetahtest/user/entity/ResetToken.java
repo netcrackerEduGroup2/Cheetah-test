@@ -1,4 +1,4 @@
-package com.ncedu.cheetahtest.developer.entity;
+package com.ncedu.cheetahtest.user.entity;
 
 import lombok.Data;
 
