@@ -1,13 +1,10 @@
 package com.ncedu.cheetahtest.developer.service;
 
 import com.ncedu.cheetahtest.developer.dao.DeveloperDao;
-import com.ncedu.cheetahtest.developer.dao.DeveloperDaoImpl;
 import com.ncedu.cheetahtest.developer.entity.Developer;
 import com.ncedu.cheetahtest.developer.entity.ResetToken;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -15,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
@@ -35,6 +31,9 @@ class DeveloperServiceImplTest {
 
   @Test
   void shouldCreatePasswordResetTokenForUser() {
-
+    Developer developer = new Developer(1, "netCracker2@gmail.com", "1234", "NetCracker", "ADMIN", "ACTIVE", 43);
+    doNothing().when(developerDao).createToken(new ResetToken("Token-1", developer.getId(), new Date()));
+    doNothing().when(developerDao).saveToken(new ResetToken("Token-1", developer.getId(), new Date()));
+    developerService.createPasswordResetTokenForUser(developer, "Token-1");
   }
 }
