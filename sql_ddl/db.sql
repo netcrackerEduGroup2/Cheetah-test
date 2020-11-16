@@ -6,8 +6,8 @@ create table user (
     email           varchar(100) not null ,
     password        varchar(300) not null ,
     name            varchar(100) not null ,
-    role            developer_role not null ,
-    status          developer_status not null ,
+    role            user_role not null ,
+    status          user_status not null ,
     reset_token_id  integer
 );
 
