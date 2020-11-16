@@ -73,7 +73,7 @@ public class MailRestController {
 
         if (resetToken != null) {
             authService.changeUserPassword(resetToken, passwordDTO.getPassword());
-
+            developerService.makeTokenExpired(resetToken);
             log.info("Password has been successfully reset");
             return new ResponseEntity<>(new GenericResponse("message.resetPasswordSuc"), HttpStatus.OK);
         } else {

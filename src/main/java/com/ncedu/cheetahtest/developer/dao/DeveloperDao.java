@@ -22,4 +22,6 @@ public interface DeveloperDao {
     ResetToken findResetTokenByDeveloperId(int id);
 
     void createToken(ResetToken myToken);
+
+    void makeTokenExpired(ResetToken resetToken);
 }

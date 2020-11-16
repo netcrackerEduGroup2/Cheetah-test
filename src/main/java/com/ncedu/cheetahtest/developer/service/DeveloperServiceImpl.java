@@ -52,4 +52,10 @@ public class DeveloperServiceImpl implements DeveloperService {
         return developerDao.findResetTokenByToken(token);
     }
 
+    @Override
+    @Transactional
+    public void makeTokenExpired(ResetToken resetToken) {
+        developerDao.makeTokenExpired(resetToken);
+    }
+
 }
