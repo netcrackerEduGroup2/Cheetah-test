@@ -1,5 +1,6 @@
 package com.ncedu.cheetahtest.service.user;
 
+import com.ncedu.cheetahtest.dao.resettoken.ResetTokenDao;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.dao.user.UserDao;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
@@ -15,10 +16,12 @@ import java.util.Date;
 public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
+    private ResetTokenDao resetTokenDao;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, ResetTokenDao resetTokenDao) {
         this.userDao = userDao;
+        this.resetTokenDao = resetTokenDao;
     }
 
     @Override
@@ -32,14 +35,14 @@ public class UserServiceImpl implements UserService {
     public void createPasswordResetTokenForUser(User user, String token) {
         ResetToken myToken = new ResetToken(token, user.getId(), new Date());
 
-        ResetToken resetToken = userDao.findResetTokenByUserId(user.getId());
+        ResetToken resetToken = resetTokenDao.findResetTokenByUserId(user.getId());
 
         if (resetToken == null) {
-            userDao.createToken(myToken);
+            resetTokenDao.createToken(myToken);
 
             log.info("Token has been successfully created: " + myToken);
         } else {
-            userDao.saveToken(myToken);
+            resetTokenDao.saveToken(myToken);
 
             log.info("Token has been successfully updated: " + myToken);
         }
@@ -48,13 +51,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public ResetToken findByToken(String token) {
-        return userDao.findResetTokenByToken(token);
+        return resetTokenDao.findResetTokenByToken(token);
     }
 
     @Override
     @Transactional
     public void makeTokenExpired(ResetToken resetToken) {
-        userDao.makeTokenExpired(resetToken);
+        resetTokenDao.makeTokenExpired(resetToken);
     }
 
 }

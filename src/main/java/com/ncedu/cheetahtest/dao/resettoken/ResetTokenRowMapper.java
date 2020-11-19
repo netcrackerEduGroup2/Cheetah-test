@@ -1,4 +1,4 @@
-package com.ncedu.cheetahtest.dao.user;
+package com.ncedu.cheetahtest.dao.resettoken;
 
 import com.ncedu.cheetahtest.entity.user.ResetToken;
 import org.springframework.jdbc.core.RowMapper;
