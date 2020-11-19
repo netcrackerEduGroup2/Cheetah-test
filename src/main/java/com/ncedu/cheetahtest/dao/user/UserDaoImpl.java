@@ -40,7 +40,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByEmail(String email) {
-        String sql = "SELECT id, email, password, name, role, status, reset_token_id FROM users WHERE email = ?";
+        String sql = "SELECT id, email, password, name, role, status, reset_token_id, last_request FROM users WHERE email = ?";
 
         List<User> users = jdbcTemplate.query(
                 sql,
@@ -56,7 +56,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByEmailAndPassword(String email, String password) {
-        String sql = "SELECT id, email, password, name, role, status, reset_token_id FROM users WHERE email = ? AND password = ?";
+        String sql = "SELECT id, email, password, name, role, status, reset_token_id, last_request FROM users WHERE email = ? AND password = ?";
 
         List<User> users = jdbcTemplate.query(
                 sql,
@@ -87,7 +87,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByToken(String token) {
-        String sql = "SELECT id, email, password, name, role, status, reset_token_id FROM users WHERE id IN (SELECT user_id FROM reset_token WHERE token = ?)";
+        String sql = "SELECT id, email, password, name, role, status, reset_token_id, last_request FROM users WHERE id IN (SELECT user_id FROM reset_token WHERE token = ?)";
 
         List<User> users = jdbcTemplate.query(
                 sql,
@@ -104,5 +104,16 @@ public class UserDaoImpl implements UserDao {
         return null;
     }
 
+    @Override
+    public void setUserLastRequest(String email, Date lastRequest) {
+            String sql = "UPDATE users SET last_request = ? WHERE email = ?";
+
+            jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
+                preparedStatement.setTimestamp(1, new Timestamp(lastRequest.getTime() )) ;
+                preparedStatement.setString(2, email);
+
+                return preparedStatement.execute();
+            });
+    }
 
 }

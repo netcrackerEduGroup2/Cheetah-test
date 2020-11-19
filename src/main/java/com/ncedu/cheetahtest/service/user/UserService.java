@@ -3,6 +3,8 @@ package com.ncedu.cheetahtest.service.user;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
 
+import java.util.Date;
+
 public interface UserService {
 
     User findUserByEmail(String email);
@@ -12,4 +14,6 @@ public interface UserService {
     ResetToken findByToken(String token);
 
     void makeTokenExpired(ResetToken resetToken);
+
+    void setUserLastRequest(String email, Date date);
 }

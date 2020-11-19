@@ -2,6 +2,8 @@ package com.ncedu.cheetahtest.entity.user;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class User {
 
@@ -12,11 +14,12 @@ public class User {
     private String role;
     private String status;
     private int resetPassToken;
+    private Date lastRequest;
 
     public User() {
     }
 
-    public User(int id, String email, String pass, String name, String role, String status, int resetPassToken) {
+    public User(int id, String email, String pass, String name, String role, String status, int resetPassToken, Date lastRequest) {
         this.id = id;
         this.email = email;
         this.pass = pass;
@@ -24,6 +27,7 @@ public class User {
         this.role = role;
         this.status = status;
         this.resetPassToken = resetPassToken;
+        this.lastRequest = lastRequest;
     }
 
     public User(int id) {

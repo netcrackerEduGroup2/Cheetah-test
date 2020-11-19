@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -14,6 +15,7 @@ public class UserDetailsImpl implements UserDetails {
     private String password;
     private String status;
     private Collection<? extends GrantedAuthority> grantedAuthorities;
+    private Date lastRequest;
 
     public static UserDetailsImpl fromUserEntityToCustomUserDetails(User userEntity) {
         UserDetailsImpl user = new UserDetailsImpl();
@@ -21,6 +23,7 @@ public class UserDetailsImpl implements UserDetails {
         user.password = userEntity.getPass();
         user.status = userEntity.getStatus();
         user.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(userEntity.getRole()));
+        user.lastRequest = userEntity.getLastRequest();
         return user;
     }
 
@@ -57,5 +60,9 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return status.equals("active");
+    }
+
+    public Date getLastRequest() {
+        return lastRequest;
     }
 }
