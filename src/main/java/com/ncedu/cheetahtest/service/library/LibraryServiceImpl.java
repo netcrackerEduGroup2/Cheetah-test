@@ -20,4 +20,9 @@ public class LibraryServiceImpl implements LibraryService {
     public List<Library> getAllLibraries() {
         return libraryDao.selectAll();
     }
+
+    @Override
+    public List<Library> getLibrariesByName(String name) {
+        return libraryDao.selectLibrariesByName(name);
+    }
 }

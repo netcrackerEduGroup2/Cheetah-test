@@ -32,8 +32,12 @@ public class ManageActionsController {
 
     }
     @GetMapping("/libraries")
-    public List<Library> getAllLibraries(){
-        return libraryService.getAllLibraries();
+    public ResponseEntity<List<Library>> getAllLibraries(){
+        return ResponseEntity.ok(libraryService.getAllLibraries());
+    }
+    @GetMapping("/libraries/:{title}")
+    public ResponseEntity<List<Library>> getLibraryById(@PathVariable String title){
+        return ResponseEntity.ok(libraryService.getLibrariesByName(title));
     }
 
 

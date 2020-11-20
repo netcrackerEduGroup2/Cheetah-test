@@ -47,5 +47,7 @@ create table lib_act_compound
 create table library
 (
     id serial primary key  not null,
-    description varchar(50)
-)
+    description varchar(50),
+    name varchar(10) not null,
+    createdate timestamp not null
+);

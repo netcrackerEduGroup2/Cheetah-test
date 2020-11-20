@@ -11,7 +11,10 @@ public interface LibraryDao {
 
     List<Library> selectAll();
 
+    List<Library> selectLibrariesByName(String name);
+
     void setDescription(String description, int id);
+    void setName(String name, int id);
 
     void removeLibrary(int id);
 }

@@ -20,23 +20,25 @@ public class LibraryDaoImpl implements LibraryDao {
 
     @Override
     public void createLibrary(Library library) {
-        String sql = "INSERT INTO library (id , description) VALUES (?,?);";
+        String sql = "INSERT INTO library (id , description, name , createdate) VALUES (?,?,?,?);";
         jdbcTemplate.update(
                 sql,
                 library.getId(),
-                library.getDescription()
+                library.getDescription(),
+                library.getName(),
+                library.getCreateDate()
         );
     }
 
     @Override
     public List<Library> selectAll() {
-        String sql = "SELECT * FROM library";
+        String sql = "SELECT id, description, name , createdate FROM library";
         return jdbcTemplate.query(sql,new LibraryRowMapper());
     }
 
     @Override
     public Library findLibraryById(int id) {
-        String sql = "SELECT id, description FROM library WHERE id = ?";
+        String sql = "SELECT id, description, name , createdate FROM library WHERE id = ?";
         List<Library> libraries = jdbcTemplate.query(
                 sql,
                 preparedStatement -> preparedStatement.setInt(1, id),
@@ -69,6 +71,25 @@ public class LibraryDaoImpl implements LibraryDao {
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
                     preparedStatement.setInt(1, id);
+                    return preparedStatement.execute();
+                }
+        );
+    }
+
+    @Override
+    public List<Library> selectLibrariesByName(String name) {
+        String sql = "SELECT id, description, name , createdate FROM library";
+        return jdbcTemplate.query(sql,new LibraryRowMapper());
+    }
+
+    @Override
+    public void setName(String name, int id) {
+        String sql = "UPDATE library SET name = ? WHERE id = ?;";
+        jdbcTemplate.execute(
+                sql,
+                (PreparedStatementCallback<Boolean>) preparedStatement -> {
+                    preparedStatement.setString(1, name);
+                    preparedStatement.setInt(2, id);
                     return preparedStatement.execute();
                 }
         );
