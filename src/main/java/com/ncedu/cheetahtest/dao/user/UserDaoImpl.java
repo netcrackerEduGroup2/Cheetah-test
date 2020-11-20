@@ -118,18 +118,26 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void doActive(User user) {
-        String sql = "UPDATE users SET email = ?, password = ?, name = ?, role = ? where id = ?";
+        String sql = "UPDATE users SET status = ? where id = ?";
 
-        jdbcTemplate.update(sql, user.getEmail(),
-            user.getPass(),
-            user.getName(),
-            user.getRole(),
-            user.getId());
+        jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
+            preparedStatement.setString(1, "active");
+            preparedStatement.setInt(2, user.getId());
+
+            return preparedStatement.execute();
+        });
     }
 
     @Override
     public void doInactive(User user) {
+        String sql = "UPDATE users SET status = ? where id = ?";
 
+        jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
+            preparedStatement.setString(1, "inactive");
+            preparedStatement.setInt(2, user.getId());
+
+            return preparedStatement.execute();
+        });
     }
 
 
