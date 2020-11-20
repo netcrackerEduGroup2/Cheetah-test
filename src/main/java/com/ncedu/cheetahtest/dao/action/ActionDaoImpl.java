@@ -22,7 +22,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public void createAction(Action action) {
-        String sql = "INSERT INTO actions (title , decsription , idcompound , idtestscenario, status) " +
+        String sql = "INSERT INTO actions (title , description , idcompound , idtestscenario, status) " +
                 "VALUES (?, ?, ?, ?, ?::action_status);";
         jdbcTemplate.update(
                 sql,
@@ -36,7 +36,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public Action findActionById(int id) {
-        String sql = "SELECT id, title , decsription , idcompound , idtestscenario, status " +
+        String sql = "SELECT id, title , description , idcompound , idtestscenario, status " +
                 "FROM actions " +
                 "WHERE id = ?";
 
@@ -55,7 +55,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public List<Action> findActionsByIdCompound(int idCompound) {
-        String sql = "SELECT id, title , decsription , idcompound , idtestscenario, status " +
+        String sql = "SELECT id, title , description , idcompound , idtestscenario, status " +
                 "FROM actions " +
                 "WHERE idcompound = ?";
 
@@ -68,7 +68,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public List<Action> findActionsByIdTestScenario(int idTestScenario) {
-        String sql = "SELECT id, title , decsription , idcompound , idtestscenario, status " +
+        String sql = "SELECT id, title , description , idcompound , idtestscenario, status " +
                 "FROM actions " +
                 "WHERE idtestscenario = ?";
 
@@ -83,7 +83,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public Action findActionByTitle(String title) {
-        String sql = "SELECT id, title , decsription , idcompound , idtestscenario, status " +
+        String sql = "SELECT id, title , description , idcompound , idtestscenario, status " +
                 "FROM actions " +
                 "WHERE title = ?";
 
@@ -115,7 +115,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public void setDescription(String description, int id) {
-        String sql = "UPDATE actions SET desription = ? WHERE id = ?";
+        String sql = "UPDATE actions SET description = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
