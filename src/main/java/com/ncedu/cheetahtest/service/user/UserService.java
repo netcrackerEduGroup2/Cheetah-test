@@ -12,4 +12,10 @@ public interface UserService {
     ResetToken findByToken(String token);
 
     void makeTokenExpired(ResetToken resetToken);
+
+    boolean editUser(User user);
+
+    boolean doActive(User user);
+
+    boolean doInactive(User user);
 }

@@ -60,4 +60,34 @@ public class UserServiceImpl implements UserService {
         resetTokenDao.makeTokenExpired(resetToken);
     }
 
+    @Override
+    @Transactional
+    public boolean editUser(User user) {
+        if(user.getRole().equals("admin")) {
+            userDao.editUser(user);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean doActive(User user) {
+        if(user.getRole().equals("admin")) {
+            userDao.doActive(user);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean doInactive(User user) {
+        if(user.getRole().equals("admin")) {
+            userDao.doInactive(user);
+            return true;
+        }
+        return false;
+    }
+
 }
