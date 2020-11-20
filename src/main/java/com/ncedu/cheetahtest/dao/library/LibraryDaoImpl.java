@@ -29,6 +29,12 @@ public class LibraryDaoImpl implements LibraryDao {
     }
 
     @Override
+    public List<Library> selectAll() {
+        String sql = "SELECT * FROM library";
+        return jdbcTemplate.query(sql,new LibraryRowMapper());
+    }
+
+    @Override
     public Library findLibraryById(int id) {
         String sql = "SELECT id, description FROM library WHERE id = ?";
         List<Library> libraries = jdbcTemplate.query(
