@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -102,6 +103,33 @@ public class UserDaoImpl implements UserDao {
         }
 
         return null;
+    }
+
+    @Override
+    public void editUser(User user) {
+        String sql = "UPDATE users SET email = ?, password = ?, name = ?, role = ? where id = ?";
+
+        jdbcTemplate.update(sql, user.getEmail(),
+            user.getPass(),
+            user.getName(),
+            user.getRole(),
+            user.getId());
+    }
+
+    @Override
+    public void doActive(User user) {
+        String sql = "UPDATE users SET email = ?, password = ?, name = ?, role = ? where id = ?";
+
+        jdbcTemplate.update(sql, user.getEmail(),
+            user.getPass(),
+            user.getName(),
+            user.getRole(),
+            user.getId());
+    }
+
+    @Override
+    public void doInactive(User user) {
+
     }
 
 

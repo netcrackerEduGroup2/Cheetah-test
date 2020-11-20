@@ -15,9 +15,10 @@ public interface UserDao {
 
     User findUserByToken(String token);
 
+    void editUser(User user);
 
+    void doActive(User user);
 
-
-
+    void doInactive(User user);
 
 }
