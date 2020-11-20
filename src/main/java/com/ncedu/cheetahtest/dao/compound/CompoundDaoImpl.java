@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public class CompoundDaoImpl implements CompoundDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public CompoundDaoImpl(DataSource dataSource) {
@@ -65,8 +65,19 @@ public class CompoundDaoImpl implements CompoundDao {
     }
 
     @Override
+    public List<Compound> findCompoundByIdTestScenario(int idTestScenario) {
+        String sql = "SELECT id,title,description,idtestscenario,status " +
+                "FROM compounds WHERE idtestscenario = ?";
+        return jdbcTemplate.query(
+                sql,
+                preparedStatement -> preparedStatement.setInt(1, idTestScenario),
+                new CompoundRowMapper()
+        );
+    }
+
+    @Override
     public void setTitle(String title, int id) {
-        String sql = "UPDATE compouds SET title = ? WHERE id = ?";
+        String sql = "UPDATE compounds SET title = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -80,7 +91,7 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public void setDescription(String description, int id) {
-        String sql = "UPDATE compouds SET description = ? WHERE id = ?";
+        String sql = "UPDATE compounds SET description = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -93,7 +104,7 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public void setTestScenarioId(String testScenarioId, int id) {
-        String sql = "UPDATE compouds SET testscenarioid = ? WHERE id = ?";
+        String sql = "UPDATE compounds SET idtestscenario = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -106,7 +117,7 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public void setStatus(String status, int id) {
-        String sql = "UPDATE compouds SET status = ? WHERE id = ?";
+        String sql = "UPDATE compounds SET status = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {

@@ -11,7 +11,8 @@ import java.util.List;
 
 @Repository
 public class LibraryDaoImpl implements LibraryDao {
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
     public LibraryDaoImpl(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -29,13 +30,13 @@ public class LibraryDaoImpl implements LibraryDao {
 
     @Override
     public Library findLibraryById(int id) {
-        String sql = "SELECT id, decsription FROM library WHERE id = ?";
+        String sql = "SELECT id, description FROM library WHERE id = ?";
         List<Library> libraries = jdbcTemplate.query(
                 sql,
-                preparedStatement -> preparedStatement.setInt(1,id),
+                preparedStatement -> preparedStatement.setInt(1, id),
                 new LibraryRowMapper()
         );
-        if (libraries.size() == 1){
+        if (libraries.size() == 1) {
             return libraries.get(0);
         }
         return null;
@@ -51,19 +52,19 @@ public class LibraryDaoImpl implements LibraryDao {
                     preparedStatement.setInt(2, id);
                     return preparedStatement.execute();
                 }
-                    );
+        );
 
     }
 
     @Override
     public void removeLibrary(int id) {
-            String sql = "DELETE FROM library WHERE id = ?";
-            jdbcTemplate.execute(
-                    sql ,
-                    (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                        preparedStatement.setInt(1,id);
-                        return preparedStatement.execute();
-                    }
-            );
+        String sql = "DELETE FROM library WHERE id = ?";
+        jdbcTemplate.execute(
+                sql,
+                (PreparedStatementCallback<Boolean>) preparedStatement -> {
+                    preparedStatement.setInt(1, id);
+                    return preparedStatement.execute();
+                }
+        );
     }
 }

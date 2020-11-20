@@ -10,9 +10,9 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
-public class LibActCompoundDaoImpl implements LibActCompoundDao{
+public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public LibActCompoundDaoImpl(DataSource dataSource) {
@@ -37,10 +37,10 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao{
                 "WHERE id_library = ?";
         List<LibActCompound> libActCompounds = jdbcTemplate.query(
                 sql,
-                preparedStatement -> preparedStatement.setInt(1,id),
+                preparedStatement -> preparedStatement.setInt(1, id),
                 new LibActionCompoundRowMapper()
         );
-        if (libActCompounds.size() == 1){
+        if (libActCompounds.size() == 1) {
             return libActCompounds.get(0);
         }
         return null;
@@ -51,9 +51,9 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao{
         String sql = "UPDATE lib_act_compound SET id_compound = ? WHERE id_library = ?";
         jdbcTemplate.execute(
                 sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement ->{
-                    preparedStatement.setInt(1,idCompound);
-                    preparedStatement.setInt(2,id);
+                (PreparedStatementCallback<Boolean>) preparedStatement -> {
+                    preparedStatement.setInt(1, idCompound);
+                    preparedStatement.setInt(2, id);
                     return preparedStatement.execute();
                 }
 
@@ -65,9 +65,9 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao{
         String sql = "UPDATE lib_act_compound SET id_action = ? WHERE id_library = ?";
         jdbcTemplate.execute(
                 sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement ->{
-                    preparedStatement.setInt(1,idAction);
-                    preparedStatement.setInt(2,id);
+                (PreparedStatementCallback<Boolean>) preparedStatement -> {
+                    preparedStatement.setInt(1, idAction);
+                    preparedStatement.setInt(2, id);
                     return preparedStatement.execute();
                 }
 
@@ -78,9 +78,9 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao{
     public void removeLibActCompound(int id) {
         String sql = "DELETE FROM lib_act_compound WHERE id_library = ?";
         jdbcTemplate.execute(
-                sql ,
+                sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setInt(1,id);
+                    preparedStatement.setInt(1, id);
                     return preparedStatement.execute();
                 }
         );

@@ -13,10 +13,10 @@ import java.util.List;
 @Repository
 public class ActionDaoImpl implements ActionDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public void ActionDaoImpl(DataSource dataSource) {
+    public ActionDaoImpl(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
@@ -42,14 +42,42 @@ public class ActionDaoImpl implements ActionDao {
 
         List<Action> actions = jdbcTemplate.query(
                 sql,
-                preparedStatement -> preparedStatement.setInt(1,id),
+                preparedStatement -> preparedStatement.setInt(1, id),
                 new ActionRowMapper()
         );
 
-        if (actions.size() == 1){
+        if (actions.size() == 1) {
             return actions.get(0);
         }
         return null;
+
+    }
+
+    @Override
+    public List<Action> findActionsByIdCompound(int idCompound) {
+        String sql = "SELECT id, title , decsription , idcompound , idtestscenario, status " +
+                "FROM actions " +
+                "WHERE idcompound = ?";
+
+        return jdbcTemplate.query(
+                sql,
+                preparedStatement -> preparedStatement.setInt(1, idCompound),
+                new ActionRowMapper()
+        );
+    }
+
+    @Override
+    public List<Action> findActionsByIdTestScenario(int idTestScenario) {
+        String sql = "SELECT id, title , decsription , idcompound , idtestscenario, status " +
+                "FROM actions " +
+                "WHERE idtestscenario = ?";
+
+        return jdbcTemplate.query(
+                sql,
+                preparedStatement -> preparedStatement.setInt(1, idTestScenario),
+                new ActionRowMapper()
+        );
+
 
     }
 
@@ -61,11 +89,11 @@ public class ActionDaoImpl implements ActionDao {
 
         List<Action> actions = jdbcTemplate.query(
                 sql,
-                preparedStatement -> preparedStatement.setString(1,title),
+                preparedStatement -> preparedStatement.setString(1, title),
                 new ActionRowMapper()
         );
 
-        if (actions.size() == 1){
+        if (actions.size() == 1) {
             return actions.get(0);
         }
         return null;
@@ -76,9 +104,9 @@ public class ActionDaoImpl implements ActionDao {
         String sql = "UPDATE actions SET title = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement ->{
-                    preparedStatement.setString(1,title);
-                    preparedStatement.setInt(2,id);
+                (PreparedStatementCallback<Boolean>) preparedStatement -> {
+                    preparedStatement.setString(1, title);
+                    preparedStatement.setInt(2, id);
                     return preparedStatement.execute();
                 }
 
@@ -90,9 +118,9 @@ public class ActionDaoImpl implements ActionDao {
         String sql = "UPDATE actions SET desription = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement ->{
-                    preparedStatement.setString(1,description);
-                    preparedStatement.setInt(2,id);
+                (PreparedStatementCallback<Boolean>) preparedStatement -> {
+                    preparedStatement.setString(1, description);
+                    preparedStatement.setInt(2, id);
                     return preparedStatement.execute();
                 }
 
@@ -104,9 +132,9 @@ public class ActionDaoImpl implements ActionDao {
         String sql = "UPDATE actions SET idCompound = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement ->{
-                    preparedStatement.setString(1,compId);
-                    preparedStatement.setInt(2,id);
+                (PreparedStatementCallback<Boolean>) preparedStatement -> {
+                    preparedStatement.setString(1, compId);
+                    preparedStatement.setInt(2, id);
                     return preparedStatement.execute();
                 }
 
@@ -119,9 +147,9 @@ public class ActionDaoImpl implements ActionDao {
         String sql = "UPDATE actions SET idTestScenario = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement ->{
-                    preparedStatement.setString(1,testScenarioId);
-                    preparedStatement.setInt(2,id);
+                (PreparedStatementCallback<Boolean>) preparedStatement -> {
+                    preparedStatement.setString(1, testScenarioId);
+                    preparedStatement.setInt(2, id);
                     return preparedStatement.execute();
                 }
 
@@ -133,9 +161,9 @@ public class ActionDaoImpl implements ActionDao {
         String sql = "UPDATE actions SET status = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement ->{
-                    preparedStatement.setString(1,status);
-                    preparedStatement.setInt(2,id);
+                (PreparedStatementCallback<Boolean>) preparedStatement -> {
+                    preparedStatement.setString(1, status);
+                    preparedStatement.setInt(2, id);
                     return preparedStatement.execute();
                 }
 
@@ -146,11 +174,11 @@ public class ActionDaoImpl implements ActionDao {
     public void removeActionById(int id) {
         String sql = "DELETE FROM actions WHERE id = ?";
         jdbcTemplate.execute(
-                sql ,
+                sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setInt(1,id);
+                    preparedStatement.setInt(1, id);
                     return preparedStatement.execute();
                 }
-                );
+        );
     }
 }
