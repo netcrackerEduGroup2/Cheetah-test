@@ -1,0 +1,20 @@
+os: linux
+dist: xenial
+language: java
+jdk:
+  - openjdk11
+
+branches:
+  only:
+  - main
+  - dev
+
+addons:
+  sonarcloud:
+    organization: "netcrackergroup2"
+    token:
+      secure: "niLePzGeLdlOL2bm88NI3my/BcpchtFbwiXaKj9nNUyTHgckt2EjuBT9zxqhV7cE0p1jkS6A+xX65kYsHAxp8CW+aemPtpESTWzy1l9/MjGf6SZLakGYobZNMZdFVuCEr+Ytx8Coh/2M10oieLiRsYRDyGmWeGkzYKaTl77ZsGAFFCqOzGVjteaOSKCpOTaCw0mjB6v6zKdEFba5t3z17bZPAKT3auBmHlpIt0FCdDuZLM1TB2WdEjm1GJuZhGKhkrxBZINi0zPh/iOjIpzZ4k6x2rzNWkOQoFNZFUvaSaaLiBYzGoLfBr8zTRcApDt3G0EyLLesa2jhKaiOMW/1noZu/gIPtJxrcNJ6U9pWEbg2OBhEz8Rmfs+Yd09X3OuvpITcI64nMUw6WxjG6njYAJIRNzARVlEeGTVqyVQQHGr3hpw9xa+NePjAbU1urcC7d/OdcNJF3wAtBzwFM4nq5TOm8CDgwjii38TA82zHqL5MoTszntONEXB/UvCpV4RfA9EReKw6A8fULn6eno5czUuKjj5Kt23tciuojapr1uZ4W5KBaiHE//BjYoBNFHAwllkP0+bSW+GEtmNDeMjN3//50Z+b6xVEMYLLdx+BdChq+iupbhbwABIEBLGm0d45Z/aVG1zBwYFCh3XyMHNm6vsBywHfJQX58mz9c9yubSk="
+
+script:
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=NetCrackerGroup2_Cheetah-test
+
