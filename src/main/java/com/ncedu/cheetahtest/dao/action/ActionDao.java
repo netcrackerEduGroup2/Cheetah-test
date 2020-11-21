@@ -2,19 +2,22 @@ package com.ncedu.cheetahtest.dao.action;
 
 
 import com.ncedu.cheetahtest.entity.action.Action;
+import com.ncedu.cheetahtest.entity.action.ActionDTO;
 
 import java.util.List;
 
 public interface ActionDao {
-    void createAction(Action action);
+    int createAction(Action action);
 
     Action findActionById(int id);
-
-    Action findActionByTitle(String title);
 
     List<Action> findActionsByIdCompound(int idCompound);
 
     List<Action> findActionsByIdTestScenario(int idTestScenario);
+
+    List<Action> selectAll();
+
+    List<Action> selectActionsByTitle(int idLibrary,String title);
 
     void setTitle(String title, int id);
 
@@ -23,6 +26,8 @@ public interface ActionDao {
     void setCompoundId(String compId, int id);
 
     void setTestScenarioId(String testScenarioId, int id);
+
+    void editAction(Action actionDTO);
 
     void setStatus(String status, int id);
 

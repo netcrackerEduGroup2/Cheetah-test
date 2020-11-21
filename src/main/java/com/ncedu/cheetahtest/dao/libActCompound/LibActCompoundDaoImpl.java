@@ -32,23 +32,43 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
     }
 
     @Override
-    public LibActCompound findLibActCompoundById(int id) {
-        String sql = "SELECT id_library , id_compound , id_action FROM lib_act_compound " +
+    public List<LibActCompound> findLibActCompoundsById(int id) {
+        String sql = "SELECT id, id_library , id_compound , id_action FROM lib_act_compound " +
                 "WHERE id_library = ?";
-        List<LibActCompound> libActCompounds = jdbcTemplate.query(
+         return jdbcTemplate.query(
                 sql,
                 preparedStatement -> preparedStatement.setInt(1, id),
                 new LibActionCompoundRowMapper()
         );
-        if (libActCompounds.size() == 1) {
-            return libActCompounds.get(0);
-        }
-        return null;
+
+
+    }
+
+    @Override
+    public List<LibActCompound> findLibActCompoundsByIdCompound(int id) {
+        String sql = "SELECT id, id_library , id_compound , id_action FROM lib_act_compound " +
+                "WHERE id_compound = ?";
+        return jdbcTemplate.query(
+                sql,
+                preparedStatement -> preparedStatement.setInt(1, id),
+                new LibActionCompoundRowMapper()
+        );
+    }
+
+    @Override
+    public List<LibActCompound> findLibActCompoundsByIdAct(int id) {
+        String sql = "SELECT id, id_library , id_compound , id_action FROM lib_act_compound " +
+                "WHERE id_action = ?";
+        return jdbcTemplate.query(
+                sql,
+                preparedStatement -> preparedStatement.setInt(1, id),
+                new LibActionCompoundRowMapper()
+        );
     }
 
     @Override
     public void setIdCompound(int idCompound, int id) {
-        String sql = "UPDATE lib_act_compound SET id_compound = ? WHERE id_library = ?";
+        String sql = "UPDATE lib_act_compound SET id_compound = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -62,7 +82,7 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public void setIdAction(int idAction, int id) {
-        String sql = "UPDATE lib_act_compound SET id_action = ? WHERE id_library = ?";
+        String sql = "UPDATE lib_act_compound SET id_action = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -76,7 +96,7 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public void removeLibActCompound(int id) {
-        String sql = "DELETE FROM lib_act_compound WHERE id_library = ?";
+        String sql = "DELETE FROM lib_act_compound WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {

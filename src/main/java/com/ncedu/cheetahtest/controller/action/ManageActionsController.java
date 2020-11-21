@@ -1,10 +1,10 @@
 package com.ncedu.cheetahtest.controller.action;
 
 import com.ncedu.cheetahtest.entity.action.Action;
+import com.ncedu.cheetahtest.entity.action.ActionStatusResponse;
+import com.ncedu.cheetahtest.entity.action.ChangeActionStatusDTO;
 import com.ncedu.cheetahtest.entity.action.CreateActionResponse;
-import com.ncedu.cheetahtest.entity.library.Library;
 import com.ncedu.cheetahtest.service.action.ActionService;
-import com.ncedu.cheetahtest.service.library.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +23,39 @@ public class ManageActionsController {
         this.actionService = actionService;
     }
 
-    @PostMapping("/create_action")
-    public ResponseEntity<CreateActionResponse> createAction(@RequestBody Action actionDTO) {
-       actionService.createAction(actionDTO);
-       return ResponseEntity.ok(new CreateActionResponse("Success"));
+    @GetMapping("/actions")
+    public ResponseEntity<List<Action>> getAllActions() {
+        return ResponseEntity.ok(this.actionService.selectAllActions());
+    }
 
+    @PostMapping("actions/create_action")
+    public ResponseEntity<CreateActionResponse> createAction(@RequestParam(name = "id") int idLibrary,@RequestBody Action actionDTO) {
+        actionService.createAction(idLibrary,actionDTO);
+        return ResponseEntity.ok(new CreateActionResponse("Success"));
+
+    }
+    // TODO создать отдельный контроллер для library и добавить туда этот метод
+    // он должен выдавать аналогично этому методу еще и лист компоундов и объединять их.
+    // после этого их пейджирует и отдает на фронт
+    @GetMapping("library/{idLibrary}")
+    public ResponseEntity<List<Action>> getActionsByTitle(@PathVariable int idLibrary,@RequestParam(name = "title") String title) {
+        return ResponseEntity.ok(actionService.getActionsByTitle(idLibrary,title));
+    }
+
+    @GetMapping("actions/by_id/{id}")
+    public ResponseEntity<Action> getActionsByTitle(@PathVariable int id) {
+        return ResponseEntity.ok(actionService.getActionById(id));
+    }
+
+    @PostMapping("actions/edit_action")
+    public ResponseEntity<ActionStatusResponse> editAction(@RequestBody Action actionDTO) {
+        actionService.editAction(actionDTO);
+        return ResponseEntity.ok(new ActionStatusResponse("ActionChangedSuccessfully"));
+    }
+    @PostMapping("actions/change_status")
+    public ResponseEntity<ActionStatusResponse> changeStatus(@RequestBody ChangeActionStatusDTO changeActionStatusDTO){
+        actionService.changeStatus(changeActionStatusDTO.getStatusToChange(),
+                changeActionStatusDTO.getId());
+        return ResponseEntity.ok(new ActionStatusResponse("ActionStatusChangedSuccessfully"));
     }
 }
