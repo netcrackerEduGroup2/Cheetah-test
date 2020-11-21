@@ -2,7 +2,7 @@ os: linux
 dist: xenial
 language: java
 jdk:
-  - openjdk11
+- openjdk11
 
 branches:
   only:
@@ -11,10 +11,16 @@ branches:
 
 addons:
   sonarcloud:
-    organization: "netcrackergroup2"
+    organization: netcrackergroup2
     token:
-      secure: "niLePzGeLdlOL2bm88NI3my/BcpchtFbwiXaKj9nNUyTHgckt2EjuBT9zxqhV7cE0p1jkS6A+xX65kYsHAxp8CW+aemPtpESTWzy1l9/MjGf6SZLakGYobZNMZdFVuCEr+Ytx8Coh/2M10oieLiRsYRDyGmWeGkzYKaTl77ZsGAFFCqOzGVjteaOSKCpOTaCw0mjB6v6zKdEFba5t3z17bZPAKT3auBmHlpIt0FCdDuZLM1TB2WdEjm1GJuZhGKhkrxBZINi0zPh/iOjIpzZ4k6x2rzNWkOQoFNZFUvaSaaLiBYzGoLfBr8zTRcApDt3G0EyLLesa2jhKaiOMW/1noZu/gIPtJxrcNJ6U9pWEbg2OBhEz8Rmfs+Yd09X3OuvpITcI64nMUw6WxjG6njYAJIRNzARVlEeGTVqyVQQHGr3hpw9xa+NePjAbU1urcC7d/OdcNJF3wAtBzwFM4nq5TOm8CDgwjii38TA82zHqL5MoTszntONEXB/UvCpV4RfA9EReKw6A8fULn6eno5czUuKjj5Kt23tciuojapr1uZ4W5KBaiHE//BjYoBNFHAwllkP0+bSW+GEtmNDeMjN3//50Z+b6xVEMYLLdx+BdChq+iupbhbwABIEBLGm0d45Z/aVG1zBwYFCh3XyMHNm6vsBywHfJQX58mz9c9yubSk="
-
+      secure: niLePzGeLdlOL2bm88NI3my/BcpchtFbwiXaKj9nNUyTHgckt2EjuBT9zxqhV7cE0p1jkS6A+xX65kYsHAxp8CW+aemPtpESTWzy1l9/MjGf6SZLakGYobZNMZdFVuCEr+Ytx8Coh/2M10oieLiRsYRDyGmWeGkzYKaTl77ZsGAFFCqOzGVjteaOSKCpOTaCw0mjB6v6zKdEFba5t3z17bZPAKT3auBmHlpIt0FCdDuZLM1TB2WdEjm1GJuZhGKhkrxBZINi0zPh/iOjIpzZ4k6x2rzNWkOQoFNZFUvaSaaLiBYzGoLfBr8zTRcApDt3G0EyLLesa2jhKaiOMW/1noZu/gIPtJxrcNJ6U9pWEbg2OBhEz8Rmfs+Yd09X3OuvpITcI64nMUw6WxjG6njYAJIRNzARVlEeGTVqyVQQHGr3hpw9xa+NePjAbU1urcC7d/OdcNJF3wAtBzwFM4nq5TOm8CDgwjii38TA82zHqL5MoTszntONEXB/UvCpV4RfA9EReKw6A8fULn6eno5czUuKjj5Kt23tciuojapr1uZ4W5KBaiHE//BjYoBNFHAwllkP0+bSW+GEtmNDeMjN3//50Z+b6xVEMYLLdx+BdChq+iupbhbwABIEBLGm0d45Z/aVG1zBwYFCh3XyMHNm6vsBywHfJQX58mz9c9yubSk=
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=NetCrackerGroup2_Cheetah-test
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=NetCrackerGroup2_Cheetah-test
 
+deploy:
+  provider: heroku
+  api_key:
+    secure: d5oBb2BqqZMhcIgLSLYTIbm10K6UiEjRCL2Y2dJqO9ZqWX2iXigVlf30Poc2DlCJjbm0k1POQ8z5LOJS+D1iyAqkSzQLIk/HPXAMHbhsu5j3I7oR59WBtlqzfF8dTmF47Ambg7ZpDx7Y7DrqcXWcSkAgwOt5khJmV7nKiqllBrULSmUq0e6AVyWl6b2ttstp1QBMygC/uv+/3U25WgzmFogudpFcndlOLWSAhxrcr4PnBZDlQZWtmTauNbQ3+T4eMI4pqpTG7J08rCAUqkuGRdItK/+9GFNOKi+2UhfLYjqwuSTUyUapopAlXdFBp7DpDDdgt6kBG55Lg/Kfpy4u6sUkRmE1wAaOcDaxaiiDqIyH8WAXWMkmP/3zjIq8axMU7ylnU/vNGWfwRbUs14cr9NwDcXJd28fbI0EAHkZgYzjLgYh/NHIJ8E17SKwY+XurQxUAHEgOysSWWhBcPRxZjH9Q8WqT3vpjOrkxZVJefMBUXwcsZ8SekJdyJJ0gRdSLDd6/5y2ipj0OhUJfMCEZMOnzDJgbAagJkgwWxwFLO+++FjZuE5NECBglXuugzfClZNax3zET0na7yMP2r/L2trxVIaVL+jId8ZN38EdHBdEOycflT1cPee3AednrRmDxu570yziilvt4vHZoan/nIGqnxdjYG4fnNTkLGpRRz9M=
+  app:
+    main: cheetah-test-backend-prod
+    dev: cheetah-test-backend-dev
