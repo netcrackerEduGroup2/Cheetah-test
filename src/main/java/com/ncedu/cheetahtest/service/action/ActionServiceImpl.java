@@ -4,6 +4,7 @@ package com.ncedu.cheetahtest.service.action;
 import com.ncedu.cheetahtest.dao.action.ActionDao;
 import com.ncedu.cheetahtest.dao.libActCompound.LibActCompoundDao;
 import com.ncedu.cheetahtest.entity.action.Action;
+import com.ncedu.cheetahtest.entity.action.DeleteActionDTO;
 import com.ncedu.cheetahtest.entity.libActCompound.LibActCompound;
 import com.ncedu.cheetahtest.exception.manageLibraries.UnproperInputException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +52,6 @@ public class ActionServiceImpl implements ActionService {
 
     @Override
     public List<Action> getActionsByTitle(int idLibrary,String title) {
-        System.out.println(idLibrary);
-        System.out.println(title);
         return actionDao.selectActionsByTitle(idLibrary,title);
     }
 
@@ -68,5 +67,16 @@ public class ActionServiceImpl implements ActionService {
             throw new UnproperInputException();
         }
         else actionDao.setStatus(status,id);
+    }
+
+    @Override
+    public boolean isAdmin(String jwtToken) {
+        //todo
+        return false;
+    }
+
+    @Override
+    public void deleteAction(DeleteActionDTO deleteActionDTO) {
+        //todo
     }
 }

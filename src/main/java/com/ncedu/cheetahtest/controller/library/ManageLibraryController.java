@@ -1,5 +1,6 @@
 package com.ncedu.cheetahtest.controller.library;
 
+import com.ncedu.cheetahtest.entity.library.CreateLibraryResponse;
 import com.ncedu.cheetahtest.entity.library.Library;
 import com.ncedu.cheetahtest.service.library.LibraryService;
 
@@ -35,5 +36,11 @@ public class ManageLibraryController {
     public ResponseEntity<List<Library>> getLibraryById(@PathVariable String title){
         return ResponseEntity.ok(libraryService.getLibrariesByName(title));
 
+    }
+
+    @PostMapping("/create_library") //CreateLibraryResponse
+    public ResponseEntity<CreateLibraryResponse> createLibrary(@RequestBody Library libraryDTO) {
+        libraryService.createLibrary(libraryDTO);
+        return ResponseEntity.ok(new CreateLibraryResponse("Success"));
     }
 }

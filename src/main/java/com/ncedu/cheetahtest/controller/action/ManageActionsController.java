@@ -1,9 +1,6 @@
 package com.ncedu.cheetahtest.controller.action;
 
-import com.ncedu.cheetahtest.entity.action.Action;
-import com.ncedu.cheetahtest.entity.action.ActionStatusResponse;
-import com.ncedu.cheetahtest.entity.action.ChangeActionStatusDTO;
-import com.ncedu.cheetahtest.entity.action.CreateActionResponse;
+import com.ncedu.cheetahtest.entity.action.*;
 import com.ncedu.cheetahtest.service.action.ActionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +54,11 @@ public class ManageActionsController {
         actionService.changeStatus(changeActionStatusDTO.getStatusToChange(),
                 changeActionStatusDTO.getId());
         return ResponseEntity.ok(new ActionStatusResponse("ActionStatusChangedSuccessfully"));
+    }
+
+    @PostMapping("actions/deleteAction")
+    public ResponseEntity<ActionStatusResponse> changeStatus(@RequestBody DeleteActionDTO deleteActionDTO){
+        actionService.deleteAction(deleteActionDTO);
+        return ResponseEntity.ok(new ActionStatusResponse("ActionDeletedSuccessfully"));
     }
 }

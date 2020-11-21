@@ -25,4 +25,8 @@ public class LibraryServiceImpl implements LibraryService {
     public List<Library> getLibrariesByName(String name) {
         return libraryDao.selectLibrariesByName(name);
     }
+    @Override
+    public void createLibrary(Library libraryDTO) {
+        libraryDao.createLibrary(libraryDTO);
+    }
 }

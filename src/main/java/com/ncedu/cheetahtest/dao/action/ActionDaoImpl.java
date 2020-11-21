@@ -33,7 +33,7 @@ public class ActionDaoImpl implements ActionDao {
         String sql = "SELECT actions.id, actions.title , actions.description , actions.idcompound , actions.idtestscenario, " +
                 "actions.status FROM actions INNER JOIN lib_act_compound ON actions.id = lib_act_compound.id_action " +
                 "INNER JOIN library ON lib_act_compound.id_library = library.id " +
-                "WHERE title LIKE CONCAT('%',?,'%') AND library.id = ?";
+                "WHERE actions.title LIKE CONCAT('%',?,'%') AND library.id = ?";
         return jdbcTemplate.query(
                 sql,
                 preparedStatement -> {
