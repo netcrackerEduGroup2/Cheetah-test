@@ -31,13 +31,17 @@ public class ManageActionsController {
        return ResponseEntity.ok(new CreateActionResponse("Success"));
 
     }
+
     @GetMapping("/libraries")
     public ResponseEntity<List<Library>> getAllLibraries(){
         return ResponseEntity.ok(libraryService.getAllLibraries());
     }
-    @GetMapping("/libraries/:{title}")
+
+    @GetMapping ("libraries/{title}")
     public ResponseEntity<List<Library>> getLibraryById(@PathVariable String title){
+        System.out.println("123"+title);
         return ResponseEntity.ok(libraryService.getLibrariesByName(title));
+
     }
 
 

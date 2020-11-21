@@ -78,8 +78,10 @@ public class LibraryDaoImpl implements LibraryDao {
 
     @Override
     public List<Library> selectLibrariesByName(String name) {
-        String sql = "SELECT id, description, name , createdate FROM library";
-        return jdbcTemplate.query(sql,new LibraryRowMapper());
+        String sql = "SELECT id, description, name , createdate FROM library WHERE name = ?";
+        return jdbcTemplate.query(sql,
+                preparedStatement -> preparedStatement.setString(1,name),
+                new LibraryRowMapper());
     }
 
     @Override
