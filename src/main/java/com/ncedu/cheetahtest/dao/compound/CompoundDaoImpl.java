@@ -21,7 +21,7 @@ public class CompoundDaoImpl implements CompoundDao {
     @Override
     public void createCompound(Compound compound) {
         String sql = "INSERT INTO compounds (title,description,idtestscenario,status) " +
-                "VALUES (?,?,?,?::compound_status);";
+                "VALUES (?,?,?,?::action_status);";
         jdbcTemplate.update(
                 sql,
                 compound.getTitle(),

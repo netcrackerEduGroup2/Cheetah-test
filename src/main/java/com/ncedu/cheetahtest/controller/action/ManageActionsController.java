@@ -17,12 +17,10 @@ import java.util.List;
 
 public class ManageActionsController {
     private final ActionService actionService;
-    private final LibraryService libraryService;
 
     @Autowired
-    public ManageActionsController(ActionService actionService, LibraryService libraryService) {
+    public ManageActionsController(ActionService actionService) {
         this.actionService = actionService;
-        this.libraryService = libraryService;
     }
 
     @PostMapping("/create_action")
@@ -31,18 +29,4 @@ public class ManageActionsController {
        return ResponseEntity.ok(new CreateActionResponse("Success"));
 
     }
-
-    @GetMapping("/libraries")
-    public ResponseEntity<List<Library>> getAllLibraries(){
-        return ResponseEntity.ok(libraryService.getAllLibraries());
-    }
-
-    @GetMapping ("libraries/{title}")
-    public ResponseEntity<List<Library>> getLibraryById(@PathVariable String title){
-        System.out.println("123"+title);
-        return ResponseEntity.ok(libraryService.getLibrariesByName(title));
-
-    }
-
-
 }

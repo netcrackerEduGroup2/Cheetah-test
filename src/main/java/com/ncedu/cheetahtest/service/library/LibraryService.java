@@ -7,4 +7,5 @@ import java.util.List;
 public interface LibraryService {
     List<Library> getAllLibraries();
     List<Library> getLibrariesByName(String name);
+
 }
