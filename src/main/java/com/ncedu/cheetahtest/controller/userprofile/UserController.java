@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 @Slf4j
 @CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
@@ -20,28 +20,28 @@ public class UserController {
     this.userService = userService;
   }
 
-  @PostMapping("/editUser")
+  @PutMapping("/editUser")
   public ResponseEntity<RegisterResponse> editUser(@RequestBody User user) {
     userService.editUser(user);
 
     return ResponseEntity.ok(new RegisterResponse("success"));
   }
 
-  @PostMapping("/doActive")
+  @PutMapping("/activate")
   public ResponseEntity<RegisterResponse> doActive(@RequestBody User user) {
-    userService.doActive(user);
+    userService.changeUserStatus(user);
 
     return ResponseEntity.ok(new RegisterResponse("success"));
   }
 
-  @PostMapping("/doInactive")
+  @PutMapping("/deactivate")
   public ResponseEntity<RegisterResponse> doInactive(@RequestBody User user) {
-    userService.doInactive(user);
+    userService.changeUserStatus(user);
 
     return ResponseEntity.ok(new RegisterResponse("success"));
   }
 
-  @PostMapping("/findById")
+  @GetMapping("/findById")
   public ResponseEntity<RegisterResponse> searchUser(@RequestBody Long id) {
     userService.findUserById(id);
 

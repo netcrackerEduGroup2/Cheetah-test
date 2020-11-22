@@ -6,9 +6,12 @@ import com.ncedu.cheetahtest.entity.user.ResetToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -118,38 +121,25 @@ public class UserDaoImpl implements UserDao {
         });
     }
     @Override
-    public void editUser(User user) {
+    public User editUser(User user) {
         String sql = EDIT_USER_SQL;
 
-        jdbcTemplate.update(sql, user.getEmail(),
-            user.getPass(),
-            user.getName(),
-            user.getRole(),
-            user.getId());
+        int result = jdbcTemplate.update(sql, user.getEmail(), user.getPass(), user.getName(), user.getRole(), user.getId());
+        if(result == 1){
+            return user;
+        }
+        return null;
     }
 
     @Override
-    public void doActive(User user) {
+    public User changeUserStatus(User user) {
         String sql = CHANGE_USER_STATUS_SQL;
 
-        jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
-            preparedStatement.setString(1, "active");
-            preparedStatement.setInt(2, user.getId());
-
-            return preparedStatement.execute();
-        });
-    }
-
-    @Override
-    public void doInactive(User user) {
-        String sql = CHANGE_USER_STATUS_SQL;
-
-        jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
-            preparedStatement.setString(1, "inactive");
-            preparedStatement.setInt(2, user.getId());
-
-            return preparedStatement.execute();
-        });
+        int result = jdbcTemplate.update(sql, user.getStatus(), user.getId());
+        if(result == 1){
+            return user;
+        }
+        return null;
     }
 
     @Override

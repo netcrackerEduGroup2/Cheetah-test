@@ -17,11 +17,9 @@ public interface UserService {
 
     void setUserLastRequest(String email, Date date);
 
-    boolean editUser(User user);
+    User editUser(User user);
 
-    boolean doActive(User user);
-
-    boolean doInactive(User user);
+    User changeUserStatus(User user);
 
     User findUserById(long id);
 }

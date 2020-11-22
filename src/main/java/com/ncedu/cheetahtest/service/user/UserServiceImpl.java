@@ -62,38 +62,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean editUser(User user) {
+    public User editUser(User user) {
         if(user.getRole().equals("admin")) {
-            userDao.editUser(user);
-            return true;
+            return userDao.editUser(user);
         }
-        return false;
+        return null;
     }
 
     @Override
     @Transactional
-    public boolean doActive(User user) {
+    public User changeUserStatus(User user) {
         if(user.getRole().equals("admin")) {
-            userDao.doActive(user);
-            return true;
+            return userDao.changeUserStatus(user);
         }
-        return false;
-    }
-
-    @Override
-    @Transactional
-    public boolean doInactive(User user) {
-        if(user.getRole().equals("admin")) {
-            userDao.doInactive(user);
-            return true;
-        }
-        return false;
+        return null;
     }
 
     @Override
     public User findUserById(long id) {
         return userDao.findUserById(id);
     }
+
     @Override
     @Transactional
     public  void setUserLastRequest(String email, Date date) { userDao.setUserLastRequest(email, date);}
