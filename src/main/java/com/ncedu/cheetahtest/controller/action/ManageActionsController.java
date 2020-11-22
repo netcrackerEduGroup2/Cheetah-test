@@ -31,13 +31,6 @@ public class ManageActionsController {
         return ResponseEntity.ok(new CreateActionResponse("Success"));
 
     }
-    // TODO создать отдельный контроллер для library и добавить туда этот метод
-    // он должен выдавать аналогично этому методу еще и лист компоундов и объединять их.
-    // после этого их пейджирует и отдает на фронт
-    @GetMapping("library/{idLibrary}")
-    public ResponseEntity<List<Action>> getActionsByTitle(@PathVariable int idLibrary,@RequestParam(name = "title") String title) {
-        return ResponseEntity.ok(actionService.getActionsByTitle(idLibrary,title));
-    }
 
     @GetMapping("actions/by_id/{id}")
     public ResponseEntity<Action> getActionsByTitle(@PathVariable int id) {

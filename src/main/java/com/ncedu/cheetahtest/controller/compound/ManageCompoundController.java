@@ -34,7 +34,7 @@ public class ManageCompoundController {
 
     }
 
-    @GetMapping("{libraryId}")
+    @GetMapping("compounds/{libraryId}")
     public ResponseEntity<List<Compound>> getCompoundsByTitle(@PathVariable int libraryId, @RequestParam("title") String title) {
         return ResponseEntity.ok(compoundService.getCompoundByTitle(libraryId,title));
     }
