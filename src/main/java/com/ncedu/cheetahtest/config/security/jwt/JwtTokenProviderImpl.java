@@ -30,6 +30,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider{
         Claims claims = Jwts.claims().setSubject(user.getEmail());
         claims.put("role", user.getRole());
         claims.put("name", user.getName());
+        claims.put("id", user.getId());
 
         Date now = new Date();
         Date expiredMs = new Date(now.getTime() + expirationTime);

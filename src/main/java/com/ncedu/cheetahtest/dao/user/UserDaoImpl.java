@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.dao.user;
 
-import com.ncedu.cheetahtest.dao.resettoken.ResetTokenRowMapper;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,6 @@ import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 @Repository

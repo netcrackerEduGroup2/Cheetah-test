@@ -1,13 +1,12 @@
 package com.ncedu.cheetahtest.dao.project;
 
-import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.project.Project;
-import com.ncedu.cheetahtest.entity.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -19,55 +18,62 @@ public class ProjectDaoImpl implements ProjectDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+
     @Override
     public void createProject(Project project) {
-        String sqlQuery = "INSERT INTO project (id, name, link, status, create_date, owner_id)" +
-                          "VALUES (?, ?, ?, ?, ?, ?)";
+        String sqlQuery = ProjectSqlConsts.CREATE_PROJECT_QUERY;
+        System.out.println(project.getOwnerId());
         jdbcTemplate.update(
                 sqlQuery,
-                project.getId(),
                 project.getName(),
                 project.getLink(),
                 project.getStatus(),
-                project.getCreateDate(),
-                project.getIdOwner()
+                Timestamp.valueOf(LocalDateTime.now()),
+                project.getOwnerId()
         );
     }
 
     @Override
-    public List<Project> getAllProjects() {
-        String sqlSelectQuery = "SELECT id,name,link, status, create_date, owner_id FROM project";
-        return jdbcTemplate.query(sqlSelectQuery, new ProjectMapper());
+    public void deleteProjectById(int id) {
+        String sqlQuery = ProjectSqlConsts.DELETE_PROJECT_QUERY;
+        jdbcTemplate.update(sqlQuery, id);
     }
 
-    // TODO: 21.11.2020  
+    @Override
+    public List<Project> getAllProjects() {
+        String sqlQuery = ProjectSqlConsts.SELECT_ALL_PROJECTS_QUERY;
+        return jdbcTemplate.query(sqlQuery, new ProjectMapper());
+    }
+
     @Override
     public List<Project> findByProjectName(String projectName) {
-        String sqlSelectByName = "SELECT id, name, link, status, create_date, owner_id FROM project" +
-                                 "WHERE name = ?";
-        return null;
+        String sqlQuery = ProjectSqlConsts.SELECT_PROJECTS_BY_TITLE_QUERY;
+        return jdbcTemplate.query(
+                sqlQuery,
+                preparedStatement -> preparedStatement.setString(1, projectName),
+                new ProjectMapper()
+        );
     }
 
     @Override
     public List<Project> findByOwner(String ownerName) {
-        String sqlSelectByOwner = "SELECT id, name, link, status, create_date, owner_id " +
-                                  "FROM project p INNER JOIN users u ON p.owner_id = u.id" +
-                                  "WHERE u.name = ?";
-        return null;
+        String sqlQuery = ProjectSqlConsts.SELECT_PROJECT_BY_OWNER_NAME_QUERY;
+        return jdbcTemplate.query(
+                sqlQuery,
+                preparedStatement -> preparedStatement.setString(1, ownerName),
+                new ProjectMapper()
+        );
     }
 
     @Override
-    public List<Project> findByCreationDate(Date date) {
-        return null;
-    }
-
-    @Override
-    public void addWatchers(List<User> watchers) {
-
-    }
-
-    @Override
-    public void addTestCases(List<TestCase> testCases) {
-
+    public List<Project> findByCreationDate(Timestamp date) {
+        String sqlQuery = ProjectSqlConsts.SELECT_PROJECTS_BY_CREATION_DATE;
+        return jdbcTemplate.query(
+                sqlQuery,
+                preparedStatement -> {
+                        preparedStatement.setTimestamp(1, date);
+                },
+                new ProjectMapper()
+        );
     }
 }

@@ -21,7 +21,7 @@ public class ProjectMapper implements RowMapper<Project> {
                 resultSet.getString(NAME),
                 resultSet.getString(LINK),
                 resultSet.getString(STATUS),
-                resultSet.getDate(CREATE_DATE),
+                resultSet.getTimestamp(CREATE_DATE),
                 resultSet.getInt(OWNER_ID)
         );
     }
