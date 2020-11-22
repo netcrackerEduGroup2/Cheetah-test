@@ -22,12 +22,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api")
 @Slf4j
-@CrossOrigin(origins = "${frontend.ulr}")
+@CrossOrigin(origins = "${frontend.ulr:http://localhost:4200}")
 public class MailRestController {
 
     private final String SUBJECT = "Password reset";
 
-    @Value("${frontend.ulr}/reset-password?token=")
+    @Value("${frontend.ulr:http://localhost:4200}/reset-password?token=")
     private String FRONT_URL;
 
     private final EmailService emailService;
