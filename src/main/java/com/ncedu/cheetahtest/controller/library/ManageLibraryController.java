@@ -32,24 +32,24 @@ public class ManageLibraryController {
     }
 
 
-    @GetMapping ("/libraries")
-    public ResponseEntity<PaginationResponceBody> getLibraryByName(@RequestParam(name = "title") String title,
-    @RequestParam(name = "size") int size,
-    @RequestParam(name = "page") int page){
-        List<Library> libraries =libraryService.getLibrariesByName(title);
-        int i=size*(page-1);
+    @GetMapping("/libraries")
+    public PaginationResponceBody getLibraryByName(
+            @RequestParam(name = "title") String title,
+            @RequestParam(name = "size") int size,
+            @RequestParam(name = "page") int page) {
+        List<Library> libraries = libraryService.getLibrariesByName(title);
+        int i = size * (page - 1);
         List<Library> res;
-        if(size*page>=libraries.size()){
-            res= new ArrayList<>(libraries);
-        }
-        else {
-            res = libraries.subList(size*(page-1),size*page);
+        if (size * page >= libraries.size()) {
+            res = new ArrayList<>(libraries);
+        } else {
+            res = libraries.subList(size * (page - 1), size * page);
         }
 
         PaginationResponceBody paginationResponceBody = new PaginationResponceBody();
         paginationResponceBody.setList(res);
         paginationResponceBody.setTotalElements(libraries.size());
-        return ResponseEntity.ok(paginationResponceBody);
+        return paginationResponceBody;
 
     }
 
@@ -60,20 +60,19 @@ public class ManageLibraryController {
     }
 
     @GetMapping("library/{idLibrary}")
-    public ResponseEntity<PaginationResponceBody> getActComByTitle(@PathVariable int idLibrary,
-                                                         @RequestParam(name = "title") String title,
-                                                         @RequestParam(name = "size") int size,
-                                                         @RequestParam(name = "page") int page) {
+    public ResponseEntity<PaginationResponceBody> getActiveActComByTitle(@PathVariable int idLibrary,
+                                                                   @RequestParam(name = "title") String title,
+                                                                   @RequestParam(name = "size") int size,
+                                                                   @RequestParam(name = "page") int page) {
         List<Action> actions = actionService.getActiveActionsByTitle(idLibrary, title);
         List<Compound> compounds = compoundService.getActiveCompoundByTitle(idLibrary, title);
         List combined = new ArrayList(actions);
         combined.addAll(compounds);
         List res;
-        if(size*page>=combined.size()){
+        if (size * page >= combined.size()) {
             res = new ArrayList(combined);
-        }
-        else{
-            res = combined.subList(size*(page-1),size*page);
+        } else {
+            res = combined.subList(size * (page - 1), size * page);
         }
         PaginationResponceBody paginationResponceBody = new PaginationResponceBody();
         paginationResponceBody.setList(res);
@@ -81,21 +80,21 @@ public class ManageLibraryController {
         return ResponseEntity.ok(paginationResponceBody);
 
     }
+
     @GetMapping("library/{idLibrary}/archive")
     public ResponseEntity<PaginationResponceBody> getInactiveActComByTitle(@PathVariable int idLibrary,
-                                                                   @RequestParam(name = "title") String title,
-                                                                   @RequestParam(name = "size") int size,
-                                                                   @RequestParam(name = "page") int page) {
+                                                                           @RequestParam(name = "title") String title,
+                                                                           @RequestParam(name = "size") int size,
+                                                                           @RequestParam(name = "page") int page) {
         List<Action> actions = actionService.getInactiveActionsByTitle(idLibrary, title);
         List<Compound> compounds = compoundService.getInactiveCompoundByTitle(idLibrary, title);
         List combined = new ArrayList(actions);
         combined.addAll(compounds);
         List res;
-        if(size*page>=combined.size()){
+        if (size * page >= combined.size()) {
             res = new ArrayList(combined);
-        }
-        else{
-            res = combined.subList(size*(page-1),size*page);
+        } else {
+            res = combined.subList(size * (page - 1), size * page);
         }
         PaginationResponceBody paginationResponceBody = new PaginationResponceBody();
         paginationResponceBody.setList(res);
