@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${frontend.ulr}")
 
 public class ActionsController {
     private final ActionService actionService;

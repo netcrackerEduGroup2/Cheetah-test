@@ -2,7 +2,6 @@ package com.ncedu.cheetahtest.controller.compound;
 
 import com.ncedu.cheetahtest.entity.compound.*;
 import com.ncedu.cheetahtest.service.compound.CompoundService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${frontend.ulr}")
 
 public class CompoundController {
     private final CompoundService compoundService;
