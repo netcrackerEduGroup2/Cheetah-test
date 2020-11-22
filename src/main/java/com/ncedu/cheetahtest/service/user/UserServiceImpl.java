@@ -94,5 +94,4 @@ public class UserServiceImpl implements UserService {
     public User findUserById(long id) {
         return userDao.findUserById(id);
     }
-
 }

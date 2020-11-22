@@ -1,4 +1,4 @@
-package com.ncedu.cheetahtest.controller.userProfile;
+package com.ncedu.cheetahtest.controller.userprofile;
 
 import com.ncedu.cheetahtest.entity.security.RegisterResponse;
 import com.ncedu.cheetahtest.entity.user.User;
