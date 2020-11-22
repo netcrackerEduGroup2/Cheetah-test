@@ -17,6 +17,7 @@ public class User {
     private Date lastRequest;
 
     public User() {
+
     }
 
     public User(int id, String email, String pass, String name, String role, String status, int resetPassToken, Date lastRequest) {
