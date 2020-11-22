@@ -94,4 +94,8 @@ public class UserServiceImpl implements UserService {
     public User findUserById(long id) {
         return userDao.findUserById(id);
     }
+    @Override
+    @Transactional
+    public  void setUserLastRequest(String email, Date date) { userDao.setUserLastRequest(email, date);}
+
 }

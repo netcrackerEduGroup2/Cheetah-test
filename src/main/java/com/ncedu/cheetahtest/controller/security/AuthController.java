@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${frontend.ulr}")
 public class AuthController {
 
     private AuthService authService;
@@ -34,5 +34,4 @@ public class AuthController {
 
         return  ResponseEntity.ok(accessTokenDto);
     }
-    
 }
