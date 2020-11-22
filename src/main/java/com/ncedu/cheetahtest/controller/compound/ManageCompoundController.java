@@ -1,12 +1,13 @@
 package com.ncedu.cheetahtest.controller.compound;
 
-import com.ncedu.cheetahtest.entity.compound.Compound;
-import com.ncedu.cheetahtest.entity.compound.CreateCompoundResponse;
+import com.ncedu.cheetahtest.entity.compound.*;
 import com.ncedu.cheetahtest.service.compound.CompoundService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -21,11 +22,40 @@ public class ManageCompoundController {
         this.compoundService = compoundService;
     }
 
-    @PostMapping("/create_compound")
-    public  ResponseEntity<CreateCompoundResponse> createCompound(@RequestBody Compound compoundDTO) {
-        compoundService.createCompound(compoundDTO);
+    @GetMapping("/compounds")
+    public ResponseEntity<List<Compound>> getAllActions() {
+        return ResponseEntity.ok(this.compoundService.selectAllCompound());
+    }
+
+    @PostMapping("compounds/create_compound")
+    public  ResponseEntity<CreateCompoundResponse> createCompound(@RequestParam(name = "id") int idLibrary,
+                                                                  @RequestBody Compound compoundDTO) {
+        compoundService.createCompound(idLibrary, compoundDTO);
         return ResponseEntity.ok(new CreateCompoundResponse("Success"));
 
     }
 
+    @GetMapping("compounds/by_id/{id}")
+    public ResponseEntity<Compound> getCompoundsByTitle(@PathVariable int id) {
+        return ResponseEntity.ok(compoundService.getCompoundId(id));
+    }
+
+    @PostMapping("compounds/edit_compound")
+    public ResponseEntity<CompoundStatusResponse> editAction(@RequestBody Compound compoundDTO) {
+        compoundService.editCompound(compoundDTO);
+        return ResponseEntity.ok(new CompoundStatusResponse("CompoundChangedSuccessfully"));
+    }
+
+    @PostMapping("compounds/change_status")
+    public ResponseEntity<CompoundStatusResponse> changeStatus(@RequestBody ChangeCompoundStatusDTO changeCompoundStatusDTO){
+        compoundService.changeStatus(changeCompoundStatusDTO.getStatusToChange(),
+                changeCompoundStatusDTO.getId());
+        return ResponseEntity.ok(new CompoundStatusResponse("CompoundStatusChangedSuccessfully"));
+    }
+
+    @PostMapping("actions/deleteAction")
+    public ResponseEntity<CompoundStatusResponse> changeStatus(@RequestBody DeleteCompoundDTO deleteCompoundDTO){
+        compoundService.deleteCompound(deleteCompoundDTO);
+        return ResponseEntity.ok(new CompoundStatusResponse("CompoundDeletedSuccessfully"));
+    }
 }

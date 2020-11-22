@@ -1,5 +1,7 @@
 package com.ncedu.cheetahtest.dao.compound;
 
+import com.ncedu.cheetahtest.dao.action.ActionRowMapper;
+import com.ncedu.cheetahtest.dao.action.CurrentValueRowMapper;
 import com.ncedu.cheetahtest.entity.compound.Compound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,7 +21,32 @@ public class CompoundDaoImpl implements CompoundDao {
     }
 
     @Override
-    public void createCompound(Compound compound) {
+    public List<Compound> selectAll() {
+        String sql = "SELECT id, title, description, idtestscenario, status FROM compounds";
+        return jdbcTemplate.query(
+                sql,
+                new CompoundRowMapper()
+        );
+    }
+
+    @Override
+    public List<Compound> selectCompoundByTitle(int idLibrary, String title) {
+        String sql = "SELECT compounds.id, compounds.title, compounds.description, compounds.idtestscenario, " +
+                "compounds.status FROM compounds INNER JOIN lib_act_compound ON compounds.id = lib_act_compound.id_compound " +
+                "INNER JOIN library ON lib_act_compound.id_library = library.id " +
+                "WHERE compounds.title LIKE CONCAT('%', ?, '%') AND library.id = ?";
+        return jdbcTemplate.query(
+                sql,
+                preparedStatement -> {
+                    preparedStatement.setString(1, title);
+                    preparedStatement.setInt(2, idLibrary);
+                },
+                new CompoundRowMapper()
+        );
+    }
+
+    @Override
+    public int createCompound(Compound compound) {
         String sql = "INSERT INTO compounds (title,description,idtestscenario,status) " +
                 "VALUES (?,?,?,?::action_status);";
         jdbcTemplate.update(
@@ -29,7 +56,12 @@ public class CompoundDaoImpl implements CompoundDao {
                 compound.getIdTestScenario(),
                 compound.getStatus()
         );
-
+        sql = "SELECT CURRVAL('compounds_id_seq')";
+        List<Integer> currIndex = jdbcTemplate.query(sql, new CurrentValueRowMapper());
+        if(currIndex.size() == 1) {
+            return currIndex.get(0);
+        }
+        else return -1;
     }
 
     @Override
@@ -49,29 +81,31 @@ public class CompoundDaoImpl implements CompoundDao {
     }
 
     @Override
-    public Compound findCompoundByTitle(String title) {
-        String sql = "SELECT id,title,description,idtestscenario,status " +
-                "FROM compounds WHERE title = ?";
-        List<Compound> compounds = jdbcTemplate.query(
-                sql,
-                preparedStatement -> preparedStatement.setString(1, title),
-                new CompoundRowMapper()
-        );
-
-        if (compounds.size() == 1) {
-            return compounds.get(0);
-        }
-        return null;
-    }
-
-    @Override
     public List<Compound> findCompoundByIdTestScenario(int idTestScenario) {
         String sql = "SELECT id,title,description,idtestscenario,status " +
-                "FROM compounds WHERE idtestscenario = ?";
+                    "FROM compounds " +
+                    "WHERE idtestscenario = ?";
         return jdbcTemplate.query(
                 sql,
                 preparedStatement -> preparedStatement.setInt(1, idTestScenario),
                 new CompoundRowMapper()
+        );
+    }
+
+    @Override
+    public void editCompound(Compound compoundDTO) {
+        String sql = "UPDATE compounds SET title = ?, description = ?, idtestscenario = ?, status = ?::compound_status" +
+                "WHERE id = ?";
+        jdbcTemplate.execute(
+                sql,
+                (PreparedStatementCallback<Boolean>) preparedStatement -> {
+                    preparedStatement.setString(1, compoundDTO.getTitle());
+                    preparedStatement.setString(2, compoundDTO.getDescription());
+                    preparedStatement.setInt(3, compoundDTO.getIdTestScenario());
+                    preparedStatement.setString(4, compoundDTO.getStatus());
+                    preparedStatement.setInt(5, compoundDTO.getId());
+                    return preparedStatement.execute();
+                }
         );
     }
 
@@ -129,7 +163,7 @@ public class CompoundDaoImpl implements CompoundDao {
     }
 
     @Override
-    public void removeCompound(int id) {
+    public void removeCompoundById(int id) {
         String sql = "DELETE FROM compounds WHERE id = ?";
         jdbcTemplate.execute(
                 sql,

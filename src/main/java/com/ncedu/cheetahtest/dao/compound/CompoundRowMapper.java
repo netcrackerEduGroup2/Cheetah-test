@@ -17,11 +17,13 @@ public class CompoundRowMapper implements RowMapper<Compound> {
     @Override
     public Compound mapRow(ResultSet rs, int i) throws SQLException {
         Compound compound = new Compound();
+
         compound.setId(rs.getInt(ID));
         compound.setTitle(rs.getString(TITLE));
         compound.setDescription(rs.getString(DESCRIPTION));
         compound.setIdTestScenario(rs.getInt(IDTESTSCENARIO));
         compound.setStatus(rs.getString(STATUS));
+
         return compound;
     }
 }
