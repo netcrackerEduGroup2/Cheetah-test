@@ -126,7 +126,7 @@ public class ActionDaoImpl implements ActionDao {
     }
 
     @Override
-    public void editAction(Action action) {
+    public Action editAction(Action action) {
         String sql = "UPDATE actions SET title=?,description=?,idcompound=?,idtestscenario=?,status=?::action_status " +
                 "WHERE id = ?";
         jdbcTemplate.execute(
@@ -141,11 +141,12 @@ public class ActionDaoImpl implements ActionDao {
                     return preparedStatement.execute();
                 }
         );
+        return action;
 
     }
 
     @Override
-    public void setTitle(String title, int id) {
+    public Action setTitle(String title, int id) {
         String sql = "UPDATE actions SET title = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
@@ -156,10 +157,11 @@ public class ActionDaoImpl implements ActionDao {
                 }
 
         );
+        return this.findActionById(id);
     }
 
     @Override
-    public void setDescription(String description, int id) {
+    public Action setDescription(String description, int id) {
         String sql = "UPDATE actions SET description = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
@@ -170,10 +172,11 @@ public class ActionDaoImpl implements ActionDao {
                 }
 
         );
+        return this.findActionById(id);
     }
 
     @Override
-    public void setCompoundId(String compId, int id) {
+    public Action setCompoundId(String compId, int id) {
         String sql = "UPDATE actions SET idCompound = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
@@ -184,11 +187,12 @@ public class ActionDaoImpl implements ActionDao {
                 }
 
         );
+        return this.findActionById(id);
 
     }
 
     @Override
-    public void setTestScenarioId(String testScenarioId, int id) {
+    public Action setTestScenarioId(String testScenarioId, int id) {
         String sql = "UPDATE actions SET idTestScenario = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
@@ -199,10 +203,11 @@ public class ActionDaoImpl implements ActionDao {
                 }
 
         );
+       return this.findActionById(id);
     }
 
     @Override
-    public void setStatus(String status, int id) {
+    public Action setStatus(String status, int id) {
         String sql = "UPDATE actions SET status = ?::action_status WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
@@ -213,6 +218,7 @@ public class ActionDaoImpl implements ActionDao {
                 }
 
         );
+        return this.findActionById(id);
     }
 
     @Override

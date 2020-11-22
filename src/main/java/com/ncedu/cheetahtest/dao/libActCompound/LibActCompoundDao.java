@@ -11,5 +11,7 @@ public interface LibActCompoundDao {
     List<LibActCompound> findLibActCompoundsByIdAct(int id);
     void setIdCompound(int idCompound,int id);
     void setIdAction(int idAction, int id);
-    void removeLibActCompound(int id);
+    void removeByLibraryId(int idLib);
+    void removeByCompoundId(int idComp);
+    void removeByActionId(int idAct);
 }

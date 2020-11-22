@@ -51,7 +51,7 @@ public class LibraryDaoImpl implements LibraryDao {
     }
 
     @Override
-    public void setDescription(String description, int id) {
+    public Library setDescription(String description, int id) {
         String sql = "UPDATE library SET description = ? WHERE id = ?;";
         jdbcTemplate.execute(
                 sql,
@@ -61,6 +61,7 @@ public class LibraryDaoImpl implements LibraryDao {
                     return preparedStatement.execute();
                 }
         );
+        return this.findLibraryById(id);
 
     }
 
@@ -86,7 +87,7 @@ public class LibraryDaoImpl implements LibraryDao {
     }
 
     @Override
-    public void setName(String name, int id) {
+    public Library setName(String name, int id) {
         String sql = "UPDATE library SET name = ? WHERE id = ?;";
         jdbcTemplate.execute(
                 sql,
@@ -96,5 +97,6 @@ public class LibraryDaoImpl implements LibraryDao {
                     return preparedStatement.execute();
                 }
         );
+        return this.findLibraryById(id);
     }
 }

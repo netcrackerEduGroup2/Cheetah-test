@@ -95,12 +95,36 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
     }
 
     @Override
-    public void removeLibActCompound(int id) {
-        String sql = "DELETE FROM lib_act_compound WHERE id = ?";
+    public void removeByLibraryId(int idLib) {
+        String sql = "DELETE from lib_act_compound WHERE id_library = ?";
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setInt(1, id);
+                    preparedStatement.setInt(1, idLib);
+                    return preparedStatement.execute();
+                }
+        );
+    }
+
+    @Override
+    public void removeByCompoundId(int idComp) {
+        String sql = "DELETE from lib_act_compound WHERE id_compound = ?";
+        jdbcTemplate.execute(
+                sql,
+                (PreparedStatementCallback<Boolean>) preparedStatement -> {
+                    preparedStatement.setInt(1, idComp);
+                    return preparedStatement.execute();
+                }
+        );
+    }
+
+    @Override
+    public void removeByActionId(int idAct) {
+        String sql = "DELETE from lib_act_compound WHERE id_action = ?";
+        jdbcTemplate.execute(
+                sql,
+                (PreparedStatementCallback<Boolean>) preparedStatement -> {
+                    preparedStatement.setInt(1, idAct);
                     return preparedStatement.execute();
                 }
         );

@@ -17,15 +17,15 @@ public interface CompoundDao {
 
     List<Compound> selectInactiveCompoundByTitle(int idLibrary, String title);
 
-    void setTitle(String title, int id);
+    Compound setTitle(String title, int id);
 
-    void setDescription(String description, int id);
+    Compound setDescription(String description, int id);
 
-    void setTestScenarioId(String testScenarioId, int id);
+    Compound setTestScenarioId(String testScenarioId, int id);
 
-    void editCompound(Compound compoundDTO);
+    Compound editCompound(Compound compoundDTO);
 
-    void setStatus(String status, int id);
+    Compound setStatus(String status, int id);
 
     void removeCompoundById(int id);
 }

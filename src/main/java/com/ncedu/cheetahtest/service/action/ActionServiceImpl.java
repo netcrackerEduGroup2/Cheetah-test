@@ -6,7 +6,9 @@ import com.ncedu.cheetahtest.dao.libActCompound.LibActCompoundDao;
 import com.ncedu.cheetahtest.entity.action.Action;
 import com.ncedu.cheetahtest.entity.action.DeleteActionDTO;
 import com.ncedu.cheetahtest.entity.libActCompound.LibActCompound;
+import com.ncedu.cheetahtest.exception.manageLibraries.RightsPermissionException;
 import com.ncedu.cheetahtest.exception.manageLibraries.UnproperInputException;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,28 +58,37 @@ public class ActionServiceImpl implements ActionService {
     }
 
     @Override
-    public void editAction(Action actionDTO) {
-        actionDao.editAction(actionDTO);
+    public Action editAction(Action actionDTO) {
+        return actionDao.editAction(actionDTO);
     }
 
     @Override
-    public void changeStatus(String status, int id) {
+    public Action changeStatus(String status, int id) {
         if(!status.equals("active") &&
                 !status.equals("inactive")){
             throw new UnproperInputException();
         }
-        else actionDao.setStatus(status,id);
+        else return actionDao.setStatus(status,id);
     }
 
     @Override
     public boolean isAdmin(String jwtToken) {
-        //todo
-        return false;
+        String[] split_string = jwtToken.split("\\.");
+        String base64EncodedBody = split_string[1];
+        Base64 base64Url = new Base64(true);
+        String body = new String(base64Url.decode(base64EncodedBody));
+        return body.contains("admin");
+
     }
 
     @Override
     public void deleteAction(DeleteActionDTO deleteActionDTO) {
-        //todo
+        if (isAdmin(deleteActionDTO.getToken())){
+            actionDao.removeActionById(deleteActionDTO.getId());
+            libActCompoundDao.removeByActionId(deleteActionDTO.getId());
+        }
+        else throw new RightsPermissionException();
+
     }
 
     @Override

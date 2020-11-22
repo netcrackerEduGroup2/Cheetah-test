@@ -12,8 +12,8 @@ public interface CompoundService {
     Compound getCompoundId(int id);
     List<Compound> getActiveCompoundByTitle(int idLibrary, String title);
     List<Compound> getInactiveCompoundByTitle(int idLibrary, String title);
-    void editCompound(Compound compoundDTO);
-    void changeStatus(String status, int id);
+    Compound editCompound(Compound compoundDTO);
+    Compound changeStatus(String status, int id);
     boolean isAdmin(String jwtToken);
     void deleteCompound(DeleteCompoundDTO deleteCompoundDTO);
 }

@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.dao.compound;
 
-import com.ncedu.cheetahtest.dao.action.ActionRowMapper;
 import com.ncedu.cheetahtest.dao.action.CurrentValueRowMapper;
 import com.ncedu.cheetahtest.entity.compound.Compound;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,9 +108,9 @@ public class CompoundDaoImpl implements CompoundDao {
     }
 
     @Override
-    public void editCompound(Compound compoundDTO) {
-        String sql = "UPDATE compounds SET title = ?, description = ?, idtestscenario = ?, status = ?::compound_status" +
-                "WHERE id = ?";
+    public Compound editCompound(Compound compoundDTO) {
+        String sql = "UPDATE compounds SET title = ?, description = ?, idtestscenario = ?, status = ?::compound_status " +
+                "WHERE compounds.id = ?";
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -123,10 +122,11 @@ public class CompoundDaoImpl implements CompoundDao {
                     return preparedStatement.execute();
                 }
         );
+        return compoundDTO;
     }
 
     @Override
-    public void setTitle(String title, int id) {
+    public Compound setTitle(String title, int id) {
         String sql = "UPDATE compounds SET title = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
@@ -136,11 +136,11 @@ public class CompoundDaoImpl implements CompoundDao {
                     return preparedStatement.execute();
                 }
         );
-
+        return this.findCompoundById(id);
     }
 
     @Override
-    public void setDescription(String description, int id) {
+    public Compound setDescription(String description, int id) {
         String sql = "UPDATE compounds SET description = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
@@ -150,10 +150,11 @@ public class CompoundDaoImpl implements CompoundDao {
                     return preparedStatement.execute();
                 }
         );
+        return this.findCompoundById(id);
     }
 
     @Override
-    public void setTestScenarioId(String testScenarioId, int id) {
+    public Compound setTestScenarioId(String testScenarioId, int id) {
         String sql = "UPDATE compounds SET idtestscenario = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
@@ -163,10 +164,11 @@ public class CompoundDaoImpl implements CompoundDao {
                     return preparedStatement.execute();
                 }
         );
+        return this.findCompoundById(id);
     }
 
     @Override
-    public void setStatus(String status, int id) {
+    public Compound setStatus(String status, int id) {
         String sql = "UPDATE compounds SET status = ? WHERE id = ?";
         jdbcTemplate.execute(
                 sql,
@@ -176,6 +178,7 @@ public class CompoundDaoImpl implements CompoundDao {
                     return preparedStatement.execute();
                 }
         );
+        return this.findCompoundById(id);
     }
 
     @Override

@@ -6,7 +6,9 @@ import com.ncedu.cheetahtest.entity.compound.Compound;
 
 import com.ncedu.cheetahtest.entity.compound.DeleteCompoundDTO;
 import com.ncedu.cheetahtest.entity.libActCompound.LibActCompound;
+import com.ncedu.cheetahtest.exception.manageLibraries.RightsPermissionException;
 import com.ncedu.cheetahtest.exception.manageLibraries.UnproperInputException;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +26,10 @@ public class CompoundServiceImpl implements CompoundService {
     }
 
     @Override
-    public void createCompound(int idLibrary ,Compound compoundDTO) {
+    public void createCompound(int idLibrary, Compound compoundDTO) {
 
         if (compoundDTO.getTitle() == null || (!compoundDTO.getStatus().equals("active") &&
-                !compoundDTO.getStatus().equals("inactive"))){
+                !compoundDTO.getStatus().equals("inactive"))) {
             throw new UnproperInputException();
         } else {
             int idCompound = compoundDao.createCompound(compoundDTO);
@@ -55,32 +57,38 @@ public class CompoundServiceImpl implements CompoundService {
 
     @Override
     public List<Compound> getInactiveCompoundByTitle(int idLibrary, String title) {
-        return compoundDao.selectInactiveCompoundByTitle(idLibrary,title);
+        return compoundDao.selectInactiveCompoundByTitle(idLibrary, title);
     }
 
     @Override
-    public void editCompound(Compound compoundDTO) {
-        compoundDao.editCompound(compoundDTO);
+    public Compound editCompound(Compound compoundDTO) {
+        return compoundDao.editCompound(compoundDTO);
     }
 
     @Override
-    public void changeStatus(String status, int id) {
-        if(!status.equals("active") &&
-                !status.equals("inactive")){
+    public Compound changeStatus(String status, int id) {
+        if (!status.equals("active") &&
+                !status.equals("inactive")) {
             throw new UnproperInputException();
-        }
-        else compoundDao.setStatus(status,id);
+        } else return compoundDao.setStatus(status, id);
     }
 
     @Override
     public boolean isAdmin(String jwtToken) {
 
-        //TODO
-        return false;
+        String[] split_string = jwtToken.split("\\.");
+        String base64EncodedBody = split_string[1];
+        Base64 base64Url = new Base64(true);
+        String body = new String(base64Url.decode(base64EncodedBody));
+        return body.contains("admin");
     }
 
     @Override
     public void deleteCompound(DeleteCompoundDTO deleteCompoundDTO) {
-        //TODO
+        if (isAdmin(deleteCompoundDTO.getToken())){
+            compoundDao.removeCompoundById(deleteCompoundDTO.getId());
+            libActCompoundDao.removeByCompoundId(deleteCompoundDTO.getId());
+        }
+        else throw new RightsPermissionException();
     }
 }

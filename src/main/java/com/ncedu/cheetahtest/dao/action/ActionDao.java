@@ -19,17 +19,17 @@ public interface ActionDao {
 
     List<Action> selectActiveActionsByTitle(int idLibrary,String title);
 
-    void setTitle(String title, int id);
+    Action setTitle(String title, int id);
 
-    void setDescription(String description, int id);
+    Action setDescription(String description, int id);
 
-    void setCompoundId(String compId, int id);
+    Action setCompoundId(String compId, int id);
 
-    void setTestScenarioId(String testScenarioId, int id);
+    Action setTestScenarioId(String testScenarioId, int id);
 
-    void editAction(Action actionDTO);
+    Action editAction(Action actionDTO);
 
-    void setStatus(String status, int id);
+    Action setStatus(String status, int id);
 
     void removeActionById(int id);
 
