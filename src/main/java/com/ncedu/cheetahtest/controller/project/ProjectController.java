@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/project-management")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${frontend.ulr}")
 @Slf4j
 public class ProjectController {
     private final ProjectServiceImpl projectService;

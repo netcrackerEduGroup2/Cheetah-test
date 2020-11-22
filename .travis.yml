@@ -1,0 +1,26 @@
+os: linux
+dist: xenial
+language: java
+jdk:
+- openjdk11
+
+branches:
+  only:
+  - main
+  - dev
+
+addons:
+  sonarcloud:
+    organization: netcrackergroup2
+    token:
+      secure: YKhtpXziZFx+b+MV/zxjcEhmhNNlpjRWeSMk9CG98AiZXPFnb4m4/FCLqR2Scd7qG1R5z/wKZO8Cvi10vySYVLSpcvzHxQUoWdBrIBKaQvEVUXoTQPv8+fqBkXxD7zyw1mr74ipB02WbQWtCtGkZLKiwNf7/UPOG46z3rvT74hWmAQFD2J+CX6cUeTZ+v8TJ5gWMDPujjxCRrbRMLM9hB/DZePZ6Ueo4tgxqFeabg8XRBcHEX9G76Vw4dFvSDMAsx6MD7A6Ei4Wg+ufoCEUjQ0NHDwC41uE8Vgjs9rh1eiDgmIbjKcm3HNu9k6tgIq5rtg9fL9trmuuAZcBmJN1PkOmh/2v76fUGFTlUZO5buGbkxliIjSMpjSyaQzQ0FJ8yS2O//jOaYKudLiwF9mSEfCD5EIHj8OMYJ4Hzlpb391GTCjQFKpgObZH5J4C5jB8bnB6BkmM+XSqAw4gBh2YF26crF4R87hXKKjLzQwgZtx1MjG12wXWBTM7qf7D3XvOYD2eJK3N84Cfh88oAFcwI5Y+Vir9TaI1X5SqU27YK1bS/RwUij5ekjm9i4nDgBu+JFgkB8inz/oEjsSb/bZePIWjhetaL/Y/QESGzo+5ijpYwpm5iTbglZnslw+Xt1bEkMRp1TDx3ilTBdKI/K/gDU87oXFaPMd+dF8UO9mhQCTc=
+script:
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=NetCrackerGroup2_Cheetah-test
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: d5oBb2BqqZMhcIgLSLYTIbm10K6UiEjRCL2Y2dJqO9ZqWX2iXigVlf30Poc2DlCJjbm0k1POQ8z5LOJS+D1iyAqkSzQLIk/HPXAMHbhsu5j3I7oR59WBtlqzfF8dTmF47Ambg7ZpDx7Y7DrqcXWcSkAgwOt5khJmV7nKiqllBrULSmUq0e6AVyWl6b2ttstp1QBMygC/uv+/3U25WgzmFogudpFcndlOLWSAhxrcr4PnBZDlQZWtmTauNbQ3+T4eMI4pqpTG7J08rCAUqkuGRdItK/+9GFNOKi+2UhfLYjqwuSTUyUapopAlXdFBp7DpDDdgt6kBG55Lg/Kfpy4u6sUkRmE1wAaOcDaxaiiDqIyH8WAXWMkmP/3zjIq8axMU7ylnU/vNGWfwRbUs14cr9NwDcXJd28fbI0EAHkZgYzjLgYh/NHIJ8E17SKwY+XurQxUAHEgOysSWWhBcPRxZjH9Q8WqT3vpjOrkxZVJefMBUXwcsZ8SekJdyJJ0gRdSLDd6/5y2ipj0OhUJfMCEZMOnzDJgbAagJkgwWxwFLO+++FjZuE5NECBglXuugzfClZNax3zET0na7yMP2r/L2trxVIaVL+jId8ZN38EdHBdEOycflT1cPee3AednrRmDxu570yziilvt4vHZoan/nIGqnxdjYG4fnNTkLGpRRz9M=
+  app:
+    main: cheetah-test-backend-prod
+    dev: cheetah-test-backend-dev
