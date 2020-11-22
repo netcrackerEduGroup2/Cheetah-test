@@ -60,4 +60,8 @@ public class UserServiceImpl implements UserService {
         resetTokenDao.makeTokenExpired(resetToken);
     }
 
+    @Override
+    @Transactional
+    public  void setUserLastRequest(String email, Date date) { userDao.setUserLastRequest(email, date);}
+
 }
