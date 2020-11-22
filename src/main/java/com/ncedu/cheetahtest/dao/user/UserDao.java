@@ -18,7 +18,11 @@ public interface UserDao {
 
     void setUserLastRequest(String email, Date lastRequest);
 
+    void editUser(User user);
 
+    void doActive(User user);
 
+    void doInactive(User user);
 
+    User findUserById(long id);
 }

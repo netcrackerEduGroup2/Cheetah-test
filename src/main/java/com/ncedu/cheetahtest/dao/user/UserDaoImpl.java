@@ -27,7 +27,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void createDeveloper(User user) {
-        String sql = CREATE_DEVELOPER;
+        String sql = CREATE_DEVELOPER_SQL;
 
         jdbcTemplate.update(
                 sql,
@@ -42,7 +42,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByEmail(String email) {
-        String sql = FIND_USER_BY_EMAIL;
+        String sql = FIND_USER_BY_EMAIL_SQL;
 
         List<User> users = jdbcTemplate.query(
                 sql,
@@ -58,7 +58,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByEmailAndPassword(String email, String password) {
-        String sql = FIND_USER_BY_EMAIL_AND_PASSWORD;
+        String sql = FIND_USER_BY_EMAIL_AND_PASSWORD_SQL;
 
         List<User> users = jdbcTemplate.query(
                 sql,
@@ -77,7 +77,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void changeUserPassword(ResetToken resetToken, String password) {
-        String sql = CHANGE_USER_PASSWORD;
+        String sql = CHANGE_USER_PASSWORD_SQL;
 
         jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
             preparedStatement.setString(1, password);
@@ -89,7 +89,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByToken(String token) {
-        String sql = FIND_USER_BY_TOKEN;
+        String sql = FIND_USER_BY_TOKEN_SQL;
 
         List<User> users = jdbcTemplate.query(
                 sql,
@@ -108,7 +108,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void setUserLastRequest(String email, Date lastRequest) {
-        String sql = SET_USER_LAST_REQUEST;
+        String sql = SET_USER_LAST_REQUEST_SQL;
 
         jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
             preparedStatement.setTimestamp(1, new Timestamp(lastRequest.getTime()));
@@ -119,7 +119,7 @@ public class UserDaoImpl implements UserDao {
     }
     @Override
     public void editUser(User user) {
-        String sql = "UPDATE users SET email = ?, password = ?, name = ?, role = ? where id = ?";
+        String sql = EDIT_USER_SQL;
 
         jdbcTemplate.update(sql, user.getEmail(),
             user.getPass(),
@@ -130,7 +130,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void doActive(User user) {
-        String sql = "UPDATE users SET status = ? where id = ?";
+        String sql = CHANGE_USER_STATUS_SQL;
 
         jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
             preparedStatement.setString(1, "active");
@@ -142,7 +142,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void doInactive(User user) {
-        String sql = "UPDATE users SET status = ? where id = ?";
+        String sql = CHANGE_USER_STATUS_SQL;
 
         jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
             preparedStatement.setString(1, "inactive");
@@ -154,7 +154,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserById(long id) {
-        String sql = "SELECT id, email, password, name, role, status, reset_token_id FROM users WHERE id = ?";
+        String sql = FIND_USER_BY_ID_SQL;
 
         List<User> users = jdbcTemplate.query(
             sql,
