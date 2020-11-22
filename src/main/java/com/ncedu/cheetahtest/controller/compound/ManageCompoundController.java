@@ -17,7 +17,6 @@ public class ManageCompoundController {
     private final CompoundService compoundService;
 
     @Autowired
-
     public ManageCompoundController(CompoundService compoundService) {
         this.compoundService = compoundService;
     }
@@ -35,9 +34,9 @@ public class ManageCompoundController {
 
     }
 
-    @GetMapping("compounds/by_id/{id}")
-    public ResponseEntity<Compound> getCompoundsByTitle(@PathVariable int id) {
-        return ResponseEntity.ok(compoundService.getCompoundId(id));
+    @GetMapping("{libraryId}")
+    public ResponseEntity<List<Compound>> getCompoundsByTitle(@PathVariable int libraryId, @RequestParam("title") String title) {
+        return ResponseEntity.ok(compoundService.getCompoundByTitle(libraryId,title));
     }
 
     @PostMapping("compounds/edit_compound")
@@ -53,8 +52,8 @@ public class ManageCompoundController {
         return ResponseEntity.ok(new CompoundStatusResponse("CompoundStatusChangedSuccessfully"));
     }
 
-    @PostMapping("actions/deleteAction")
-    public ResponseEntity<CompoundStatusResponse> changeStatus(@RequestBody DeleteCompoundDTO deleteCompoundDTO){
+    @PostMapping("compounds/deleteCompound")
+    public ResponseEntity<CompoundStatusResponse> deleteCompound(@RequestBody DeleteCompoundDTO deleteCompoundDTO){
         compoundService.deleteCompound(deleteCompoundDTO);
         return ResponseEntity.ok(new CompoundStatusResponse("CompoundDeletedSuccessfully"));
     }

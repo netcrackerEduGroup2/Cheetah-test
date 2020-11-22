@@ -58,7 +58,7 @@ public class ManageActionsController {
     }
 
     @PostMapping("actions/deleteAction")
-    public ResponseEntity<ActionStatusResponse> changeStatus(@RequestBody DeleteActionDTO deleteActionDTO){
+    public ResponseEntity<ActionStatusResponse> deleteAction(@RequestBody DeleteActionDTO deleteActionDTO){
         actionService.deleteAction(deleteActionDTO);
         return ResponseEntity.ok(new ActionStatusResponse("ActionDeletedSuccessfully"));
     }

@@ -1,13 +1,18 @@
 package com.ncedu.cheetahtest.controller.library;
 
+import com.ncedu.cheetahtest.entity.action.Action;
+import com.ncedu.cheetahtest.entity.compound.Compound;
 import com.ncedu.cheetahtest.entity.library.CreateLibraryResponse;
 import com.ncedu.cheetahtest.entity.library.Library;
+import com.ncedu.cheetahtest.service.action.ActionService;
+import com.ncedu.cheetahtest.service.compound.CompoundService;
 import com.ncedu.cheetahtest.service.library.LibraryService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -16,16 +21,18 @@ import java.util.List;
 
 public class ManageLibraryController {
     private final LibraryService libraryService;
+    private final ActionService actionService;
+    private final CompoundService compoundService;
 
     @Autowired
-    public ManageLibraryController(LibraryService libraryService) {
+    public ManageLibraryController(LibraryService libraryService, ActionService actionService, CompoundService compoundService) {
         this.libraryService = libraryService;
+        this.actionService = actionService;
+        this.compoundService = compoundService;
     }
 
-    /*@PostMapping("/create_library")
-    public ResponseEntity<CreateActionResponse> createLibrary(@RequestBody Library libraryDTO) {
-        libraryService.
-    }*/
+
+
 
     @GetMapping("/libraries")
     public ResponseEntity<List<Library>> getAllLibraries(){
@@ -43,4 +50,14 @@ public class ManageLibraryController {
         libraryService.createLibrary(libraryDTO);
         return ResponseEntity.ok(new CreateLibraryResponse("Success"));
     }
+    @GetMapping("library/{idLibrary}")
+    public ResponseEntity<List<Action>> getActComByTitle(@PathVariable int idLibrary, @RequestParam(name = "title") String title,
+                                                         @Pe){
+        List<Action> actions = actionService.getActionsByTitle(idLibrary,title);
+        List<Compound> compounds = compoundService.getCompoundByTitle(idLibrary,title);
+        List combined = actions;
+        combined.addAll(compounds);
+
+    }
+
 }
