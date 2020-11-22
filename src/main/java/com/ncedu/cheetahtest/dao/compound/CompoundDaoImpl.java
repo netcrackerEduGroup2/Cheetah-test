@@ -30,11 +30,27 @@ public class CompoundDaoImpl implements CompoundDao {
     }
 
     @Override
-    public List<Compound> selectCompoundByTitle(int idLibrary, String title) {
+    public List<Compound> selectActiveCompoundByTitle(int idLibrary, String title) {
         String sql = "SELECT compounds.id, compounds.title, compounds.description, compounds.idtestscenario, " +
                 "compounds.status FROM compounds INNER JOIN lib_act_compound ON compounds.id = lib_act_compound.id_compound " +
                 "INNER JOIN library ON lib_act_compound.id_library = library.id " +
-                "WHERE compounds.title LIKE CONCAT('%', ?, '%') AND library.id = ?";
+                "WHERE compounds.title LIKE CONCAT('%', ?, '%') AND library.id = ? AND compounds.status = 'active'";
+        return jdbcTemplate.query(
+                sql,
+                preparedStatement -> {
+                    preparedStatement.setString(1, title);
+                    preparedStatement.setInt(2, idLibrary);
+                },
+                new CompoundRowMapper()
+        );
+    }
+
+    @Override
+    public List<Compound> selectInactiveCompoundByTitle(int idLibrary, String title) {
+        String sql = "SELECT compounds.id, compounds.title, compounds.description, compounds.idtestscenario, " +
+                "compounds.status FROM compounds INNER JOIN lib_act_compound ON compounds.id = lib_act_compound.id_compound " +
+                "INNER JOIN library ON lib_act_compound.id_library = library.id " +
+                "WHERE compounds.title LIKE CONCAT('%', ?, '%') AND library.id = ? AND compounds.status='inactive'";
         return jdbcTemplate.query(
                 sql,
                 preparedStatement -> {

@@ -79,7 +79,7 @@ public class LibraryDaoImpl implements LibraryDao {
 
     @Override
     public List<Library> selectLibrariesByName(String name) {
-        String sql = "SELECT id, description, name , createdate FROM library WHERE name = ?";
+        String sql = "SELECT id, description, name , createdate FROM library WHERE name LIKE CONCAT('%',?,'%')";
         return jdbcTemplate.query(sql,
                 preparedStatement -> preparedStatement.setString(1,name),
                 new LibraryRowMapper());

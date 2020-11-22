@@ -29,11 +29,26 @@ public class ActionDaoImpl implements ActionDao {
     }
 
     @Override
-    public List<Action> selectActionsByTitle(int idLibrary,String title) {
+    public List<Action> selectActiveActionsByTitle(int idLibrary,String title) {
         String sql = "SELECT actions.id, actions.title , actions.description , actions.idcompound , actions.idtestscenario, " +
                 "actions.status FROM actions INNER JOIN lib_act_compound ON actions.id = lib_act_compound.id_action " +
                 "INNER JOIN library ON lib_act_compound.id_library = library.id " +
-                "WHERE actions.title LIKE CONCAT('%',?,'%') AND library.id = ?";
+                "WHERE actions.title LIKE CONCAT('%',?,'%') AND library.id = ? AND actions.status ='active'";
+        return jdbcTemplate.query(
+                sql,
+                preparedStatement -> {
+                    preparedStatement.setString(1, title);
+                    preparedStatement.setInt(2,idLibrary);
+                },
+                new ActionRowMapper());
+    }
+
+    @Override
+    public List<Action> getInactiveActionsByTitle(int idLibrary, String title) {
+        String sql = "SELECT actions.id, actions.title , actions.description , actions.idcompound , actions.idtestscenario, " +
+                "actions.status FROM actions INNER JOIN lib_act_compound ON actions.id = lib_act_compound.id_action " +
+                "INNER JOIN library ON lib_act_compound.id_library = library.id " +
+                "WHERE actions.title LIKE CONCAT('%',?,'%') AND library.id = ? AND actions.status = 'inactive'";
         return jdbcTemplate.query(
                 sql,
                 preparedStatement -> {
@@ -95,6 +110,7 @@ public class ActionDaoImpl implements ActionDao {
         );
     }
 
+
     @Override
     public List<Action> findActionsByIdTestScenario(int idTestScenario) {
         String sql = "SELECT id, title , description , idcompound , idtestscenario, status " +
@@ -106,7 +122,6 @@ public class ActionDaoImpl implements ActionDao {
                 preparedStatement -> preparedStatement.setInt(1, idTestScenario),
                 new ActionRowMapper()
         );
-
 
     }
 

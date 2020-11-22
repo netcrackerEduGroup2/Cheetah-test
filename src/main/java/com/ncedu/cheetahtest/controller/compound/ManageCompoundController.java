@@ -35,8 +35,8 @@ public class ManageCompoundController {
     }
 
     @GetMapping("compounds/{libraryId}")
-    public ResponseEntity<List<Compound>> getCompoundsByTitle(@PathVariable int libraryId, @RequestParam("title") String title) {
-        return ResponseEntity.ok(compoundService.getCompoundByTitle(libraryId,title));
+    public ResponseEntity<List<Compound>> getActiveCompoundsByTitle(@PathVariable int libraryId, @RequestParam("title") String title) {
+        return ResponseEntity.ok(compoundService.getActiveCompoundByTitle(libraryId,title));
     }
 
     @PostMapping("compounds/edit_compound")

@@ -49,8 +49,13 @@ public class CompoundServiceImpl implements CompoundService {
     }
 
     @Override
-    public List<Compound> getCompoundByTitle(int idLibrary, String title) {
-        return compoundDao.selectCompoundByTitle(idLibrary, title);
+    public List<Compound> getActiveCompoundByTitle(int idLibrary, String title) {
+        return compoundDao.selectActiveCompoundByTitle(idLibrary, title);
+    }
+
+    @Override
+    public List<Compound> getInactiveCompoundByTitle(int idLibrary, String title) {
+        return compoundDao.selectInactiveCompoundByTitle(idLibrary,title);
     }
 
     @Override
@@ -70,12 +75,12 @@ public class CompoundServiceImpl implements CompoundService {
     @Override
     public boolean isAdmin(String jwtToken) {
 
-        //to do
+        //TODO
         return false;
     }
 
     @Override
     public void deleteCompound(DeleteCompoundDTO deleteCompoundDTO) {
-        // to do
+        //TODO
     }
 }

@@ -13,7 +13,9 @@ public interface CompoundDao {
 
     List<Compound> selectAll();
 
-    List<Compound> selectCompoundByTitle(int idLibrary, String tittle);
+    List<Compound> selectActiveCompoundByTitle(int idLibrary, String title);
+
+    List<Compound> selectInactiveCompoundByTitle(int idLibrary, String title);
 
     void setTitle(String title, int id);
 

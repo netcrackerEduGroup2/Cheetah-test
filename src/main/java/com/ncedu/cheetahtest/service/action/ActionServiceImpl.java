@@ -51,8 +51,8 @@ public class ActionServiceImpl implements ActionService {
     }
 
     @Override
-    public List<Action> getActionsByTitle(int idLibrary,String title) {
-        return actionDao.selectActionsByTitle(idLibrary,title);
+    public List<Action> getActiveActionsByTitle(int idLibrary,String title) {
+        return actionDao.selectActiveActionsByTitle(idLibrary,title);
     }
 
     @Override
@@ -78,5 +78,10 @@ public class ActionServiceImpl implements ActionService {
     @Override
     public void deleteAction(DeleteActionDTO deleteActionDTO) {
         //todo
+    }
+
+    @Override
+    public List<Action> getInactiveActionsByTitle(int idLibrary, String title) {
+        return actionDao.getInactiveActionsByTitle(idLibrary,title);
     }
 }

@@ -17,7 +17,7 @@ public interface ActionDao {
 
     List<Action> selectAll();
 
-    List<Action> selectActionsByTitle(int idLibrary,String title);
+    List<Action> selectActiveActionsByTitle(int idLibrary,String title);
 
     void setTitle(String title, int id);
 
@@ -32,5 +32,7 @@ public interface ActionDao {
     void setStatus(String status, int id);
 
     void removeActionById(int id);
+
+    List<Action> getInactiveActionsByTitle(int idLibrary,String title);
 
 }
