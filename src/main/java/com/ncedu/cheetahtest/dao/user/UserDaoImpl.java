@@ -12,7 +12,6 @@ import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -138,6 +137,22 @@ public class UserDaoImpl implements UserDao {
 
             return preparedStatement.execute();
         });
+    }
+
+    @Override
+    public User findUserById(long id) {
+        String sql = "SELECT id, email, password, name, role, status, reset_token_id FROM users WHERE id = ?";
+
+        List<User> users = jdbcTemplate.query(
+            sql,
+            preparedStatement -> preparedStatement.setLong(1, id),
+            new UserRowMapper());
+
+        if (users.size() == 1) {
+            return users.get(0);
+        }
+
+        return null;
     }
 
 

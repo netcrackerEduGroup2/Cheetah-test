@@ -18,4 +18,6 @@ public interface UserService {
     boolean doActive(User user);
 
     boolean doInactive(User user);
+
+    User findUserById(long id);
 }

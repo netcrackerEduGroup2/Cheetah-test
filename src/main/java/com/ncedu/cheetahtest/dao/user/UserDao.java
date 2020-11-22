@@ -21,4 +21,6 @@ public interface UserDao {
 
     void doInactive(User user);
 
+    User findUserById(long id);
+
 }

@@ -90,4 +90,9 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    @Override
+    public User findUserById(long id) {
+        return userDao.findUserById(id);
+    }
+
 }
