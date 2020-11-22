@@ -14,6 +14,7 @@ public class User {
     private int resetPassToken;
 
     public User() {
+
     }
 
     public User(int id, String email, String pass, String name, String role, String status, int resetPassToken) {
