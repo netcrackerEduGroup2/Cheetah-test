@@ -13,6 +13,8 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import static com.ncedu.cheetahtest.dao.user.UserConsts.*;
+
 @Repository
 public class UserDaoImpl implements UserDao {
 
@@ -25,7 +27,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void createDeveloper(User user) {
-        String sql = "INSERT INTO users (email, password, name, role, status) VALUES (?,?,?,?::user_role,?::user_status)";
+        String sql = CREATE_DEVELOPER;
 
         jdbcTemplate.update(
                 sql,
@@ -40,7 +42,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByEmail(String email) {
-        String sql = "SELECT id, email, password, name, role, status, reset_token_id, last_request FROM users WHERE email = ?";
+        String sql = FIND_USER_BY_EMAIL;
 
         List<User> users = jdbcTemplate.query(
                 sql,
@@ -56,7 +58,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByEmailAndPassword(String email, String password) {
-        String sql = "SELECT id, email, password, name, role, status, reset_token_id, last_request FROM users WHERE email = ? AND password = ?";
+        String sql = FIND_USER_BY_EMAIL_AND_PASSWORD;
 
         List<User> users = jdbcTemplate.query(
                 sql,
@@ -75,7 +77,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void changeUserPassword(ResetToken resetToken, String password) {
-        String sql = "UPDATE users SET password = ? WHERE id = ?";
+        String sql = CHANGE_USER_PASSWORD;
 
         jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
             preparedStatement.setString(1, password);
@@ -87,7 +89,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserByToken(String token) {
-        String sql = "SELECT id, email, password, name, role, status, reset_token_id, last_request FROM users WHERE id IN (SELECT user_id FROM reset_token WHERE token = ?)";
+        String sql = FIND_USER_BY_TOKEN;
 
         List<User> users = jdbcTemplate.query(
                 sql,
@@ -106,14 +108,14 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void setUserLastRequest(String email, Date lastRequest) {
-            String sql = "UPDATE users SET last_request = ? WHERE email = ?";
+        String sql = SET_USER_LAST_REQUEST;
 
-            jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                preparedStatement.setTimestamp(1, new Timestamp(lastRequest.getTime() )) ;
-                preparedStatement.setString(2, email);
+        jdbcTemplate.execute(sql, (PreparedStatementCallback<Boolean>) preparedStatement -> {
+            preparedStatement.setTimestamp(1, new Timestamp(lastRequest.getTime()));
+            preparedStatement.setString(2, email);
 
-                return preparedStatement.execute();
-            });
+            return preparedStatement.execute();
+        });
     }
 
 }
