@@ -56,8 +56,8 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public boolean isAdmin(String jwtToken) {
 
-        String[] split_string = jwtToken.split("\\.");
-        String base64EncodedBody = split_string[1];
+        String[] splitString = jwtToken.split("\\.");
+        String base64EncodedBody = splitString[1];
         Base64 base64Url = new Base64(true);
         String body = new String(base64Url.decode(base64EncodedBody));
         return body.contains("admin");

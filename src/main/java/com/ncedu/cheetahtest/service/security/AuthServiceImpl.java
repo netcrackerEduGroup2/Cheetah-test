@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.service.security;
 
-import com.ncedu.cheetahtest.dao.resettoken.ResetTokenDao;
 import com.ncedu.cheetahtest.dao.user.UserDao;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
