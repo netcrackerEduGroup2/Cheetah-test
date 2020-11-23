@@ -1,6 +1,6 @@
 package com.ncedu.cheetahtest.dao.libactcompound;
 
-import com.ncedu.cheetahtest.entity.libActCompound.LibActCompound;
+import com.ncedu.cheetahtest.entity.libactcompound.LibActCompound;
 
 import java.util.List;
 

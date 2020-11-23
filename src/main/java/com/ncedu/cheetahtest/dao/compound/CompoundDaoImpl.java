@@ -4,7 +4,6 @@ import com.ncedu.cheetahtest.dao.action.CurrentValueRowMapper;
 import com.ncedu.cheetahtest.entity.compound.Compound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -24,18 +23,16 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public List<Compound> selectAll() {
-        String sql = SELECT_ALL;
         return jdbcTemplate.query(
-                sql,
+                SELECT_ALL,
                 new CompoundRowMapper()
         );
     }
 
     @Override
     public List<Compound> selectActiveCompoundByTitle(int idLibrary, String title) {
-        String sql = SELECT_ACTIVE_COMPOUND_BY_TITLE;
         return jdbcTemplate.query(
-                sql,
+                SELECT_ACTIVE_COMPOUND_BY_TITLE,
                 preparedStatement -> {
                     preparedStatement.setString(1, title);
                     preparedStatement.setInt(2, idLibrary);
@@ -46,9 +43,8 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public List<Compound> selectInactiveCompoundByTitle(int idLibrary, String title) {
-        String sql = SELECT_INACTIVE_COMPOUND_BY_TITLE;
         return jdbcTemplate.query(
-                sql,
+                SELECT_INACTIVE_COMPOUND_BY_TITLE,
                 preparedStatement -> {
                     preparedStatement.setString(1, title);
                     preparedStatement.setInt(2, idLibrary);
@@ -77,9 +73,8 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public Compound findCompoundById(int id) {
-        String sql = FIND_COMPOUND_BY_ID;
         List<Compound> compounds = jdbcTemplate.query(
-                sql,
+                FIND_COMPOUND_BY_ID,
                 preparedStatement -> preparedStatement.setInt(1, id),
                 new CompoundRowMapper()
         );
@@ -92,9 +87,8 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public List<Compound> findCompoundByIdTestScenario(int idTestScenario) {
-        String sql = FIND_COMPOUND_BY_ID_TESTSCENARIO;
         return jdbcTemplate.query(
-                sql,
+                FIND_COMPOUND_BY_ID_TESTSCENARIO,
                 preparedStatement -> preparedStatement.setInt(1, idTestScenario),
                 new CompoundRowMapper()
         );
@@ -102,86 +96,62 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public Compound editCompound(Compound compoundDTO) {
-        String sql = EDIT_COMPOUND;
-        jdbcTemplate.execute(
-                sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setString(1, compoundDTO.getTitle());
-                    preparedStatement.setString(2, compoundDTO.getDescription());
-                    preparedStatement.setInt(3, compoundDTO.getIdTestScenario());
-                    preparedStatement.setString(4, compoundDTO.getStatus());
-                    preparedStatement.setInt(5, compoundDTO.getId());
-                    return preparedStatement.execute();
-                }
+        jdbcTemplate.update(
+                EDIT_COMPOUND,
+                 compoundDTO.getTitle(),
+                 compoundDTO.getDescription(),
+                 compoundDTO.getIdTestScenario(),
+                 compoundDTO.getStatus(),
+                 compoundDTO.getId()
         );
         return compoundDTO;
     }
 
     @Override
     public Compound setTitle(String title, int id) {
-        String sql = SET_TITLE;
-        jdbcTemplate.execute(
-                sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setString(1, title);
-                    preparedStatement.setInt(2, id);
-                    return preparedStatement.execute();
-                }
+        jdbcTemplate.update(
+                SET_TITLE,
+                title,
+                id
         );
         return this.findCompoundById(id);
     }
 
     @Override
     public Compound setDescription(String description, int id) {
-        String sql = SET_DESCRIPTION;
-        jdbcTemplate.execute(
-                sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setString(1, description);
-                    preparedStatement.setInt(2, id);
-                    return preparedStatement.execute();
-                }
+        jdbcTemplate.update(
+                SET_DESCRIPTION,
+                description,
+                id
         );
         return this.findCompoundById(id);
     }
 
     @Override
     public Compound setTestScenarioId(String testScenarioId, int id) {
-        String sql = SET_TESTSCENARIO_ID;
-        jdbcTemplate.execute(
-                sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setString(1, testScenarioId);
-                    preparedStatement.setInt(2, id);
-                    return preparedStatement.execute();
-                }
+        jdbcTemplate.update(
+                SET_TESTSCENARIO_ID,
+                testScenarioId,
+                id
         );
         return this.findCompoundById(id);
     }
 
     @Override
     public Compound setStatus(String status, int id) {
-        String sql = SET_STATUS;
-        jdbcTemplate.execute(
-                sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setString(1, status);
-                    preparedStatement.setInt(2, id);
-                    return preparedStatement.execute();
-                }
+        jdbcTemplate.update(
+                SET_STATUS,
+                status,
+                id
         );
         return this.findCompoundById(id);
     }
 
     @Override
     public void removeCompoundById(int id) {
-        String sql = REMOVE_COMPOUND_BY_ID;
-        jdbcTemplate.execute(
-                sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setInt(1, id);
-                    return preparedStatement.execute();
-                }
+        jdbcTemplate.update(
+                REMOVE_COMPOUND_BY_ID,
+                id
         );
 
     }

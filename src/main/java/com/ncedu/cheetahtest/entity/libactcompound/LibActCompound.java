@@ -1,4 +1,4 @@
-package com.ncedu.cheetahtest.entity.libActCompound;
+package com.ncedu.cheetahtest.entity.libactcompound;
 
 import lombok.Data;
 

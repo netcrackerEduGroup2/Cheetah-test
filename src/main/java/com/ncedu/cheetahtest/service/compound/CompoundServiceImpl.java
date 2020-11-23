@@ -5,7 +5,7 @@ import com.ncedu.cheetahtest.dao.libactcompound.LibActCompoundDao;
 import com.ncedu.cheetahtest.entity.compound.Compound;
 
 import com.ncedu.cheetahtest.entity.compound.DeleteCompoundDTO;
-import com.ncedu.cheetahtest.entity.libActCompound.LibActCompound;
+import com.ncedu.cheetahtest.entity.libactcompound.LibActCompound;
 import com.ncedu.cheetahtest.exception.managelibraries.RightsPermissionException;
 import com.ncedu.cheetahtest.exception.managelibraries.UnproperInputException;
 import org.apache.tomcat.util.codec.binary.Base64;

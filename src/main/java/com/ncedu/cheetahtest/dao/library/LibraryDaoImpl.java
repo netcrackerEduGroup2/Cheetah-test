@@ -3,7 +3,6 @@ package com.ncedu.cheetahtest.dao.library;
 import com.ncedu.cheetahtest.entity.library.Library;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -22,9 +21,8 @@ public class LibraryDaoImpl implements LibraryDao {
 
     @Override
     public void createLibrary(Library library) {
-        String sql = CREATE_LIBRARY;
         jdbcTemplate.update(
-                sql,
+                CREATE_LIBRARY,
                 library.getDescription(),
                 library.getName(),
                 library.getCreateDate()
@@ -33,15 +31,13 @@ public class LibraryDaoImpl implements LibraryDao {
 
     @Override
     public List<Library> selectAll() {
-        String sql = SELECT_ALL;
-        return jdbcTemplate.query(sql,new LibraryRowMapper());
+        return jdbcTemplate.query(SELECT_ALL,new LibraryRowMapper());
     }
 
     @Override
     public Library findLibraryById(int id) {
-        String sql = FIND_LIBRARY_BY_ID;
         List<Library> libraries = jdbcTemplate.query(
-                sql,
+                FIND_LIBRARY_BY_ID,
                 preparedStatement -> preparedStatement.setInt(1, id),
                 new LibraryRowMapper()
         );
@@ -53,14 +49,10 @@ public class LibraryDaoImpl implements LibraryDao {
 
     @Override
     public Library setDescription(String description, int id) {
-        String sql = SET_DESCRIPTION;
-        jdbcTemplate.execute(
-                sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setString(1, description);
-                    preparedStatement.setInt(2, id);
-                    return preparedStatement.execute();
-                }
+        jdbcTemplate.update(
+                SET_DESCRIPTION,
+                description,
+                id
         );
         return this.findLibraryById(id);
 
@@ -68,35 +60,26 @@ public class LibraryDaoImpl implements LibraryDao {
 
     @Override
     public void removeLibrary(int id) {
-        String sql = REMOVE_LIBRARY;
-        jdbcTemplate.execute(
-                sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setInt(1, id);
-                    return preparedStatement.execute();
-                }
+        jdbcTemplate.update(
+                REMOVE_LIBRARY,
+                id
         );
 
     }
 
     @Override
     public List<Library> selectLibrariesByName(String name) {
-        String sql = SELECT_LIBRARIES_BY_NAME;
-        return jdbcTemplate.query(sql,
+        return jdbcTemplate.query(SELECT_LIBRARIES_BY_NAME,
                 preparedStatement -> preparedStatement.setString(1,name),
                 new LibraryRowMapper());
     }
 
     @Override
     public Library setName(String name, int id) {
-        String sql = SET_NAME;
-        jdbcTemplate.execute(
-                sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setString(1, name);
-                    preparedStatement.setInt(2, id);
-                    return preparedStatement.execute();
-                }
+        jdbcTemplate.update(
+                SET_NAME,
+                name,
+                id
         );
         return this.findLibraryById(id);
     }

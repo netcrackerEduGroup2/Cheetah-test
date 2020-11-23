@@ -1,9 +1,8 @@
 package com.ncedu.cheetahtest.dao.libactcompound;
 
-import com.ncedu.cheetahtest.entity.libActCompound.LibActCompound;
+import com.ncedu.cheetahtest.entity.libactcompound.LibActCompound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -23,9 +22,8 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public void createLibActCompound(LibActCompound libActCompound) {
-        String sql = CREATE_LIBACTCOMPOUND;
         jdbcTemplate.update(
-                sql,
+                CREATE_LIBACTCOMPOUND,
                 libActCompound.getIdLibrary(),
                 libActCompound.getIdCompound(),
                 libActCompound.getIdAction()
@@ -34,9 +32,8 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public List<LibActCompound> findLibActCompoundsById(int id) {
-        String sql = FIND_LIBACTCOMPOUNDS_BY_ID;
-         return jdbcTemplate.query(
-                sql,
+        return jdbcTemplate.query(
+                FIND_LIBACTCOMPOUNDS_BY_ID,
                 preparedStatement -> preparedStatement.setInt(1, id),
                 new LibActionCompoundRowMapper()
         );
@@ -46,9 +43,8 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public List<LibActCompound> findLibActCompoundsByIdCompound(int id) {
-        String sql = FIND_LIBACTCOMPOUNDS_BY_ID_COMPOUND;
         return jdbcTemplate.query(
-                sql,
+                FIND_LIBACTCOMPOUNDS_BY_ID_COMPOUND,
                 preparedStatement -> preparedStatement.setInt(1, id),
                 new LibActionCompoundRowMapper()
         );
@@ -56,9 +52,8 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public List<LibActCompound> findLibActCompoundsByIdAct(int id) {
-        String sql = FIND_LIBACTCOMPOUNDS_BY_ID_ACT;
         return jdbcTemplate.query(
-                sql,
+                FIND_LIBACTCOMPOUNDS_BY_ID_ACT,
                 preparedStatement -> preparedStatement.setInt(1, id),
                 new LibActionCompoundRowMapper()
         );
@@ -66,65 +61,45 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public void setIdCompound(int idCompound, int id) {
-        String sql = SET_ID_COMPOUND;
-        jdbcTemplate.execute(
-                sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setInt(1, idCompound);
-                    preparedStatement.setInt(2, id);
-                    return preparedStatement.execute();
-                }
+        jdbcTemplate.update(
+                SET_ID_COMPOUND,
+                idCompound,
+                id
 
         );
     }
 
     @Override
     public void setIdAction(int idAction, int id) {
-        String sql = SET_ID_ACTION;
-        jdbcTemplate.execute(
-                sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setInt(1, idAction);
-                    preparedStatement.setInt(2, id);
-                    return preparedStatement.execute();
-                }
+        jdbcTemplate.update(
+                SET_ID_ACTION,
+                idAction,
+                id
 
         );
     }
 
     @Override
     public void removeByLibraryId(int idLib) {
-        String sql = REMOVE_BY_LIBRARY_ID;
-        jdbcTemplate.execute(
-                sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setInt(1, idLib);
-                    return preparedStatement.execute();
-                }
+        jdbcTemplate.update(
+                REMOVE_BY_LIBRARY_ID,
+                idLib
         );
     }
 
     @Override
     public void removeByCompoundId(int idComp) {
-        String sql = REMOVE_BY_COMPOUND_ID;
-        jdbcTemplate.execute(
-                sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setInt(1, idComp);
-                    return preparedStatement.execute();
-                }
+        jdbcTemplate.update(
+                REMOVE_BY_COMPOUND_ID,
+                idComp
         );
     }
 
     @Override
     public void removeByActionId(int idAct) {
-        String sql = REMOVE_BY_ACTION_ID;
-        jdbcTemplate.execute(
-                sql,
-                (PreparedStatementCallback<Boolean>) preparedStatement -> {
-                    preparedStatement.setInt(1, idAct);
-                    return preparedStatement.execute();
-                }
+        jdbcTemplate.update(
+                REMOVE_BY_ACTION_ID,
+                idAct
         );
     }
 }
