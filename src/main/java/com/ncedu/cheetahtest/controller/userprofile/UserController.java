@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+
 @RestController
 @RequestMapping("/api/user")
 @Slf4j
@@ -20,7 +22,7 @@ public class UserController {
     this.userService = userService;
   }
 
-  @PutMapping("/editUser")
+  @PutMapping
   public ResponseEntity<RegisterResponse> editUser(@RequestBody User user) {
     userService.editUser(user);
 
@@ -41,8 +43,8 @@ public class UserController {
     return ResponseEntity.ok(new RegisterResponse("success"));
   }
 
-  @GetMapping("/findById")
-  public User searchUser(@RequestParam String id) {
+  @GetMapping("/{id}")
+  public User searchUser(@PathParam("id") String id) {
     return userService.findUserById(Long.parseLong(id));
   }
 }
