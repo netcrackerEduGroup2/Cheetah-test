@@ -20,10 +20,9 @@ public class LibraryDaoImpl implements LibraryDao {
 
     @Override
     public void createLibrary(Library library) {
-        String sql = "INSERT INTO library (id , description, name , createdate) VALUES (?,?,?,?);";
+        String sql = "INSERT INTO library (description, name , createdate) VALUES (?,?,?);";
         jdbcTemplate.update(
                 sql,
-                library.getId(),
                 library.getDescription(),
                 library.getName(),
                 library.getCreateDate()
