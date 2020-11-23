@@ -43,7 +43,7 @@ public class LibraryController {
 
     }
 
-    @PostMapping("/create-library") //CreateLibraryResponse
+    @PostMapping("/libraries") //CreateLibraryResponse
     public ResponseEntity<CreateLibraryResponse> createLibrary(@RequestBody Library libraryDTO) {
         libraryService.createLibrary(libraryDTO);
         return ResponseEntity.ok(new CreateLibraryResponse("Success"));
@@ -71,14 +71,14 @@ public class LibraryController {
 
     }
 
-    @DeleteMapping("library/{idLibrary}/delete-library")
+    @DeleteMapping("library/{idLibrary}")
     public ResponseEntity<LibraryStatusResponce> deleteLibrary(
             @PathVariable int idLibrary,
             @RequestHeader("Authorisation") String token) {
         libraryService.deleteLibrary(token, idLibrary);
         return ResponseEntity.ok(new LibraryStatusResponce("LibraryDeletedSuccessfully"));
     }
-    @PutMapping("/library/{idLibrary}/edit")
+    @PutMapping("/library/{idLibrary}")
     public Library editLibrary(@RequestBody Library library, @PathVariable int idLibrary){
         return libraryService.editLibrary(library,idLibrary);
     }

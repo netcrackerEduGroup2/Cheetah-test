@@ -25,7 +25,7 @@ public class CompoundController {
         return ResponseEntity.ok(this.compoundService.selectAllCompound());
     }
 
-    @PostMapping("compounds/create-compound")
+    @PostMapping("/compounds")
     public ResponseEntity<CreateCompoundResponse> createCompound(@RequestParam(name = "id") int idLibrary,
                                                                  @RequestBody Compound compoundDTO) {
         compoundService.createCompound(idLibrary, compoundDTO);
@@ -38,7 +38,7 @@ public class CompoundController {
         return compoundService.getActiveCompoundByTitle(libraryId, title);
     }
 
-    @PutMapping("compounds/edit-compound")
+    @PutMapping("/compounds")
     public Compound editAction(@RequestBody Compound compoundDTO) {
         return compoundService.editCompound(compoundDTO);
     }
@@ -49,7 +49,7 @@ public class CompoundController {
                 changeCompoundStatusDTO.getId());
     }
 
-    @DeleteMapping("compounds/delete-compound")
+    @DeleteMapping("/compounds")
     public ResponseEntity<CompoundStatusResponse> deleteCompound(
             @RequestBody DeleteCompoundDTO deleteCompoundDTO,
             @RequestHeader("Authorisation") String token

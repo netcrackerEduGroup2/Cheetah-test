@@ -25,7 +25,7 @@ public class ActionsController {
         return actionService.selectAllActions();
     }
 
-    @PostMapping("actions/create-action")
+    @PostMapping("/actions")
     public ResponseEntity<CreateActionResponse> createAction(@RequestParam(name = "id") int idLibrary, @RequestBody Action actionDTO) {
         actionService.createAction(idLibrary, actionDTO);
         return ResponseEntity.ok(new CreateActionResponse("Success"));
@@ -38,7 +38,7 @@ public class ActionsController {
     }
 
 
-    @PutMapping("actions/edit-action")
+    @PutMapping("actions")
     public Action editAction(@RequestBody Action actionDTO) {
         return actionService.editAction(actionDTO);
     }
@@ -49,7 +49,7 @@ public class ActionsController {
                 changeActionStatusDTO.getId());
     }
 
-    @DeleteMapping("actions/delete-action")
+    @DeleteMapping("/actions")
     public ResponseEntity<ActionStatusResponse> deleteAction(
             @RequestHeader("Authorisation") String token,
             @RequestBody DeleteActionDTO deleteActionDTO) {
