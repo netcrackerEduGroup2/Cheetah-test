@@ -124,7 +124,7 @@ public class UserDaoImpl implements UserDao {
     public User editUser(User user) {
         String sql = EDIT_USER_SQL;
 
-        int result = jdbcTemplate.update(sql, user.getEmail(), user.getPass(), user.getName(), user.getRole(), user.getId());
+        int result = jdbcTemplate.update(sql, user.getEmail(), user.getName(), user.getRole(), user.getId());
         if(result == 1){
             return user;
         }
