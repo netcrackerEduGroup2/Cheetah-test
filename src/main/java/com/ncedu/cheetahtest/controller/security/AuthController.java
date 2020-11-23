@@ -14,24 +14,22 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "${frontend.ulr}")
 public class AuthController {
 
-    private AuthService authService;
+  private AuthService authService;
 
-    @Autowired
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
+  @Autowired
+  public AuthController(AuthService authService) { this.authService = authService; }
 
-    @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterDto registerDto) {
-        authService.register(registerDto);
+  @PostMapping("/register")
+  public ResponseEntity<RegisterResponse> register(@RequestBody RegisterDto registerDto) {
+    authService.register(registerDto);
 
-        return ResponseEntity.ok(new RegisterResponse("success"));
-    }
+    return ResponseEntity.ok(new RegisterResponse("success"));
+  }
 
-    @PostMapping("/login")
-    public ResponseEntity<AccessTokenDto> login(@RequestBody LoginDto loginDto) {
-        AccessTokenDto accessTokenDto = authService.login(loginDto);
+  @PostMapping("/login")
+  public ResponseEntity<AccessTokenDto> login(@RequestBody LoginDto loginDto) {
+    AccessTokenDto accessTokenDto = authService.login(loginDto);
 
-        return  ResponseEntity.ok(accessTokenDto);
-    }
+    return ResponseEntity.ok(accessTokenDto);
+  }
 }
