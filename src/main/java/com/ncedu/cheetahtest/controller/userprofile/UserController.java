@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/user")
 @Slf4j
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${frontend.ulr}")
 public class UserController {
   private final UserService userService;
 
@@ -29,22 +29,20 @@ public class UserController {
 
   @PutMapping("/activate")
   public ResponseEntity<RegisterResponse> doActive(@RequestBody User user) {
+    user.setStatus("active");
     userService.changeUserStatus(user);
-
     return ResponseEntity.ok(new RegisterResponse("success"));
   }
 
   @PutMapping("/deactivate")
   public ResponseEntity<RegisterResponse> doInactive(@RequestBody User user) {
+    user.setStatus("inactive");
     userService.changeUserStatus(user);
-
     return ResponseEntity.ok(new RegisterResponse("success"));
   }
 
   @GetMapping("/findById")
-  public ResponseEntity<RegisterResponse> searchUser(@RequestBody Long id) {
-    userService.findUserById(id);
-
-    return ResponseEntity.ok(new RegisterResponse("success"));
+  public User searchUser(@RequestParam String id) {
+    return userService.findUserById(Long.parseLong(id));
   }
 }
