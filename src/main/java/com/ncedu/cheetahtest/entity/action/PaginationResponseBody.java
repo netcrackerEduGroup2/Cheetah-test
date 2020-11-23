@@ -8,19 +8,19 @@ import java.util.List;
 
 @Data
 public class PaginationResponseBody {
-    private List list;
+    private List<Object> list;
     private int totalElements;
 
     public PaginationResponseBody(List<Action> actions, List<Compound> compounds, int size, int page) {
-        List combined = new ArrayList(actions);
+        List<Object> combined = new ArrayList<>(actions);
         combined.addAll(compounds);
-        List res;
+        List<Object> res;
         if (size * page >= combined.size()) {
-            res = new ArrayList(combined);
+            res = new ArrayList<>(combined);
         } else {
             res = combined.subList(size * (page - 1), size * page);
         }
         this.list = res;
-        this.totalElements = res.size();
+        this.totalElements = combined.size();
     }
 }

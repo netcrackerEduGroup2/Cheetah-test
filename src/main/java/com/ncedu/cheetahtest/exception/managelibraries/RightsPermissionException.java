@@ -1,4 +1,4 @@
-package com.ncedu.cheetahtest.exception.manageLibraries;
+package com.ncedu.cheetahtest.exception.managelibraries;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

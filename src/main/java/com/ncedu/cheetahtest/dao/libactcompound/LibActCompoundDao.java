@@ -1,4 +1,4 @@
-package com.ncedu.cheetahtest.dao.libActCompound;
+package com.ncedu.cheetahtest.dao.libactcompound;
 
 import com.ncedu.cheetahtest.entity.libActCompound.LibActCompound;
 

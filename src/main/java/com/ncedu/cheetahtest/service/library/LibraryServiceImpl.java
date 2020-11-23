@@ -1,9 +1,9 @@
 package com.ncedu.cheetahtest.service.library;
 
-import com.ncedu.cheetahtest.dao.libActCompound.LibActCompoundDao;
+import com.ncedu.cheetahtest.dao.libactcompound.LibActCompoundDao;
 import com.ncedu.cheetahtest.dao.library.LibraryDao;
 import com.ncedu.cheetahtest.entity.library.Library;
-import com.ncedu.cheetahtest.exception.manageLibraries.RightsPermissionException;
+import com.ncedu.cheetahtest.exception.managelibraries.RightsPermissionException;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

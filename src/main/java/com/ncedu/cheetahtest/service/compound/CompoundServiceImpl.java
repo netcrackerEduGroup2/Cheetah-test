@@ -1,13 +1,13 @@
 package com.ncedu.cheetahtest.service.compound;
 
 import com.ncedu.cheetahtest.dao.compound.CompoundDao;
-import com.ncedu.cheetahtest.dao.libActCompound.LibActCompoundDao;
+import com.ncedu.cheetahtest.dao.libactcompound.LibActCompoundDao;
 import com.ncedu.cheetahtest.entity.compound.Compound;
 
 import com.ncedu.cheetahtest.entity.compound.DeleteCompoundDTO;
 import com.ncedu.cheetahtest.entity.libActCompound.LibActCompound;
-import com.ncedu.cheetahtest.exception.manageLibraries.RightsPermissionException;
-import com.ncedu.cheetahtest.exception.manageLibraries.UnproperInputException;
+import com.ncedu.cheetahtest.exception.managelibraries.RightsPermissionException;
+import com.ncedu.cheetahtest.exception.managelibraries.UnproperInputException;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,7 +62,14 @@ public class CompoundServiceImpl implements CompoundService {
 
     @Override
     public Compound editCompound(Compound compoundDTO) {
-        return compoundDao.editCompound(compoundDTO);
+        if(!compoundDTO.getStatus().equals("active") &&
+                !compoundDTO.getStatus().equals("inactive")){
+            throw new UnproperInputException();
+        }
+        else{
+            return compoundDao.editCompound(compoundDTO);
+        }
+
     }
 
     @Override

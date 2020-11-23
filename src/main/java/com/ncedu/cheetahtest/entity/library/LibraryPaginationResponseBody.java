@@ -7,17 +7,17 @@ import java.util.List;
 
 @Data
 public class LibraryPaginationResponseBody {
-    private List list;
+    private List<Object> list;
     private int totalElements;
 
     public LibraryPaginationResponseBody(List<Library> libraries, int size, int page) {
-        List res;
+        List<Object> res;
         if (size * page >= libraries.size()) {
-            res = new ArrayList(libraries);
+            res = new ArrayList<>(libraries);
         } else {
-            res = libraries.subList(size * (page - 1), size * page);
+            res = new ArrayList<>(libraries.subList(size * (page - 1), size * page));
         }
         this.list = res;
-        this.totalElements = res.size();
+        this.totalElements = libraries.size();
     }
 }

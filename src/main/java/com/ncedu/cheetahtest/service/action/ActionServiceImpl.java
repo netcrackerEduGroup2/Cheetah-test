@@ -2,12 +2,12 @@ package com.ncedu.cheetahtest.service.action;
 
 
 import com.ncedu.cheetahtest.dao.action.ActionDao;
-import com.ncedu.cheetahtest.dao.libActCompound.LibActCompoundDao;
+import com.ncedu.cheetahtest.dao.libactcompound.LibActCompoundDao;
 import com.ncedu.cheetahtest.entity.action.Action;
 import com.ncedu.cheetahtest.entity.action.DeleteActionDTO;
 import com.ncedu.cheetahtest.entity.libActCompound.LibActCompound;
-import com.ncedu.cheetahtest.exception.manageLibraries.RightsPermissionException;
-import com.ncedu.cheetahtest.exception.manageLibraries.UnproperInputException;
+import com.ncedu.cheetahtest.exception.managelibraries.RightsPermissionException;
+import com.ncedu.cheetahtest.exception.managelibraries.UnproperInputException;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,7 +59,13 @@ public class ActionServiceImpl implements ActionService {
 
     @Override
     public Action editAction(Action actionDTO) {
-        return actionDao.editAction(actionDTO);
+        if ( !actionDTO.getStatus().equals("active") &&
+                !actionDTO.getStatus().equals("inactive")) {
+            throw new UnproperInputException();
+        } else {
+            return actionDao.editAction(actionDTO);
+        }
+
     }
 
     @Override
