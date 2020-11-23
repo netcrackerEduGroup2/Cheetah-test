@@ -16,4 +16,10 @@ public interface UserService {
     void makeTokenExpired(ResetToken resetToken);
 
     void setUserLastRequest(String email, Date date);
+
+    User editUser(User user);
+
+    User changeUserStatus(User user);
+
+    User findUserById(long id);
 }

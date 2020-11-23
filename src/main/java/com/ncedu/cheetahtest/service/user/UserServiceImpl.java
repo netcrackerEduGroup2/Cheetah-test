@@ -15,53 +15,72 @@ import java.util.Date;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    private UserDao userDao;
-    private ResetTokenDao resetTokenDao;
+  private UserDao userDao;
+  private ResetTokenDao resetTokenDao;
 
-    @Autowired
-    public UserServiceImpl(UserDao userDao, ResetTokenDao resetTokenDao) {
-        this.userDao = userDao;
-        this.resetTokenDao = resetTokenDao;
+  @Autowired
+  public UserServiceImpl(UserDao userDao, ResetTokenDao resetTokenDao) {
+    this.userDao = userDao;
+    this.resetTokenDao = resetTokenDao;
+  }
+
+  @Override
+  @Transactional
+  public User findUserByEmail(String email) {
+    return userDao.findUserByEmail(email);
+  }
+
+  @Override
+  @Transactional
+  public void createPasswordResetTokenForUser(User user, String token) {
+    ResetToken myToken = new ResetToken(token, user.getId(), new Date());
+
+    ResetToken resetToken = resetTokenDao.findResetTokenByUserId(user.getId());
+
+    if (resetToken == null) {
+      resetTokenDao.createToken(myToken);
+
+      log.info("Token has been successfully created: " + myToken);
+    } else {
+      resetTokenDao.saveToken(myToken);
+
+      log.info("Token has been successfully updated: " + myToken);
     }
+  }
 
-    @Override
-    @Transactional
-    public User findUserByEmail(String email) {
-        return userDao.findUserByEmail(email);
-    }
+  @Override
+  @Transactional
+  public ResetToken findByToken(String token) {
+    return resetTokenDao.findResetTokenByToken(token);
+  }
 
-    @Override
-    @Transactional
-    public void createPasswordResetTokenForUser(User user, String token) {
-        ResetToken myToken = new ResetToken(token, user.getId(), new Date());
+  @Override
+  @Transactional
+  public void makeTokenExpired(ResetToken resetToken) {
+    resetTokenDao.makeTokenExpired(resetToken);
+  }
 
-        ResetToken resetToken = resetTokenDao.findResetTokenByUserId(user.getId());
+  @Override
+  @Transactional
+  public User editUser(User user) {
+    return userDao.editUser(user);
+  }
 
-        if (resetToken == null) {
-            resetTokenDao.createToken(myToken);
+  @Override
+  @Transactional
+  public User changeUserStatus(User user) {
+    return userDao.changeUserStatus(user);
+  }
 
-            log.info("Token has been successfully created: " + myToken);
-        } else {
-            resetTokenDao.saveToken(myToken);
+  @Override
+  public User findUserById(long id) {
+    return userDao.findUserById(id);
+  }
 
-            log.info("Token has been successfully updated: " + myToken);
-        }
-    }
-
-    @Override
-    @Transactional
-    public ResetToken findByToken(String token) {
-        return resetTokenDao.findResetTokenByToken(token);
-    }
-
-    @Override
-    @Transactional
-    public void makeTokenExpired(ResetToken resetToken) {
-        resetTokenDao.makeTokenExpired(resetToken);
-    }
-
-    @Override
-    @Transactional
-    public  void setUserLastRequest(String email, Date date) { userDao.setUserLastRequest(email, date);}
+  @Override
+  @Transactional
+  public void setUserLastRequest(String email, Date date) {
+    userDao.setUserLastRequest(email, date);
+  }
 
 }
