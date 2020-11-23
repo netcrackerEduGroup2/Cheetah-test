@@ -14,6 +14,6 @@ public interface ActionService {
     Action editAction(Action actionDTO);
     Action changeStatus(String status, int id);
     boolean isAdmin(String jwtToken);
-    void deleteAction(DeleteActionDTO deleteActionDTO);
+    void deleteAction(String token, DeleteActionDTO deleteActionDTO);
     List<Action> getInactiveActionsByTitle(int idLibrary, String title);
 }

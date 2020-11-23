@@ -88,8 +88,8 @@ public class ActionServiceImpl implements ActionService {
     }
 
     @Override
-    public void deleteAction(DeleteActionDTO deleteActionDTO) {
-        if (isAdmin(deleteActionDTO.getToken())){
+    public void deleteAction(String token,DeleteActionDTO deleteActionDTO) {
+        if (isAdmin(token)){
             actionDao.removeActionById(deleteActionDTO.getId());
             libActCompoundDao.removeByActionId(deleteActionDTO.getId());
         }

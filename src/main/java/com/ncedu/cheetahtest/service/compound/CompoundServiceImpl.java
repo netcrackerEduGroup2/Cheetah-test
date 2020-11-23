@@ -91,8 +91,8 @@ public class CompoundServiceImpl implements CompoundService {
     }
 
     @Override
-    public void deleteCompound(DeleteCompoundDTO deleteCompoundDTO) {
-        if (isAdmin(deleteCompoundDTO.getToken())){
+    public void deleteCompound(String token ,DeleteCompoundDTO deleteCompoundDTO) {
+        if (isAdmin(token)){
             compoundDao.removeCompoundById(deleteCompoundDTO.getId());
             libActCompoundDao.removeByCompoundId(deleteCompoundDTO.getId());
         }

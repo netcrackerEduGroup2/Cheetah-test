@@ -15,5 +15,5 @@ public interface CompoundService {
     Compound editCompound(Compound compoundDTO);
     Compound changeStatus(String status, int id);
     boolean isAdmin(String jwtToken);
-    void deleteCompound(DeleteCompoundDTO deleteCompoundDTO);
+    void deleteCompound(String token , DeleteCompoundDTO deleteCompoundDTO);
 }
