@@ -26,6 +26,7 @@ public class MailRestController {
 
     public static final String SUBJECT = "Password reset";
     public static final String FRONT_URL = "http://localhost:4200/reset-password?token=";
+    private static final String HTML_PATH = "src/main/resources/mail/email.html";
     private final EmailService emailService;
     private final UserService userService;
     private final AuthService authService;
@@ -47,7 +48,7 @@ public class MailRestController {
         String token = UUID.randomUUID().toString();
 
         userService.createPasswordResetTokenForUser(user, token);
-        emailService.sendMessageWithAttachment(email.getEmail(), constructUrl(token), SUBJECT);
+        emailService.sendMessageWithAttachment(email.getEmail(), constructUrl(token), SUBJECT, HTML_PATH);
 
         return new ResponseEntity<>(new GenericResponse("user.fetched"), HttpStatus.OK);
     }

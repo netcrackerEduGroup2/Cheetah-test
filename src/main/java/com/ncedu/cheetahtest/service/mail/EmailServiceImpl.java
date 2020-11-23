@@ -42,7 +42,7 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
-    public void sendMessageWithAttachment(String to, String text, String subject) {
+    public void sendMessageWithAttachment(String to, String text, String subject, String htmlPath) {
 
         MimeMessage message = emailSender.createMimeMessage();
         try {
@@ -53,7 +53,7 @@ public class EmailServiceImpl implements EmailService{
             helper.setTo(to);
             helper.setSubject(subject);
 
-            String htmlString = htmlMail.getHtmlWithStringInside(text)
+            String htmlString = htmlMail.getHtmlWithStringInside(text, htmlPath)
                     .orElseThrow(FileNotFoundException::new);
 
             helper.setText("", htmlString);
