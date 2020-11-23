@@ -51,7 +51,7 @@ public class ActionsController {
 
     @DeleteMapping("actions/delete-action")
     public ResponseEntity<ActionStatusResponse> deleteAction(
-            @RequestHeader("Authentication") String token,
+            @RequestHeader("Authorisation") String token,
             @RequestBody DeleteActionDTO deleteActionDTO) {
         actionService.deleteAction(token,deleteActionDTO);
         return ResponseEntity.ok(new ActionStatusResponse("ActionDeletedSuccessfully"));

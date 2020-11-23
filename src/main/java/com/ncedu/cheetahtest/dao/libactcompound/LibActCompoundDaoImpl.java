@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.List;
 
+import static com.ncedu.cheetahtest.dao.libactcompound.LibActCompoundConsts.*;
+
 @Repository
 public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
@@ -21,8 +23,7 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public void createLibActCompound(LibActCompound libActCompound) {
-        String sql = "INSERT INTO lib_act_compound (id_library , id_compound , id_action) " +
-                "VALUES (?, ?, ?);";
+        String sql = CREATE_LIBACTCOMPOUND;
         jdbcTemplate.update(
                 sql,
                 libActCompound.getIdLibrary(),
@@ -33,8 +34,7 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public List<LibActCompound> findLibActCompoundsById(int id) {
-        String sql = "SELECT id, id_library , id_compound , id_action FROM lib_act_compound " +
-                "WHERE id_library = ?";
+        String sql = FIND_LIBACTCOMPOUNDS_BY_ID;
          return jdbcTemplate.query(
                 sql,
                 preparedStatement -> preparedStatement.setInt(1, id),
@@ -46,8 +46,7 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public List<LibActCompound> findLibActCompoundsByIdCompound(int id) {
-        String sql = "SELECT id, id_library , id_compound , id_action FROM lib_act_compound " +
-                "WHERE id_compound = ?";
+        String sql = FIND_LIBACTCOMPOUNDS_BY_ID_COMPOUND;
         return jdbcTemplate.query(
                 sql,
                 preparedStatement -> preparedStatement.setInt(1, id),
@@ -57,8 +56,7 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public List<LibActCompound> findLibActCompoundsByIdAct(int id) {
-        String sql = "SELECT id, id_library , id_compound , id_action FROM lib_act_compound " +
-                "WHERE id_action = ?";
+        String sql = FIND_LIBACTCOMPOUNDS_BY_ID_ACT;
         return jdbcTemplate.query(
                 sql,
                 preparedStatement -> preparedStatement.setInt(1, id),
@@ -68,7 +66,7 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public void setIdCompound(int idCompound, int id) {
-        String sql = "UPDATE lib_act_compound SET id_compound = ? WHERE id = ?";
+        String sql = SET_ID_COMPOUND;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -82,7 +80,7 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public void setIdAction(int idAction, int id) {
-        String sql = "UPDATE lib_act_compound SET id_action = ? WHERE id = ?";
+        String sql = SET_ID_ACTION;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -96,7 +94,7 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public void removeByLibraryId(int idLib) {
-        String sql = "DELETE from lib_act_compound WHERE id_library = ?";
+        String sql = REMOVE_BY_LIBRARY_ID;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -108,7 +106,7 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public void removeByCompoundId(int idComp) {
-        String sql = "DELETE from lib_act_compound WHERE id_compound = ?";
+        String sql = REMOVE_BY_COMPOUND_ID;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -120,7 +118,7 @@ public class LibActCompoundDaoImpl implements LibActCompoundDao {
 
     @Override
     public void removeByActionId(int idAct) {
-        String sql = "DELETE from lib_act_compound WHERE id_action = ?";
+        String sql = REMOVE_BY_ACTION_ID;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {

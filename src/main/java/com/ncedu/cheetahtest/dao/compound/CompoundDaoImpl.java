@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
+
+import static com.ncedu.cheetahtest.dao.compound.CompoundConsts.*;
+
 @Repository
 public class CompoundDaoImpl implements CompoundDao {
 
@@ -21,7 +24,7 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public List<Compound> selectAll() {
-        String sql = "SELECT id, title, description, idtestscenario, status FROM compounds";
+        String sql = SELECT_ALL;
         return jdbcTemplate.query(
                 sql,
                 new CompoundRowMapper()
@@ -30,10 +33,7 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public List<Compound> selectActiveCompoundByTitle(int idLibrary, String title) {
-        String sql = "SELECT compounds.id, compounds.title, compounds.description, compounds.idtestscenario, " +
-                "compounds.status FROM compounds INNER JOIN lib_act_compound ON compounds.id = lib_act_compound.id_compound " +
-                "INNER JOIN library ON lib_act_compound.id_library = library.id " +
-                "WHERE compounds.title LIKE CONCAT('%', ?, '%') AND library.id = ? AND compounds.status = 'active'";
+        String sql = SELECT_ACTIVE_COMPOUND_BY_TITLE;
         return jdbcTemplate.query(
                 sql,
                 preparedStatement -> {
@@ -46,10 +46,7 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public List<Compound> selectInactiveCompoundByTitle(int idLibrary, String title) {
-        String sql = "SELECT compounds.id, compounds.title, compounds.description, compounds.idtestscenario, " +
-                "compounds.status FROM compounds INNER JOIN lib_act_compound ON compounds.id = lib_act_compound.id_compound " +
-                "INNER JOIN library ON lib_act_compound.id_library = library.id " +
-                "WHERE compounds.title LIKE CONCAT('%', ?, '%') AND library.id = ? AND compounds.status='inactive'";
+        String sql = SELECT_INACTIVE_COMPOUND_BY_TITLE;
         return jdbcTemplate.query(
                 sql,
                 preparedStatement -> {
@@ -62,8 +59,7 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public int createCompound(Compound compound) {
-        String sql = "INSERT INTO compounds (title,description,idtestscenario,status) " +
-                "VALUES (?,?,?,?::action_status);";
+        String sql = CREATE_COMPOUND;
         jdbcTemplate.update(
                 sql,
                 compound.getTitle(),
@@ -71,7 +67,7 @@ public class CompoundDaoImpl implements CompoundDao {
                 compound.getIdTestScenario(),
                 compound.getStatus()
         );
-        sql = "SELECT CURRVAL('compounds_id_seq')";
+        sql = SELECT_CURRVAL_COMPOUNDS_ID;
         List<Integer> currIndex = jdbcTemplate.query(sql, new CurrentValueRowMapper());
         if(currIndex.size() == 1) {
             return currIndex.get(0);
@@ -81,8 +77,7 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public Compound findCompoundById(int id) {
-        String sql = "SELECT id,title,description,idtestscenario,status " +
-                "FROM compounds WHERE id = ?";
+        String sql = FIND_COMPOUND_BY_ID;
         List<Compound> compounds = jdbcTemplate.query(
                 sql,
                 preparedStatement -> preparedStatement.setInt(1, id),
@@ -97,9 +92,7 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public List<Compound> findCompoundByIdTestScenario(int idTestScenario) {
-        String sql = "SELECT id,title,description,idtestscenario,status " +
-                    "FROM compounds " +
-                    "WHERE idtestscenario = ?";
+        String sql = FIND_COMPOUND_BY_ID_TESTSCENARIO;
         return jdbcTemplate.query(
                 sql,
                 preparedStatement -> preparedStatement.setInt(1, idTestScenario),
@@ -109,8 +102,7 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public Compound editCompound(Compound compoundDTO) {
-        String sql = "UPDATE compounds SET title = ?, description = ?, idtestscenario = ?, status = ?::compound_status " +
-                "WHERE compounds.id = ?";
+        String sql = EDIT_COMPOUND;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -127,7 +119,7 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public Compound setTitle(String title, int id) {
-        String sql = "UPDATE compounds SET title = ? WHERE id = ?";
+        String sql = SET_TITLE;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -141,7 +133,7 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public Compound setDescription(String description, int id) {
-        String sql = "UPDATE compounds SET description = ? WHERE id = ?";
+        String sql = SET_DESCRIPTION;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -155,7 +147,7 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public Compound setTestScenarioId(String testScenarioId, int id) {
-        String sql = "UPDATE compounds SET idtestscenario = ? WHERE id = ?";
+        String sql = SET_TESTSCENARIO_ID;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -169,7 +161,7 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public Compound setStatus(String status, int id) {
-        String sql = "UPDATE compounds SET status = ? WHERE id = ?";
+        String sql = SET_STATUS;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -183,7 +175,7 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public void removeCompoundById(int id) {
-        String sql = "DELETE FROM compounds WHERE id = ?";
+        String sql = REMOVE_COMPOUND_BY_ID;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {

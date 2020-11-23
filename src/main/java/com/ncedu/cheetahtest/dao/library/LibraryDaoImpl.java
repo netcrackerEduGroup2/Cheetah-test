@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.List;
 
+import static com.ncedu.cheetahtest.dao.library.LIbraryConsts.*;
+
 @Repository
 public class LibraryDaoImpl implements LibraryDao {
     private final JdbcTemplate jdbcTemplate;
@@ -20,7 +22,7 @@ public class LibraryDaoImpl implements LibraryDao {
 
     @Override
     public void createLibrary(Library library) {
-        String sql = "INSERT INTO library (description, name , createdate) VALUES (?,?,?);";
+        String sql = CREATE_LIBRARY;
         jdbcTemplate.update(
                 sql,
                 library.getDescription(),
@@ -31,13 +33,13 @@ public class LibraryDaoImpl implements LibraryDao {
 
     @Override
     public List<Library> selectAll() {
-        String sql = "SELECT id, description, name , createdate FROM library";
+        String sql = SELECT_ALL;
         return jdbcTemplate.query(sql,new LibraryRowMapper());
     }
 
     @Override
     public Library findLibraryById(int id) {
-        String sql = "SELECT id, description, name , createdate FROM library WHERE id = ?";
+        String sql = FIND_LIBRARY_BY_ID;
         List<Library> libraries = jdbcTemplate.query(
                 sql,
                 preparedStatement -> preparedStatement.setInt(1, id),
@@ -51,7 +53,7 @@ public class LibraryDaoImpl implements LibraryDao {
 
     @Override
     public Library setDescription(String description, int id) {
-        String sql = "UPDATE library SET description = ? WHERE id = ?;";
+        String sql = SET_DESCRIPTION;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -66,7 +68,7 @@ public class LibraryDaoImpl implements LibraryDao {
 
     @Override
     public void removeLibrary(int id) {
-        String sql = "DELETE FROM library WHERE id = ?";
+        String sql = REMOVE_LIBRARY;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -79,7 +81,7 @@ public class LibraryDaoImpl implements LibraryDao {
 
     @Override
     public List<Library> selectLibrariesByName(String name) {
-        String sql = "SELECT id, description, name , createdate FROM library WHERE name LIKE CONCAT('%',?,'%')";
+        String sql = SELECT_LIBRARIES_BY_NAME;
         return jdbcTemplate.query(sql,
                 preparedStatement -> preparedStatement.setString(1,name),
                 new LibraryRowMapper());
@@ -87,7 +89,7 @@ public class LibraryDaoImpl implements LibraryDao {
 
     @Override
     public Library setName(String name, int id) {
-        String sql = "UPDATE library SET name = ? WHERE id = ?;";
+        String sql = SET_NAME;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {

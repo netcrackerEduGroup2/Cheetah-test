@@ -52,7 +52,7 @@ public class CompoundController {
     @DeleteMapping("compounds/delete-compound")
     public ResponseEntity<CompoundStatusResponse> deleteCompound(
             @RequestBody DeleteCompoundDTO deleteCompoundDTO,
-            @RequestHeader("Authentication") String token
+            @RequestHeader("Authorisation") String token
     ) {
         compoundService.deleteCompound(token,deleteCompoundDTO);
         return ResponseEntity.ok(new CompoundStatusResponse("CompoundDeletedSuccessfully"));

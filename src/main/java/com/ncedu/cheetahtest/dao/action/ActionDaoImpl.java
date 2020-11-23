@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.PreparedStatementCallback;
 import javax.sql.DataSource;
 import java.util.List;
 
+import static com.ncedu.cheetahtest.dao.action.ActionConsts.*;
+
 @Repository
 public class ActionDaoImpl implements ActionDao {
 
@@ -22,7 +24,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public List<Action> selectAll() {
-        String sql = "SELECT id,title , description , idcompound , idtestscenario, status FROM actions";
+        String sql = SELECT_ALL;
         return jdbcTemplate.query(
                 sql,
                 new ActionRowMapper());
@@ -30,10 +32,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public List<Action> selectActiveActionsByTitle(int idLibrary,String title) {
-        String sql = "SELECT actions.id, actions.title , actions.description , actions.idcompound , actions.idtestscenario, " +
-                "actions.status FROM actions INNER JOIN lib_act_compound ON actions.id = lib_act_compound.id_action " +
-                "INNER JOIN library ON lib_act_compound.id_library = library.id " +
-                "WHERE actions.title LIKE CONCAT('%',?,'%') AND library.id = ? AND actions.status ='active'";
+        String sql = SELECT_ACTIVE_ACTIONS_BY_TITLE;
         return jdbcTemplate.query(
                 sql,
                 preparedStatement -> {
@@ -45,10 +44,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public List<Action> getInactiveActionsByTitle(int idLibrary, String title) {
-        String sql = "SELECT actions.id, actions.title , actions.description , actions.idcompound , actions.idtestscenario, " +
-                "actions.status FROM actions INNER JOIN lib_act_compound ON actions.id = lib_act_compound.id_action " +
-                "INNER JOIN library ON lib_act_compound.id_library = library.id " +
-                "WHERE actions.title LIKE CONCAT('%',?,'%') AND library.id = ? AND actions.status = 'inactive'";
+        String sql = GET_INACTIVE_ACTIONS_BY_TITLE;
         return jdbcTemplate.query(
                 sql,
                 preparedStatement -> {
@@ -60,8 +56,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public int createAction(Action action) {
-        String sql = "INSERT INTO actions (title , description , idcompound , idtestscenario, status) " +
-                "VALUES (?, ?, ?, ?, ?::action_status);";
+        String sql = CREATE_ACTION;
         jdbcTemplate.update(
                 sql,
                 action.getTitle(),
@@ -70,7 +65,7 @@ public class ActionDaoImpl implements ActionDao {
                 action.getIdTestScenario(),
                 action.getStatus()
         );
-        sql = "SELECT CURRVAL('actions_id_seq') ";
+        sql = SELECT_CURRVAL_ACTION_ID;
         List<Integer> currIndex = jdbcTemplate.query(sql, new CurrentValueRowMapper());
         if(currIndex.size() == 1){
             return currIndex.get(0);
@@ -80,9 +75,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public Action findActionById(int id) {
-        String sql = "SELECT id, title , description , idcompound , idtestscenario, status " +
-                "FROM actions " +
-                "WHERE id = ?";
+        String sql = FIND_ACTION_BY_ID;
 
         List<Action> actions = jdbcTemplate.query(
                 sql,
@@ -99,9 +92,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public List<Action> findActionsByIdCompound(int idCompound) {
-        String sql = "SELECT id, title , description , idcompound , idtestscenario, status " +
-                "FROM actions " +
-                "WHERE idcompound = ?";
+        String sql = FIND_ACTIONS_BY_ID_COMPOUND;
 
         return jdbcTemplate.query(
                 sql,
@@ -113,9 +104,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public List<Action> findActionsByIdTestScenario(int idTestScenario) {
-        String sql = "SELECT id, title , description , idcompound , idtestscenario, status " +
-                "FROM actions " +
-                "WHERE idtestscenario = ?";
+        String sql = FIND_ACTIONS_BY_ID_TESTSCENARIO;
 
         return jdbcTemplate.query(
                 sql,
@@ -127,8 +116,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public Action editAction(Action action) {
-        String sql = "UPDATE actions SET title=?,description=?,idcompound=?,idtestscenario=?,status=?::action_status " +
-                "WHERE id = ?";
+        String sql = EDIT_ACTION;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -147,7 +135,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public Action setTitle(String title, int id) {
-        String sql = "UPDATE actions SET title = ? WHERE id = ?";
+        String sql = SET_TITLE;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -162,7 +150,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public Action setDescription(String description, int id) {
-        String sql = "UPDATE actions SET description = ? WHERE id = ?";
+        String sql = SET_DESCRIPTION;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -177,7 +165,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public Action setCompoundId(String compId, int id) {
-        String sql = "UPDATE actions SET idCompound = ? WHERE id = ?";
+        String sql = SET_COMPOUND_ID;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -193,7 +181,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public Action setTestScenarioId(String testScenarioId, int id) {
-        String sql = "UPDATE actions SET idTestScenario = ? WHERE id = ?";
+        String sql = SET_TESTSCENARIO_ID;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -208,7 +196,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public Action setStatus(String status, int id) {
-        String sql = "UPDATE actions SET status = ?::action_status WHERE id = ?";
+        String sql = SET_STATUS;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {
@@ -223,7 +211,7 @@ public class ActionDaoImpl implements ActionDao {
 
     @Override
     public void removeActionById(int id) {
-        String sql = "DELETE FROM actions WHERE id = ?";
+        String sql = REMOVE_ACTION_BY_ID;
         jdbcTemplate.execute(
                 sql,
                 (PreparedStatementCallback<Boolean>) preparedStatement -> {

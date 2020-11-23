@@ -72,8 +72,9 @@ public class LibraryController {
     }
 
     @DeleteMapping("library/{idLibrary}/delete-library")
-    public ResponseEntity<LibraryStatusResponce> deleteLibrary(@PathVariable int idLibrary,
-                                                               @RequestHeader("Authentication") String token) {
+    public ResponseEntity<LibraryStatusResponce> deleteLibrary(
+            @PathVariable int idLibrary,
+            @RequestHeader("Authorisation") String token) {
         libraryService.deleteLibrary(token, idLibrary);
         return ResponseEntity.ok(new LibraryStatusResponce("LibraryDeletedSuccessfully"));
     }
