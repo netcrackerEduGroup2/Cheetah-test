@@ -45,12 +45,4 @@ public class ProjectController {
                 new ProjectResponse("The project '"+project.getName()+"' has been updated!")
         );
     }
-
-    @DeleteMapping("/projects")
-    public ResponseEntity<ProjectResponse> removeProject(@RequestBody Project project) {
-        projectService.removeProjectById(project.getId());
-        return ResponseEntity.ok(
-                new ProjectResponse("The project '"+project.getName()+"' has been removed successfully")
-        );
-    }
 }

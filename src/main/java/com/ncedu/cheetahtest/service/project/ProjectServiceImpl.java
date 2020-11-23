@@ -23,11 +23,6 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void removeProjectById(int id) {
-        projectDao.deleteProjectById(id);
-    }
-
-    @Override
     public List<Project> getAllProjects() {
         return projectDao.getAllProjects();
     }

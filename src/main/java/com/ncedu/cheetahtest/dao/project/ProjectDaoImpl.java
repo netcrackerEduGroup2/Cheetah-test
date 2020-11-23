@@ -34,12 +34,6 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public void deleteProjectById(int id) {
-        String sqlQuery = ProjectSqlConsts.DELETE_PROJECT_QUERY;
-        jdbcTemplate.update(sqlQuery, id);
-    }
-
-    @Override
     public List<Project> getAllProjects() {
         String sqlQuery = ProjectSqlConsts.SELECT_ALL_PROJECTS_QUERY;
         return jdbcTemplate.query(sqlQuery, new ProjectMapper());

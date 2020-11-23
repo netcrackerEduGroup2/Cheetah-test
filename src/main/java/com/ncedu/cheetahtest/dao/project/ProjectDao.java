@@ -8,8 +8,6 @@ public interface ProjectDao {
 
     void createProject(Project project);
 
-    void deleteProjectById(int id);
-
     List<Project> getAllProjects();
 
     List<Project> findByProjectName(String projectName);
