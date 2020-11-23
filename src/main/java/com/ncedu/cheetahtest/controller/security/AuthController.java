@@ -7,7 +7,10 @@ import com.ncedu.cheetahtest.entity.security.RegisterResponse;
 import com.ncedu.cheetahtest.service.security.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -20,14 +23,14 @@ public class AuthController {
   public AuthController(AuthService authService) { this.authService = authService; }
 
   @PostMapping("/register")
-  public ResponseEntity<RegisterResponse> register(@RequestBody RegisterDto registerDto) {
+  public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterDto registerDto) {
     authService.register(registerDto);
 
     return ResponseEntity.ok(new RegisterResponse("success"));
   }
 
   @PostMapping("/login")
-  public ResponseEntity<AccessTokenDto> login(@RequestBody LoginDto loginDto) {
+  public ResponseEntity<AccessTokenDto> login(@Valid @RequestBody LoginDto loginDto) {
     AccessTokenDto accessTokenDto = authService.login(loginDto);
 
     return ResponseEntity.ok(accessTokenDto);

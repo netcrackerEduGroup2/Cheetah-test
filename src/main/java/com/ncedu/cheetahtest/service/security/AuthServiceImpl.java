@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
+
 @Service
 public class AuthServiceImpl implements AuthService{
 
@@ -37,7 +39,7 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     @Transactional
-    public void register(RegisterDto registerDto) {
+    public void register(@Valid RegisterDto registerDto) {
 
         if (userDao.findUserByEmail(registerDto.getEmail()) != null) {
             throw new UserAlreadyExistsException();
@@ -57,7 +59,7 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public AccessTokenDto login(LoginDto loginDto) {
+    public AccessTokenDto login(@Valid LoginDto loginDto) {
 
         User user = userDao.findUserByEmail(loginDto.getEmail());
 
