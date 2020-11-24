@@ -7,6 +7,11 @@ public final class ProjectSqlConsts {
                                                            "WHERE id = ?";
     public static final String SELECT_ALL_PROJECTS_QUERY = "SELECT id, name, link, status, create_date, owner_id " +
                                                            "FROM project";
+
+    public static final String SELECT_ALL_ARCHIEVED_PROJECTS_QUERY = "SELECT id, name, link, status, create_date, owner_id " +
+                                                                     "FROM project " +
+                                                                     "WHERE status = 'inactive'";
+
     public static final String SELECT_PROJECT_BY_ID_QUERY = "SELECT id, name, link, status, create_date, owner_id " +
                                                             "FROM project " +
                                                             "WHERE id = ?";

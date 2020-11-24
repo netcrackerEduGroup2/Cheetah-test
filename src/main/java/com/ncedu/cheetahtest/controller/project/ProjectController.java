@@ -27,6 +27,11 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getAllProjects());
     }
 
+    @GetMapping("/archieved")
+    public ResponseEntity<List<Project>> getAllArchievedProjects() {
+        return ResponseEntity.ok(projectService.getAllArchievedProjects());
+    }
+
     @GetMapping("/projects/{id}")
     public ResponseEntity<Project> getProjectById(@PathVariable("id") int projectId) {
         return ResponseEntity.ok(projectService.getProjectById(projectId));

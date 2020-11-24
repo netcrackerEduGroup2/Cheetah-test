@@ -28,6 +28,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public List<Project> getAllArchievedProjects() {
+        return projectDao.getAllArchievedProjects();
+    }
+
+    @Override
     public Project getProjectById(int id) {
         return projectDao.findByProjectId(id);
     }

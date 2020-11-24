@@ -7,5 +7,6 @@ import java.util.List;
 public interface ProjectService {
     void createNewProject(Project newProject);
     List<Project> getAllProjects();
+    List<Project> getAllArchievedProjects();
     Project getProjectById(int id);
 }

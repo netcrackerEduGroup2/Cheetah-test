@@ -10,6 +10,8 @@ public interface ProjectDao {
 
     List<Project> getAllProjects();
 
+    List<Project> getAllArchievedProjects();
+
     Project findByProjectId(int id);
 
     List<Project> findByOwner(String ownerName);
