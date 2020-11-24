@@ -26,9 +26,7 @@ import java.util.UUID;
 public class MailRestController {
     public static final String SUBJECT = "Password reset";
     private static final String HTML_PATH = "src/main/resources/mail/email.html";
-
-    @Value("${frontend.ulr}/reset-password?token=")
-    private String FRONT_URL;
+    public static final String FRONT_URL = "http://localhost:4200/reset-password?token=";
 
     private final EmailService emailService;
     private final UserService userService;
