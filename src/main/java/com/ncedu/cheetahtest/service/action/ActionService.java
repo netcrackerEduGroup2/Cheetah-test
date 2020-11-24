@@ -13,7 +13,6 @@ public interface ActionService {
     List<Action> getActiveActionsByTitle(int idLibrary,String title);
     Action editAction(Action actionDTO);
     Action changeStatus(String status, int id);
-    boolean isAdmin(String jwtToken);
     void deleteAction(String token, DeleteActionDTO deleteActionDTO);
     List<Action> getInactiveActionsByTitle(int idLibrary, String title);
 }

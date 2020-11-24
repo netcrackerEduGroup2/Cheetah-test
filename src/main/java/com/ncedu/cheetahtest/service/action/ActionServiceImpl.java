@@ -8,7 +8,7 @@ import com.ncedu.cheetahtest.entity.action.DeleteActionDTO;
 import com.ncedu.cheetahtest.entity.libactcompound.LibActCompound;
 import com.ncedu.cheetahtest.exception.managelibraries.RightsPermissionException;
 import com.ncedu.cheetahtest.exception.managelibraries.UnproperInputException;
-import org.apache.tomcat.util.codec.binary.Base64;
+import com.ncedu.cheetahtest.service.security.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,19 +18,21 @@ import java.util.List;
 public class ActionServiceImpl implements ActionService {
     private final ActionDao actionDao;
     private final LibActCompoundDao libActCompoundDao;
+    private final AuthService authService;
 
     @Autowired
-    public ActionServiceImpl(ActionDao actionDao, LibActCompoundDao libActCompoundDao) {
+    public ActionServiceImpl(ActionDao actionDao, LibActCompoundDao libActCompoundDao, AuthService authService) {
 
         this.actionDao = actionDao;
         this.libActCompoundDao = libActCompoundDao;
+        this.authService = authService;
     }
 
     @Override
     public void createAction(int idLibrary, Action actionDTO) {
 
-        if (actionDTO.getTitle() == null || (!actionDTO.getStatus().equals("active") &&
-                !actionDTO.getStatus().equals("inactive"))) {
+        if (actionDTO.getTitle() == null || (!"active".equals(actionDTO.getStatus()) &&
+                !"inactive".equals(actionDTO.getStatus())) ){
             throw new UnproperInputException();
         } else {
             int idAction = actionDao.createAction(actionDTO);
@@ -59,8 +61,8 @@ public class ActionServiceImpl implements ActionService {
 
     @Override
     public Action editAction(Action actionDTO) {
-        if ( !actionDTO.getStatus().equals("active") &&
-                !actionDTO.getStatus().equals("inactive")) {
+        if ( !"active".equals(actionDTO.getStatus()) &&
+                !"inactive".equals(actionDTO.getStatus())) {
             throw new UnproperInputException();
         } else {
             return actionDao.editAction(actionDTO);
@@ -70,26 +72,18 @@ public class ActionServiceImpl implements ActionService {
 
     @Override
     public Action changeStatus(String status, int id) {
-        if(!status.equals("active") &&
-                !status.equals("inactive")){
+        if(!"active".equals(status) &&
+                !"inactive".equals(status)){
             throw new UnproperInputException();
         }
         else return actionDao.setStatus(status,id);
     }
 
-    @Override
-    public boolean isAdmin(String jwtToken) {
-        String[] splitString = jwtToken.split("\\.");
-        String base64EncodedBody = splitString[1];
-        Base64 base64Url = new Base64(true);
-        String body = new String(base64Url.decode(base64EncodedBody));
-        return body.contains("admin");
 
-    }
 
     @Override
     public void deleteAction(String token,DeleteActionDTO deleteActionDTO) {
-        if (isAdmin(token)){
+        if (authService.isAdmin(token)){
             actionDao.removeActionById(deleteActionDTO.getId());
             libActCompoundDao.removeByActionId(deleteActionDTO.getId());
         }

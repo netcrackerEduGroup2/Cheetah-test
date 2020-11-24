@@ -4,7 +4,7 @@ import com.ncedu.cheetahtest.dao.libactcompound.LibActCompoundDao;
 import com.ncedu.cheetahtest.dao.library.LibraryDao;
 import com.ncedu.cheetahtest.entity.library.Library;
 import com.ncedu.cheetahtest.exception.managelibraries.RightsPermissionException;
-import org.apache.tomcat.util.codec.binary.Base64;
+import com.ncedu.cheetahtest.service.security.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +14,13 @@ import java.util.List;
 public class LibraryServiceImpl implements LibraryService {
     private final LibraryDao libraryDao;
     private final LibActCompoundDao libActCompoundDao;
+    private final AuthService authService;
 
     @Autowired
-    public LibraryServiceImpl(LibraryDao libraryDao, LibActCompoundDao libActCompoundDao) {
+    public LibraryServiceImpl(LibraryDao libraryDao, LibActCompoundDao libActCompoundDao,AuthService authService) {
         this.libraryDao = libraryDao;
         this.libActCompoundDao = libActCompoundDao;
+        this.authService = authService;
     }
 
 
@@ -39,7 +41,7 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public void deleteLibrary(String token, int id) {
-        if (isAdmin(token)) {
+        if (authService.isAdmin(token)) {
             libraryDao.removeLibrary(id);
             libActCompoundDao.removeByLibraryId(id);
         } else {
@@ -53,13 +55,5 @@ public class LibraryServiceImpl implements LibraryService {
         return libraryDao.setName(library.getName(),id);
     }
 
-    @Override
-    public boolean isAdmin(String jwtToken) {
 
-        String[] splitString = jwtToken.split("\\.");
-        String base64EncodedBody = splitString[1];
-        Base64 base64Url = new Base64(true);
-        String body = new String(base64Url.decode(base64EncodedBody));
-        return body.contains("admin");
-    }
 }

@@ -25,8 +25,8 @@ create table actions
     id             serial primary key not null,
     title          varchar(10)        not null,
     description    varchar(50),
-    idCompound     integer,
-    idTestScenario integer,
+    idcompound     integer,
+    idtesttcenario integer,
     status         action_status not null
 
 );

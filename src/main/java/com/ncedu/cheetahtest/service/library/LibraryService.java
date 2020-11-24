@@ -9,6 +9,5 @@ public interface LibraryService {
     List<Library> getLibrariesByName(String name);
     void createLibrary(Library libraryDTO);
     void deleteLibrary(String token, int id);
-    boolean isAdmin(String token);
     Library editLibrary(Library library, int id);
 }

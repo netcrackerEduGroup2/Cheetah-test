@@ -6,10 +6,13 @@ import com.ncedu.cheetahtest.entity.security.AccessTokenDto;
 import com.ncedu.cheetahtest.entity.security.LoginDto;
 import com.ncedu.cheetahtest.entity.security.RegisterDto;
 
+import java.security.SecureRandom;
+
 public interface AuthService {
     void register(RegisterDto registerDto);
     AccessTokenDto login(LoginDto loginDto);
 
     void changeUserPassword(ResetToken resetToken, String password);
     boolean validatePassword(PasswordDTO passwordDTO);
+    boolean isAdmin(String jwtToken);
 }

@@ -10,6 +10,7 @@ import com.ncedu.cheetahtest.entity.security.RegisterDto;
 import com.ncedu.cheetahtest.exception.security.BadCredentialsException;
 import com.ncedu.cheetahtest.exception.security.UserAlreadyExistsException;
 import com.ncedu.cheetahtest.config.security.jwt.JwtTokenProvider;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,11 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AuthServiceImpl implements AuthService{
 
-    private UserDao userDao;
+    private final UserDao userDao;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    private JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     public AuthServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
@@ -91,5 +92,14 @@ public class AuthServiceImpl implements AuthService{
         String encodedPasswordWithSalt = passwordDTO.getPassword() + passwordSalt;
 
         return passwordEncoder.matches(encodedPasswordWithSalt, theUser.getPass());
+    }
+
+    @Override
+    public boolean isAdmin(String jwtToken) {
+        String[] splitString = jwtToken.split("\\.");
+        String base64EncodedBody = splitString[1];
+        Base64 base64Url = new Base64(true);
+        String body = new String(base64Url.decode(base64EncodedBody));
+        return body.contains("admin");
     }
 }
