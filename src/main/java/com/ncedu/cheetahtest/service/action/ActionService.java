@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ActionService {
 
-    void createAction(int idLibrary, Action actionDTO);
+    Action createAction(int idLibrary, Action actionDTO);
     List<Action> selectAllActions();
     Action getActionById(int id);
     List<Action> getActiveActionsByTitle(int idLibrary,String title);

@@ -6,7 +6,7 @@ import com.ncedu.cheetahtest.entity.action.Action;
 import java.util.List;
 
 public interface ActionDao {
-    int createAction(Action action);
+    Action createAction(Action action);
 
     Action findActionById(int id);
 

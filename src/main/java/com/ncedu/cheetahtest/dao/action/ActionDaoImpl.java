@@ -51,7 +51,7 @@ public class ActionDaoImpl implements ActionDao {
     }
 
     @Override
-    public int createAction(Action action) {
+    public Action createAction(Action action) {
         String sql = CREATE_ACTION;
         jdbcTemplate.update(
                 sql,
@@ -64,9 +64,9 @@ public class ActionDaoImpl implements ActionDao {
         sql = SELECT_CURRVAL_ACTION_ID;
         List<Integer> currIndex = jdbcTemplate.query(sql, new CurrentValueRowMapper());
         if(currIndex.size() == 1){
-            return currIndex.get(0);
+            return findActionById(currIndex.get(0));
         }
-        else return -1;
+        else return null;
     }
 
     @Override

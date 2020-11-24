@@ -29,17 +29,18 @@ public class ActionServiceImpl implements ActionService {
     }
 
     @Override
-    public void createAction(int idLibrary, Action actionDTO) {
+    public Action createAction(int idLibrary, Action actionDTO) {
 
         if (actionDTO.getTitle() == null || (!"active".equals(actionDTO.getStatus()) &&
                 !"inactive".equals(actionDTO.getStatus())) ){
             throw new UnproperInputException();
         } else {
-            int idAction = actionDao.createAction(actionDTO);
+            Action createdAction = actionDao.createAction(actionDTO);
             LibActCompound insert = new LibActCompound();
             insert.setIdLibrary(idLibrary);
-            insert.setIdAction(idAction);
+            insert.setIdAction(createdAction.getId());
             libActCompoundDao.createLibActCompound(insert);
+            return createdAction;
         }
 
     }

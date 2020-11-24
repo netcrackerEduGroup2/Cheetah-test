@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/compounds")
+@RequestMapping("/api")
 @CrossOrigin(origins = "${frontend.ulr}")
 
 public class CompoundController {
@@ -20,12 +20,12 @@ public class CompoundController {
         this.compoundService = compoundService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/compounds")
     public ResponseEntity<List<Compound>> getAllActions() {
         return ResponseEntity.ok(this.compoundService.selectAllCompound());
     }
 
-    @PostMapping("/")
+    @PostMapping("/compounds")
     public ResponseEntity<CreateCompoundResponse> createCompound(@RequestParam(name = "id") int idLibrary,
                                                                  @RequestBody Compound compoundDTO) {
         compoundService.createCompound(idLibrary, compoundDTO);
@@ -33,23 +33,23 @@ public class CompoundController {
 
     }
 
-    @GetMapping("/{libraryId}")
+    @GetMapping("/compounds/{libraryId}")
     public List<Compound> getActiveCompoundsByTitle(@PathVariable int libraryId, @RequestParam("title") String title) {
         return compoundService.getActiveCompoundByTitle(libraryId, title);
     }
 
-    @PutMapping("/")
+    @PutMapping("/compounds")
     public Compound editAction(@RequestBody Compound compoundDTO) {
         return compoundService.editCompound(compoundDTO);
     }
 
-    @PutMapping("/change-status")
+    @PutMapping("/compounds/change-status")
     public Compound changeStatus(@RequestBody ChangeCompoundStatusDTO changeCompoundStatusDTO) {
         return compoundService.changeStatus(changeCompoundStatusDTO.getStatusToChange(),
                 changeCompoundStatusDTO.getId());
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping("/compounds")
     public ResponseEntity<CompoundStatusResponse> deleteCompound(
             @RequestBody DeleteCompoundDTO deleteCompoundDTO,
             @RequestHeader("Authorisation") String token

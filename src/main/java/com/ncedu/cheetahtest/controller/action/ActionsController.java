@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/actions")
+@RequestMapping("/api")
 @CrossOrigin(origins = "${frontend.ulr}")
 
 public class ActionsController {
@@ -20,36 +20,36 @@ public class ActionsController {
         this.actionService = actionService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/actions")
     public List<Action> getAllActions() {
         return actionService.selectAllActions();
     }
 
-    @PostMapping("/")
-    public ResponseEntity<CreateActionResponse> createAction(@RequestParam(name = "id") int idLibrary, @RequestBody Action actionDTO) {
-        actionService.createAction(idLibrary, actionDTO);
-        return ResponseEntity.ok(new CreateActionResponse("Success"));
+    @PostMapping("/actions")
+    public Action createAction(@RequestParam(name = "id") int idLibrary, @RequestBody Action actionDTO) {
+
+        return actionService.createAction(idLibrary, actionDTO);
 
     }
 
-    @GetMapping("by-id/{id}")
+    @GetMapping("actions/by-id/{id}")
     public Action getActionsByTitle(@PathVariable int id) {
         return actionService.getActionById(id);
     }
 
 
-    @PutMapping("/")
+    @PutMapping("/actions")
     public Action editAction(@RequestBody Action actionDTO) {
         return actionService.editAction(actionDTO);
     }
 
-    @PutMapping("/change-status")
+    @PutMapping("actions/change-status")
     public Action changeStatus(@RequestBody ChangeActionStatusDTO changeActionStatusDTO) {
         return actionService.changeStatus(changeActionStatusDTO.getStatusToChange(),
                 changeActionStatusDTO.getId());
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping("/actions")
     public ResponseEntity<ActionStatusResponse> deleteAction(
             @RequestHeader("Authorisation") String token,
             @RequestBody DeleteActionDTO deleteActionDTO) {
