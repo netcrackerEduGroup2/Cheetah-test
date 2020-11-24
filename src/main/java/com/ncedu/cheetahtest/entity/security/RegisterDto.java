@@ -1,5 +1,6 @@
 package com.ncedu.cheetahtest.entity.security;
 
+import com.ncedu.cheetahtest.entity.user.UserRole;
 import lombok.Data;
 
 import javax.validation.constraints.Email;

@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.service.security;
 
-import com.ncedu.cheetahtest.dao.resettoken.ResetTokenDao;
 import com.ncedu.cheetahtest.dao.user.UserDao;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
@@ -8,6 +7,8 @@ import com.ncedu.cheetahtest.entity.mail.PasswordDTO;
 import com.ncedu.cheetahtest.entity.security.AccessTokenDto;
 import com.ncedu.cheetahtest.entity.security.LoginDto;
 import com.ncedu.cheetahtest.entity.security.RegisterDto;
+import com.ncedu.cheetahtest.entity.user.UserRole;
+import com.ncedu.cheetahtest.entity.user.UserStatus;
 import com.ncedu.cheetahtest.exception.security.BadCredentialsException;
 import com.ncedu.cheetahtest.exception.security.UserAlreadyExistsException;
 import com.ncedu.cheetahtest.config.security.jwt.JwtTokenProvider;
@@ -54,8 +55,8 @@ public class AuthServiceImpl implements AuthService{
         newUser.setEmail(registerDto.getEmail());
         newUser.setName(registerDto.getName());
         newUser.setPass(passwordEncoder.encode(passwordWithSalt));
-        newUser.setStatus("active");
-        newUser.setRole(registerDto.getRole());
+        newUser.setStatus(UserStatus.active);
+        newUser.setRole(UserRole.valueOf(registerDto.getRole()));
 
         userDao.createDeveloper(newUser);
     }
@@ -103,6 +104,6 @@ public class AuthServiceImpl implements AuthService{
         String base64EncodedBody = splitString[1];
         Base64 base64Url = new Base64(true);
         String body = new String(base64Url.decode(base64EncodedBody));
-        return body.contains("admin");
+        return body.contains(UserRole.admin.toString());
     }
 }

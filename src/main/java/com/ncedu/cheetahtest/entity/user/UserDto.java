@@ -7,10 +7,10 @@ public class UserDto {
     private int id;
     private String email;
     private String name;
-    private UserRole role;
-    private UserStatus status;
+    private String role;
+    private String status;
 
-    public UserDto(int id, String email, String name, UserRole role, UserStatus status) {
+    public UserDto(int id, String email, String name, String role, String status) {
         this.id = id;
         this.email = email;
         this.name = name;
@@ -27,8 +27,8 @@ public class UserDto {
         private int id;
         private String email;
         private String name;
-        private UserRole role;
-        private UserStatus status;
+        private String role;
+        private String status;
 
         public UserDtoBuilder setId(int id) {
             return this;
