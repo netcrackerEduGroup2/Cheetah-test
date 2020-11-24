@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public class ResetTokenDaoImpl implements ResetTokenDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public ResetTokenDaoImpl(DataSource dataSource) {
