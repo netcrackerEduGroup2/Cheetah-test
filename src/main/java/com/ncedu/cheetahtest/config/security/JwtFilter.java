@@ -14,9 +14,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 @Component
 public class JwtFilter extends GenericFilterBean {
+
+    private static final int SESSION_TIMEOUT_HOURS = 1;
 
     private JwtTokenProvider jwtTokenProvider;
 
@@ -38,6 +42,14 @@ public class JwtFilter extends GenericFilterBean {
         if (token != null && jwtTokenProvider.isTokenValid(token)) {
             String userEmail = jwtTokenProvider.getEmail(token);
             UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(userEmail);
+
+            if (isSessionTimedOut(userDetails.getLastRequest())) {
+                httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Session timed out");
+                return;
+            }
+
+            userDetailsService.setUserLastRequest(userEmail, new Date());
+
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
@@ -51,6 +63,22 @@ public class JwtFilter extends GenericFilterBean {
             return initialToken.substring(7);
         }
         return null;
+    }
+
+    private boolean isSessionTimedOut(Date lastRequest) {
+
+        if (lastRequest == null) {
+            return false;
+        }
+
+        Calendar sessionTimeout = Calendar.getInstance();
+        sessionTimeout.setTime(lastRequest);
+        sessionTimeout.add(Calendar.HOUR, SESSION_TIMEOUT_HOURS);
+
+        Calendar calendarCurrent = Calendar.getInstance();
+        calendarCurrent.setTime(new Date());
+
+        return sessionTimeout.before(calendarCurrent);
     }
 }
 
