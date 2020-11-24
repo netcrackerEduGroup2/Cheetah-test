@@ -22,7 +22,7 @@ import javax.validation.Valid;
 public class AuthController {
     public static final String SUBJECT = "Account create";
     private static final String HTML_PATH = "src/main/resources/mail/register-email.html";
-//    public static final String FRONT_URL = "${frontend.ulr}/login?token=";
+
     @Value("${frontend.ulr}/login?token=")
     private String FRONT_URL;
 
