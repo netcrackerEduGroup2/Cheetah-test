@@ -12,7 +12,7 @@ public class LibraryPaginationResponseBody {
 
     public LibraryPaginationResponseBody(List<Library> libraries, int size, int page) {
         List<Object> res;
-        if (size * page >= libraries.size()) {
+        if (size >= libraries.size()) {
             res = new ArrayList<>(libraries);
         } else {
             res = new ArrayList<>(libraries.subList(size * (page - 1), size * page));

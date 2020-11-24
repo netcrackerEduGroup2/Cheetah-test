@@ -15,4 +15,5 @@ public interface ActionService {
     Action changeStatus(String status, int id);
     void deleteAction(String token, int idAction);
     List<Action> getInactiveActionsByTitle(int idLibrary, String title);
+    boolean isStatusUnProper(String status);
 }

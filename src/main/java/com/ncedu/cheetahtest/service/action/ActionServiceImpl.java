@@ -30,8 +30,7 @@ public class ActionServiceImpl implements ActionService {
     @Override
     public Action createAction(int idLibrary, Action actionDTO) {
 
-        if (actionDTO.getTitle() == null || (!"active".equals(actionDTO.getStatus()) &&
-                !"inactive".equals(actionDTO.getStatus())) ){
+        if (actionDTO.getTitle() == null || isStatusUnProper(actionDTO.getStatus()) ){
             throw new UnproperInputException();
         } else {
             Action createdAction = actionDao.createAction(actionDTO);
@@ -61,8 +60,7 @@ public class ActionServiceImpl implements ActionService {
 
     @Override
     public Action editAction(Action actionDTO) {
-        if ( !"active".equals(actionDTO.getStatus()) &&
-                !"inactive".equals(actionDTO.getStatus())) {
+        if (isStatusUnProper(actionDTO.getStatus())) {
             throw new UnproperInputException();
         } else {
             return actionDao.editAction(actionDTO);
@@ -72,8 +70,7 @@ public class ActionServiceImpl implements ActionService {
 
     @Override
     public Action changeStatus(String status, int id) {
-        if(!"active".equals(status) &&
-                !"inactive".equals(status)){
+        if(isStatusUnProper(status)){
             throw new UnproperInputException();
         }
         else return actionDao.setStatus(status,id);
@@ -94,5 +91,11 @@ public class ActionServiceImpl implements ActionService {
     @Override
     public List<Action> getInactiveActionsByTitle(int idLibrary, String title) {
         return actionDao.getInactiveActionsByTitle(idLibrary,title);
+    }
+
+    @Override
+    public boolean isStatusUnProper(String status) {
+        return !"active".equals(status) &&
+                !"inactive".equals(status);
     }
 }

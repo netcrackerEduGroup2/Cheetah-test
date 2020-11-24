@@ -28,8 +28,7 @@ public class CompoundServiceImpl implements CompoundService {
     @Override
     public Compound createCompound(int idLibrary, Compound compoundDTO) {
 
-        if (compoundDTO.getTitle() == null || (!"active".equals(compoundDTO.getStatus())&&
-                !"inactive".equals(compoundDTO.getStatus())) ){
+        if (compoundDTO.getTitle() == null || isStatusUnproper(compoundDTO.getStatus()) ){
             throw new UnproperInputException();
         } else {
             int idCompound = compoundDao.createCompound(compoundDTO);
@@ -63,8 +62,7 @@ public class CompoundServiceImpl implements CompoundService {
 
     @Override
     public Compound editCompound(Compound compoundDTO) {
-        if(!"active".equals(compoundDTO.getStatus()) &&
-                !"inactive".equals(compoundDTO.getStatus())){
+        if(isStatusUnproper(compoundDTO.getStatus())){
             throw new UnproperInputException();
         }
         else{
@@ -75,8 +73,7 @@ public class CompoundServiceImpl implements CompoundService {
 
     @Override
     public Compound changeStatus(String status, int id) {
-        if (!"active".equals(status) &&
-                !"inactive".equals(status)) {
+        if (isStatusUnproper(status)) {
             throw new UnproperInputException();
         } else return compoundDao.setStatus(status, id);
     }
@@ -90,5 +87,11 @@ public class CompoundServiceImpl implements CompoundService {
             libActCompoundDao.removeByCompoundId(idCompound);
         }
         else throw new RightsPermissionException();
+    }
+
+    @Override
+    public boolean isStatusUnproper(String status) {
+        return !"active".equals(status) &&
+                !"inactive".equals(status);
     }
 }

@@ -1,7 +1,6 @@
 package com.ncedu.cheetahtest.service.compound;
 
 import com.ncedu.cheetahtest.entity.compound.Compound;
-import com.ncedu.cheetahtest.entity.compound.DeleteCompoundDTO;
 
 import java.util.List;
 
@@ -15,4 +14,5 @@ public interface CompoundService {
     Compound editCompound(Compound compoundDTO);
     Compound changeStatus(String status, int id);
     void deleteCompound(String token , int idCompound);
+    boolean isStatusUnproper(String status);
 }
