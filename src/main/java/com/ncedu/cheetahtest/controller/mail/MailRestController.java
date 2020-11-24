@@ -24,8 +24,8 @@ import java.util.UUID;
 @Slf4j
 @CrossOrigin(origins = "${frontend.ulr}")
 public class MailRestController {
-
-    private final String SUBJECT = "Password reset";
+    public static final String SUBJECT = "Password reset";
+    private static final String HTML_PATH = "src/main/resources/mail/email.html";
 
     @Value("${frontend.ulr}/reset-password?token=")
     private String FRONT_URL;
@@ -51,7 +51,7 @@ public class MailRestController {
         String token = UUID.randomUUID().toString();
 
         userService.createPasswordResetTokenForUser(user, token);
-        emailService.sendMessageWithAttachment(email.getEmail(), constructUrl(token), SUBJECT);
+        emailService.sendMessageWithAttachment(email.getEmail(), constructUrl(token), SUBJECT, HTML_PATH);
 
         return new ResponseEntity<>(new GenericResponse("user.fetched"), HttpStatus.OK);
     }
