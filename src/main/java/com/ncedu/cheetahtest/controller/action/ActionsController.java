@@ -20,7 +20,7 @@ public class ActionsController {
         this.actionService = actionService;
     }
 
-    @GetMapping("/actions")
+    @GetMapping("/actions/get-all")
     public List<Action> getAllActions() {
         return actionService.selectAllActions();
     }
