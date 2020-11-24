@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -22,4 +24,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = userService.findUserByEmail(email);
         return UserDetailsImpl.fromUserEntityToCustomUserDetails(user);
     }
+
+    public void setUserLastRequest(String email, Date date){ userService.setUserLastRequest(email, date);}
 }

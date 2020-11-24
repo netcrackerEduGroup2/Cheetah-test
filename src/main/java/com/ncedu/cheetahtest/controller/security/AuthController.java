@@ -14,14 +14,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${frontend.ulr}")
 public class AuthController {
     public static final String SUBJECT = "Account create";
-    public static final String FRONT_URL = "http://localhost:4200/login?token=";
     private static final String HTML_PATH = "src/main/resources/mail/register-email.html";
+  
+      @Value("${frontend.ulr}/login?token=")
+    private String FRONT_URL;
 
     private AuthService authService;
     private UserService userService;
@@ -43,17 +46,17 @@ public class AuthController {
         userService.createPasswordResetTokenForUser(user, token);
         emailService.sendMessageWithAttachment(registerDto.getEmail(), constructUrl(token), SUBJECT, HTML_PATH);
 
-        return ResponseEntity.ok(new RegisterResponse("success"));
-    }
+    return ResponseEntity.ok(new RegisterResponse("success"));
+  }
 
-    @PostMapping("/login")
-    public ResponseEntity<AccessTokenDto> login(@RequestBody LoginDto loginDto) {
+  @PostMapping("/login")
+  public ResponseEntity<AccessTokenDto> login(@Valid @RequestBody LoginDto loginDto) {
         AccessTokenDto accessTokenDto = authService.login(loginDto);
-
         return  ResponseEntity.ok(accessTokenDto);
     }
 
     private String constructUrl(String token) {
         return FRONT_URL + token;
     }
+
 }

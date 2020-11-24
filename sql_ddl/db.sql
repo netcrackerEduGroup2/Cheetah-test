@@ -8,7 +8,8 @@ create table users (
     name            varchar(100) not null ,
     role            user_role not null ,
     status          user_status not null ,
-    reset_token_id  integer
+    reset_token_id  integer,
+    last_request  timestamp
 );
 
 create table reset_token

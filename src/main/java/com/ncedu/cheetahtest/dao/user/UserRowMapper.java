@@ -15,6 +15,7 @@ public class UserRowMapper implements RowMapper<User> {
     public static final String ROLE = "role";
     public static final String STATUS = "status";
     public static final String RESET_TOKEN_ID = "reset_token_id";
+    public static final String LAST_REQUEST = "last_request";
 
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -27,6 +28,7 @@ public class UserRowMapper implements RowMapper<User> {
         user.setRole(rs.getString(ROLE));
         user.setStatus(rs.getString(STATUS));
         user.setResetPassToken(rs.getInt(RESET_TOKEN_ID));
+        user.setLastRequest(rs.getTimestamp(LAST_REQUEST));
 
         return user;
     }

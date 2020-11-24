@@ -10,6 +10,7 @@ import com.ncedu.cheetahtest.service.user.UserService;
 import com.ncedu.cheetahtest.service.security.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +22,14 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api")
 @Slf4j
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${frontend.ulr}")
 public class MailRestController {
-
     public static final String SUBJECT = "Password reset";
-    public static final String FRONT_URL = "http://localhost:4200/reset-password?token=";
     private static final String HTML_PATH = "src/main/resources/mail/email.html";
+
+    @Value("${frontend.ulr}/reset-password?token=")
+    private String FRONT_URL;
+
     private final EmailService emailService;
     private final UserService userService;
     private final AuthService authService;
