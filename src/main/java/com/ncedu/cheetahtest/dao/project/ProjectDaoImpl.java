@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class ProjectDaoImpl implements ProjectDao {
@@ -74,9 +73,7 @@ public class ProjectDaoImpl implements ProjectDao {
         String sqlQuery = ProjectSqlConsts.SELECT_PROJECTS_BY_CREATION_DATE;
         return jdbcTemplate.query(
                 sqlQuery,
-                preparedStatement -> {
-                        preparedStatement.setTimestamp(1, date);
-                },
+                preparedStatement -> preparedStatement.setTimestamp(1, date),
                 new ProjectMapper()
         );
     }
