@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.controller.security;
 
-import com.ncedu.cheetahtest.entity.mail.Email;
 import com.ncedu.cheetahtest.entity.security.AccessTokenDto;
 import com.ncedu.cheetahtest.entity.security.LoginDto;
 import com.ncedu.cheetahtest.entity.security.RegisterDto;
