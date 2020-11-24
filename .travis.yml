@@ -13,14 +13,14 @@ addons:
   sonarcloud:
     organization: netcrackergroup2
     token:
-      secure: YKhtpXziZFx+b+MV/zxjcEhmhNNlpjRWeSMk9CG98AiZXPFnb4m4/FCLqR2Scd7qG1R5z/wKZO8Cvi10vySYVLSpcvzHxQUoWdBrIBKaQvEVUXoTQPv8+fqBkXxD7zyw1mr74ipB02WbQWtCtGkZLKiwNf7/UPOG46z3rvT74hWmAQFD2J+CX6cUeTZ+v8TJ5gWMDPujjxCRrbRMLM9hB/DZePZ6Ueo4tgxqFeabg8XRBcHEX9G76Vw4dFvSDMAsx6MD7A6Ei4Wg+ufoCEUjQ0NHDwC41uE8Vgjs9rh1eiDgmIbjKcm3HNu9k6tgIq5rtg9fL9trmuuAZcBmJN1PkOmh/2v76fUGFTlUZO5buGbkxliIjSMpjSyaQzQ0FJ8yS2O//jOaYKudLiwF9mSEfCD5EIHj8OMYJ4Hzlpb391GTCjQFKpgObZH5J4C5jB8bnB6BkmM+XSqAw4gBh2YF26crF4R87hXKKjLzQwgZtx1MjG12wXWBTM7qf7D3XvOYD2eJK3N84Cfh88oAFcwI5Y+Vir9TaI1X5SqU27YK1bS/RwUij5ekjm9i4nDgBu+JFgkB8inz/oEjsSb/bZePIWjhetaL/Y/QESGzo+5ijpYwpm5iTbglZnslw+Xt1bEkMRp1TDx3ilTBdKI/K/gDU87oXFaPMd+dF8UO9mhQCTc=
+      secure: $SONARCLOUD_SECURED_TOKEN
 script:
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=NetCrackerGroup2_Cheetah-test
 
 deploy:
   provider: heroku
   api_key:
-    secure: Blbvoh7wsvcwIMuZYd+kkcWSItvMXDfAP+NGRZ5RSvZmaVaMQGUHQ7bw3tP8YqZ8jrDTzCg0BGfyEAzsFKiHTx5gqi1c9d/Vlb5NnlFb4yVYxnJh7rKz5mVKPsCHdM4dIHOI41zxaDJOMBv5GXUcoEbUYvxnDXcXL/Z1BPGCjCd9WkO2MkdW4TkICyalIbp/vUGaPM4rmOy4oGnJBW78wwTXoDAGl4PRjFvkbQUqnhd5mzJ4Ay6osdnmXbAG//iB0eVjuYW7b82Bi+5Jjnk4alur0MqrXumvwxL3b+CkyJbkyMnWlK0YI2XiGy21ZjM1iD335gVqVsBfaU0mvgfvvOjIF2X/Bdtw1+fQd+k/flSk0fVby9P35NPF3bYaAF+h5axAV7QCKOSvvkHiDVal6FnSwCdlQDKsnpdqojnVyqcc9ggM2M9Zna3m60iE0nZR6yPfuHLEg6PnKP8qdWMY6NilbWuD6PuUFrP2TXH774bku/ON0T/l1qrR+R81LdBTfdVeZKCWfubbjdXpxK98BtwIzg2UqDPEDpAID/1mnKIcYiuFxdHYrVkTLAH8Gi6clTHJbgIGoaEkqPb9aUdsZdrzPOJ2x1Wz/50sfxfVG/UyWb0L8gHQxr4xMl17kKoLhFrVcw15yKBUEGtHEFOqsnEZmn3zT1gYIydamqIMMeE=
+    secure: $HEROKU_SECURED_API_KEY
   app:
     main: cheetah-test-backend-prod
     dev: cheetah-test-backend-dev
