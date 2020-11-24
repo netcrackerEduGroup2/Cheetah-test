@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CompoundService {
 
-    void createCompound(int idLibrary, Compound compoundDTO);
+    Compound createCompound(int idLibrary, Compound compoundDTO);
     List<Compound> selectAllCompound();
     Compound getCompoundId(int id);
     List<Compound> getActiveCompoundByTitle(int idLibrary, String title);

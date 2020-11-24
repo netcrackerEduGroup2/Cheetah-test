@@ -4,7 +4,6 @@ package com.ncedu.cheetahtest.service.action;
 import com.ncedu.cheetahtest.dao.action.ActionDao;
 import com.ncedu.cheetahtest.dao.libactcompound.LibActCompoundDao;
 import com.ncedu.cheetahtest.entity.action.Action;
-import com.ncedu.cheetahtest.entity.action.DeleteActionDTO;
 import com.ncedu.cheetahtest.entity.libactcompound.LibActCompound;
 import com.ncedu.cheetahtest.exception.managelibraries.RightsPermissionException;
 import com.ncedu.cheetahtest.exception.managelibraries.UnproperInputException;

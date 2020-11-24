@@ -26,7 +26,7 @@ public class CompoundServiceImpl implements CompoundService {
     }
 
     @Override
-    public void createCompound(int idLibrary, Compound compoundDTO) {
+    public Compound createCompound(int idLibrary, Compound compoundDTO) {
 
         if (compoundDTO.getTitle() == null || (!"active".equals(compoundDTO.getStatus())&&
                 !"inactive".equals(compoundDTO.getStatus())) ){
@@ -37,6 +37,7 @@ public class CompoundServiceImpl implements CompoundService {
             insert.setIdLibrary(idLibrary);
             insert.setIdCompound(idCompound);
             libActCompoundDao.createLibActCompound(insert);
+            return compoundDTO;
         }
     }
 

@@ -32,9 +32,9 @@ public class ActionsController {
 
     }
 
-    @GetMapping("actions/by-id/{id}")
-    public Action getActionsByTitle(@PathVariable int id) {
-        return actionService.getActionById(id);
+    @GetMapping("/actions")
+    public Action getActionsByTitle(@RequestParam("idAction") int idAction) {
+        return actionService.getActionById(idAction);
     }
 
 
@@ -52,8 +52,8 @@ public class ActionsController {
     @DeleteMapping("/actions")
     public ResponseEntity<ActionStatusResponse> deleteAction(
             @RequestHeader("Authorisation") String token,
-            @RequestParam("idAction")int idAction) {
-        actionService.deleteAction(token,idAction);
+            @RequestParam("idAction") int idAction) {
+        actionService.deleteAction(token, idAction);
         return ResponseEntity.ok(new ActionStatusResponse("ActionDeletedSuccessfully"));
     }
 }

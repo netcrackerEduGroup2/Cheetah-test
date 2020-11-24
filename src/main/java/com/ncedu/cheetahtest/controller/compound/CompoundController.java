@@ -26,10 +26,10 @@ public class CompoundController {
     }
 
     @PostMapping("/compounds")
-    public ResponseEntity<CreateCompoundResponse> createCompound(@RequestParam(name = "id") int idLibrary,
+    public Compound createCompound(@RequestParam(name = "id") int idLibrary,
                                                                  @RequestBody Compound compoundDTO) {
-        compoundService.createCompound(idLibrary, compoundDTO);
-        return ResponseEntity.ok(new CreateCompoundResponse("Success"));
+
+        return compoundService.createCompound(idLibrary, compoundDTO);
 
     }
 
