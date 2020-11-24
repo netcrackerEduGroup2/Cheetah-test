@@ -3,7 +3,6 @@ package com.ncedu.cheetahtest.service.compound;
 import com.ncedu.cheetahtest.dao.compound.CompoundDao;
 import com.ncedu.cheetahtest.dao.libactcompound.LibActCompoundDao;
 import com.ncedu.cheetahtest.entity.compound.Compound;
-import com.ncedu.cheetahtest.entity.compound.DeleteCompoundDTO;
 import com.ncedu.cheetahtest.entity.libactcompound.LibActCompound;
 import com.ncedu.cheetahtest.exception.managelibraries.RightsPermissionException;
 import com.ncedu.cheetahtest.exception.managelibraries.UnproperInputException;
@@ -84,10 +83,10 @@ public class CompoundServiceImpl implements CompoundService {
 
 
     @Override
-    public void deleteCompound(String token ,DeleteCompoundDTO deleteCompoundDTO) {
+    public void deleteCompound(String token ,int idCompound) {
         if (authService.isAdmin(token)){
-            compoundDao.removeCompoundById(deleteCompoundDTO.getId());
-            libActCompoundDao.removeByCompoundId(deleteCompoundDTO.getId());
+            compoundDao.removeCompoundById(idCompound);
+            libActCompoundDao.removeByCompoundId(idCompound);
         }
         else throw new RightsPermissionException();
     }

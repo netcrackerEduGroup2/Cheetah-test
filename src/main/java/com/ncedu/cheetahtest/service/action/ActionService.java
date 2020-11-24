@@ -13,6 +13,6 @@ public interface ActionService {
     List<Action> getActiveActionsByTitle(int idLibrary,String title);
     Action editAction(Action actionDTO);
     Action changeStatus(String status, int id);
-    void deleteAction(String token, DeleteActionDTO deleteActionDTO);
+    void deleteAction(String token, int idAction);
     List<Action> getInactiveActionsByTitle(int idLibrary, String title);
 }

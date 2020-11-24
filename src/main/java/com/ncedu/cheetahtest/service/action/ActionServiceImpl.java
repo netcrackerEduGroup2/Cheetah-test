@@ -83,10 +83,10 @@ public class ActionServiceImpl implements ActionService {
 
 
     @Override
-    public void deleteAction(String token,DeleteActionDTO deleteActionDTO) {
+    public void deleteAction(String token,int idAction) {
         if (authService.isAdmin(token)){
-            actionDao.removeActionById(deleteActionDTO.getId());
-            libActCompoundDao.removeByActionId(deleteActionDTO.getId());
+            actionDao.removeActionById(idAction);
+            libActCompoundDao.removeByActionId(idAction);
         }
         else throw new RightsPermissionException();
 

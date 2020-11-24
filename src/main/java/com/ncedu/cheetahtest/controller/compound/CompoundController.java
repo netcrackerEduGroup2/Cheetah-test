@@ -51,10 +51,10 @@ public class CompoundController {
 
     @DeleteMapping("/compounds")
     public ResponseEntity<CompoundStatusResponse> deleteCompound(
-            @RequestBody DeleteCompoundDTO deleteCompoundDTO,
+            @RequestParam("idCompound") int idCompound,
             @RequestHeader("Authorisation") String token
     ) {
-        compoundService.deleteCompound(token,deleteCompoundDTO);
+        compoundService.deleteCompound(token,idCompound);
         return ResponseEntity.ok(new CompoundStatusResponse("CompoundDeletedSuccessfully"));
     }
 }
