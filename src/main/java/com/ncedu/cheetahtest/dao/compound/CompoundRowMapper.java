@@ -11,7 +11,7 @@ public class CompoundRowMapper implements RowMapper<Compound> {
     public static final String ID = "id";
     public static final String TITLE = "title";
     public static final String DESCRIPTION = "description";
-    public static final String IDTESTSCENARIO = "idTestScenario";
+    public static final String IDTESTSCENARIO = "id_test_scenario";
     public static final String STATUS = "status";
 
     @Override

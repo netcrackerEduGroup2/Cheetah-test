@@ -25,8 +25,8 @@ create table actions
     id             serial primary key not null,
     title          varchar(10)        not null,
     description    varchar(50),
-    idcompound     integer,
-    idtesttcenario integer,
+    id_compound     integer,
+    id_test_scenario integer,
     status         action_status not null
 
 );
@@ -35,7 +35,7 @@ create table compounds
     id serial primary key  not null ,
     title varchar(10),
     description    varchar(50),
-    idTestScenario integer,
+    id_test_scenario integer,
     status         action_status not null
 );
 create table lib_act_compound
@@ -49,5 +49,5 @@ create table library
     id serial primary key  not null,
     description varchar(50),
     name varchar(10) not null,
-    createdate timestamp not null
+    create_date timestamp not null
 );

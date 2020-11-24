@@ -10,7 +10,7 @@ public class LibraryRowMapper implements RowMapper<Library> {
     public static final String ID = "id";
     public static final String DESCRIPTION = "description";
     public static final String NAME = "name";
-    public static final String CREATEDATE = "createdate";
+    public static final String CREATEDATE = "create_date";
 
     @Override
     public Library mapRow(ResultSet rs, int i) throws SQLException {
