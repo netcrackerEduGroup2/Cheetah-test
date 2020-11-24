@@ -9,6 +9,7 @@ import com.ncedu.cheetahtest.service.mail.EmailService;
 import com.ncedu.cheetahtest.service.security.AuthService;
 import com.ncedu.cheetahtest.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,9 @@ import javax.validation.Valid;
 public class AuthController {
     public static final String SUBJECT = "Account create";
     private static final String HTML_PATH = "src/main/resources/mail/register-email.html";
-    public static final String FRONT_URL = "http://localhost:4200/login?token=";
+//    public static final String FRONT_URL = "${frontend.ulr}/login?token=";
+    @Value("${frontend.ulr}/login?token=")
+    private String FRONT_URL;
 
     private AuthService authService;
     private UserService userService;
