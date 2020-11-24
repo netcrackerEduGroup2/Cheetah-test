@@ -19,9 +19,9 @@ import java.util.UUID;
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
-    public static final String SUBJECT = "Password reset";
-    public static final String FRONT_URL = "http://localhost:4200/register?token=";
-    private static final String HTML_PATH = "src/main/resources/mail/email.html";
+    public static final String SUBJECT = "Account create";
+    public static final String FRONT_URL = "http://localhost:4200/login?token=";
+    private static final String HTML_PATH = "src/main/resources/mail/register-email.html";
 
     private AuthService authService;
     private UserService userService;
