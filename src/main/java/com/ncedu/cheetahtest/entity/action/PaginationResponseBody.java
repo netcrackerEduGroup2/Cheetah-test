@@ -15,9 +15,10 @@ public class PaginationResponseBody {
         List<Object> combined = new ArrayList<>(actions);
         combined.addAll(compounds);
         List<Object> res;
-        if (size >= combined.size()) {
+        if (page*size >= combined.size()) {
             res = new ArrayList<>(combined);
         } else {
+
             res = combined.subList(size * (page - 1), size * page);
         }
         this.list = res;
