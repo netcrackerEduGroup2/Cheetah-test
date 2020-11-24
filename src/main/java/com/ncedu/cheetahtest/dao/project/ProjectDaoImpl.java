@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ProjectDaoImpl implements ProjectDao {
@@ -22,7 +23,6 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public void createProject(Project project) {
         String sqlQuery = ProjectSqlConsts.CREATE_PROJECT_QUERY;
-        System.out.println(project.getOwnerId());
         jdbcTemplate.update(
                 sqlQuery,
                 project.getName(),
@@ -40,13 +40,17 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public List<Project> findByProjectName(String projectName) {
-        String sqlQuery = ProjectSqlConsts.SELECT_PROJECTS_BY_TITLE_QUERY;
-        return jdbcTemplate.query(
+    public Project findByProjectId(int id) {
+        String sqlQuery = ProjectSqlConsts.SELECT_PROJECT_BY_ID_QUERY;
+        List<Project> projects = jdbcTemplate.query(
                 sqlQuery,
-                preparedStatement -> preparedStatement.setString(1, projectName),
+                preparedStatement -> preparedStatement.setInt(1, id),
                 new ProjectMapper()
         );
+
+        if (projects.size() == 1) return projects.get(0);
+
+        return null;
     }
 
     @Override

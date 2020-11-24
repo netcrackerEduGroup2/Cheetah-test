@@ -27,22 +27,14 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getAllProjects());
     }
 
-    @GetMapping("/projects/{title}")
-    public ResponseEntity<List<Project>> getProjectByTitle(@PathVariable("title") String projectTitle) {
-        return ResponseEntity.ok(projectService.getProjectsByName(projectTitle));
+    @GetMapping("/projects/{id}")
+    public ResponseEntity<Project> getProjectById(@PathVariable("id") int projectId) {
+        return ResponseEntity.ok(projectService.getProjectById(projectId));
     }
 
     @PostMapping("/projects")
     public ResponseEntity<ProjectResponse> createProject(@RequestBody Project project) {
-        System.out.println(project);
         projectService.createNewProject(project);
         return ResponseEntity.ok(new ProjectResponse("A new project has been created successfully!"));
-    }
-
-    @PutMapping("/projects")
-    public ResponseEntity<ProjectResponse> editProject(@RequestBody Project project) {
-        return ResponseEntity.ok(
-                new ProjectResponse("The project '"+project.getName()+"' has been updated!")
-        );
     }
 }
