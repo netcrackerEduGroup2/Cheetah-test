@@ -72,7 +72,7 @@ public class AuthServiceImpl implements AuthService{
 
         String loginDtoPasswordWithSalt = loginDto.getPassword() + passwordSalt;
 
-        if (!passwordEncoder.matches(loginDtoPasswordWithSalt, user.getPass()) || !"active".equals(user.getStatus())) {
+        if (!passwordEncoder.matches(loginDtoPasswordWithSalt, user.getPass()) || !UserStatus.active.equals(user.getStatus())) {
             throw new BadCredentialsException();
         }
         

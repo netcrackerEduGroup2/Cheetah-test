@@ -5,12 +5,9 @@ import com.ncedu.cheetahtest.entity.user.ResetToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -36,8 +33,8 @@ public class UserDaoImpl implements UserDao {
         user.getEmail(),
         user.getPass(),
         user.getName(),
-        user.getRole(),
-        user.getStatus()
+        user.getRole().toString(),
+        user.getStatus().toString()
     );
 
   }
@@ -124,7 +121,7 @@ public class UserDaoImpl implements UserDao {
   public User editUser(User user) {
     String sql = EDIT_USER_SQL;
 
-    int result = jdbcTemplate.update(sql, user.getEmail(), user.getName(), user.getRole(), user.getId());
+    int result = jdbcTemplate.update(sql, user.getEmail(), user.getName(), user.getRole().toString(), user.getId());
     if (result == 1) {
       return user;
     }
@@ -135,7 +132,7 @@ public class UserDaoImpl implements UserDao {
   public User changeUserStatus(User user) {
     String sql = CHANGE_USER_STATUS_SQL;
 
-    int result = jdbcTemplate.update(sql, user.getStatus(), user.getId());
+    int result = jdbcTemplate.update(sql, user.getStatus().toString(), user.getId());
     if (result == 1) {
       return user;
     }
