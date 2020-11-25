@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
+import java.util.Date;
 
 @Service
 public class AuthServiceImpl implements AuthService{
@@ -76,6 +77,7 @@ public class AuthServiceImpl implements AuthService{
         }
         
         String token = jwtTokenProvider.createToken(user);
+        userDao.setUserLastRequest(user.getEmail(), new Date());
         return new AccessTokenDto(token);
     }
 
