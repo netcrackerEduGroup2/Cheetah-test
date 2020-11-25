@@ -60,7 +60,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return UserStatus.active.equals(status);
+        return UserStatus.ACTIVE.equals(status);
     }
 
     public Date getLastRequest() {

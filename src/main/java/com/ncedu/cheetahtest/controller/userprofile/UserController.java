@@ -32,14 +32,14 @@ public class UserController {
 
   @PutMapping("/activate")
   public ResponseEntity<RegisterResponse> doActive(@RequestBody User user) {
-    user.setStatus(UserStatus.active);
+    user.setStatus(UserStatus.ACTIVE);
     userService.changeUserStatus(user);
     return ResponseEntity.ok(new RegisterResponse("success"));
   }
 
   @PutMapping("/deactivate")
   public ResponseEntity<RegisterResponse> doInactive(@RequestBody User user) {
-    user.setStatus(UserStatus.inactive);
+    user.setStatus(UserStatus.INACTIVE);
     userService.changeUserStatus(user);
     return ResponseEntity.ok(new RegisterResponse("success"));
   }

@@ -55,7 +55,7 @@ public class AuthServiceImpl implements AuthService{
         newUser.setEmail(registerDto.getEmail());
         newUser.setName(registerDto.getName());
         newUser.setPass(passwordEncoder.encode(passwordWithSalt));
-        newUser.setStatus(UserStatus.active);
+        newUser.setStatus(UserStatus.ACTIVE);
         newUser.setRole(UserRole.valueOf(registerDto.getRole()));
 
         userDao.createDeveloper(newUser);
@@ -72,7 +72,7 @@ public class AuthServiceImpl implements AuthService{
 
         String loginDtoPasswordWithSalt = loginDto.getPassword() + passwordSalt;
 
-        if (!passwordEncoder.matches(loginDtoPasswordWithSalt, user.getPass()) || !UserStatus.active.equals(user.getStatus())) {
+        if (!passwordEncoder.matches(loginDtoPasswordWithSalt, user.getPass()) || !UserStatus.ACTIVE.equals(user.getStatus())) {
             throw new BadCredentialsException();
         }
         
@@ -104,6 +104,6 @@ public class AuthServiceImpl implements AuthService{
         String base64EncodedBody = splitString[1];
         Base64 base64Url = new Base64(true);
         String body = new String(base64Url.decode(base64EncodedBody));
-        return body.contains(UserRole.admin.toString());
+        return body.contains(UserRole.ADMIN.toString());
     }
 }
