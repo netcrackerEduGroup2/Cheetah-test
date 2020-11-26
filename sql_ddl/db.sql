@@ -5,7 +5,7 @@ create type compound_status as enum ('ACTIVE' , 'INACTIVE');
 create type project_status as enum ('ACTIVE' , 'INACTIVE');
 create type test_case_status as enum ('ACTIVE' , 'INACTIVE');
 create type test_scenario_status as enum ('ACTIVE' , 'INACTIVE');
-create type test_case_result as enum ('FAILED' , 'COMPLETE');
+create type test_case_result as enum ('FAILED' , 'COMPLETE', 'CREATED');
 create type user_project_status as enum ('WATCHER' , 'DEVELOPER');
 
 create table users (
@@ -41,7 +41,7 @@ create table test_case
     title varchar(100) UNIQUE NOT NULL,
     project_id integer REFERENCES project(id),
     status test_case_status NOT NULL,
-    result test_case_result NOT NULL
+    result test_case_result
 );
 
 CREATE TABLE data_set
