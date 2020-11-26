@@ -2,6 +2,7 @@ package com.ncedu.cheetahtest.controller.userprofile;
 
 import com.ncedu.cheetahtest.entity.security.RegisterResponse;
 import com.ncedu.cheetahtest.entity.user.User;
+import com.ncedu.cheetahtest.entity.user.UserStatus;
 import com.ncedu.cheetahtest.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +32,14 @@ public class UserController {
 
   @PutMapping("/activate")
   public ResponseEntity<RegisterResponse> doActive(@RequestBody User user) {
-    user.setStatus("active");
+    user.setStatus(UserStatus.ACTIVE);
     userService.changeUserStatus(user);
     return ResponseEntity.ok(new RegisterResponse("success"));
   }
 
   @PutMapping("/deactivate")
   public ResponseEntity<RegisterResponse> doInactive(@RequestBody User user) {
-    user.setStatus("inactive");
+    user.setStatus(UserStatus.INACTIVE);
     userService.changeUserStatus(user);
     return ResponseEntity.ok(new RegisterResponse("success"));
   }

@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.config.security;
 
 import com.ncedu.cheetahtest.entity.user.User;
+import com.ncedu.cheetahtest.entity.user.UserStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +14,7 @@ public class UserDetailsImpl implements UserDetails {
 
     private String email;
     private String password;
-    private String status;
+    private UserStatus status;
     private Collection<? extends GrantedAuthority> grantedAuthorities;
     private Date lastRequest;
 
@@ -22,7 +23,7 @@ public class UserDetailsImpl implements UserDetails {
         user.email = userEntity.getEmail();
         user.password = userEntity.getPass();
         user.status = userEntity.getStatus();
-        user.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(userEntity.getRole()));
+        user.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(userEntity.getRole().toString()));
         user.lastRequest = userEntity.getLastRequest();
         return user;
     }
@@ -59,7 +60,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return status.equals("active");
+        return UserStatus.ACTIVE.equals(status);
     }
 
     public Date getLastRequest() {

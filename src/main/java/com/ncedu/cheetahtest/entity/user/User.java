@@ -11,15 +11,16 @@ public class User {
     private String email;
     private String pass;
     private String name;
-    private String role;
-    private String status;
+    private UserRole role;
+    private UserStatus status;
+    private int resetPassToken;
     private Date lastRequest;
 
     public User() {
 
     }
 
-    public User(int id, String email, String pass, String name, String role, String status, Date lastRequest) {
+    public User(int id, String email, String pass, String name, UserRole role, UserStatus status, int resetPassToken, Date lastRequest) {
         this.id = id;
         this.email = email;
         this.pass = pass;
