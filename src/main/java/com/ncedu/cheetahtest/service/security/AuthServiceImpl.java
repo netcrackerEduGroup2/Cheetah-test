@@ -65,7 +65,6 @@ public class AuthServiceImpl implements AuthService{
     public AccessTokenDto login(@Valid LoginDto loginDto) {
 
         User user = userDao.findUserByEmail(loginDto.getEmail());
-
         if (user == null) {
             throw new BadCredentialsException();
         }
