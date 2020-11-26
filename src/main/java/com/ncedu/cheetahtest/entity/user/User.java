@@ -13,21 +13,19 @@ public class User {
     private String name;
     private String role;
     private String status;
-    private int resetPassToken;
     private Date lastRequest;
 
     public User() {
 
     }
 
-    public User(int id, String email, String pass, String name, String role, String status, int resetPassToken, Date lastRequest) {
+    public User(int id, String email, String pass, String name, String role, String status, Date lastRequest) {
         this.id = id;
         this.email = email;
         this.pass = pass;
         this.name = name;
         this.role = role;
         this.status = status;
-        this.resetPassToken = resetPassToken;
         this.lastRequest = lastRequest;
     }
 

@@ -45,12 +45,10 @@ public class UserDaoImpl implements UserDao {
   @Override
   public User findUserByEmail(String email) {
     String sql = FIND_USER_BY_EMAIL_SQL;
-
     List<User> users = jdbcTemplate.query(
         sql,
         preparedStatement -> preparedStatement.setString(1, email),
         new UserRowMapper());
-
     if (users.size() == 1) {
       return users.get(0);
     }
