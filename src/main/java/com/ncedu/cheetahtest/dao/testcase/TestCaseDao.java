@@ -24,4 +24,8 @@ public interface TestCaseDao {
     List<TestCase> findTestCasesByTitlePaginated(int offset, int size, String title);
 
     int getSearchedTotalElements(String title);
+
+    List<TestCase> findAllTestCasesByTitlePaginated(int offset, int size, String title);
+
+    int getSearchedAllTotalElements(String title);
 }

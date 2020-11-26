@@ -50,4 +50,15 @@ public final class TestCaseConsts {
                     WHERE_STATUS_ACTIVE +
                     " AND title LIKE ? LIMIT 1";
 
+    public static final String FIND_ALL_TEST_CASE_LIKE_TITLE =
+                    SELECT_ALL_PARAMS_FROM_TEST_CASE +
+                    " WHERE title LIKE ? " +
+                    " LIMIT ? OFFSET ?";
+
+    public static final String GET_AMOUNT_OF_ALL_SEARCHED_TEST_CASES =
+                    " SELECT COUNT(id)" +
+                    " FROM test_case " +
+                    " WHERE title LIKE ? LIMIT 1";
+
+
 }

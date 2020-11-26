@@ -5,14 +5,9 @@ import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.ncedu.cheetahtest.dao.testcase.TestCaseConsts.*;
@@ -146,8 +141,30 @@ public class TestCaseDaoImpl implements TestCaseDao {
 
     @Override
     public int getSearchedTotalElements(String title) {
+        return geySingleElement(title, GET_AMOUNT_OF_ACTIVE_SEARCHED_TEST_CASES);
+    }
+
+    @Override
+    public List<TestCase> findAllTestCasesByTitlePaginated(int offset, int size, String title) {
+        return jdbcTemplate.query(
+                FIND_ALL_TEST_CASE_LIKE_TITLE,
+                preparedStatement -> {
+                    preparedStatement.setString(1, "%" + title + "%");
+                    preparedStatement.setInt(2, size);
+                    preparedStatement.setInt(3, offset);
+                },
+                new TestCaseMapper()
+        );
+    }
+
+    @Override
+    public int getSearchedAllTotalElements(String title) {
+        return geySingleElement(title, GET_AMOUNT_OF_ALL_SEARCHED_TEST_CASES);
+    }
+
+    private int geySingleElement(String title, String getAmountOfAllSearchedTestCases) {
         List<Integer> amountOfTestCases = jdbcTemplate.query(
-                GET_AMOUNT_OF_ACTIVE_SEARCHED_TEST_CASES,
+                getAmountOfAllSearchedTestCases,
                 preparedStatement ->
                         preparedStatement.setString(1, "%" + title + "%"),
                 (resultSet, i) -> resultSet.getInt(1)

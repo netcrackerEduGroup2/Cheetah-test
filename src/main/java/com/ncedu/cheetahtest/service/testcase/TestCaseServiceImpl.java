@@ -73,6 +73,16 @@ public class TestCaseServiceImpl implements TestCaseService {
         return new TestCasePaginated(testCaseList, totalElements);
     }
 
+    @Override
+    public TestCasePaginated findAllTestCasesByTitlePaginated(int page, int size, String title) {
+        int offset = getOffset(page, size);
+
+        List<TestCase> testCaseList = testCaseDao.findAllTestCasesByTitlePaginated(offset, size, title);
+        int totalElements = testCaseDao.getSearchedAllTotalElements(title);
+
+        return new TestCasePaginated(testCaseList, totalElements);
+    }
+
     private int getOffset(int page, int size) {
         if (page <= 0 || size < 0) {
             throw new InvalidParametersException();

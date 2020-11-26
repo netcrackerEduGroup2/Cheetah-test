@@ -16,4 +16,6 @@ public interface TestCaseService {
     void deactivateTestCase(int id);
 
     TestCasePaginated findTestCasesByTitlePaginated(int page, int size, String title);
+
+    TestCasePaginated findAllTestCasesByTitlePaginated(int page, int size, String title);
 }

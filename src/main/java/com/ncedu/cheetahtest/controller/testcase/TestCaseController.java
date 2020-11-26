@@ -36,6 +36,14 @@ public class TestCaseController {
         return testCaseService.findTestCasesByTitlePaginated(page, size, keyword);
     }
 
+    @GetMapping("/all-test-cases/search/findByTitle")
+    public TestCasePaginated findAllTestCasesByTitlePaginated(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String keyword) {
+        return testCaseService.findAllTestCasesByTitlePaginated(page, size, keyword);
+    }
+
     @PutMapping("/test-cases/{id}")
     public TestCase updateTestCase(@PathVariable int id,
                                    @RequestBody TestCase testCase) {
