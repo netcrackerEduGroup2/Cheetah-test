@@ -96,6 +96,7 @@ create table action
 (
     id             serial PRIMARY KEY NOT NULL,
     title          varchar(100) NOT NULL,
+    type          varchar(100) NOT NULL,
     library_id     integer NOT NULL REFERENCES library(id)
 );
 
