@@ -7,6 +7,8 @@ import com.ncedu.cheetahtest.entity.mail.PasswordDTO;
 import com.ncedu.cheetahtest.entity.security.AccessTokenDto;
 import com.ncedu.cheetahtest.entity.security.LoginDto;
 import com.ncedu.cheetahtest.entity.security.RegisterDto;
+import com.ncedu.cheetahtest.entity.user.UserRole;
+import com.ncedu.cheetahtest.entity.user.UserStatus;
 import com.ncedu.cheetahtest.exception.security.BadCredentialsException;
 import com.ncedu.cheetahtest.exception.security.UserAlreadyExistsException;
 import com.ncedu.cheetahtest.config.security.jwt.JwtTokenProvider;
@@ -16,6 +18,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.Valid;
+import java.util.Date;
 
 @Service
 public class AuthServiceImpl implements AuthService{
@@ -38,7 +43,7 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     @Transactional
-    public void register(RegisterDto registerDto) {
+    public void register(@Valid RegisterDto registerDto) {
 
         if (userDao.findUserByEmail(registerDto.getEmail()) != null) {
             throw new UserAlreadyExistsException();
@@ -51,28 +56,28 @@ public class AuthServiceImpl implements AuthService{
         newUser.setEmail(registerDto.getEmail());
         newUser.setName(registerDto.getName());
         newUser.setPass(passwordEncoder.encode(passwordWithSalt));
-        newUser.setStatus("active");
-        newUser.setRole(registerDto.getRole());
+        newUser.setStatus(UserStatus.ACTIVE);
+        newUser.setRole(UserRole.valueOf(registerDto.getRole()));
 
         userDao.createDeveloper(newUser);
     }
 
     @Override
-    public AccessTokenDto login(LoginDto loginDto) {
+    public AccessTokenDto login(@Valid LoginDto loginDto) {
 
         User user = userDao.findUserByEmail(loginDto.getEmail());
-
         if (user == null) {
             throw new BadCredentialsException();
         }
 
         String loginDtoPasswordWithSalt = loginDto.getPassword() + passwordSalt;
 
-        if (!passwordEncoder.matches(loginDtoPasswordWithSalt, user.getPass()) || !user.getStatus().equals("active")) {
+        if (!passwordEncoder.matches(loginDtoPasswordWithSalt, user.getPass()) || !UserStatus.ACTIVE.equals(user.getStatus())) {
             throw new BadCredentialsException();
         }
         
         String token = jwtTokenProvider.createToken(user);
+        userDao.setUserLastRequest(user.getEmail(), new Date());
         return new AccessTokenDto(token);
     }
 
@@ -100,6 +105,6 @@ public class AuthServiceImpl implements AuthService{
         String base64EncodedBody = splitString[1];
         Base64 base64Url = new Base64(true);
         String body = new String(base64Url.decode(base64EncodedBody));
-        return body.contains("admin");
+        return body.contains(UserRole.ADMIN.toString());
     }
 }
