@@ -1,12 +1,11 @@
 package com.ncedu.cheetahtest.controller.userprofile;
 
-import com.ncedu.cheetahtest.entity.security.RegisterResponse;
 import com.ncedu.cheetahtest.entity.user.User;
+import com.ncedu.cheetahtest.entity.user.UserDto;
 import com.ncedu.cheetahtest.entity.user.UserStatus;
 import com.ncedu.cheetahtest.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -24,24 +23,18 @@ public class UserController {
   }
 
   @PutMapping
-  public ResponseEntity<RegisterResponse> editUser(@RequestBody User user) {
-    userService.editUser(user);
-
-    return ResponseEntity.ok(new RegisterResponse("success"));
+  public User editUser(@RequestBody UserDto user) {
+    return userService.editUser(user);
   }
 
   @PutMapping("/activate")
-  public ResponseEntity<RegisterResponse> doActive(@RequestBody User user) {
-    user.setStatus(UserStatus.ACTIVE);
-    userService.changeUserStatus(user);
-    return ResponseEntity.ok(new RegisterResponse("success"));
+  public User doActive(@RequestBody long id) {
+    return userService.changeUserStatus(id, UserStatus.ACTIVE.toString());
   }
 
   @PutMapping("/deactivate")
-  public ResponseEntity<RegisterResponse> doInactive(@RequestBody User user) {
-    user.setStatus(UserStatus.INACTIVE);
-    userService.changeUserStatus(user);
-    return ResponseEntity.ok(new RegisterResponse("success"));
+  public User doInactive(@RequestBody long id) {
+    return userService.changeUserStatus(id, UserStatus.INACTIVE.toString());
   }
 
   @GetMapping("/{id}")
