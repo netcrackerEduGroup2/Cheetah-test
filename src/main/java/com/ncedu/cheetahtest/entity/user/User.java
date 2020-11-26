@@ -13,14 +13,13 @@ public class User {
     private String name;
     private UserRole role;
     private UserStatus status;
-    private int resetPassToken;
     private Date lastRequest;
 
     public User() {
 
     }
 
-    public User(int id, String email, String pass, String name, UserRole role, UserStatus status, int resetPassToken, Date lastRequest) {
+    public User(int id, String email, String pass, String name, UserRole role, UserStatus status, Date lastRequest) {
         this.id = id;
         this.email = email;
         this.pass = pass;
