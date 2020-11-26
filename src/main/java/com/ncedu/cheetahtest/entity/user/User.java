@@ -27,7 +27,6 @@ public class User {
         this.name = name;
         this.role = role;
         this.status = status;
-        this.resetPassToken = resetPassToken;
         this.lastRequest = lastRequest;
     }
 

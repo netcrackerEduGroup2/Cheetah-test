@@ -16,7 +16,6 @@ public class UserRowMapper implements RowMapper<User> {
     public static final String NAME = "name";
     public static final String ROLE = "role";
     public static final String STATUS = "status";
-    public static final String RESET_TOKEN_ID = "reset_token_id";
     public static final String LAST_REQUEST = "last_request";
 
     @Override
