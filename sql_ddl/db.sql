@@ -1,12 +1,12 @@
-create type user_role as enum ('admin', 'manager', 'engineer');
-create type user_status as enum ('active', 'inactive');
-create type action_status as enum ('active' , 'inactive');
-create type compound_status as enum ('active' , 'inactive');
-create type project_status as enum ('active' , 'inactive');
-create type test_case_status as enum ('active' , 'inactive');
-create type test_scenario_status as enum ('active' , 'inactive');
-create type test_case_result as enum ('failed' , 'complete');
-create type user_project_status as enum ('watcher' , 'developer');
+create type user_role as enum ('ADMIN', 'MANAGER', 'ENGINEER');
+create type user_status as enum ('ACTIVE', 'INACTIVE');
+create type action_status as enum ('ACTIVE' , 'INACTIVE');
+create type compound_status as enum ('ACTIVE' , 'INACTIVE');
+create type project_status as enum ('ACTIVE' , 'INACTIVE');
+create type test_case_status as enum ('ACTIVE' , 'INACTIVE');
+create type test_scenario_status as enum ('ACTIVE' , 'INACTIVE');
+create type test_case_result as enum ('FAILED' , 'COMPLETE');
+create type user_project_status as enum ('WATCHER' , 'DEVELOPER');
 
 create table users (
                        id              serial primary key not null ,
