@@ -8,14 +8,6 @@ create type test_scenario_status as enum ('active' , 'inactive');
 create type test_case_result as enum ('failed' , 'complete');
 create type user_project_status as enum ('watcher' , 'developer');
 
-create table reset_token
-(
-    id           serial primary key,
-    token        varchar(100),
-    expiry_date  timestamp,
-    user_id integer UNIQUE NOT NULL REFERENCES users(id)
-);
-
 create table users (
                        id              serial primary key not null ,
                        email           varchar(100) UNIQUE not null ,
@@ -24,6 +16,23 @@ create table users (
                        role            user_role not null ,
                        status          user_status not null ,
                        last_request  timestamp
+);
+
+create table reset_token
+(
+    id           serial primary key,
+    token        varchar(100),
+    expiry_date  timestamp,
+    user_id integer UNIQUE NOT NULL REFERENCES users(id)
+);
+
+CREATE TABLE project
+(
+    id serial PRIMARY KEY NOT NULL,
+    name varchar(100) NOT NULL,
+    link varchar(200) UNIQUE NOT NULL,
+    status project_status NOT NULL,
+    create_data timestamp NOT NULL
 );
 
 create table test_case
@@ -40,7 +49,6 @@ CREATE TABLE data_set
     title varchar(100),
     description varchar(300),
     test_case_id integer NOT NULL REFERENCES test_case(id)
-
 );
 
 CREATE TABLE parameters
@@ -55,15 +63,6 @@ CREATE TABLE action_parameters
 (
     id serial PRIMARY KEY NOT NULL,
     parameters_id integer NOT NULL REFERENCES parameters(id)
-);
-
-CREATE TABLE project
-(
-    id serial PRIMARY KEY NOT NULL,
-    name varchar(100) NOT NULL,
-    link varchar(200) UNIQUE NOT NULL,
-    status project_status NOT NULL,
-    create_data timestamp NOT NULL
 );
 
 CREATE TABLE user_project
@@ -82,14 +81,12 @@ CREATE TABLE test_scenario
     test_case_id integer NOT NULL REFERENCES test_case(id)
 );
 
-CREATE TABLE act_scenario
+create table library
 (
     id serial PRIMARY KEY NOT NULL,
-    action_id integer NOT NULL REFERENCES action(id),
-    test_scenario_id integer NOT NULL REFERENCES test_scenario(id),
-    priority integer UNIQUE NOT NULL,
-    action_status action_status NOT NULL,
-    act_param_id integer UNIQUE NOT NULL REFERENCES action_parameters(id)
+    description varchar(300),
+    title varchar(100) not null,
+    create_date timestamp not null
 );
 
 create table action
@@ -100,12 +97,14 @@ create table action
     library_id     integer NOT NULL REFERENCES library(id)
 );
 
-create table library
+CREATE TABLE act_scenario
 (
     id serial PRIMARY KEY NOT NULL,
-    description varchar(300),
-    title varchar(100) not null,
-    create_date timestamp not null
+    action_id integer NOT NULL REFERENCES action(id),
+    test_scenario_id integer NOT NULL REFERENCES test_scenario(id),
+    priority integer UNIQUE NOT NULL,
+    action_status action_status NOT NULL,
+    act_param_id integer UNIQUE NOT NULL REFERENCES action_parameters(id)
 );
 
 create table compound
