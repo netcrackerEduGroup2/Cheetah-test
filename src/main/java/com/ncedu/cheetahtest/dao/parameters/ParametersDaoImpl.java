@@ -20,7 +20,7 @@ public class ParametersDaoImpl implements ParametersDao {
 
     @Override
     public Parameter findById(int id) {
-        String sql = "SELECT id, id_data_set, type, value " +
+        String sql = "SELECT id, data_set_id, type, value " +
                 "FROM parameters WHERE id = ?";
         List<Parameter> parameters = jdbcTemplate.query(
                 sql,
@@ -34,8 +34,8 @@ public class ParametersDaoImpl implements ParametersDao {
 
     @Override
     public List<Parameter> findByTypeLike(String type, int idDataSet, int limit, int offset) {
-        String sql = "SELECT id, id_data_set, type, value " +
-                "FROM parameters WHERE type LIKE CONCAT('%',?,'%') AND id_data_set=? " +
+        String sql = "SELECT id, data_set_id, type, value " +
+                "FROM parameters WHERE type LIKE CONCAT('%',?,'%') AND data_set_id=? " +
                 "ORDER BY type limit ? offset ?";
         return jdbcTemplate.query(
                 sql,
@@ -51,7 +51,7 @@ public class ParametersDaoImpl implements ParametersDao {
 
     @Override
     public Parameter createParameter(Parameter parameter) {
-        String sql = "INSERT INTO parameters(id_data_set, type, value) VALUES (?,?,?)";
+        String sql = "INSERT INTO parameters(data_set_id, type, value) VALUES (?,?,?)";
         jdbcTemplate.update(
                 sql,
                 parameter.getIdDataSet(),
@@ -63,7 +63,7 @@ public class ParametersDaoImpl implements ParametersDao {
 
     @Override
     public Parameter editParameter(Parameter parameter, int id) {
-        String sql = "UPDATE parameters SET id_data_set = ?, type = ?, value = ? " +
+        String sql = "UPDATE parameters SET data_set_id = ?, type = ?, value = ? " +
                 "WHERE id = ?";
         jdbcTemplate.update(
                 sql,
@@ -84,7 +84,7 @@ public class ParametersDaoImpl implements ParametersDao {
 
     @Override
     public int getTotalElements(int idDataSet,String type) {
-        String sql = "SELECT count(*) FROM parameters WHERE id_data_set= ? AND type LIKE concat('%',?,'%')";
+        String sql = "SELECT count(*) FROM parameters WHERE data_set_id= ? AND type LIKE concat('%',?,'%')";
         List<Integer> count = jdbcTemplate.query(sql,
                 preparedStatement -> {
                     preparedStatement.setInt(1,idDataSet);
@@ -97,8 +97,8 @@ public class ParametersDaoImpl implements ParametersDao {
 
     @Override
     public Parameter findByTypeAndIdDataSet(String type, int idDataSet) {
-        String sql = "SELECT id, id_data_set, type, value  FROM parameters " +
-                "WHERE type = ? AND id_data_set = ?";
+        String sql = "SELECT id, data_set_id, type, value  FROM parameters " +
+                "WHERE type = ? AND data_set_id = ?";
         List<Parameter> parameters = jdbcTemplate.query(
                 sql,
                 preparedStatement -> {

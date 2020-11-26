@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class ParametersRowMapper implements RowMapper<Parameter> {
     public static String ID = "id";
-    public static String IDDATASET = "id_data_set";
+    public static String IDDATASET = "data_set_id";
     public static String TYPE ="type";
     public static String VALUE = "value";
 

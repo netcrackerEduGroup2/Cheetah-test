@@ -10,7 +10,7 @@ public class DataSetRowMapper implements RowMapper<DataSet> {
     public final String ID = "id";
     public final String TITLE = "title";
     public final String DESCRIPTION = "description";
-    public final String IDTESTCASE = "id_test_case";
+    public final String IDTESTCASE = "test_case_id";
 
     @Override
     public DataSet mapRow(ResultSet resultSet, int i) throws SQLException {
