@@ -51,3 +51,19 @@ create table library
     name varchar(10) not null,
     create_date timestamp not null
 );
+create table data_set
+(
+  id serial primary key not null ,
+  title varchar(10) unique not null ,
+  description varchar(50),
+  id_test_case integer not null
+);
+-- need to add : "FOREIGN KEY (id_test_case) REFERENCES test_case(id)" when table test_case will be created
+create table parameters
+(
+  id serial primary key not null ,
+  id_data_set integer not null,
+  type varchar(10) not null,
+  value varchar(10) not null,
+  FOREIGN KEY (id_data_set) REFERENCES data_set(id)
+);
