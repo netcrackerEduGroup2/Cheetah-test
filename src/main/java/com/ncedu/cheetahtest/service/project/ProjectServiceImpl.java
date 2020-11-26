@@ -28,6 +28,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public void setArchievedStatus(int id) {
+        projectDao.setArchievedStatus(id);
+    }
+
+    @Override
     public List<Project> getAllArchievedProjects() {
         return projectDao.getAllArchievedProjects();
     }

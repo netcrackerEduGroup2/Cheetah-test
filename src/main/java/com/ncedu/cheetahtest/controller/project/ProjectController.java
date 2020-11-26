@@ -32,6 +32,12 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getAllArchievedProjects());
     }
 
+    @PutMapping("/archieved/{id}")
+    public ResponseEntity<ProjectResponse> setArchivedStatus(@PathVariable int id) {
+        projectService.setArchievedStatus(id);
+        return ResponseEntity.ok(new ProjectResponse("A project No. "+id+" has been archieved!"));
+    }
+
     @GetMapping("/projects/{id}")
     public ResponseEntity<Project> getProjectById(@PathVariable("id") int projectId) {
         return ResponseEntity.ok(projectService.getProjectById(projectId));

@@ -39,6 +39,12 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
+    public void setArchievedStatus(int id) {
+        String sqlQuery = ProjectSqlConsts.SET_ARCHIEVED_STATUS_TO_PROJECT_QUERY;
+        jdbcTemplate.update(sqlQuery, id);
+    }
+
+    @Override
     public List<Project> getAllArchievedProjects() {
         String sqlQuery = ProjectSqlConsts.SELECT_ALL_ARCHIEVED_PROJECTS_QUERY;
         return jdbcTemplate.query(sqlQuery, new ProjectMapper());
