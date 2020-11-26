@@ -10,6 +10,6 @@ public interface DataSetDao {
     DataSet createDataSet(DataSet dataSet);
     DataSet editDataSet(DataSet dataSet, int id);
     void deleteDataSet(int id);
-    int getTotalElements(int idTestcase);
+    int getTotalElements(int idTestcase,String title);
     DataSet findByTitle(String title);
 }

@@ -3,29 +3,27 @@ package com.ncedu.cheetahtest.service.dataset;
 import com.ncedu.cheetahtest.dao.dataset.DataSetDao;
 import com.ncedu.cheetahtest.entity.dataset.DataSet;
 import com.ncedu.cheetahtest.entity.dataset.PaginationDataset;
-import com.ncedu.cheetahtest.exception.helpers.PaginationWrongInputException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DataSetServiceImpl implements DataSetService{
+public class DataSetServiceImpl implements DataSetService {
     private final DataSetDao dataSetDao;
+
     @Autowired
-    public DataSetServiceImpl(DataSetDao dataSetDao){
+    public DataSetServiceImpl(DataSetDao dataSetDao) {
         this.dataSetDao = dataSetDao;
     }
 
     @Override
     public PaginationDataset findByTitleLike(String title, int idTestCase, int size, int page) {
-        int totalDataSets = dataSetDao.getTotalElements(idTestCase);
-
-        if(size*page<totalDataSets){
-            PaginationDataset paginationDataset = new PaginationDataset();
-            paginationDataset.setTotalElements(totalDataSets);
-            paginationDataset.setDataSets(dataSetDao.findByTitleLike(title,idTestCase,size, size*(page-1)));
-            return paginationDataset;
+        int totalDataSets = dataSetDao.getTotalElements(idTestCase, title);
+        PaginationDataset paginationDataset = new PaginationDataset();
+        paginationDataset.setTotalElements(totalDataSets);
+        if (size * (page - 1) < totalDataSets) {
+            paginationDataset.setDataSets(dataSetDao.findByTitleLike(title, idTestCase, size, size * (page - 1)));
         }
-        else throw new PaginationWrongInputException();
+        return paginationDataset;
     }
 
     @Override
@@ -35,7 +33,7 @@ public class DataSetServiceImpl implements DataSetService{
 
     @Override
     public DataSet editDataSet(DataSet dataSet, int id) {
-        return dataSetDao.editDataSet(dataSet,id);
+        return dataSetDao.editDataSet(dataSet, id);
     }
 
     @Override

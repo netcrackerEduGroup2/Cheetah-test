@@ -83,10 +83,13 @@ public class ParametersDaoImpl implements ParametersDao {
     }
 
     @Override
-    public int getTotalElements(int idDataSet) {
-        String sql = "SELECT count(*) FROM parameters WHERE id_data_set= ?";
+    public int getTotalElements(int idDataSet,String type) {
+        String sql = "SELECT count(*) FROM parameters WHERE id_data_set= ? AND type LIKE concat('%',?,'%')";
         List<Integer> count = jdbcTemplate.query(sql,
-                preparedStatement -> preparedStatement.setInt(1,idDataSet),
+                preparedStatement -> {
+                    preparedStatement.setInt(1,idDataSet);
+                    preparedStatement.setString(2,type);
+                },
                 new CountParametersRowMapper());
         if (count.size() == 1) return count.get(0);
         else return 0;

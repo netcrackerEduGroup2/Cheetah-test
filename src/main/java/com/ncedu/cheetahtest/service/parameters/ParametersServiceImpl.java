@@ -3,32 +3,29 @@ package com.ncedu.cheetahtest.service.parameters;
 import com.ncedu.cheetahtest.dao.parameters.ParametersDao;
 import com.ncedu.cheetahtest.entity.parameter.PaginationParameter;
 import com.ncedu.cheetahtest.entity.parameter.Parameter;
-import com.ncedu.cheetahtest.exception.helpers.PaginationWrongInputException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ParametersServiseImpl implements ParameterService {
+public class ParametersServiceImpl implements ParameterService {
     private final ParametersDao parametersDao;
 
     @Autowired
-    public ParametersServiseImpl(ParametersDao parametersDao) {
+    public ParametersServiceImpl(ParametersDao parametersDao) {
         this.parametersDao = parametersDao;
     }
 
     @Override
     public PaginationParameter findByType(String type, int idDataSet, int page, int size) {
-        int totalParameters = parametersDao.getTotalElements(idDataSet);
-
-        if(size*page<totalParameters) {
-            PaginationParameter paginationParameter = new PaginationParameter();
-            paginationParameter.setTotalParameters(totalParameters);
+        int totalParameters = parametersDao.getTotalElements(idDataSet,type);
+        PaginationParameter paginationParameter = new PaginationParameter();
+        paginationParameter.setTotalParameters(totalParameters);
+        if(size*(page-1)<totalParameters) {
             paginationParameter.setParameters(
                     parametersDao.findByTypeLike(type, idDataSet, size, size * (page - 1))
             );
-            return paginationParameter;
         }
-        else throw new PaginationWrongInputException();
+        return paginationParameter;
     }
 
     @Override

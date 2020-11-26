@@ -83,10 +83,13 @@ public class DataSetDaoImpl implements DataSetDao {
     }
 
     @Override
-    public int getTotalElements(int idTestCase) {
-        String sql = "SELECT count(*) FROM data_set WHERE id_test_case = ?";
+    public int getTotalElements(int idTestCase,String title) {
+        String sql = "SELECT count(*) FROM data_set WHERE id_test_case = ? AND title LIKE concat('%',?,'%')";
         List<Integer> count = jdbcTemplate.query(sql,
-                preparedStatement -> preparedStatement.setInt(1,idTestCase),
+                preparedStatement -> {
+                    preparedStatement.setInt(1,idTestCase);
+                    preparedStatement.setString(2,title);
+                },
                 new CountDataSetRowMapper());
         if (count.size() == 1) return count.get(0);
         else return 0;

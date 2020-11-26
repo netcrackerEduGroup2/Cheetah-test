@@ -10,7 +10,7 @@ public interface ParametersDao {
     Parameter createParameter(Parameter parameter);
     Parameter editParameter(Parameter parameter, int id);
     void deleteParameter(int id);
-    int getTotalElements(int idDataSet);
+    int getTotalElements(int idDataSet,String type);
     Parameter findByTypeAndIdDataSet(String type,int idDataSet);
 
 }
