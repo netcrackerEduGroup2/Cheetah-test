@@ -68,7 +68,7 @@ public class JwtFilter extends GenericFilterBean {
     private boolean isSessionTimedOut(Date lastRequest) {
 
         if (lastRequest == null) {
-            return false;
+            return true;
         }
 
         Calendar sessionTimeout = Calendar.getInstance();
