@@ -2,6 +2,7 @@ package com.ncedu.cheetahtest.dao.user;
 
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
+import com.ncedu.cheetahtest.entity.user.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
@@ -116,23 +117,23 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  public User editUser(User user) {
+  public User editUser(UserDto user) {
     String sql = EDIT_USER_SQL;
 
     int result = jdbcTemplate.update(sql, user.getEmail(), user.getName(), user.getRole().toString(), user.getId());
     if (result == 1) {
-      return user;
+      return findUserById(user.getId());
     }
     return null;
   }
 
   @Override
-  public User changeUserStatus(User user) {
+  public User changeUserStatus(long id, String status) {
     String sql = CHANGE_USER_STATUS_SQL;
 
-    int result = jdbcTemplate.update(sql, user.getStatus().toString(), user.getId());
+    int result = jdbcTemplate.update(sql, status, id);
     if (result == 1) {
-      return user;
+      return findUserById(id);
     }
     return null;
   }

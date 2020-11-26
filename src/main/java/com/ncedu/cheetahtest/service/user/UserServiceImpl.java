@@ -4,6 +4,7 @@ import com.ncedu.cheetahtest.dao.resettoken.ResetTokenDao;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.dao.user.UserDao;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
+import com.ncedu.cheetahtest.entity.user.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,14 +63,14 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public User editUser(User user) {
+  public User editUser(UserDto user) {
     return userDao.editUser(user);
   }
 
   @Override
   @Transactional
-  public User changeUserStatus(User user) {
-    return userDao.changeUserStatus(user);
+  public User changeUserStatus(long id, String status) {
+    return userDao.changeUserStatus(id, status);
   }
 
   @Override

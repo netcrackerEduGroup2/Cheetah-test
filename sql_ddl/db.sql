@@ -29,7 +29,7 @@ create table reset_token
 CREATE TABLE project
 (
     id serial PRIMARY KEY NOT NULL,
-    name varchar(100) NOT NULL,
+    name varchar(100) UNIQUE NOT NULL,
     link varchar(200) UNIQUE NOT NULL,
     status project_status NOT NULL,
     create_data timestamp NOT NULL
@@ -38,6 +38,7 @@ CREATE TABLE project
 create table test_case
 (
     id serial PRIMARY KEY NOT NULL,
+    title varchar(100) UNIQUE NOT NULL,
     project_id integer REFERENCES project(id),
     status test_case_status NOT NULL,
     result test_case_result NOT NULL
@@ -46,7 +47,7 @@ create table test_case
 CREATE TABLE data_set
 (
     id serial PRIMARY KEY NOT NULL,
-    title varchar(100),
+    title varchar(100) UNIQUE,
     description varchar(300),
     test_case_id integer NOT NULL REFERENCES test_case(id)
 );
@@ -76,6 +77,7 @@ CREATE TABLE user_project
 CREATE TABLE test_scenario
 (
     id serial PRIMARY KEY NOT NULL,
+    title varchar(100) UNIQUE NOT NULL,
     description varchar(300) NOT NULL,
     status test_scenario_status NOT NULL,
     test_case_id integer NOT NULL REFERENCES test_case(id)
@@ -85,14 +87,13 @@ create table library
 (
     id serial PRIMARY KEY NOT NULL,
     description varchar(300),
-    title varchar(100) not null,
     create_date timestamp not null
 );
 
 create table action
 (
     id             serial PRIMARY KEY NOT NULL,
-    title          varchar(100) NOT NULL,
+    title          varchar(100) UNIQUE NOT NULL,
     type          varchar(100) NOT NULL,
     library_id     integer NOT NULL REFERENCES library(id)
 );
@@ -110,7 +111,7 @@ CREATE TABLE act_scenario
 create table compound
 (
     id serial PRIMARY KEY NOT NULL,
-    title varchar(100),
+    title varchar(100) UNIQUE NOT NULL,
     library_id integer NOT NULL REFERENCES library(id)
 );
 
