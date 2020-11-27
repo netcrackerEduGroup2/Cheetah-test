@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/api/library/actions")
 @CrossOrigin(origins = "${frontend.ulr}")
 public class ActionController {
-    private ActionService actionService;
+    private final ActionService actionService;
     @Autowired
     public ActionController(ActionService actionService) {
         this.actionService = actionService;

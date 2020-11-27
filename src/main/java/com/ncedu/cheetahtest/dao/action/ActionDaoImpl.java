@@ -133,7 +133,7 @@ public class ActionDaoImpl implements ActionDao {
                 "FROM action " +
                 "WHERE title LIKE CONCAT('%',?,'%')";
         return jdbcTemplate.query(
-                SELECT_ACTIONS_BY_TITLE_LIKE,
+                sql,
                 preparedStatement -> preparedStatement.setString(1,title),
                 new ActionRowMapper());
     }
