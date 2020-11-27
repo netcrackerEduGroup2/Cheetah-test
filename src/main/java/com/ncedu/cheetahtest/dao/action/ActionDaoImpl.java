@@ -131,7 +131,7 @@ public class ActionDaoImpl implements ActionDao {
     public List<Action> selectAllActionsByTitleLike(String title) {
        String sql =  "SELECT action.id,action.title,action.type,description " +
                 "FROM action " +
-                "WHERE title LIKE CONCAT('%',?,'%')";
+                "WHERE title LIKE CONCAT('%',?,'%') LIMIT 10";
         return jdbcTemplate.query(
                 sql,
                 preparedStatement -> preparedStatement.setString(1,title),
