@@ -5,27 +5,15 @@ import com.ncedu.cheetahtest.entity.compound.Compound;
 import java.util.List;
 
 public interface CompoundDao {
-    int createCompound(Compound compound);
+    Compound createCompound(Compound compound);
 
-    Compound findCompoundById(int id);
+    List<Compound> selectCompoundsByTitleLike(String title, int limit, int size);
 
-    List<Compound> findCompoundByIdTestScenario(int idTestScenario);
+    Compound editCompound(Compound compoundDTO, int id);
 
-    List<Compound> selectAll();
-
-    List<Compound> selectActiveCompoundByTitle(int idLibrary, String title);
-
-    List<Compound> selectInactiveCompoundByTitle(int idLibrary, String title);
-
-    Compound setTitle(String title, int id);
-
-    Compound setDescription(String description, int id);
-
-    Compound setTestScenarioId(String testScenarioId, int id);
-
-    Compound editCompound(Compound compoundDTO);
-
-    Compound setStatus(String status, int id);
+    Compound findByTitle(String title);
 
     void removeCompoundById(int id);
+
+    int getTotalCompByTitle( String title);
 }

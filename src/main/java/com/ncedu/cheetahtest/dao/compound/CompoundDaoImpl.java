@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.dao.compound;
 
-import com.ncedu.cheetahtest.dao.action.CurrentValueRowMapper;
 import com.ncedu.cheetahtest.entity.compound.Compound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,8 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
-
-import static com.ncedu.cheetahtest.dao.compound.CompoundConsts.*;
 
 @Repository
 public class CompoundDaoImpl implements CompoundDao {
@@ -22,137 +19,100 @@ public class CompoundDaoImpl implements CompoundDao {
     }
 
     @Override
-    public List<Compound> selectAll() {
-        return jdbcTemplate.query(
-                SELECT_ALL,
-                new CompoundRowMapper()
+    public Compound createCompound(Compound compound) {
+        String sql = "INSERT INTO compound (title, description) VALUES (?,?)";
+        jdbcTemplate.update(
+                sql,
+                compound.getTitle(),
+                compound.getDescription()
         );
+        return this.findByTitle(compound.getTitle());
+    }
+
+    private Compound findCompoundById(int id) {
+        String sql = "SELECT id,title,description FROM compound WHERE id = ?";
+       List<Compound> compounds = jdbcTemplate.query(
+               sql,
+               preparedStatement -> preparedStatement.setInt(1,id),
+               new CompoundRowMapper());
+       if (compounds.size() == 1){
+           return compounds.get(0);
+       }
+       else{
+           return null;
+       }
+
     }
 
     @Override
-    public List<Compound> selectActiveCompoundByTitle(int idLibrary, String title) {
+    public List<Compound> selectCompoundsByTitleLike(String title, int limit, int offset) {
+        String sql = "SELECT compound.id, compound.title, compound.description " +
+                "FROM compound " +
+                "WHERE title LIKE CONCAT ('%',?,'%') ORDER BY title limit ? offset ?";
         return jdbcTemplate.query(
-                SELECT_ACTIVE_COMPOUND_BY_TITLE,
+                sql,
                 preparedStatement -> {
-                    preparedStatement.setString(1, title);
-                    preparedStatement.setInt(2, idLibrary);
+                    preparedStatement.setString(1,title);
+                    preparedStatement.setInt(2, limit);
+                    preparedStatement.setInt(3,offset);
                 },
                 new CompoundRowMapper()
-        );
+                );
+
     }
 
     @Override
-    public List<Compound> selectInactiveCompoundByTitle(int idLibrary, String title) {
-        return jdbcTemplate.query(
-                SELECT_INACTIVE_COMPOUND_BY_TITLE,
-                preparedStatement -> {
-                    preparedStatement.setString(1, title);
-                    preparedStatement.setInt(2, idLibrary);
-                },
-                new CompoundRowMapper()
-        );
-    }
-
-    @Override
-    public int createCompound(Compound compound) {
-        String sql = CREATE_COMPOUND;
+    public Compound editCompound(Compound compound,int id) {
+        String sql = "UPDATE compound SET title = ?, description =? WHERE id = ?";
         jdbcTemplate.update(
                 sql,
                 compound.getTitle(),
                 compound.getDescription(),
-                compound.getIdTestScenario(),
-                compound.getStatus()
-        );
-        sql = SELECT_CURRVAL_COMPOUNDS_ID;
-        List<Integer> currIndex = jdbcTemplate.query(sql, new CurrentValueRowMapper());
-        if(currIndex.size() == 1) {
-            return currIndex.get(0);
-        }
-        else return -1;
-    }
-
-    @Override
-    public Compound findCompoundById(int id) {
-        List<Compound> compounds = jdbcTemplate.query(
-                FIND_COMPOUND_BY_ID,
-                preparedStatement -> preparedStatement.setInt(1, id),
-                new CompoundRowMapper()
-        );
-
-        if (compounds.size() == 1) {
-            return compounds.get(0);
-        }
-        return null;
-    }
-
-    @Override
-    public List<Compound> findCompoundByIdTestScenario(int idTestScenario) {
-        return jdbcTemplate.query(
-                FIND_COMPOUND_BY_ID_TESTSCENARIO,
-                preparedStatement -> preparedStatement.setInt(1, idTestScenario),
-                new CompoundRowMapper()
-        );
-    }
-
-    @Override
-    public Compound editCompound(Compound compoundDTO) {
-        jdbcTemplate.update(
-                EDIT_COMPOUND,
-                 compoundDTO.getTitle(),
-                 compoundDTO.getDescription(),
-                 compoundDTO.getIdTestScenario(),
-                 compoundDTO.getStatus(),
-                 compoundDTO.getId()
-        );
-        return compoundDTO;
-    }
-
-    @Override
-    public Compound setTitle(String title, int id) {
-        jdbcTemplate.update(
-                SET_TITLE,
-                title,
                 id
         );
-        return this.findCompoundById(id);
-    }
 
-    @Override
-    public Compound setDescription(String description, int id) {
-        jdbcTemplate.update(
-                SET_DESCRIPTION,
-                description,
-                id
-        );
-        return this.findCompoundById(id);
-    }
-
-    @Override
-    public Compound setTestScenarioId(String testScenarioId, int id) {
-        jdbcTemplate.update(
-                SET_TESTSCENARIO_ID,
-                testScenarioId,
-                id
-        );
-        return this.findCompoundById(id);
-    }
-
-    @Override
-    public Compound setStatus(String status, int id) {
-        jdbcTemplate.update(
-                SET_STATUS,
-                status,
-                id
-        );
-        return this.findCompoundById(id);
+        return findCompoundById(id);
     }
 
     @Override
     public void removeCompoundById(int id) {
+        String sql = "DELETE FROM compound WHERE id = ?";
         jdbcTemplate.update(
-                REMOVE_COMPOUND_BY_ID,
+                sql,
                 id
         );
+    }
 
+    @Override
+    public Compound findByTitle(String title) {
+        String sql = "SELECT compound.id, compound.title,compound.description " +
+                "FROM compound WHERE title = ?";
+        List<Compound>compounds = jdbcTemplate.query(
+                sql,
+                preparedStatement -> preparedStatement.setString(1,title),
+                new CompoundRowMapper()
+        );
+        if(compounds.size() ==1){
+            return compounds.get(0);
+        }
+        else {
+            return null;
+        }
+    }
+
+    @Override
+    public int getTotalCompByTitle(String title) {
+        String sql = "SELECT COUNT(*) FROM compound WHERE title LIKE CONCAT('%',?,'%')";
+        List<Integer> count = jdbcTemplate.query(
+                sql,
+                preparedStatement -> preparedStatement.setString(1,title),
+                new CountCompoundRowMapper()
+        );
+        if (count.size() == 1){
+            return count.get(0);
+        }
+        else{
+            return 0;
+        }
     }
 }

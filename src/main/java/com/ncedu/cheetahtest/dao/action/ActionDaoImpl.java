@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.List;
 
-import static com.ncedu.cheetahtest.dao.action.ActionConsts.*;
+import static com.ncedu.cheetahtest.dao.action.ActionConsts.SELECT_ACTIONS_BY_TITLE_LIKE;
 
 @Repository
 public class ActionDaoImpl implements ActionDao {
@@ -22,167 +22,108 @@ public class ActionDaoImpl implements ActionDao {
     }
 
     @Override
-    public List<Action> selectAll() {
+    public List<Action> selectActionsByTitleLike(String title,int limit,int offset) {
         return jdbcTemplate.query(
-                SELECT_ALL,
-                new ActionRowMapper());
-    }
-
-    @Override
-    public List<Action> selectActiveActionsByTitle(int idLibrary,String title) {
-        return jdbcTemplate.query(
-                SELECT_ACTIVE_ACTIONS_BY_TITLE,
+                SELECT_ACTIONS_BY_TITLE_LIKE,
                 preparedStatement -> {
-                    preparedStatement.setString(1, title);
-                    preparedStatement.setInt(2,idLibrary);
+                    preparedStatement.setString(1,title);
+                    preparedStatement.setInt(2,limit);
+                    preparedStatement.setInt(3,offset);
                 },
                 new ActionRowMapper());
     }
 
     @Override
-    public List<Action> getInactiveActionsByTitle(int idLibrary, String title) {
-        return jdbcTemplate.query(
-                GET_INACTIVE_ACTIONS_BY_TITLE,
-                preparedStatement -> {
-                    preparedStatement.setString(1, title);
-                    preparedStatement.setInt(2,idLibrary);
-                },
-                new ActionRowMapper());
+    public int getTotalElements(String title) {
+       String sql = "SELECT count(*) FROM action WHERE title LIKE CONCAT('%',?,'%')";
+       List<Integer> totalElements= jdbcTemplate.query(
+               sql,
+               preparedStatement -> preparedStatement.setString(1,title),
+               new CountActionRowMapper()
+       );
+       if (totalElements.size() == 1){
+           return totalElements.get(0);
+       }
+       else return 0;
+
+
     }
 
     @Override
-    public Action createAction(Action action) {
-        String sql = CREATE_ACTION;
-        jdbcTemplate.update(
+    public List<Action> getActionsInCompound(int idCompound,int limit,int offset) {
+        String sql = "SELECT action.id, action.title, action.type, action.description " +
+                "FROM action INNER JOIN comp_act_prior ON action.id = comp_act_prior.action_id " +
+                "INNER JOIN compound c ON comp_act_prior.comp_id = c.id " +
+                "WHERE c.id = ? ORDER BY comp_act_prior.priority " +
+                "LIMIT ? OFFSET ?";
+        return jdbcTemplate.query(
                 sql,
-                action.getTitle(),
-                action.getDescription(),
-                action.getIdCompound(),
-                action.getIdTestScenario(),
-                action.getStatus()
+                preparedStatement -> {
+                    preparedStatement.setInt(1,idCompound);
+                    preparedStatement.setInt(2,limit);
+                    preparedStatement.setInt(3,offset);
+                },
+                new ActionRowMapper()
         );
-        sql = SELECT_CURRVAL_ACTION_ID;
-        List<Integer> currIndex = jdbcTemplate.query(sql, new CurrentValueRowMapper());
-        if(currIndex.size() == 1){
-            return findActionById(currIndex.get(0));
+    }
+
+    @Override
+    public int getTotalActionsInComp(int idCompound) {
+        String sql = "SELECT COUNT(*)" +
+                "FROM action INNER JOIN comp_act_prior ON action.id = comp_act_prior.action_id " +
+                "INNER JOIN compound c ON comp_act_prior.comp_id = c.id " +
+                "WHERE c.id = ? ";
+        List<Integer> counts = jdbcTemplate.query(
+                sql,
+                preparedStatement -> preparedStatement.setInt(1, idCompound),
+                new CountActionRowMapper()
+        );
+        if(counts.size() == 1){
+            return counts.get(0);
+        }
+        else{
+            return 0;
+        }
+    }
+
+    @Override
+    public Action getActionByTitle(String title) {
+        String sql = "SELECT id, title, type,description FROM action WHERE title = ?";
+        List<Action> actions = jdbcTemplate.query(
+                sql,
+                preparedStatement -> preparedStatement.setString(1,title),
+                new ActionRowMapper()
+        );
+        if(actions.size() == 1){
+            return actions.get(0);
+        }
+        else return null;
+    }
+
+
+    @Override
+    public Action getActionById(int id) {
+        String sql = "SELECT id, title, type,description FROM action WHERE id = ?";
+        List<Action> actions = jdbcTemplate.query(
+                sql,
+                preparedStatement -> preparedStatement.setInt(1,id),
+                new ActionRowMapper()
+        );
+        if(actions.size() == 1){
+            return actions.get(0);
         }
         else return null;
     }
 
     @Override
-    public Action findActionById(int id) {
-
-        List<Action> actions = jdbcTemplate.query(
-                FIND_ACTION_BY_ID,
-                preparedStatement -> preparedStatement.setInt(1, id),
-                new ActionRowMapper()
-        );
-
-        if (actions.size() == 1) {
-            return actions.get(0);
-        }
-        return null;
-
-    }
-
-    @Override
-    public List<Action> findActionsByIdCompound(int idCompound) {
-
-        return jdbcTemplate.query(
-                FIND_ACTIONS_BY_ID_COMPOUND,
-                preparedStatement -> preparedStatement.setInt(1, idCompound),
-                new ActionRowMapper()
-        );
-    }
-
-
-    @Override
-    public List<Action> findActionsByIdTestScenario(int idTestScenario) {
-
-        return jdbcTemplate.query(
-                FIND_ACTIONS_BY_ID_TESTSCENARIO,
-                preparedStatement -> preparedStatement.setInt(1, idTestScenario),
-                new ActionRowMapper()
-        );
-
-    }
-
-    @Override
-    public Action editAction(Action action) {
+    public Action editActionDesc(String description, int id) {
+        String sql = "UPDATE action SET description = ? WHERE id = ?";
         jdbcTemplate.update(
-                EDIT_ACTION,
-                action.getTitle(),
-                action.getDescription(),
-                action.getIdCompound(),
-                action.getIdTestScenario(),
-                action.getStatus(),
-                action.getId()
-        );
-        return action;
-
-    }
-
-    @Override
-    public Action setTitle(String title, int id) {
-        jdbcTemplate.update(
-                SET_TITLE,
-                title,
-                id
-
-        );
-        return this.findActionById(id);
-    }
-
-    @Override
-    public Action setDescription(String description, int id) {
-        jdbcTemplate.update(
-                SET_DESCRIPTION,
-                description,
-                id
-
-        );
-        return this.findActionById(id);
-    }
-
-    @Override
-    public Action setCompoundId(String compId, int id) {
-        jdbcTemplate.update(
-                SET_COMPOUND_ID,
-                compId,
-                id
-
-        );
-        return this.findActionById(id);
-
-    }
-
-    @Override
-    public Action setTestScenarioId(String testScenarioId, int id) {
-        jdbcTemplate.update(
-                SET_TESTSCENARIO_ID,
-                testScenarioId,
-                id
-
-        );
-       return this.findActionById(id);
-    }
-
-    @Override
-    public Action setStatus(String status, int id) {
-        jdbcTemplate.update(
-                SET_STATUS,
-                status,
-                id
-
-        );
-        return this.findActionById(id);
-    }
-
-    @Override
-    public void removeActionById(int id) {
-        jdbcTemplate.update(
-                REMOVE_ACTION_BY_ID,
-                id
-        );
+                sql,
+                preparedStatement ->{
+                    preparedStatement.setString(1,description);
+                    preparedStatement.setInt(2,id);
+                } );
+        return this.getActionById(id);
     }
 }

@@ -1,86 +1,59 @@
 package com.ncedu.cheetahtest.controller.library;
 
-import com.ncedu.cheetahtest.entity.action.Action;
-import com.ncedu.cheetahtest.entity.action.PaginationResponseBody;
+import com.ncedu.cheetahtest.entity.action.PaginationAction;
 import com.ncedu.cheetahtest.entity.compound.Compound;
-import com.ncedu.cheetahtest.entity.library.CreateLibraryResponse;
-import com.ncedu.cheetahtest.entity.library.Library;
-import com.ncedu.cheetahtest.entity.library.LibraryPaginationResponseBody;
-import com.ncedu.cheetahtest.entity.library.LibraryStatusResponce;
+import com.ncedu.cheetahtest.entity.compound.CompoundCreationBody;
+import com.ncedu.cheetahtest.entity.compound.CompoundStatusResponse;
+import com.ncedu.cheetahtest.entity.compound.PaginationCompound;
 import com.ncedu.cheetahtest.service.action.ActionService;
 import com.ncedu.cheetahtest.service.compound.CompoundService;
-import com.ncedu.cheetahtest.service.library.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/library")
 @CrossOrigin(origins = "${frontend.ulr}")
 
 public class LibraryController {
-    private final LibraryService libraryService;
-    private final ActionService actionService;
     private final CompoundService compoundService;
+    private final ActionService actionService;
 
     @Autowired
-    public LibraryController(LibraryService libraryService, ActionService actionService, CompoundService compoundService) {
-        this.libraryService = libraryService;
-        this.actionService = actionService;
+    public LibraryController(CompoundService compoundService, ActionService actionService) {
         this.compoundService = compoundService;
+        this.actionService = actionService;
+    }
+    @PostMapping
+    public Compound createCompound(@RequestBody CompoundCreationBody compoundCreationBody){
+        return compoundService.createCompound(compoundCreationBody.getCompound(),compoundCreationBody.getActions());
+    }
+    @GetMapping
+    public PaginationCompound findCompoundsByTitleLike(@RequestParam("title") String title,
+                                                       @RequestParam("size") int size,
+                                                       @RequestParam("page") int page){
+        return compoundService.getCompoundsByTitleLike(title,size,page);
+    }
+    @PutMapping("/{idCompound}")
+    public Compound editCompound(@PathVariable int idCompound,
+                                 @RequestBody CompoundCreationBody compoundCreationBody){
+        return compoundService.editCompound(compoundCreationBody.getCompound(),idCompound,compoundCreationBody.getActions());
+    }
+    @PutMapping("/{idCompound}/edit-properties")
+    public Compound editOnlyProperties(@PathVariable int idCompound,
+                                       @RequestBody Compound compound){
+        return compoundService.editCompoundProperties(compound,idCompound);
+    }
+    @GetMapping("/{idCompound}/actions")
+    PaginationAction getActionsInCompound(@PathVariable int idCompound,
+                                          @RequestParam("size") int size,
+                                          @RequestParam("page") int page){
+        return actionService.getActionsInCompound(idCompound,size,page);
     }
 
-
-    @GetMapping("/libraries")
-    public LibraryPaginationResponseBody getLibraryByName(
-            @RequestParam(name = "title") String title,
-            @RequestParam(name = "size") int size,
-            @RequestParam(name = "page") int page) {
-        List<Library> libraries = libraryService.getLibrariesByName(title);
-        return new LibraryPaginationResponseBody(libraries, size, page);
-
-    }
-
-    @PostMapping("/libraries") //CreateLibraryResponse
-    public ResponseEntity<CreateLibraryResponse> createLibrary(@RequestBody Library libraryDTO) {
-        libraryService.createLibrary(libraryDTO);
-        return ResponseEntity.ok(new CreateLibraryResponse("Success"));
-    }
-
-    @GetMapping("library/{idLibrary}")
-    public PaginationResponseBody getActiveActComByTitle(@PathVariable int idLibrary,
-                                                         @RequestParam(name = "title") String title,
-                                                         @RequestParam(name = "size") int size,
-                                                         @RequestParam(name = "page") int page) {
-        List<Action> actions = actionService.getActiveActionsByTitle(idLibrary, title);
-        List<Compound> compounds = compoundService.getActiveCompoundByTitle(idLibrary, title);
-        return new PaginationResponseBody(actions, compounds, size, page);
-
-    }
-
-    @GetMapping("library/{idLibrary}/archive")
-    public PaginationResponseBody getInactiveActComByTitle(@PathVariable int idLibrary,
-                                                           @RequestParam(name = "title") String title,
-                                                           @RequestParam(name = "size") int size,
-                                                           @RequestParam(name = "page") int page) {
-        List<Action> actions = actionService.getInactiveActionsByTitle(idLibrary, title);
-        List<Compound> compounds = compoundService.getInactiveCompoundByTitle(idLibrary, title);
-        return new PaginationResponseBody(actions, compounds, size, page);
-
-    }
-
-    @DeleteMapping("library")
-    public ResponseEntity<LibraryStatusResponce> deleteLibrary(
-            @RequestParam("idLibrary") int idLibrary,
-            @RequestHeader("Authorisation") String token) {
-        libraryService.deleteLibrary(token, idLibrary);
-        return ResponseEntity.ok(new LibraryStatusResponce("LibraryDeletedSuccessfully"));
-    }
-    @PutMapping("/library/{idLibrary}")
-    public Library editLibrary(@RequestBody Library library, @PathVariable int idLibrary){
-        return libraryService.editLibrary(library,idLibrary);
+    @DeleteMapping("/{idCompound}")
+    public CompoundStatusResponse deleteCompound(@PathVariable int idCompound){
+        compoundService.deleteCompound(idCompound);
+        return new CompoundStatusResponse("Success");
     }
 
 

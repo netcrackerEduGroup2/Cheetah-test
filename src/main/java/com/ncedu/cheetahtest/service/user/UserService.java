@@ -1,7 +1,7 @@
 package com.ncedu.cheetahtest.service.user;
 
-import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
+import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.UserDto;
 
 import java.util.Date;

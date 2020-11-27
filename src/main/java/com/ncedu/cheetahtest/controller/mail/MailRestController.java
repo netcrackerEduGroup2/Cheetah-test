@@ -1,13 +1,13 @@
 package com.ncedu.cheetahtest.controller.mail;
 
-import com.ncedu.cheetahtest.entity.user.ResetToken;
 import com.ncedu.cheetahtest.entity.mail.Email;
 import com.ncedu.cheetahtest.entity.mail.GenericResponse;
 import com.ncedu.cheetahtest.entity.mail.PasswordDTO;
-import com.ncedu.cheetahtest.service.mail.EmailService;
+import com.ncedu.cheetahtest.entity.user.ResetToken;
 import com.ncedu.cheetahtest.entity.user.User;
-import com.ncedu.cheetahtest.service.user.UserService;
+import com.ncedu.cheetahtest.service.mail.EmailService;
 import com.ncedu.cheetahtest.service.security.AuthService;
+import com.ncedu.cheetahtest.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
