@@ -4,14 +4,17 @@ import com.ncedu.cheetahtest.entity.action.Action;
 import com.ncedu.cheetahtest.entity.action.ActionDescriptionDTO;
 import com.ncedu.cheetahtest.entity.action.PaginationAction;
 import com.ncedu.cheetahtest.service.action.ActionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/library/actions")
 @CrossOrigin(origins = "${frontend.ulr}")
 public class ActionController {
     private ActionService actionService;
-
+    @Autowired
     public ActionController(ActionService actionService) {
         this.actionService = actionService;
     }
@@ -26,6 +29,10 @@ public class ActionController {
     public Action editActionDescription(@RequestBody ActionDescriptionDTO actionDescriptionDTO,
                                         @PathVariable int idAction){
         return actionService.editActionDescription(actionDescriptionDTO.getDescription(),idAction);
+    }
+    @GetMapping("/all")
+    public List<Action> getAllActionsByTitleLike(@RequestParam("title") String title){
+        return actionService.getAllByTitleLike(title);
     }
 
 }

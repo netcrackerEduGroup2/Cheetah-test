@@ -126,4 +126,15 @@ public class ActionDaoImpl implements ActionDao {
                 } );
         return this.getActionById(id);
     }
+
+    @Override
+    public List<Action> selectAllActionsByTitleLike(String title) {
+       String sql =  "SELECT action.id,action.title,action.type,description " +
+                "FROM action " +
+                "WHERE title LIKE CONCAT('%',?,'%')";
+        return jdbcTemplate.query(
+                SELECT_ACTIONS_BY_TITLE_LIKE,
+                preparedStatement -> preparedStatement.setString(1,title),
+                new ActionRowMapper());
+    }
 }

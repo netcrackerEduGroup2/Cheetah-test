@@ -6,6 +6,8 @@ import com.ncedu.cheetahtest.entity.action.PaginationAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ActionServiceImpl implements ActionService {
     private final ActionDao actionDao;
@@ -46,5 +48,10 @@ public class ActionServiceImpl implements ActionService {
     @Override
     public Action editActionDescription(String description, int id) {
         return actionDao.editActionDesc(description,id);
+    }
+
+    @Override
+    public List<Action> getAllByTitleLike(String title) {
+        return actionDao.selectAllActionsByTitleLike(title);
     }
 }

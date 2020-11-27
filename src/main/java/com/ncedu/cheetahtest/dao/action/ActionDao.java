@@ -14,5 +14,6 @@ public interface ActionDao {
     Action getActionByTitle(String title);
     Action getActionById(int id);
     Action editActionDesc(String description, int id);
+    List<Action> selectAllActionsByTitleLike(String title);
 
 }

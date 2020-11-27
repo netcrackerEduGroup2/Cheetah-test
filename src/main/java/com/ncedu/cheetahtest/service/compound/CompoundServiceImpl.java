@@ -80,8 +80,9 @@ public class CompoundServiceImpl implements CompoundService {
     @Override
     public void deleteCompound(int idCompound) {
         //TODO find out how to figure out if person is admin or not
-        compoundDao.removeCompoundById(idCompound);
         compActPriorDao.deleteByIdCompound(idCompound);
+        compoundDao.removeCompoundById(idCompound);
+
     }
 
 
