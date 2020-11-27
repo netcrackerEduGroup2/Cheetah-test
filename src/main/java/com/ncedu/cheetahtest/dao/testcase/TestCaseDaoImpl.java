@@ -87,9 +87,7 @@ public class TestCaseDaoImpl implements TestCaseDao {
 
         List<TestCase> testCases = jdbcTemplate.query(
                 FIND_TEST_CASE_BY_ID,
-                preparedStatement -> {
-                    preparedStatement.setInt(1, id);
-                },
+                preparedStatement -> preparedStatement.setInt(1, id),
                 new TestCaseMapper()
         );
 

@@ -2,7 +2,6 @@ package com.ncedu.cheetahtest.controller.testcase;
 
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
-import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import com.ncedu.cheetahtest.service.testcase.TestCaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,18 +21,18 @@ public class TestCaseController {
         return testCaseService.getTestCases(page, size);
     }
 
-    @GetMapping("/all-test-cases")
-    public TestCasePaginated getAllTestCases(@RequestParam int page,
-                                             @RequestParam int size) {
-        return testCaseService.getAllTestCases(page, size);
-    }
-
     @GetMapping("/test-cases/search/findByTitle")
     public TestCasePaginated findTestCasesByTitlePaginated(
             @RequestParam int page,
             @RequestParam int size,
             @RequestParam String keyword) {
         return testCaseService.findTestCasesByTitlePaginated(page, size, keyword);
+    }
+
+    @GetMapping("/all-test-cases")
+    public TestCasePaginated getAllTestCases(@RequestParam int page,
+                                             @RequestParam int size) {
+        return testCaseService.getAllTestCases(page, size);
     }
 
     @GetMapping("/all-test-cases/search/findByTitle")
