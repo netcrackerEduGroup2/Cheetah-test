@@ -1,8 +1,11 @@
 package com.ncedu.cheetahtest.service.testcase;
 
+import com.ncedu.cheetahtest.dao.project.ProjectDao;
 import com.ncedu.cheetahtest.dao.testcase.TestCaseDao;
+import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
+import com.ncedu.cheetahtest.exception.project.ProjectNotFoundException;
 import com.ncedu.cheetahtest.exception.testcase.InvalidParametersException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseAlreadyExistException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
@@ -16,6 +19,7 @@ import java.util.List;
 public class TestCaseServiceImpl implements TestCaseService {
 
     private final TestCaseDao testCaseDao;
+    private final ProjectDao projectDao;
 
     @Override
     public TestCasePaginated getTestCases(int page, int size) {
@@ -100,11 +104,16 @@ public class TestCaseServiceImpl implements TestCaseService {
                         testCase.getTitle(),
                         testCase.getId());
 
-        if (testCaseWithSameTitle == null) {
-            return testCaseDao.createTestCase(testCase);
-        } else {
+        Project project = projectDao.findByProjectId(testCase.getProjectId());
+
+        if (project == null) {
+            throw new ProjectNotFoundException();
+        }
+        if (testCaseWithSameTitle != null) {
             throw new TestCaseAlreadyExistException();
         }
+
+        return testCaseDao.createTestCase(testCase);
     }
 
     private int getOffset(int page, int size) {
