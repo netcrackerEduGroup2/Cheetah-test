@@ -48,7 +48,6 @@ public class ParametersServiceImpl implements ParameterService {
 
     @Override
     public void deleteParameter(int id) {
-        //todo find out how to define in spring security, is an user is admin
         parametersDao.deleteParameter(id);
     }
 }

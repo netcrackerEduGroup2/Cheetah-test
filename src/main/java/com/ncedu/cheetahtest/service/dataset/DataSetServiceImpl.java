@@ -46,7 +46,6 @@ public class DataSetServiceImpl implements DataSetService {
 
     @Override
     public void deleteDataSet(int id) {
-        //TODO find how to check if person is admin in spring security
         dataSetDao.deleteDataSet(id);
     }
 }

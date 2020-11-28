@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.service.compound;
 
-import com.ncedu.cheetahtest.dao.action.ActionDao;
 import com.ncedu.cheetahtest.dao.compactprior.CompActPriorDao;
 import com.ncedu.cheetahtest.dao.compound.CompoundDao;
 import com.ncedu.cheetahtest.entity.action.Action;
@@ -10,6 +9,7 @@ import com.ncedu.cheetahtest.entity.compound.PaginationCompound;
 import com.ncedu.cheetahtest.exception.helpers.EntityAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,14 +17,12 @@ import java.util.List;
 @Service
 public class CompoundServiceImpl implements CompoundService {
     private final CompoundDao compoundDao;
-    private final ActionDao actionDao;
     private final CompActPriorDao compActPriorDao;
 
 
     @Autowired
-    public CompoundServiceImpl(CompoundDao compoundDao, ActionDao actionDao, CompActPriorDao compActPriorDao) {
+    public CompoundServiceImpl(CompoundDao compoundDao, CompActPriorDao compActPriorDao) {
         this.compoundDao = compoundDao;
-        this.actionDao = actionDao;
         this.compActPriorDao = compActPriorDao;
     }
 
@@ -86,9 +84,10 @@ public class CompoundServiceImpl implements CompoundService {
         return compoundDao.editCompound(compound, id);
     }
 
+
     @Override
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
     public void deleteCompound(int idCompound) {
-        //TODO find out how to figure out if person is admin or not
         compActPriorDao.deleteByIdCompound(idCompound);
         compoundDao.removeCompoundById(idCompound);
 

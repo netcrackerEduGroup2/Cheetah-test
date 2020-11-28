@@ -2,7 +2,6 @@ package com.ncedu.cheetahtest.dao.compscenario;
 
 import com.ncedu.cheetahtest.entity.actscenario.ActScenario;
 import com.ncedu.cheetahtest.entity.actscenario.ActStatus;
-import com.ncedu.cheetahtest.entity.compound.Compound;
 import com.ncedu.cheetahtest.entity.compscenario.CompScenario;
 
 import java.util.List;
