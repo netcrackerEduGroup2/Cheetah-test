@@ -137,4 +137,17 @@ public class ActionDaoImpl implements ActionDao {
                 preparedStatement -> preparedStatement.setString(1,title),
                 new ActionRowMapper());
     }
+
+    @Override
+    public List<Action> getAllActionsInComp(int idComp) {
+        String sql = "SELECT action.id, action.title, action.type, action.description " +
+                "FROM action INNER JOIN comp_act_prior ON action.id = comp_act_prior.action_id " +
+                "INNER JOIN compound c ON comp_act_prior.comp_id = c.id " +
+                "WHERE c.id = ? ORDER BY comp_act_prior.priority ";
+        return jdbcTemplate.query(
+                sql,
+                preparedStatement -> preparedStatement.setInt(1,idComp),
+                new ActionRowMapper()
+        );
+    }
 }

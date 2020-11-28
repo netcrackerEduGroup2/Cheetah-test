@@ -61,12 +61,6 @@ CREATE TABLE parameters
     value       varchar(100)       NOT NULL
 );
 
-CREATE TABLE action_parameters
-(
-    id            serial PRIMARY KEY NOT NULL,
-    parameters_id integer            NOT NULL REFERENCES parameters (id)
-);
-
 CREATE TABLE user_project
 (
     id          serial PRIMARY KEY  NOT NULL,
@@ -97,9 +91,9 @@ CREATE TABLE act_scenario
     id               serial PRIMARY KEY NOT NULL,
     action_id        integer            NOT NULL REFERENCES action (id),
     test_scenario_id integer            NOT NULL REFERENCES test_scenario (id),
-    priority         integer UNIQUE     NOT NULL,
+    priority         integer            NOT NULL,
     action_status    action_status      NOT NULL,
-    act_param_id     integer UNIQUE     NOT NULL REFERENCES action_parameters (id)
+    param_id         integer REFERENCES parameters (id)
 );
 
 create table compound
@@ -122,6 +116,6 @@ CREATE TABLE comp_scenario
     id               serial PRIMARY KEY NOT NULL,
     compound_id      integer            NOT NULL REFERENCES compound (id),
     test_scenario_id integer            NOT NULL REFERENCES test_scenario (id),
-    priority         integer UNIQUE     NOT NULL,
+    priority         integer            NOT NULL,
     comp_status      compound_status    NOT NULL
 );
