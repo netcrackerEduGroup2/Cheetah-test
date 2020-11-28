@@ -12,7 +12,6 @@ public class ProjectMapper implements RowMapper<Project> {
     private static final String LINK = "link";
     private static final String STATUS = "status";
     private static final String CREATE_DATE = "create_date";
-    private static final String OWNER_ID = "owner_id";
 
     @Override
     public Project mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -21,8 +20,7 @@ public class ProjectMapper implements RowMapper<Project> {
                 resultSet.getString(NAME),
                 resultSet.getString(LINK),
                 resultSet.getString(STATUS),
-                resultSet.getTimestamp(CREATE_DATE),
-                resultSet.getInt(OWNER_ID)
+                resultSet.getTimestamp(CREATE_DATE)
         );
     }
 }

@@ -1,20 +1,19 @@
 package com.ncedu.cheetahtest.dao.project;
 
 import com.ncedu.cheetahtest.entity.project.Project;
-import java.sql.Timestamp;
+import com.ncedu.cheetahtest.entity.project.ProjectDto;
+
 import java.util.List;
 
 public interface ProjectDao {
 
-    void createProject(Project project);
+    void createProject(ProjectDto project);
 
     List<Project> getAllProjects();
+
+    void setArchievedStatus(int id);
 
     List<Project> getAllArchievedProjects();
 
     Project findByProjectId(int id);
-
-    List<Project> findByOwner(String ownerName);
-
-    List<Project> findByCreationDate(Timestamp date);
 }

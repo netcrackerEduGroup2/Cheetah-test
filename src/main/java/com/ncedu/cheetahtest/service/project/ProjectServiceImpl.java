@@ -2,6 +2,7 @@ package com.ncedu.cheetahtest.service.project;
 
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
 import com.ncedu.cheetahtest.entity.project.Project;
+import com.ncedu.cheetahtest.entity.project.ProjectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void createNewProject(Project newProject) {
-        projectDao.createProject(newProject);
+    public void createNewProject(ProjectDto newProjectDto) {
+        projectDao.createProject(newProjectDto);
     }
 
     @Override
@@ -33,7 +34,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public void setArchievedStatus(int id) {
+        projectDao.setArchievedStatus(id);
+    }
+
+    @Override
     public Project getProjectById(int id) {
         return projectDao.findByProjectId(id);
     }
+
 }
