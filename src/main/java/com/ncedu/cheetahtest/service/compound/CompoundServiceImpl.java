@@ -7,7 +7,9 @@ import com.ncedu.cheetahtest.entity.action.Action;
 import com.ncedu.cheetahtest.entity.compactprior.CompActPrior;
 import com.ncedu.cheetahtest.entity.compound.Compound;
 import com.ncedu.cheetahtest.entity.compound.PaginationCompound;
+import com.ncedu.cheetahtest.exception.helpers.EntityAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +30,12 @@ public class CompoundServiceImpl implements CompoundService {
 
     @Override
     public Compound createCompound(Compound compound, List<Action> actions) {
-        Compound createdComp = compoundDao.createCompound(compound);
+        Compound createdComp;
+        try {
+            createdComp = compoundDao.createCompound(compound);
+        } catch (DataIntegrityViolationException ex) {
+            throw new EntityAlreadyExistException();
+        }
         CompActPrior compActPrior = new CompActPrior();
         int priority = 1;
         for (Action action : actions) {
@@ -41,7 +48,8 @@ public class CompoundServiceImpl implements CompoundService {
         return createdComp;
 
     }
-    private void createPriorityInActions(List<Action> actions,Compound compound){
+
+    private void createPriorityInActions(List<Action> actions, Compound compound) {
         int priority = 1;
         CompActPrior compActPrior = new CompActPrior();
         for (Action action : actions) {
@@ -52,11 +60,12 @@ public class CompoundServiceImpl implements CompoundService {
             priority++;
         }
     }
+
     @Override
     public Compound editCompound(Compound compound, int id, List<Action> actions) {
         Compound editedComp = compoundDao.editCompound(compound, id);
         compActPriorDao.deleteByIdCompound(editedComp.getId());
-        createPriorityInActions(actions,editedComp);
+        createPriorityInActions(actions, editedComp);
         return editedComp;
     }
 

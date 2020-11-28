@@ -3,7 +3,9 @@ package com.ncedu.cheetahtest.service.dataset;
 import com.ncedu.cheetahtest.dao.dataset.DataSetDao;
 import com.ncedu.cheetahtest.entity.dataset.DataSet;
 import com.ncedu.cheetahtest.entity.dataset.PaginationDataset;
+import com.ncedu.cheetahtest.exception.helpers.EntityAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,7 +30,13 @@ public class DataSetServiceImpl implements DataSetService {
 
     @Override
     public DataSet createDataSet(DataSet dataSet) {
-        return dataSetDao.createDataSet(dataSet);
+        try {
+            return dataSetDao.createDataSet(dataSet);
+        }catch (DataIntegrityViolationException ex){
+            throw new EntityAlreadyExistException();
+        }
+
+
     }
 
     @Override

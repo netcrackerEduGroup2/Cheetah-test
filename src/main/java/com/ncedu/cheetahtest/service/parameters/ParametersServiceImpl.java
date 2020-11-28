@@ -3,7 +3,9 @@ package com.ncedu.cheetahtest.service.parameters;
 import com.ncedu.cheetahtest.dao.parameters.ParametersDao;
 import com.ncedu.cheetahtest.entity.parameter.PaginationParameter;
 import com.ncedu.cheetahtest.entity.parameter.Parameter;
+import com.ncedu.cheetahtest.exception.helpers.EntityAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,10 +19,10 @@ public class ParametersServiceImpl implements ParameterService {
 
     @Override
     public PaginationParameter findByType(String type, int idDataSet, int page, int size) {
-        int totalParameters = parametersDao.getTotalElements(idDataSet,type);
+        int totalParameters = parametersDao.getTotalElements(idDataSet, type);
         PaginationParameter paginationParameter = new PaginationParameter();
         paginationParameter.setTotalParameters(totalParameters);
-        if(size*(page-1)<totalParameters) {
+        if (size * (page - 1) < totalParameters) {
             paginationParameter.setParameters(
                     parametersDao.findByTypeLike(type, idDataSet, size, size * (page - 1))
             );
@@ -30,7 +32,13 @@ public class ParametersServiceImpl implements ParameterService {
 
     @Override
     public Parameter createParameter(Parameter parameter) {
-        return parametersDao.createParameter(parameter);
+
+        try {
+            return parametersDao.createParameter(parameter);
+        } catch (DataIntegrityViolationException ex) {
+            throw new EntityAlreadyExistException();
+        }
+
     }
 
     @Override

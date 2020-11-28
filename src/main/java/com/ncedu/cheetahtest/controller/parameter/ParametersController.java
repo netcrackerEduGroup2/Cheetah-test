@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "${frontend.ulr}")
-@RequestMapping("/api/data-set/{idDataSet}")
+@RequestMapping("/api/parameters")
 public class ParametersController {
     private final ParameterService parameterService;
 

@@ -18,8 +18,6 @@ public class ActionServiceImpl implements ActionService {
     }
 
 
-
-
     @Override
     public PaginationAction getActionsByTitle(String title, int size, int page) {
         int totalElements = actionDao.getTotalElements(title);
@@ -44,10 +42,10 @@ public class ActionServiceImpl implements ActionService {
     }
 
 
-
     @Override
     public Action editActionDescription(String description, int id) {
-        return actionDao.editActionDesc(description,id);
+        return actionDao.editActionDesc(description, id);
+
     }
 
     @Override

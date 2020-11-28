@@ -55,10 +55,10 @@ CREATE TABLE data_set
 
 CREATE TABLE parameters
 (
-    id          serial PRIMARY KEY NOT NULL,
-    data_set_id integer            NOT NULL REFERENCES data_set (id),
-    type        varchar(100)       NOT NULL,
-    value       varchar(100)       NOT NULL
+    id          serial PRIMARY KEY  NOT NULL,
+    data_set_id integer             NOT NULL REFERENCES data_set (id),
+    type        varchar(100) UNIQUE NOT NULL,
+    value       varchar(100)        NOT NULL
 );
 
 CREATE TABLE user_project

@@ -6,7 +6,9 @@ import com.ncedu.cheetahtest.dao.actscenario.ActScenarioDao;
 import com.ncedu.cheetahtest.entity.actscenario.ActScenario;
 import com.ncedu.cheetahtest.entity.actscenario.ActStatus;
 import com.ncedu.cheetahtest.entity.actscenario.PaginationActScenario;
+import com.ncedu.cheetahtest.exception.helpers.EntityAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +24,12 @@ public class ActScenarioServiceImpl implements ActScenarioService {
 
     @Override
     public ActScenario createActScenario(ActScenario actScenario) {
-        return actScenarioDao.createActScenario(actScenario);
+        try {
+            return actScenarioDao.createActScenario(actScenario);
+        } catch (DataIntegrityViolationException ex) {
+            throw new EntityAlreadyExistException();
+        }
+
     }
 
     @Override
