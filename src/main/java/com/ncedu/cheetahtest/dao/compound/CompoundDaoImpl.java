@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.List;
 
+import static com.ncedu.cheetahtest.dao.compound.CompoundConsts.*;
+
 @Repository
 public class CompoundDaoImpl implements CompoundDao {
 
@@ -20,9 +22,8 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public Compound createCompound(Compound compound) {
-        String sql = "INSERT INTO compound (title, description) VALUES (?,?)";
         jdbcTemplate.update(
-                sql,
+                CREATE_COMPOUND,
                 compound.getTitle(),
                 compound.getDescription()
         );
@@ -30,42 +31,36 @@ public class CompoundDaoImpl implements CompoundDao {
     }
 
     private Compound findCompoundById(int id) {
-        String sql = "SELECT id,title,description FROM compound WHERE id = ?";
-       List<Compound> compounds = jdbcTemplate.query(
-               sql,
-               preparedStatement -> preparedStatement.setInt(1,id),
-               new CompoundRowMapper());
-       if (compounds.size() == 1){
-           return compounds.get(0);
-       }
-       else{
-           return null;
-       }
+        List<Compound> compounds = jdbcTemplate.query(
+                FIND_COMPOUND_BY_ID,
+                preparedStatement -> preparedStatement.setInt(1, id),
+                new CompoundRowMapper());
+        if (compounds.size() == 1) {
+            return compounds.get(0);
+        } else {
+            return null;
+        }
 
     }
 
     @Override
     public List<Compound> selectCompoundsByTitleLike(String title, int limit, int offset) {
-        String sql = "SELECT compound.id, compound.title, compound.description " +
-                "FROM compound " +
-                "WHERE title LIKE CONCAT ('%',?,'%') ORDER BY title limit ? offset ?";
         return jdbcTemplate.query(
-                sql,
+                SELECT_COMPOUND_BY_TITLE_LIKE,
                 preparedStatement -> {
-                    preparedStatement.setString(1,title);
+                    preparedStatement.setString(1, title);
                     preparedStatement.setInt(2, limit);
-                    preparedStatement.setInt(3,offset);
+                    preparedStatement.setInt(3, offset);
                 },
                 new CompoundRowMapper()
-                );
+        );
 
     }
 
     @Override
-    public Compound editCompound(Compound compound,int id) {
-        String sql = "UPDATE compound SET title = ?, description =? WHERE id = ?";
+    public Compound editCompound(Compound compound, int id) {
         jdbcTemplate.update(
-                sql,
+                EDIT_COMPOUND,
                 compound.getTitle(),
                 compound.getDescription(),
                 id
@@ -76,42 +71,36 @@ public class CompoundDaoImpl implements CompoundDao {
 
     @Override
     public void removeCompoundById(int id) {
-        String sql = "DELETE FROM compound WHERE id = ?";
         jdbcTemplate.update(
-                sql,
+                REMOVE_COMPOUND_BY_ID,
                 id
         );
     }
 
     @Override
     public Compound findByTitle(String title) {
-        String sql = "SELECT compound.id, compound.title,compound.description " +
-                "FROM compound WHERE title = ?";
-        List<Compound>compounds = jdbcTemplate.query(
-                sql,
-                preparedStatement -> preparedStatement.setString(1,title),
+        List<Compound> compounds = jdbcTemplate.query(
+                FIND_BY_TITLE,
+                preparedStatement -> preparedStatement.setString(1, title),
                 new CompoundRowMapper()
         );
-        if(compounds.size() ==1){
+        if (compounds.size() == 1) {
             return compounds.get(0);
-        }
-        else {
+        } else {
             return null;
         }
     }
 
     @Override
     public int getTotalCompByTitle(String title) {
-        String sql = "SELECT COUNT(*) FROM compound WHERE title LIKE CONCAT('%',?,'%')";
         List<Integer> count = jdbcTemplate.query(
-                sql,
-                preparedStatement -> preparedStatement.setString(1,title),
+                GET_TOTAL_COMP_BY_TITLE,
+                preparedStatement -> preparedStatement.setString(1, title),
                 new CountCompoundRowMapper()
         );
-        if (count.size() == 1){
+        if (count.size() == 1) {
             return count.get(0);
-        }
-        else{
+        } else {
             return 0;
         }
     }

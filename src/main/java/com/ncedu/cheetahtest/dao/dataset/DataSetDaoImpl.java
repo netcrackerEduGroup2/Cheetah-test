@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.List;
 
+import static com.ncedu.cheetahtest.dao.dataset.DataSetConsts.*;
+
 @Repository
 public class DataSetDaoImpl implements DataSetDao {
     private final JdbcTemplate jdbcTemplate;
@@ -19,10 +21,8 @@ public class DataSetDaoImpl implements DataSetDao {
 
     @Override
     public DataSet findById(int id) {
-        String sql = "SELECT id,title,description,test_case_id " +
-                "FROM data_set WHERE id = ?";
         List<DataSet> dataSets = jdbcTemplate.query(
-                sql,
+                FIND_BY_ID,
                 preparedStatement -> preparedStatement.setInt(1, id),
                 new DataSetRowMapper()
         );
@@ -33,11 +33,8 @@ public class DataSetDaoImpl implements DataSetDao {
 
     @Override
     public List<DataSet> findByTitleLike(String title, int idTestCase, int limit, int offset) {
-        String sql = "SELECT id,title,description,test_case_id " +
-                "FROM data_set WHERE title LIKE CONCAT('%',?,'%') AND test_case_id=? " +
-                "ORDER BY title limit ? offset ?";
         return jdbcTemplate.query(
-                sql,
+                FIND_BY_TITLE_LIKE,
                 preparedStatement -> {
                     preparedStatement.setString(1, title);
                     preparedStatement.setInt(2, idTestCase);
@@ -50,9 +47,8 @@ public class DataSetDaoImpl implements DataSetDao {
 
     @Override
     public DataSet createDataSet(DataSet dataSet) {
-        String sql = "INSERT INTO data_set(title, description, test_case_id) VALUES (?,?,?)";
         jdbcTemplate.update(
-                sql,
+                CREATE_DATA_SET,
                 dataSet.getTitle(),
                 dataSet.getDescription(),
                 dataSet.getIdTestCase()
@@ -64,10 +60,8 @@ public class DataSetDaoImpl implements DataSetDao {
 
     @Override
     public DataSet editDataSet(DataSet dataSet, int id) {
-        String sql = "UPDATE data_set SET title = ? , description = ? ,test_case_id = ? " +
-                "WHERE id = ?";
         jdbcTemplate.update(
-                sql,
+                EDIT_DATA_SET,
                 dataSet.getTitle(),
                 dataSet.getDescription(),
                 dataSet.getIdTestCase(),
@@ -78,14 +72,13 @@ public class DataSetDaoImpl implements DataSetDao {
 
     @Override
     public void deleteDataSet(int id) {
-        String sql = "DELETE FROM data_set WHERE id = ?";
-        jdbcTemplate.update(sql, id);
+        jdbcTemplate.update(DELETE_DATA_SET, id);
     }
 
     @Override
     public int getTotalElements(int idTestCase,String title) {
-        String sql = "SELECT count(*) FROM data_set WHERE test_case_id = ? AND title LIKE concat('%',?,'%')";
-        List<Integer> count = jdbcTemplate.query(sql,
+        List<Integer> count = jdbcTemplate.query(
+                GET_TOTAL_ELEMENTS,
                 preparedStatement -> {
                     preparedStatement.setInt(1,idTestCase);
                     preparedStatement.setString(2,title);
@@ -97,10 +90,8 @@ public class DataSetDaoImpl implements DataSetDao {
 
     @Override
     public DataSet findByTitle(String title) {
-        String sql = "SELECT id,title,description,test_case_id FROM data_set " +
-                "WHERE title = ?";
         List<DataSet> dataSets = jdbcTemplate.query(
-                sql,
+                FIND_BY_TITLE,
                 preparedStatement -> preparedStatement.setString(1, title),
                 new DataSetRowMapper()
         );

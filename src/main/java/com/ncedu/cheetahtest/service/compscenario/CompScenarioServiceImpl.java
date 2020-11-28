@@ -44,22 +44,10 @@ public class CompScenarioServiceImpl implements CompScenarioService {
         }
 
         List<Action> actions = actionDao.getAllActionsInComp(compScenario.getIdCompound());
-        if (actions.size() != idParams.size()) throw new UnproperInputException();
+
         //now we have list of actions from which we will do our act_scenarios
         //it is mandatory for parameters to come in same order, as order in compound!
-        ActScenario actScenario = new ActScenario();
-        int priority = 1;
-        int index = 0;
-        while (index < idParams.size()) {
-            //now we are creating act_scenarios, constructing them from parts
-            actScenario.setActionId(actions.get(index).getId());
-            actScenario.setTestScenarioId(compScenario.getIdTestScenario());
-            actScenario.setPriority(priority);
-            actScenario.setParameterId(idParams.get(index));
-            actScenarioDao.createActScenario(actScenario);
-            index++;
-            priority++;
-        }
+        createContainedActionScenarios(idParams, actions, compScenario);
         //returning created comp_scenario which already has it`s act_scenarios made
         return compScenario;
     }
@@ -72,7 +60,13 @@ public class CompScenarioServiceImpl implements CompScenarioService {
         List<Action> actions = actionDao.getAllActionsInComp(compScenario.getIdCompound());
 
         actScenarioDao.deleteAllByIdCompScenario(id);
+        createContainedActionScenarios(idParams, actions, compScenario);
+        //returning created comp_scenario which already has it`s act_scenarios made
+        return compScenario;
+    }
 
+    private void createContainedActionScenarios(List<Integer> idParams, List<Action> actions, CompScenario compScenario) {
+        if (actions.size() != idParams.size()) throw new UnproperInputException();
         ActScenario actScenario = new ActScenario();
         int priority = 1;
         int index = 0;
@@ -86,8 +80,6 @@ public class CompScenarioServiceImpl implements CompScenarioService {
             index++;
             priority++;
         }
-        //returning created comp_scenario which already has it`s act_scenarios made
-        return compScenario;
     }
 
     @Override
