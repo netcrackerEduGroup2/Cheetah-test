@@ -30,7 +30,7 @@ public class ProjectDaoImpl implements ProjectDao {
                 projectDto.getProject().getName(),
                 projectDto.getProject().getLink(),
                 "ACTIVE",
-                projectDto.getProject().getCreateDate()
+                Timestamp.valueOf(LocalDateTime.now())
         );
 
         List<Project> project = jdbcTemplate.query(

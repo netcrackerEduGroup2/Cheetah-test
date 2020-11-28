@@ -17,6 +17,6 @@ public class Project {
         this.name = name;
         this.link = link;
         this.status = status;
-        this.createDate = Timestamp.valueOf(LocalDateTime.now());
+        this.createDate = createDate;
     }
 }

@@ -11,5 +11,4 @@ public interface ProjectService {
     List<Project> getAllArchievedProjects();
     void setArchievedStatus(int id);
     Project getProjectById(int id);
-    List<Project> getProjectByTitle(String filter);
 }

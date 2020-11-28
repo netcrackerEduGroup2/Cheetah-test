@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.controller.project;
 
-import com.ncedu.cheetahtest.dao.project.ProjectDao;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.project.ProjectDto;
 import com.ncedu.cheetahtest.entity.project.ProjectResponse;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController

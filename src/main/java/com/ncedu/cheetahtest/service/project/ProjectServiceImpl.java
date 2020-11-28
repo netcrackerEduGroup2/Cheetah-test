@@ -43,8 +43,4 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDao.findByProjectId(id);
     }
 
-    @Override
-    public List<Project> getProjectByTitle(String filter) {
-        return null;
-    }
 }
