@@ -1,7 +1,6 @@
 package com.ncedu.cheetahtest.dao.genericdao;
 
 import lombok.Data;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
@@ -10,6 +9,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public abstract class Consts {
 
-    @NonNull private Map<CommonQuery, String> constMap;
+    private final Map<CommonQuery, String> constMap;
 
 }
