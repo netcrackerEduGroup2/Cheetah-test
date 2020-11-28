@@ -10,6 +10,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public abstract class Consts {
 
-    @NonNull private Map<StableQuery, String> constMap;
+    @NonNull private Map<CommonQuery, String> constMap;
 
 }

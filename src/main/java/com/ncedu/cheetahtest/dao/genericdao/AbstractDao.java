@@ -14,7 +14,7 @@ public abstract class AbstractDao<T> {
 
     protected final JdbcTemplate jdbcTemplate;
 
-    protected final Map<StableQuery, String> constsMap;
+    protected final Map<CommonQuery, String> constsMap;
 
 
     protected AbstractDao(RowMapper<T> rowMapper,
@@ -28,7 +28,7 @@ public abstract class AbstractDao<T> {
 
     public List<T> getActivePaginated(int offset, int size) {
         return jdbcTemplate.query(
-                constsMap.get(StableQuery.GET_ACTIVE_PAGINATED),
+                constsMap.get(CommonQuery.GET_ACTIVE_PAGINATED),
                 preparedStatement -> {
                     preparedStatement.setInt(1, size);
                     preparedStatement.setInt(2, offset);
@@ -40,7 +40,7 @@ public abstract class AbstractDao<T> {
     public List<T> getAllPaginated(int offset, int size) {
 
         return jdbcTemplate.query(
-                constsMap.get(StableQuery.GET_ALL_PAGINATED),
+                constsMap.get(CommonQuery.GET_ALL_PAGINATED),
                 preparedStatement -> {
                     preparedStatement.setInt(1, size);
                     preparedStatement.setInt(2, offset);
@@ -52,7 +52,7 @@ public abstract class AbstractDao<T> {
     public int getAmountActiveElements() {
         Integer amountOfTestCases = DataAccessUtils.singleResult(
                 jdbcTemplate.queryForList(
-                        constsMap.get(StableQuery.AMOUNT_ACTIVE),
+                        constsMap.get(CommonQuery.AMOUNT_ACTIVE),
                         Integer.class
                 )
         );
@@ -63,7 +63,7 @@ public abstract class AbstractDao<T> {
     public int getAmountAllElements() {
         Integer amountOfTestCases = DataAccessUtils.singleResult(
                 jdbcTemplate.queryForList(
-                        constsMap.get(StableQuery.AMOUNT_ALL),
+                        constsMap.get(CommonQuery.AMOUNT_ALL),
                         Integer.class
                 )
         );
@@ -74,7 +74,7 @@ public abstract class AbstractDao<T> {
     public T findById(int id) {
 
         List<T> list = jdbcTemplate.query(
-                constsMap.get(StableQuery.FIND_BY_ID),
+                constsMap.get(CommonQuery.FIND_BY_ID),
                 preparedStatement -> preparedStatement.setInt(1, id),
                 rowMapper
         );
@@ -88,7 +88,7 @@ public abstract class AbstractDao<T> {
 
     public void deactivate(int id) {
         int result = jdbcTemplate.update(
-                constsMap.get(StableQuery.DEACTIVATE),
+                constsMap.get(CommonQuery.DEACTIVATE),
                 id);
         if (result != 1) {
             throw new EntityNotFoundException("Exception in " + getClass().getName());
@@ -97,17 +97,17 @@ public abstract class AbstractDao<T> {
 
     public int getSearchedTotalElements(String title) {
         return getSingleIntElement("%" + title + "%",
-                constsMap.get(StableQuery.AMOUNT_ACTIVE_SEARCHED));
+                constsMap.get(CommonQuery.AMOUNT_ACTIVE_SEARCHED));
     }
 
     public int getSearchedAllTotalElements(String title) {
         return getSingleIntElement("%" + title + "%",
-                constsMap.get(StableQuery.AMOUNT_ALL_SEARCHED));
+                constsMap.get(CommonQuery.AMOUNT_ALL_SEARCHED));
     }
 
     public List<T> findByTitlePaginated(int offset, int size, String title) {
         return jdbcTemplate.query(
-                constsMap.get(StableQuery.ACTIVE_SEARCHED),
+                constsMap.get(CommonQuery.ACTIVE_SEARCHED),
                 preparedStatement -> {
                     preparedStatement.setString(1, "%" + title + "%");
                     preparedStatement.setInt(2, size);
@@ -119,7 +119,7 @@ public abstract class AbstractDao<T> {
 
     public List<T> findAllByTitlePaginated(int offset, int size, String title) {
         return jdbcTemplate.query(
-                constsMap.get(StableQuery.ALL_SEARCHED),
+                constsMap.get(CommonQuery.ALL_SEARCHED),
                 preparedStatement -> {
                     preparedStatement.setString(1, "%" + title + "%");
                     preparedStatement.setInt(2, size);

@@ -1,25 +1,25 @@
 package com.ncedu.cheetahtest.dao.testcase;
 
 import com.ncedu.cheetahtest.dao.genericdao.Consts;
-import com.ncedu.cheetahtest.dao.genericdao.StableQuery;
+import com.ncedu.cheetahtest.dao.genericdao.CommonQuery;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class GTestCaseConsts extends Consts {
 
-    private static final Map<StableQuery, String> constMap = new HashMap<>() {{
-        put(StableQuery.GET_ALL, SELECT_ALL_PARAMS_FROM_TEST_CASE);
-        put(StableQuery.GET_ACTIVE_PAGINATED, GET_ACTIVE_TEST_CASES_PAGINATED);
-        put(StableQuery.GET_ALL_PAGINATED, GET_ALL_TEST_CASES_PAGINATED);
-        put(StableQuery.AMOUNT_ACTIVE, GET_AMOUNT_OF_ACTIVE_TEST_CASES);
-        put(StableQuery.AMOUNT_ALL, GET_AMOUNT_OF_ALL_TEST_CASES);
-        put(StableQuery.DEACTIVATE, DEACTIVATE_TEST_CASE_SQL);
-        put(StableQuery.FIND_BY_ID, FIND_TEST_CASE_BY_ID);
-        put(StableQuery.AMOUNT_ACTIVE_SEARCHED, GET_AMOUNT_OF_ACTIVE_SEARCHED_TEST_CASES);
-        put(StableQuery.AMOUNT_ALL_SEARCHED, GET_AMOUNT_OF_ALL_SEARCHED_TEST_CASES);
-        put(StableQuery.ACTIVE_SEARCHED, FIND_ACTIVE_TEST_CASE_LIKE_TITLE);
-        put(StableQuery.ALL_SEARCHED, FIND_ALL_TEST_CASE_LIKE_TITLE);
+    private static final Map<CommonQuery, String> constMap = new HashMap<>() {{
+        put(CommonQuery.GET_ALL, SELECT_ALL_PARAMS_FROM_TEST_CASE);
+        put(CommonQuery.GET_ACTIVE_PAGINATED, GET_ACTIVE_TEST_CASES_PAGINATED);
+        put(CommonQuery.GET_ALL_PAGINATED, GET_ALL_TEST_CASES_PAGINATED);
+        put(CommonQuery.AMOUNT_ACTIVE, GET_AMOUNT_OF_ACTIVE_TEST_CASES);
+        put(CommonQuery.AMOUNT_ALL, GET_AMOUNT_OF_ALL_TEST_CASES);
+        put(CommonQuery.DEACTIVATE, DEACTIVATE_TEST_CASE_SQL);
+        put(CommonQuery.FIND_BY_ID, FIND_TEST_CASE_BY_ID);
+        put(CommonQuery.AMOUNT_ACTIVE_SEARCHED, GET_AMOUNT_OF_ACTIVE_SEARCHED_TEST_CASES);
+        put(CommonQuery.AMOUNT_ALL_SEARCHED, GET_AMOUNT_OF_ALL_SEARCHED_TEST_CASES);
+        put(CommonQuery.ACTIVE_SEARCHED, FIND_ACTIVE_TEST_CASE_LIKE_TITLE);
+        put(CommonQuery.ALL_SEARCHED, FIND_ALL_TEST_CASE_LIKE_TITLE);
     }};
 
     public GTestCaseConsts() {

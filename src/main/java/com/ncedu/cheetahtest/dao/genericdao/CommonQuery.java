@@ -1,6 +1,6 @@
 package com.ncedu.cheetahtest.dao.genericdao;
 
-public enum StableQuery {
+public enum CommonQuery {
     GET_ALL,
     GET_ACTIVE_PAGINATED,
     GET_ALL_PAGINATED,
