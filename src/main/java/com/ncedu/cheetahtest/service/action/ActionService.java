@@ -11,4 +11,5 @@ public interface ActionService {
     PaginationAction getActionsInCompound(int idCompound,int size, int page);
     Action editActionDescription(String description,int id);
     List<Action> getAllByTitleLike(String title);
+    PaginationAction geActionsByType(String type,int size,int page);
 }

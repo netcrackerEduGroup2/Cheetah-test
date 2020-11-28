@@ -22,35 +22,34 @@ public class ActionDaoImpl implements ActionDao {
     }
 
     @Override
-    public List<Action> selectActionsByTitleLike(String title,int limit,int offset) {
+    public List<Action> selectActionsByTitleLike(String title, int limit, int offset) {
         return jdbcTemplate.query(
                 SELECT_ACTIONS_BY_TITLE_LIKE,
                 preparedStatement -> {
-                    preparedStatement.setString(1,title);
-                    preparedStatement.setInt(2,limit);
-                    preparedStatement.setInt(3,offset);
+                    preparedStatement.setString(1, title);
+                    preparedStatement.setInt(2, limit);
+                    preparedStatement.setInt(3, offset);
                 },
                 new ActionRowMapper());
     }
 
     @Override
     public int getTotalElements(String title) {
-       String sql = "SELECT count(*) FROM action WHERE title LIKE CONCAT('%',?,'%')";
-       List<Integer> totalElements= jdbcTemplate.query(
-               sql,
-               preparedStatement -> preparedStatement.setString(1,title),
-               new CountActionRowMapper()
-       );
-       if (totalElements.size() == 1){
-           return totalElements.get(0);
-       }
-       else return 0;
+        String sql = "SELECT count(*) FROM action WHERE title LIKE CONCAT('%',?,'%')";
+        List<Integer> totalElements = jdbcTemplate.query(
+                sql,
+                preparedStatement -> preparedStatement.setString(1, title),
+                new CountActionRowMapper()
+        );
+        if (totalElements.size() == 1) {
+            return totalElements.get(0);
+        } else return 0;
 
 
     }
 
     @Override
-    public List<Action> getActionsInCompound(int idCompound,int limit,int offset) {
+    public List<Action> getActionsInCompound(int idCompound, int limit, int offset) {
         String sql = "SELECT action.id, action.title, action.type, action.description " +
                 "FROM action INNER JOIN comp_act_prior ON action.id = comp_act_prior.action_id " +
                 "INNER JOIN compound c ON comp_act_prior.comp_id = c.id " +
@@ -59,9 +58,9 @@ public class ActionDaoImpl implements ActionDao {
         return jdbcTemplate.query(
                 sql,
                 preparedStatement -> {
-                    preparedStatement.setInt(1,idCompound);
-                    preparedStatement.setInt(2,limit);
-                    preparedStatement.setInt(3,offset);
+                    preparedStatement.setInt(1, idCompound);
+                    preparedStatement.setInt(2, limit);
+                    preparedStatement.setInt(3, offset);
                 },
                 new ActionRowMapper()
         );
@@ -78,10 +77,9 @@ public class ActionDaoImpl implements ActionDao {
                 preparedStatement -> preparedStatement.setInt(1, idCompound),
                 new CountActionRowMapper()
         );
-        if(counts.size() == 1){
+        if (counts.size() == 1) {
             return counts.get(0);
-        }
-        else{
+        } else {
             return 0;
         }
     }
@@ -91,13 +89,12 @@ public class ActionDaoImpl implements ActionDao {
         String sql = "SELECT id, title, type,description FROM action WHERE title = ?";
         List<Action> actions = jdbcTemplate.query(
                 sql,
-                preparedStatement -> preparedStatement.setString(1,title),
+                preparedStatement -> preparedStatement.setString(1, title),
                 new ActionRowMapper()
         );
-        if(actions.size() == 1){
+        if (actions.size() == 1) {
             return actions.get(0);
-        }
-        else return null;
+        } else return null;
     }
 
 
@@ -106,13 +103,12 @@ public class ActionDaoImpl implements ActionDao {
         String sql = "SELECT id, title, type,description FROM action WHERE id = ?";
         List<Action> actions = jdbcTemplate.query(
                 sql,
-                preparedStatement -> preparedStatement.setInt(1,id),
+                preparedStatement -> preparedStatement.setInt(1, id),
                 new ActionRowMapper()
         );
-        if(actions.size() == 1){
+        if (actions.size() == 1) {
             return actions.get(0);
-        }
-        else return null;
+        } else return null;
     }
 
     @Override
@@ -120,21 +116,21 @@ public class ActionDaoImpl implements ActionDao {
         String sql = "UPDATE action SET description = ? WHERE id = ?";
         jdbcTemplate.update(
                 sql,
-                preparedStatement ->{
-                    preparedStatement.setString(1,description);
-                    preparedStatement.setInt(2,id);
-                } );
+                preparedStatement -> {
+                    preparedStatement.setString(1, description);
+                    preparedStatement.setInt(2, id);
+                });
         return this.getActionById(id);
     }
 
     @Override
     public List<Action> selectAllActionsByTitleLike(String title) {
-       String sql =  "SELECT action.id,action.title,action.type,description " +
+        String sql = "SELECT action.id,action.title,action.type,description " +
                 "FROM action " +
                 "WHERE title LIKE CONCAT('%',?,'%') LIMIT 10";
         return jdbcTemplate.query(
                 sql,
-                preparedStatement -> preparedStatement.setString(1,title),
+                preparedStatement -> preparedStatement.setString(1, title),
                 new ActionRowMapper());
     }
 
@@ -146,8 +142,38 @@ public class ActionDaoImpl implements ActionDao {
                 "WHERE c.id = ? ORDER BY comp_act_prior.priority ";
         return jdbcTemplate.query(
                 sql,
-                preparedStatement -> preparedStatement.setInt(1,idComp),
+                preparedStatement -> preparedStatement.setInt(1, idComp),
                 new ActionRowMapper()
         );
+    }
+
+    @Override
+    public List<Action> getActionsByType(String type, int limit, int offset) {
+        String sql = "SELECT id,title,type,description " +
+                "FROM action WHERE type LIKE CONCAT('%',?,'%') LIMIT ? OFFSET ?";
+        return jdbcTemplate.query(
+                sql,
+                preparedStatement -> {
+                    preparedStatement.setString(1, type);
+                    preparedStatement.setInt(2, limit);
+                    preparedStatement.setInt(3, offset);
+
+                },
+                new ActionRowMapper());
+    }
+
+    @Override
+    public int getTotalActionsByType(String type) {
+        String sql = "SELECT COUNT(*) FROM action WHERE type LIKE CONCAT('%',?,'%')";
+        List<Integer> counts = jdbcTemplate.query(
+                sql,
+                preparedStatement -> preparedStatement.setString(1, type),
+                new CountActionRowMapper()
+        );
+        if (counts.size() == 1) {
+            return counts.get(0);
+        } else {
+            return 0;
+        }
     }
 }

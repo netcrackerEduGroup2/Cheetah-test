@@ -34,5 +34,11 @@ public class ActionController {
     public List<Action> getAllActionsByTitleLike(@RequestParam("title") String title){
         return actionService.getAllByTitleLike(title);
     }
+    @GetMapping("/search-by-type")
+    public PaginationAction findByType(@RequestParam("type") String type,
+                                       @RequestParam("size") int size,
+                                       @RequestParam("page") int page){
+        return actionService.geActionsByType(type, size, page);
+    }
 
 }

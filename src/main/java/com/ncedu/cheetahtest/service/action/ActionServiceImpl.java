@@ -52,4 +52,15 @@ public class ActionServiceImpl implements ActionService {
     public List<Action> getAllByTitleLike(String title) {
         return actionDao.selectAllActionsByTitleLike(title);
     }
+
+    @Override
+    public PaginationAction geActionsByType(String type, int size, int page) {
+        int totalElements = actionDao.getTotalActionsByType(type);
+        PaginationAction paginationAction = new PaginationAction();
+        paginationAction.setTotalElements(totalElements);
+        if (size * (page - 1) < totalElements) {
+            paginationAction.setList(actionDao.getActionsByType(type, size, size * (page - 1)));
+        }
+        return paginationAction;
+    }
 }
