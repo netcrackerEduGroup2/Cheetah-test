@@ -39,7 +39,11 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Override
     public void save(TestCase testCase) {
-        TestCase testCaseWithSameTitle = testCaseDao.findTestCaseByTitleExceptCurrent(testCase.getTitle(), testCase.getId());
+        TestCase testCaseWithSameTitle = testCaseDao
+                .findTestCaseByTitleExceptCurrent(
+                        testCase.getTitle(),
+                        testCase.getId());
+
         if (testCaseWithSameTitle == null) {
             testCaseDao.save(testCase);
         } else {
@@ -67,20 +71,40 @@ public class TestCaseServiceImpl implements TestCaseService {
     public TestCasePaginated findTestCasesByTitlePaginated(int page, int size, String title) {
         int offset = getOffset(page, size);
 
-        List<TestCase> testCaseList = testCaseDao.findTestCasesByTitlePaginated(offset, size, title);
+        List<TestCase> testCaseList = testCaseDao
+                .findTestCasesByTitlePaginated(offset, size, title);
+
         int totalElements = testCaseDao.getSearchedTotalElements(title);
 
         return new TestCasePaginated(testCaseList, totalElements);
     }
 
     @Override
-    public TestCasePaginated findAllTestCasesByTitlePaginated(int page, int size, String title) {
+    public TestCasePaginated findAllTestCasesByTitlePaginated(
+            int page, int size, String title) {
+
         int offset = getOffset(page, size);
 
-        List<TestCase> testCaseList = testCaseDao.findAllTestCasesByTitlePaginated(offset, size, title);
+        List<TestCase> testCaseList = testCaseDao
+                .findAllTestCasesByTitlePaginated(offset, size, title);
+
         int totalElements = testCaseDao.getSearchedAllTotalElements(title);
 
         return new TestCasePaginated(testCaseList, totalElements);
+    }
+
+    @Override
+    public int createTestCase(TestCase testCase) {
+        TestCase testCaseWithSameTitle = testCaseDao
+                .findTestCaseByTitleExceptCurrent(
+                        testCase.getTitle(),
+                        testCase.getId());
+
+        if (testCaseWithSameTitle == null) {
+            return testCaseDao.createTestCase(testCase);
+        } else {
+            throw new TestCaseAlreadyExistException();
+        }
     }
 
     private int getOffset(int page, int size) {

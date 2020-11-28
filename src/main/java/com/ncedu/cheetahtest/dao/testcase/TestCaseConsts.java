@@ -60,5 +60,10 @@ public final class TestCaseConsts {
                     " FROM test_case " +
                     " WHERE title LIKE ? LIMIT 1";
 
+    public static final String CREATE_TEST_CASE_SQL =
+                    "INSERT INTO test_case (title, project_id, status, result)" +
+                    " VALUES (?,?,?::test_case_status,?::test_case_result)";
 
+    public static final String GET_TEST_CASE_ID_BY_TITLE =
+            "SELECT id FROM test_case WHERE title = ?";
 }

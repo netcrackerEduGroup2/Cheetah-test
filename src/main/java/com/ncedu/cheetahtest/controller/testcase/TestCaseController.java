@@ -29,12 +29,14 @@ public class TestCaseController {
         return testCaseService.findTestCasesByTitlePaginated(page, size, keyword);
     }
 
+    // Active and Inactive test cases
     @GetMapping("/all-test-cases")
     public TestCasePaginated getAllTestCases(@RequestParam int page,
                                              @RequestParam int size) {
         return testCaseService.getAllTestCases(page, size);
     }
 
+    // Active and Inactive test cases
     @GetMapping("/all-test-cases/search/findByTitle")
     public TestCasePaginated findAllTestCasesByTitlePaginated(
             @RequestParam int page,
@@ -58,5 +60,13 @@ public class TestCaseController {
         testCaseService.deactivateTestCase(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/test-cases")
+    public TestCase createTestCase(@RequestBody TestCase testCase){
+        int newId = testCaseService.createTestCase(testCase);
+        testCase.setId(newId);
+
+        return testCase;
     }
 }

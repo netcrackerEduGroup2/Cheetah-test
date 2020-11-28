@@ -28,7 +28,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void createDeveloper(User user) {
 
-
         jdbcTemplate.update(
                 CREATE_DEVELOPER_SQL,
                 user.getEmail(),

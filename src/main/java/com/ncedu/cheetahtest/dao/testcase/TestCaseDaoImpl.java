@@ -139,7 +139,7 @@ public class TestCaseDaoImpl implements TestCaseDao {
 
     @Override
     public int getSearchedTotalElements(String title) {
-        return geySingleElement(title, GET_AMOUNT_OF_ACTIVE_SEARCHED_TEST_CASES);
+        return geySingleIntElement("%" + title + "%", GET_AMOUNT_OF_ACTIVE_SEARCHED_TEST_CASES);
     }
 
     @Override
@@ -157,14 +157,27 @@ public class TestCaseDaoImpl implements TestCaseDao {
 
     @Override
     public int getSearchedAllTotalElements(String title) {
-        return geySingleElement(title, GET_AMOUNT_OF_ALL_SEARCHED_TEST_CASES);
+        return geySingleIntElement("%" + title + "%", GET_AMOUNT_OF_ALL_SEARCHED_TEST_CASES);
     }
 
-    private int geySingleElement(String title, String getAmountOfAllSearchedTestCases) {
+    @Override
+    public int createTestCase(TestCase testCase) {
+        jdbcTemplate.update(
+                CREATE_TEST_CASE_SQL,
+                testCase.getTitle(),
+                testCase.getProjectId(),
+                testCase.getStatus().toString(),
+                testCase.getResult().toString()
+        );
+
+        return geySingleIntElement(testCase.getTitle(), GET_TEST_CASE_ID_BY_TITLE);
+    }
+
+    private int geySingleIntElement(String title, String getAmountOfAllSearchedTestCases) {
         List<Integer> amountOfTestCases = jdbcTemplate.query(
                 getAmountOfAllSearchedTestCases,
                 preparedStatement ->
-                        preparedStatement.setString(1, "%" + title + "%"),
+                        preparedStatement.setString(1, title),
                 (resultSet, i) -> resultSet.getInt(1)
         );
 

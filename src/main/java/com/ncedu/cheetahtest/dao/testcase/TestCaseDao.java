@@ -28,4 +28,6 @@ public interface TestCaseDao {
     List<TestCase> findAllTestCasesByTitlePaginated(int offset, int size, String title);
 
     int getSearchedAllTotalElements(String title);
+
+    int createTestCase(TestCase testCase);
 }
