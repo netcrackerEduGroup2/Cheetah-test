@@ -1,10 +1,8 @@
 package com.ncedu.cheetahtest.dao.compscenario;
 
 import com.ncedu.cheetahtest.dao.actscenario.ActScenarioRowMapper;
-import com.ncedu.cheetahtest.dao.compound.CompoundRowMapper;
 import com.ncedu.cheetahtest.entity.actscenario.ActScenario;
 import com.ncedu.cheetahtest.entity.actscenario.ActStatus;
-import com.ncedu.cheetahtest.entity.compound.Compound;
 import com.ncedu.cheetahtest.entity.compscenario.CompScenario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,7 +23,7 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
     @Override
     public CompScenario createCompScenario(CompScenario compScenario) {
         String sql = "INSERT INTO comp_scenario (compound_id, test_scenario_id, priority, comp_status) " +
-                "VALUES (?,?,?,?::action_status)";
+                "VALUES (?,?,?,?::compound_status)";
         jdbcTemplate.update(
                 sql,
                 compScenario.getIdCompound(),
@@ -39,7 +37,7 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public CompScenario editCompScenario(CompScenario compScenario, int id) {
-        String sql = "UPDATE comp_scenario SET compound_id = ?,test_scenario_id = ? , priority = ?, comp_status = ?::action_status " +
+        String sql = "UPDATE comp_scenario SET compound_id = ?,test_scenario_id = ? , priority = ?, comp_status = ?::compound_status " +
                 "WHERE  id = ?";
         jdbcTemplate.update(
                 sql,
@@ -49,7 +47,7 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
                 compScenario.getStatus().toString(),
                 id
         );
-        return findById(id);
+        return findBySignature(compScenario);
     }
 
     @Override
@@ -60,7 +58,7 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public List<CompScenario> findByTitleLike(String title, int limit, int offset) {
-        String sql = "SELECT cs.id, cs.compound_id, cs.test_scenario_id, cs.priority, cs.comp_status, c.title " +
+        String sql = "SELECT cs.id as cs_id, cs.compound_id as cs_compound_id, cs.test_scenario_id as cs_test_scenario_id, cs.priority as cs_priority, cs.comp_status as cs_comp_status, c.title as c_title " +
                 "FROM comp_scenario cs INNER JOIN compound c on c.id = cs.compound_id " +
                 "WHERE c.title LIKE CONCAT('%',?,'%') ORDER BY c.title LIMIT ? OFFSET ?";
         return jdbcTemplate.query(
@@ -76,7 +74,7 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public List<CompScenario> findByTitleInTestScenario(String title, int idTestScenario, int limit, int offset) {
-        String sql = "SELECT cs.id, cs.compound_id, cs.test_scenario_id, cs.priority, cs.comp_status , c.title " +
+        String sql = "SELECT cs.id as cs_id, cs.compound_id as cs_compound_id, cs.test_scenario_id as cs_test_scenario_id, cs.priority as cs_priority, cs.comp_status as cs_comp_status , c.title as c_title " +
                 "FROM comp_scenario cs INNER JOIN compound c on c.id = cs.compound_id " +
                 "WHERE c.title LIKE CONCAT('%',?,'%') AND cs.test_scenario_id = ? ORDER BY cs.priority LIMIT ? OFFSET ?";
         return jdbcTemplate.query(
@@ -93,7 +91,7 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public List<CompScenario> findAllByTitleLike(String title) {
-        String sql = "SELECT cs.id, cs.compound_id, cs.test_scenario_id, cs.priority, cs.comp_status , c.title " +
+        String sql = "SELECT cs.id as cs_id, cs.compound_id as cs_compound_id, cs.test_scenario_id as cs_test_scenario_id, cs.priority as cs_priority, cs.comp_status as cs_comp_status , c.title as c_title " +
                 "FROM comp_scenario cs INNER JOIN compound c on c.id = cs.compound_id " +
                 "WHERE c.title LIKE CONCAT('%',?,'%') ORDER BY c.title ";
         return jdbcTemplate.query(
@@ -105,7 +103,7 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public List<CompScenario> findAllByTitleInTestScenario(String title, int idTestScenario) {
-        String sql = "SELECT cs.id, cs.compound_id, cs.test_scenario_id, cs.priority, cs.comp_status, c.title " +
+        String sql = "SELECT cs.id as cs_id, cs.compound_id as cs_compound_id, cs.test_scenario_id as cs_test_scenario_id, cs.priority as cs_priority, cs.comp_status as cs_comp_status, c.title as c_title " +
                 "FROM comp_scenario cs INNER JOIN compound c on c.id = cs.compound_id " +
                 "WHERE c.title LIKE CONCAT('%',?,'%') AND cs.test_scenario_id = ? ORDER BY cs.priority ";
         return jdbcTemplate.query(
@@ -175,7 +173,7 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public CompScenario findById(int id) {
-        String sql = "SELECT cs.id, cs.compound_id, cs.test_scenario_id, cs.priority, cs.comp_status, c.title " +
+        String sql = "SELECT cs.id as cs_id, cs.compound_id as cs_compound_id, cs.test_scenario_id as cs_test_scenario_id, cs.priority as cs_priority, cs.comp_status as cs_comp_status, c.title as c_title " +
                 "FROM comp_scenario cs INNER JOIN compound c on c.id = cs.compound_id " +
                 "WHERE cs.id = ?";
         List<CompScenario> compScenarios = jdbcTemplate.query(
@@ -192,16 +190,15 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public CompScenario findBySignature(CompScenario compScenario) {
-        String sql = "SELECT cs.id, cs.compound_id, cs.test_scenario_id, cs.priority, cs.comp_status, c.title " +
+        String sql = "SELECT cs.id as cs_id, cs.compound_id as cs_compound_id, cs.test_scenario_id as cs_test_scenario_id, cs.priority as cs_priority, cs.comp_status as cs_comp_status, c.title as c_title " +
                 "FROM comp_scenario cs INNER JOIN compound c on c.id = cs.compound_id " +
-                "WHERE cs.compound_id = ? AND cs.test_scenario_id  =? AND cs.priority = ? AND cs.comp_status = ?::action_status ";
+                "WHERE cs.compound_id = ? AND cs.test_scenario_id  =? AND cs.priority = ?";
         List<CompScenario> compScenarios = jdbcTemplate.query(
                 sql,
                 preparedStatement -> {
                     preparedStatement.setInt(1, compScenario.getIdCompound());
                     preparedStatement.setInt(2, compScenario.getIdTestScenario());
                     preparedStatement.setInt(3, compScenario.getPriority());
-                    preparedStatement.setString(4, compScenario.getStatus().toString());
                 },
                 new CompScenarioRowMapper()
         );

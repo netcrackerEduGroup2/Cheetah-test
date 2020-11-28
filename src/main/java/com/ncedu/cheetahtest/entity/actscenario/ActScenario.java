@@ -5,11 +5,11 @@ import lombok.Data;
 @Data
 public class ActScenario {
     private int id;
-    private int ActionId;
-    private int TestScenarioId;
+    private int actionId;
+    private int testScenarioId;
     private int priority;
     private ActStatus actStatus;
-    private int ParameterId;
+    private int parameterId;
     private String actionTitle;
     private String actionType;
     private String parameterType;

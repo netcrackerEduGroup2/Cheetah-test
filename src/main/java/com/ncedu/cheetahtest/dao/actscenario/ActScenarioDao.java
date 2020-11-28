@@ -15,6 +15,7 @@ public interface ActScenarioDao {
     void deleteActScenario(int id);
     ActScenario setStatus(ActStatus actStatus, int id);
     ActScenario findById(int id);
+    ActScenario findBySignature(ActScenario actScenario);
     int totalFindByTitleLike(String title);
     int totalFindByTitleInTestScenario(String title,int idTestScenario);
     void setStatusForAllByIdTestScenario(ActStatus actStatus, int idTestScenario);

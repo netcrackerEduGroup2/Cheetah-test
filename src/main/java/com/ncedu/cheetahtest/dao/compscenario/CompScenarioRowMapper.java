@@ -8,12 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CompScenarioRowMapper implements RowMapper<CompScenario> {
-    public static String ID = "cs.id";
-    public static String COMPID = "cs.comppound_id";
-    public static String TESTSCENARIO = "cs.test_scenario_id";
-    public static String PRIORITY = "cs.priority";
-    public static String STATUS = "cs.comp_status";
-    public static String TITLE = "c.title";
+    public static String ID = "cs_id";
+    public static String COMPID = "cs_compound_id";
+    public static String TESTSCENARIO = "cs_test_scenario_id";
+    public static String PRIORITY = "cs_priority";
+    public static String STATUS = "cs_comp_status";
+    public static String TITLE = "c_title";
 
     @Override
     public CompScenario mapRow(ResultSet resultSet, int i) throws SQLException {

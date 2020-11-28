@@ -8,16 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ActScenarioRowMapper implements RowMapper<ActScenario> {
-    public static final String ID ="s.id";
-    public static final String ACTIONID ="s.action_id";
-    public static final String TESTSCENARIOID = "s.test_scenario_id";
-    public static final String PRIORITY = "s.priority";
-    public static final String ACTSTATUS = "s.action_status";
-    public static final String ACTPARAMID = "s.act_param_id";
-    public static final String ACTTITLE = "a.title";
-    public static final String ACTTYPE = "a.title";
-    public static final String PARAMTYPE = "ap.title";
-    public static final String PARAMVAL = "ap.title";
+    public static final String ID ="s_id";
+    public static final String ACTIONID ="s_action_id";
+    public static final String TESTSCENARIOID = "s_test_scenario_id";
+    public static final String PRIORITY = "s_priority";
+    public static final String ACTSTATUS = "s_action_status";
+    public static final String ACTPARAMID = "s_param_id";
+    public static final String ACTTITLE = "a_title";
+    public static final String ACTTYPE = "a_type";
+    public static final String PARAMTYPE = "p_type";
+    public static final String PARAMVAL = "p_value";
 
 
     @Override

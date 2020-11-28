@@ -21,35 +21,35 @@ public class ActScenarioDaoImpl implements ActScenarioDao {
     @Override
     public ActScenario createActScenario(ActScenario actScenario) {
         String sql = "INSERT INTO act_scenario (action_id, test_scenario_id, priority, action_status, param_id) " +
-                "VALUES (?,?,?,?::acttion_status,?)";
-        jdbcTemplate.update(
-                sql,
-                actScenario.getActionId(),
-                actScenario.getTestScenarioId(),
-                actScenario.getPriority(),
-                actScenario.getActStatus(),
-                actScenario.getParameterId());
-        return findById(actScenario.getId());
-    }
-
-    @Override
-    public ActScenario editActScenario(ActScenario actScenario, int id) {
-        String sql = "UPDATE act_scenario SET action_id = ?, test_scenario_id = ?, priority = ?, action_status = ?::action_status,param_id = ? " +
-                "WHERE id = ?";
+                "VALUES (?,?,?,?::action_status,?)";
         jdbcTemplate.update(
                 sql,
                 actScenario.getActionId(),
                 actScenario.getTestScenarioId(),
                 actScenario.getPriority(),
                 actScenario.getActStatus().toString(),
+                actScenario.getParameterId());
+        return findBySignature(actScenario);
+    }
+
+    @Override
+    public ActScenario editActScenario(ActScenario actScenario, int id) {
+        String sql = "UPDATE act_scenario SET priority = ?, action_status = ?::action_status,param_id = ? " +
+                "WHERE id = ?";
+        jdbcTemplate.update(
+                sql,
+                actScenario.getPriority(),
+                actScenario.getActStatus().toString(),
                 actScenario.getParameterId(),
                 id);
-        return this.findById(actScenario.getId());
+        return this.findById(id);
     }
 
     @Override
     public List<ActScenario> findByTitleLike(String title, int limit, int offset) {
-        String sql = "SELECT s.id, s.action_id, s.test_scenario_id, s.priority, s.action_status, s.param_id, a.title,a.type,p.type,p.value " +
+        String sql = "SELECT s.id as s_id, s.action_id as s_action_id, s.test_scenario_id as s_test_scenario_id," +
+                " s.priority as s_priority, s.action_status as s_action_status, s.param_id as s_param_id, a.title as a_title," +
+                "a.type as a_type , p.type as p_type , p.value as p_value " +
                 "FROM act_scenario s INNER JOIN action a ON a.id = s.action_id " +
                 "INNER JOIN parameters p ON s.param_id = p.id " +
                 "WHERE a.title LIKE CONCAT('%',?,'%') ORDER BY s.priority LIMIT ? OFFSET ?";
@@ -66,7 +66,9 @@ public class ActScenarioDaoImpl implements ActScenarioDao {
 
     @Override
     public List<ActScenario> findAllByTitleLike(String title) {
-        String sql = "SELECT s.id, s.action_id, s.test_scenario_id, s.priority, s.action_status, s.param_id, a.title,a.type,p.type,p.value " +
+        String sql = "SELECT s.id as s_id, s.action_id as s_action_id, s.test_scenario_id as s_test_scenario_id," +
+                " s.priority as s_priority, s.action_status as s_action_status, s.param_id as s_param_id, a.title as a_title," +
+                " a.type as a_type , p.type as p_type , p.value as p_value " +
                 "FROM act_scenario s INNER JOIN action a ON a.id = s.action_id " +
                 "INNER JOIN parameters p ON s.param_id = p.id " +
                 "WHERE a.title LIKE CONCAT('%',?,'%')";
@@ -79,7 +81,7 @@ public class ActScenarioDaoImpl implements ActScenarioDao {
 
     @Override
     public List<ActScenario> findAllByTitleInTestScenario(String title, int idTestScenario) {
-        String sql = "SELECT s.id, s.action_id, s.test_scenario_id, s.priority, s.action_status, s.param_id, a.title,a.type,p.type,p.value " +
+        String sql = "SELECT s.id as s_id, s.action_id as s_action_id, s.test_scenario_id as s_test_scenario_id, s.priority as s_priority, s.action_status as s_action_status, s.param_id as s_param_id, a.title as a_title, a.type as a_type , p.type as p_type , p.value as p_value " +
                 "FROM act_scenario s INNER JOIN action a ON a.id = s.action_id " +
                 "INNER JOIN parameters p ON s.param_id = p.id " +
                 "WHERE a.title LIKE CONCAT('%',?,'%') AND s.test_scenario_id = ?";
@@ -87,15 +89,17 @@ public class ActScenarioDaoImpl implements ActScenarioDao {
                 sql,
                 preparedStatement -> {
                     preparedStatement.setString(1, title);
-                    preparedStatement.setInt(2,idTestScenario);
+                    preparedStatement.setInt(2, idTestScenario);
                 },
                 new ActScenarioRowMapper()
         );
     }
 
     @Override
-    public List<ActScenario> findByTitleInTestScenario(String title, int idTestScenario,int limit , int offset) {
-        String sql = "SELECT s.id, s.action_id, s.test_scenario_id, s.priority, s.action_status, s.param_id, a.title,a.type,p.type,p.value " +
+    public List<ActScenario> findByTitleInTestScenario(String title, int idTestScenario, int limit, int offset) {
+        String sql = "SELECT s.id as s_id, s.action_id as s_action_id, s.test_scenario_id as s_test_scenario_id," +
+                " s.priority as s_priority, s.action_status as s_action_status, s.param_id as s_param_id, a.title as a_title," +
+                " a.type as a_type , p.type as p_type , p.value as p_value " +
                 "FROM act_scenario s INNER JOIN action a ON a.id = s.action_id " +
                 "INNER JOIN parameters p ON s.param_id = p.id " +
                 "WHERE a.title LIKE CONCAT('%',?,'%') AND s.test_scenario_id = ? ORDER BY s.priority LIMIT ? OFFSET ?";
@@ -131,7 +135,9 @@ public class ActScenarioDaoImpl implements ActScenarioDao {
 
     @Override
     public ActScenario findById(int id) {
-        String sql = "SELECT s.id, s.action_id, s.test_scenario_id, s.priority, s.action_status, s.param_id, a.title, a.type, p.type,p.value " +
+        String sql = "SELECT s.id as s_id, s.action_id as s_action_id, s.test_scenario_id as s_test_scenario_id," +
+                " s.priority as s_priority, s.action_status as s_action_status, s.param_id as s_param_id, a.title as a_title," +
+                " a.type as a_type, p.type as p_type , p.value as p_value " +
                 "FROM act_scenario s INNER JOIN action a on a.id = s.action_id " +
                 "INNER JOIN parameters p on s.param_id = p.id " +
                 "WHERE s.id = ?";
@@ -149,7 +155,7 @@ public class ActScenarioDaoImpl implements ActScenarioDao {
     @Override
     public int totalFindByTitleLike(String title) {
         String sql = "SELECT COUNT(*) " +
-                "FROM act_scenario s INNER JOIN action a on a.id = s.action_id WHERE a.title LIKE ('%',?,'%')";
+                "FROM act_scenario s INNER JOIN action a on a.id = s.action_id WHERE a.title LIKE CONCAT('%',?,'%')";
         List<Integer> counts = jdbcTemplate.query(
                 sql,
                 preparedStatement -> preparedStatement.setString(1, title),
@@ -162,9 +168,9 @@ public class ActScenarioDaoImpl implements ActScenarioDao {
     }
 
     @Override
-    public int totalFindByTitleInTestScenario(String title,int idTestScenario) {
+    public int totalFindByTitleInTestScenario(String title, int idTestScenario) {
         String sql = "SELECT COUNT(*) FROM act_scenario s " +
-                "INNER JOIN action a on a.id = s.action_id WHERE a.title LIKE ('%',?,'%') AND test_scenario_id = ?";
+                "INNER JOIN action a on a.id = s.action_id WHERE a.title LIKE CONCAT('%',?,'%') AND test_scenario_id = ?";
         List<Integer> counts = jdbcTemplate.query(
                 sql,
                 preparedStatement -> {
@@ -180,9 +186,9 @@ public class ActScenarioDaoImpl implements ActScenarioDao {
     }
 
     @Override
-    public void setStatusForAllByIdTestScenario(ActStatus actStatus,int idTestScenario) {
+    public void setStatusForAllByIdTestScenario(ActStatus actStatus, int idTestScenario) {
         String sql = "UPDATE act_scenario SET action_status = ?::action_status WHERE test_scenario_id = ?";
-        jdbcTemplate.update(sql,actStatus.toString(), idTestScenario);
+        jdbcTemplate.update(sql, actStatus.toString(), idTestScenario);
     }
 
     @Override
@@ -201,6 +207,27 @@ public class ActScenarioDaoImpl implements ActScenarioDao {
                 "INNER JOIN compound c on cap.comp_id = c.id " +
                 "INNER JOIN comp_scenario cs on c.id = cs.compound_id " +
                 "WHERE cs.id = ?)";
-        jdbcTemplate.update(sql,idCompScenario);
+        jdbcTemplate.update(sql, idCompScenario);
+    }
+
+    @Override
+    public ActScenario findBySignature(ActScenario actScenario) {
+        String sql = "SELECT s.id as s_id, s.action_id as s_action_id, s.test_scenario_id as s_test_scenario_id, " +
+                "s.priority as s_priority, s.action_status as s_action_status, s.param_id as s_param_id , a.title as a_title, " +
+                "a.type as a_type, p.type as p_type,p.value as p_value " +
+                "FROM act_scenario s INNER JOIN action a on a.id = s.action_id " +
+                "INNER JOIN parameters p on s.param_id = p.id WHERE s.action_id = ? AND s.test_scenario_id = ? AND s.priority = ?";
+        List<ActScenario> actScenarios = jdbcTemplate.query(
+                sql,
+                preparedStatement -> {
+                    preparedStatement.setInt(1, actScenario.getActionId());
+                    preparedStatement.setInt(2, actScenario.getTestScenarioId());
+                    preparedStatement.setInt(3, actScenario.getPriority());
+                },
+                new ActScenarioRowMapper()
+        );
+        if (actScenarios.size() == 1) {
+            return actScenarios.get(0);
+        } else return null;
     }
 }

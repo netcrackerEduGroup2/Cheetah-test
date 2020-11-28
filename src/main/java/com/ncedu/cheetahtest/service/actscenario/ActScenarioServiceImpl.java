@@ -64,7 +64,6 @@ public class ActScenarioServiceImpl implements ActScenarioService {
 
     @Override
     public void deleteActScenario(int id) {
-        //todo
         actScenarioDao.deleteActScenario(id);
     }
 
