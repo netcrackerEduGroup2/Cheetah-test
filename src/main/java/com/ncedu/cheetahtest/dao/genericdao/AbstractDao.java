@@ -1,7 +1,6 @@
 package com.ncedu.cheetahtest.dao.genericdao;
 
 import com.ncedu.cheetahtest.exception.general.EntityNotFoundException;
-import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

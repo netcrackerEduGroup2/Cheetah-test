@@ -1,4 +1,4 @@
-package com.ncedu.cheetahtest.service.testcase;
+package com.ncedu.cheetahtest.dao.testcase;
 
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 

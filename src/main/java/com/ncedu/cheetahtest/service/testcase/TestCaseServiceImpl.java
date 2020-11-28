@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.service.testcase;
 
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
+import com.ncedu.cheetahtest.dao.testcase.GTestCaseDaoImpl;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;

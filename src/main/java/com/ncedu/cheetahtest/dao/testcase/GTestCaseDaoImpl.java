@@ -1,7 +1,6 @@
-package com.ncedu.cheetahtest.service.testcase;
+package com.ncedu.cheetahtest.dao.testcase;
 
 import com.ncedu.cheetahtest.dao.genericdao.AbstractDao;
-import com.ncedu.cheetahtest.dao.testcase.TestCaseMapper;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.ncedu.cheetahtest.service.testcase.GTestCaseConsts.*;
+import static com.ncedu.cheetahtest.dao.testcase.GTestCaseConsts.*;
 
 @Repository
 public class GTestCaseDaoImpl extends AbstractDao<TestCase> implements GTestCaseDao {
