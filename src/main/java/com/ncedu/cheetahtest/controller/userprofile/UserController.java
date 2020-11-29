@@ -2,14 +2,11 @@ package com.ncedu.cheetahtest.controller.userprofile;
 
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.UserDto;
-import com.ncedu.cheetahtest.entity.user.UserPaginatedDto;
 import com.ncedu.cheetahtest.entity.user.UserStatus;
 import com.ncedu.cheetahtest.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/api/user")
@@ -41,13 +38,6 @@ public class UserController {
     @GetMapping("/{id}")
     public User searchUser(@PathVariable("id") String id) {
         return userService.findUserById(Long.parseLong(id));
-    }
-
-    @GetMapping("/search/findByName")
-    public UserPaginatedDto findUsersByNamePaginated(@RequestParam("page") int page,
-                                                     @RequestParam("size") int size,
-                                                     @RequestParam("title") String title) {
-        return userService.findUsersByNamePaginated(page, size, title);
     }
 
 }

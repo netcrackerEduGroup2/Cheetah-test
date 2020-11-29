@@ -85,24 +85,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserPaginatedDto findUsersByNamePaginated(int page, int size, String title) {
-
-        List<User> userList = userDao.findActiveByTitlePaginated(page, size, title);
-        List<UserDto> userDtoList = new ArrayList<>();
-
-        for (User user : userList) {
-            userDtoList.add(
-                    new UserDto(user.getId(), user.getEmail(),
-                            user.getName(), user.getRole(), user.getStatus()));
-        }
-
-        int totalElements = userDao.getSearchedActiveTotalElements(title);
-
-        return new UserPaginatedDto(userDtoList, totalElements);
-    }
-
-    @Override
-    @Transactional
     public void setUserLastRequest(String email, Date date) {
         userDao.setUserLastRequest(email, date);
     }

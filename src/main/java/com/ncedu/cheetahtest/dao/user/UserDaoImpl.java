@@ -90,9 +90,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
 
         List<User> users = jdbcTemplate.query(
                 FIND_USER_BY_TOKEN_SQL,
-                preparedStatement -> {
-                    preparedStatement.setString(1, token);
-                },
+                preparedStatement -> preparedStatement.setString(1, token),
                 new UserRowMapper()
         );
 
