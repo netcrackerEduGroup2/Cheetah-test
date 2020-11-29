@@ -12,8 +12,6 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
 
     protected final JdbcTemplate jdbcTemplate;
 
-    protected final String[] rows;
-
     protected final String tableName;
 
     protected final Consts commonConsts;
@@ -22,7 +20,6 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
                            String[] rows, String tableName) {
         this.rowMapper = rowMapper;
         this.jdbcTemplate = jdbcTemplate;
-        this.rows = rows;
         this.tableName = tableName;
         this.commonConsts = new Consts(rows, tableName);
     }

@@ -3,6 +3,9 @@ package com.ncedu.cheetahtest.dao.testcase;
 
 public class TestCaseConsts {
 
+    private TestCaseConsts() {
+    }
+
     public static final String SELECT_ALL_PARAMS_FROM_TEST_CASE =
             "SELECT id, title, project_id, status, result " +
                     "FROM test_case ";
