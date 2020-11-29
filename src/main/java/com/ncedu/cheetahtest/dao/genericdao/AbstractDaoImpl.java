@@ -1,5 +1,6 @@
 package com.ncedu.cheetahtest.dao.genericdao;
 
+import com.ncedu.cheetahtest.exception.general.InvalidParametersException;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -25,7 +26,9 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
     }
 
     @Override
-    public List<T> getActivePaginated(int offset, int size) {
+    public List<T> getActivePaginated(int page, int size) {
+        int offset = getOffset(page, size);
+
         return jdbcTemplate.query(
                 commonConsts.getActivePaginated(),
                 preparedStatement -> {
@@ -37,7 +40,9 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
     }
 
     @Override
-    public List<T> getAllPaginated(int offset, int size) {
+    public List<T> getAllPaginated(int page, int size) {
+
+        int offset = getOffset(page, size);
 
         return jdbcTemplate.query(
                 commonConsts.getAllPaginated(),
@@ -102,7 +107,9 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
     }
 
     @Override
-    public List<T> findActiveByTitlePaginated(int offset, int size, String title) {
+    public List<T> findActiveByTitlePaginated(int page, int size, String title) {
+        int offset = getOffset(page, size);
+
         return jdbcTemplate.query(
                 commonConsts.getActiveSearched(),
                 preparedStatement -> {
@@ -115,7 +122,9 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
     }
 
     @Override
-    public List<T> findAllByTitlePaginated(int offset, int size, String title) {
+    public List<T> findAllByTitlePaginated(int page, int size, String title) {
+        int offset = getOffset(page, size);
+
         return jdbcTemplate.query(
                 commonConsts.getAllSearched(),
                 preparedStatement -> {
@@ -141,6 +150,14 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
         }
 
         return 0;
+    }
+
+    private int getOffset(int page, int size) {
+        if (page <= 0 || size < 0) {
+            throw new InvalidParametersException("In " + getClass().getName());
+        }
+
+        return size * (page - 1);
     }
 
 }

@@ -6,7 +6,6 @@ import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
 import com.ncedu.cheetahtest.exception.project.ProjectNotFoundException;
-import com.ncedu.cheetahtest.exception.testcase.InvalidParametersException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseAlreadyExistsException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +22,7 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Override
     public TestCasePaginated getTestCases(int page, int size) {
-        int offset = getOffset(page, size);
-
-        List<TestCase> testCaseList = testCaseDao.getActivePaginated(offset, size);
+        List<TestCase> testCaseList = testCaseDao.getActivePaginated(page, size);
         int totalElements = testCaseDao.getAmountActiveElements();
 
         return new TestCasePaginated(testCaseList, totalElements);
@@ -33,9 +30,8 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Override
     public TestCasePaginated getAllTestCases(int page, int size) {
-        int offset = getOffset(page, size);
 
-        List<TestCase> testCaseList = testCaseDao.getAllPaginated(offset, size);
+        List<TestCase> testCaseList = testCaseDao.getAllPaginated(page, size);
         int totalElements = testCaseDao.getAmountAllElements();
 
         return new TestCasePaginated(testCaseList, totalElements);
@@ -73,10 +69,8 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Override
     public TestCasePaginated findTestCasesByTitlePaginated(int page, int size, String title) {
-        int offset = getOffset(page, size);
-
         List<TestCase> testCaseList = testCaseDao
-                .findActiveByTitlePaginated(offset, size, title);
+                .findActiveByTitlePaginated(page, size, title);
 
         int totalElements = testCaseDao.getSearchedActiveTotalElements(title);
 
@@ -87,10 +81,8 @@ public class TestCaseServiceImpl implements TestCaseService {
     public TestCasePaginated findAllTestCasesByTitlePaginated(
             int page, int size, String title) {
 
-        int offset = getOffset(page, size);
-
         List<TestCase> testCaseList = testCaseDao
-                .findAllByTitlePaginated(offset, size, title);
+                .findAllByTitlePaginated(page, size, title);
 
         int totalElements = testCaseDao.getSearchedAllTotalElements(title);
 
@@ -116,12 +108,5 @@ public class TestCaseServiceImpl implements TestCaseService {
         return testCaseDao.createTestCase(testCase);
     }
 
-    private int getOffset(int page, int size) {
-        if (page <= 0 || size < 0) {
-            throw new InvalidParametersException();
-        }
-
-        return size * (page - 1);
-    }
 }
 
