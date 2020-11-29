@@ -44,7 +44,7 @@ public class LibraryController {
         return compoundService.editCompoundProperties(compound,idCompound);
     }
     @GetMapping("/{idCompound}/actions")
-    PaginationAction getActionsInCompound(@PathVariable int idCompound,
+    public PaginationAction getActionsInCompound(@PathVariable int idCompound,
                                           @RequestParam("size") int size,
                                           @RequestParam("page") int page){
         return actionService.getActionsInCompound(idCompound,size,page);
