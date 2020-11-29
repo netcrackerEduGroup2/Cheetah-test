@@ -1,13 +1,13 @@
 package com.ncedu.cheetahtest.service.testcase;
 
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
-import com.ncedu.cheetahtest.dao.testcase.TestCaseDao;
+import com.ncedu.cheetahtest.dao.testcase.TestCaseDaoImpl;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
 import com.ncedu.cheetahtest.exception.project.ProjectNotFoundException;
 import com.ncedu.cheetahtest.exception.testcase.InvalidParametersException;
-import com.ncedu.cheetahtest.exception.testcase.TestCaseAlreadyExistException;
+import com.ncedu.cheetahtest.exception.testcase.TestCaseAlreadyExistsException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,15 +18,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TestCaseServiceImpl implements TestCaseService {
 
-    private final TestCaseDao testCaseDao;
+    private final TestCaseDaoImpl testCaseDao;
     private final ProjectDao projectDao;
 
     @Override
     public TestCasePaginated getTestCases(int page, int size) {
         int offset = getOffset(page, size);
 
-        List<TestCase> testCaseList = testCaseDao.getTestCases(offset, size);
-        int totalElements = testCaseDao.getTotalElements();
+        List<TestCase> testCaseList = testCaseDao.getActivePaginated(offset, size);
+        int totalElements = testCaseDao.getAmountActiveElements();
 
         return new TestCasePaginated(testCaseList, totalElements);
     }
@@ -35,8 +35,8 @@ public class TestCaseServiceImpl implements TestCaseService {
     public TestCasePaginated getAllTestCases(int page, int size) {
         int offset = getOffset(page, size);
 
-        List<TestCase> testCaseList = testCaseDao.getAllTestCases(offset, size);
-        int totalElements = testCaseDao.getAllTotalElements();
+        List<TestCase> testCaseList = testCaseDao.getAllPaginated(offset, size);
+        int totalElements = testCaseDao.getAmountAllElements();
 
         return new TestCasePaginated(testCaseList, totalElements);
     }
@@ -51,13 +51,13 @@ public class TestCaseServiceImpl implements TestCaseService {
         if (testCaseWithSameTitle == null) {
             testCaseDao.save(testCase);
         } else {
-            throw new TestCaseAlreadyExistException();
+            throw new TestCaseAlreadyExistsException();
         }
     }
 
     @Override
     public TestCase findTestCaseById(int id) {
-        TestCase testCase = testCaseDao.findTestCaseById(id);
+        TestCase testCase = testCaseDao.findById(id);
 
         if (testCase == null) {
             throw new TestCaseNotFoundException();
@@ -68,7 +68,7 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Override
     public void deactivateTestCase(int id) {
-        testCaseDao.deactivateTestCase(id);
+        testCaseDao.deactivate(id);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class TestCaseServiceImpl implements TestCaseService {
         int offset = getOffset(page, size);
 
         List<TestCase> testCaseList = testCaseDao
-                .findTestCasesByTitlePaginated(offset, size, title);
+                .findByTitlePaginated(offset, size, title);
 
         int totalElements = testCaseDao.getSearchedTotalElements(title);
 
@@ -90,7 +90,7 @@ public class TestCaseServiceImpl implements TestCaseService {
         int offset = getOffset(page, size);
 
         List<TestCase> testCaseList = testCaseDao
-                .findAllTestCasesByTitlePaginated(offset, size, title);
+                .findAllByTitlePaginated(offset, size, title);
 
         int totalElements = testCaseDao.getSearchedAllTotalElements(title);
 
@@ -110,7 +110,7 @@ public class TestCaseServiceImpl implements TestCaseService {
             throw new ProjectNotFoundException();
         }
         if (testCaseWithSameTitle != null) {
-            throw new TestCaseAlreadyExistException();
+            throw new TestCaseAlreadyExistsException();
         }
 
         return testCaseDao.createTestCase(testCase);
