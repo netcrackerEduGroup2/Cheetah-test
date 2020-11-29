@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public class ProjectDaoImpl extends AbstractDaoImpl<Project> implements ProjectDao {
     private final JdbcTemplate jdbcTemplate;
-    public static final String[] rows = {"id", "title", "link", "status", "create_date"};
+    private static final String[] rows = {"id", "title", "link", "status", "create_date"};
 
 
     @Autowired
@@ -30,7 +30,7 @@ public class ProjectDaoImpl extends AbstractDaoImpl<Project> implements ProjectD
 
         jdbcTemplate.update(
                 sqlQueryForProjectTable,
-                projectDto.getProject().getName(),
+                projectDto.getProject().getTitle(),
                 projectDto.getProject().getLink(),
                 "ACTIVE",
                 Timestamp.valueOf(LocalDateTime.now())
@@ -38,7 +38,7 @@ public class ProjectDaoImpl extends AbstractDaoImpl<Project> implements ProjectD
 
         List<Project> project = jdbcTemplate.query(
             ProjectSqlConsts.SELECT_PROJECT_BY_TITLE_QUERY,
-            p -> p.setString(1, projectDto.getProject().getName()),
+            p -> p.setString(1, projectDto.getProject().getTitle()),
             new ProjectMapper()
         );
 
