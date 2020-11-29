@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.service.testcase;
 
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
+import com.ncedu.cheetahtest.dao.testcase.TestCaseDao;
 import com.ncedu.cheetahtest.dao.testcase.TestCaseDaoImpl;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
@@ -18,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TestCaseServiceImpl implements TestCaseService {
 
-    private final TestCaseDaoImpl testCaseDao;
+    private final TestCaseDao testCaseDao;
     private final ProjectDao projectDao;
 
     @Override
