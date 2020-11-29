@@ -3,6 +3,7 @@ package com.ncedu.cheetahtest.controller.project;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.project.ProjectDto;
 import com.ncedu.cheetahtest.entity.project.ProjectResponse;
+import com.ncedu.cheetahtest.entity.project.ResponseProjectPaginated;
 import com.ncedu.cheetahtest.service.project.ProjectService;
 import com.ncedu.cheetahtest.service.project.ProjectServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -31,15 +32,23 @@ public class ProjectController {
     }
 
     @GetMapping("/projects")
-    public ResponseEntity<List<Project>> getAllProjects() {
-        return ResponseEntity.ok(projectService.getAllProjects());
+    public ResponseProjectPaginated getAllProjects(@RequestParam int page,
+                                                   @RequestParam int size) {
+        return projectService.getAllProjects(page, size);
     }
-
 
     @GetMapping("/projects/{id}")
     public ResponseEntity<Project> getProjectById(@PathVariable int id) {
         return ResponseEntity.ok(projectService.getProjectById(id));
     }
+
+    @GetMapping("/projects/search")
+    public ResponseEntity<List<Project>> getProjectsByTitle( @RequestParam int page,
+                                                             @RequestParam int size,
+                                                             @RequestParam String title) {
+        return ResponseEntity.ok(projectService.getProjectsPaginatedByTitle(page, size, title));
+    }
+
 
     @GetMapping("projects/archive")
     public ResponseEntity<List<Project>> getAllArchievedProjects() {

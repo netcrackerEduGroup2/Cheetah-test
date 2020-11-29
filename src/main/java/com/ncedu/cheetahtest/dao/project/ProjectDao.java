@@ -1,5 +1,6 @@
 package com.ncedu.cheetahtest.dao.project;
 
+import com.ncedu.cheetahtest.dao.genericdao.AbstractDao;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.project.ProjectDto;
 
@@ -7,13 +8,18 @@ import java.util.List;
 
 public interface ProjectDao {
 
-    void createProject(ProjectDto project);
+    List<Project> getAllPaginated(int offset, int size);
 
-    List<Project> getAllProjects();
+    List<Project> findAllByTitlePaginated(int offset, int size, String title);
+
+    int getAmountAllElements();
+
+    void createProject(ProjectDto project);
 
     void setArchievedStatus(int id);
 
     List<Project> getAllArchievedProjects();
 
     Project findByProjectId(int id);
+
 }

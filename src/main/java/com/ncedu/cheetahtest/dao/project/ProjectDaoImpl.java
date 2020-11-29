@@ -1,9 +1,12 @@
 package com.ncedu.cheetahtest.dao.project;
 
+import com.ncedu.cheetahtest.dao.genericdao.AbstractDao;
+import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.project.ProjectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -11,14 +14,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public class ProjectDaoImpl implements ProjectDao {
+public class ProjectDaoImpl extends AbstractDaoImpl<Project> implements ProjectDao {
     private final JdbcTemplate jdbcTemplate;
+    public static final String[] rows = {"id", "name", "link", "status", "create_date"};
+
 
     @Autowired
     public ProjectDaoImpl(JdbcTemplate jdbcTemplate) {
+        super(new ProjectMapper(), jdbcTemplate, rows, "project");
         this.jdbcTemplate = jdbcTemplate;
     }
-
 
     @Override
     public void createProject(ProjectDto projectDto) {
@@ -49,12 +54,6 @@ public class ProjectDaoImpl implements ProjectDao {
                     "WATCHER"
             );
         }
-    }
-
-    @Override
-    public List<Project> getAllProjects() {
-        String sqlQuery = ProjectSqlConsts.SELECT_ALL_PROJECTS_QUERY;
-        return jdbcTemplate.query(sqlQuery, new ProjectMapper());
     }
 
     @Override

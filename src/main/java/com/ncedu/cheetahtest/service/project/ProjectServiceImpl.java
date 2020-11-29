@@ -1,8 +1,10 @@
 package com.ncedu.cheetahtest.service.project;
 
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
+import com.ncedu.cheetahtest.dao.project.ProjectDaoImpl;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.project.ProjectDto;
+import com.ncedu.cheetahtest.entity.project.ResponseProjectPaginated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +26,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> getAllProjects() {
-        return projectDao.getAllProjects();
+    public ResponseProjectPaginated getAllProjects(int page, int size) {
+        int offset = (page - 1) * size;
+        int totalElements = projectDao.getAmountAllElements();
+        List<Project> projects = projectDao.getAllPaginated(offset, size);
+
+        return new ResponseProjectPaginated(projects, totalElements);
     }
 
     @Override
@@ -43,4 +49,8 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDao.findByProjectId(id);
     }
 
+    @Override
+    public List<Project> getProjectsPaginatedByTitle(int page, int size, String title) {
+        return projectDao.findAllByTitlePaginated(page, size, title);
+    }
 }

@@ -10,4 +10,6 @@ public interface TestCaseDao {
     TestCase findTestCaseByTitleExceptCurrent(String title, int id);
 
     int createTestCase(TestCase testCase);
+
+    void deactivate(int id);
 }
