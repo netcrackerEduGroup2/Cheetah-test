@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/project-management")
+@RequestMapping("/api/project-management/projects")
 @CrossOrigin(origins = "${frontend.ulr}")
 @Slf4j
 public class ProjectController {
@@ -25,24 +25,24 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    @PostMapping("/projects")
+    @PostMapping
     public ResponseEntity<ProjectResponse> createProject(@RequestBody ProjectDto projectDto) {
         projectService.createNewProject(projectDto);
         return ResponseEntity.ok(new ProjectResponse("A new project has been created successfully!"));
     }
 
-    @GetMapping("/projects")
+    @GetMapping
     public ResponseProjectPaginated getAllProjects(@RequestParam int page,
                                                    @RequestParam int size) {
         return projectService.getAllProjects(page, size);
     }
 
-    @GetMapping("/projects/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Project> getProjectById(@PathVariable int id) {
         return ResponseEntity.ok(projectService.getProjectById(id));
     }
 
-    @GetMapping("/projects/search")
+    @GetMapping("/search")
     public ResponseProjectPaginated getProjectsByTitle( @RequestParam int page,
                                                         @RequestParam int size,
                                                         @RequestParam String title) {
@@ -50,13 +50,12 @@ public class ProjectController {
         return projectService.getProjectsPaginatedByTitle(page, size, title);
     }
 
-
-    @GetMapping("projects/archive")
+    @GetMapping("/archive")
     public ResponseEntity<List<Project>> getAllArchievedProjects() {
         return ResponseEntity.ok(projectService.getAllArchievedProjects());
     }
 
-    @PutMapping("projects/archive/{id}")
+    @PutMapping("/archive/{id}")
     public ResponseEntity<ProjectResponse> setArchivedStatus(@PathVariable int id) {
         projectService.setArchievedStatus(id);
         return ResponseEntity.ok(new ProjectResponse("A project No. "+id+" has been archieved!"));
