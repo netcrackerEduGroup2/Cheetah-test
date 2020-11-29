@@ -1,13 +1,15 @@
 package com.ncedu.cheetahtest.service.compound;
 
+import com.ncedu.cheetahtest.dao.compactprior.CompActPriorDao;
 import com.ncedu.cheetahtest.dao.compound.CompoundDao;
-import com.ncedu.cheetahtest.dao.libactcompound.LibActCompoundDao;
+import com.ncedu.cheetahtest.entity.action.Action;
+import com.ncedu.cheetahtest.entity.compactprior.CompActPrior;
 import com.ncedu.cheetahtest.entity.compound.Compound;
-import com.ncedu.cheetahtest.entity.libactcompound.LibActCompound;
-import com.ncedu.cheetahtest.exception.managelibraries.RightsPermissionException;
-import com.ncedu.cheetahtest.exception.managelibraries.UnproperInputException;
-import com.ncedu.cheetahtest.service.security.AuthService;
+import com.ncedu.cheetahtest.entity.compound.PaginationCompound;
+import com.ncedu.cheetahtest.exception.helpers.EntityAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,83 +17,81 @@ import java.util.List;
 @Service
 public class CompoundServiceImpl implements CompoundService {
     private final CompoundDao compoundDao;
-    private final LibActCompoundDao libActCompoundDao;
-    private final AuthService authService;
+    private final CompActPriorDao compActPriorDao;
+
 
     @Autowired
-    public CompoundServiceImpl(CompoundDao compoundDao, LibActCompoundDao libActCompoundDao, AuthService authService) {
+    public CompoundServiceImpl(CompoundDao compoundDao, CompActPriorDao compActPriorDao) {
         this.compoundDao = compoundDao;
-        this.libActCompoundDao = libActCompoundDao;
-        this.authService = authService;
+        this.compActPriorDao = compActPriorDao;
     }
 
     @Override
-    public Compound createCompound(int idLibrary, Compound compoundDTO) {
+    public Compound createCompound(Compound compound, List<Action> actions) {
+        Compound createdComp;
+        try {
+            createdComp = compoundDao.createCompound(compound);
+        } catch (DataIntegrityViolationException ex) {
+            throw new EntityAlreadyExistException();
+        }
+        CompActPrior compActPrior = new CompActPrior();
+        int priority = 1;
+        for (Action action : actions) {
+            compActPrior.setCompId(createdComp.getId());
+            compActPrior.setActId(action.getId());
+            compActPrior.setPriority(priority);
+            compActPriorDao.createCompActPrior(compActPrior);
+            priority++;
+        }
+        return createdComp;
 
-        if (compoundDTO.getTitle() == null || isStatusUnproper(compoundDTO.getStatus()) ){
-            throw new UnproperInputException();
-        } else {
-            int idCompound = compoundDao.createCompound(compoundDTO);
-            LibActCompound insert = new LibActCompound();
-            insert.setIdLibrary(idLibrary);
-            insert.setIdCompound(idCompound);
-            libActCompoundDao.createLibActCompound(insert);
-            return compoundDTO;
+    }
+
+    private void createPriorityInActions(List<Action> actions, Compound compound) {
+        int priority = 1;
+        CompActPrior compActPrior = new CompActPrior();
+        for (Action action : actions) {
+            compActPrior.setCompId(compound.getId());
+            compActPrior.setActId(action.getId());
+            compActPrior.setPriority(priority);
+            compActPriorDao.createCompActPrior(compActPrior);
+            priority++;
         }
     }
 
     @Override
-    public List<Compound> selectAllCompound() {
-        return compoundDao.selectAll();
+    public Compound editCompound(Compound compound, int id, List<Action> actions) {
+        Compound editedComp = compoundDao.editCompound(compound, id);
+        compActPriorDao.deleteByIdCompound(editedComp.getId());
+        createPriorityInActions(actions, editedComp);
+        return editedComp;
     }
 
     @Override
-    public Compound getCompoundId(int id) {
-        return compoundDao.findCompoundById(id);
-    }
-
-    @Override
-    public List<Compound> getActiveCompoundByTitle(int idLibrary, String title) {
-        return compoundDao.selectActiveCompoundByTitle(idLibrary, title);
-    }
-
-    @Override
-    public List<Compound> getInactiveCompoundByTitle(int idLibrary, String title) {
-        return compoundDao.selectInactiveCompoundByTitle(idLibrary, title);
-    }
-
-    @Override
-    public Compound editCompound(Compound compoundDTO) {
-        if(isStatusUnproper(compoundDTO.getStatus())){
-            throw new UnproperInputException();
+    public PaginationCompound getCompoundsByTitleLike(String title, int size, int page) {
+        PaginationCompound paginationCompound = new PaginationCompound();
+        int totalElements = compoundDao.getTotalCompByTitle(title);
+        paginationCompound.setTotalCompounds(totalElements);
+        if (size * (page - 1) < totalElements) {
+            paginationCompound.setCompounds(compoundDao.selectCompoundsByTitleLike(title, size, size * (page - 1)));
         }
-        else{
-            return compoundDao.editCompound(compoundDTO);
-        }
-
+        return paginationCompound;
     }
-
-    @Override
-    public Compound changeStatus(String status, int id) {
-        if (isStatusUnproper(status)) {
-            throw new UnproperInputException();
-        } else return compoundDao.setStatus(status, id);
-    }
-
 
 
     @Override
-    public void deleteCompound(String token ,int idCompound) {
-        if (authService.isAdmin(token)){
-            compoundDao.removeCompoundById(idCompound);
-            libActCompoundDao.removeByCompoundId(idCompound);
-        }
-        else throw new RightsPermissionException();
+    public Compound editCompoundProperties(Compound compound, int id) {
+        return compoundDao.editCompound(compound, id);
     }
 
+
     @Override
-    public boolean isStatusUnproper(String status) {
-        return !"active".equals(status) &&
-                !"inactive".equals(status);
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
+    public void deleteCompound(int idCompound) {
+        compActPriorDao.deleteByIdCompound(idCompound);
+        compoundDao.removeCompoundById(idCompound);
+
     }
+
+
 }

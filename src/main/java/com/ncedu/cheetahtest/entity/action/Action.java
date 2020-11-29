@@ -6,8 +6,6 @@ import lombok.Data;
 public class Action {
     private int id;
     private String title;
+    private String type;
     private String description;
-    private int idCompound;
-    private int idTestScenario;
-    private String status;
 }
