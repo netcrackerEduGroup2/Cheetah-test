@@ -2,6 +2,12 @@ package com.ncedu.cheetahtest.dao.genericdao;
 
 public class Consts {
 
+    public static final String SELECT_ROWS = "SELECT %s ";
+    public static final String FROM_TABLE = "FROM %s ";
+    public static final  String WHERE_STATUS_ACTIVE = " WHERE status = 'ACTIVE' ";
+    public static final  String ORDER_PAGINATED = " ORDER BY id LIMIT ? OFFSET ? ";
+    public static final String SELECT_COUNT_ID = "SELECT count(id) ";
+
     private final String selectAllRowsFromTable;
     private final String tableName;
 
@@ -23,13 +29,10 @@ public class Consts {
         return select.toString();
     }
 
-    private final String WHERE_STATUS_ACTIVE = " WHERE status = 'ACTIVE' ";
-    private final String ORDER_PAGINATED = " ORDER BY id LIMIT ? OFFSET ? ";
-
     public String getActivePaginated() {
         return String.format(
-                "SELECT %s " +
-                "FROM %s " +
+                SELECT_ROWS +
+                FROM_TABLE +
                 WHERE_STATUS_ACTIVE +
                 ORDER_PAGINATED,
                 selectAllRowsFromTable, tableName);
@@ -37,31 +40,31 @@ public class Consts {
 
     public String getAllPaginated() {
         return String.format(
-                "SELECT %s " +
-                "FROM %s " +
+                SELECT_ROWS +
+                FROM_TABLE +
                 ORDER_PAGINATED,
                 selectAllRowsFromTable, tableName);
     }
 
     public String getAmountActive() {
         return String.format(
-                "SELECT count(id) " +
-                "FROM %s " +
+                SELECT_COUNT_ID +
+                FROM_TABLE +
                 WHERE_STATUS_ACTIVE,
                 tableName);
     }
 
     public String getAmountAll() {
         return String.format(
-                "SELECT count(id) " +
-                "FROM %s ",
+                SELECT_COUNT_ID +
+                FROM_TABLE,
                 tableName);
     }
 
     public String getById() {
         return String.format(
-                "SELECT %s " +
-                "FROM %s " +
+                SELECT_ROWS +
+                FROM_TABLE +
                 " WHERE id = ? LIMIT 1",
                 selectAllRowsFromTable, tableName);
     }
@@ -76,8 +79,8 @@ public class Consts {
 
     public String getActiveSearched() {
         return String.format(
-                "SELECT %s " +
-                "FROM %s " +
+                SELECT_ROWS +
+                FROM_TABLE+
                 WHERE_STATUS_ACTIVE +
                 " AND title LIKE ? " +
                 ORDER_PAGINATED,
@@ -86,8 +89,8 @@ public class Consts {
 
     public String getAllSearched() {
         return String.format(
-                "SELECT %s " +
-                "FROM %s " +
+                SELECT_ROWS +
+                FROM_TABLE +
                 " WHERE title LIKE ? " +
                 ORDER_PAGINATED,
                 selectAllRowsFromTable, tableName);
@@ -95,8 +98,8 @@ public class Consts {
 
     public String getAmountActiveSearched() {
         return String.format(
-                "SELECT count(id) " +
-                "FROM %s " +
+                SELECT_COUNT_ID +
+                FROM_TABLE +
                 WHERE_STATUS_ACTIVE +
                 " AND title LIKE ? LIMIT 1",
                 tableName);
@@ -104,8 +107,8 @@ public class Consts {
 
     public String getAmountAllSearched() {
         return String.format(
-                "SELECT count(id) " +
-                "FROM %s " +
+                SELECT_COUNT_ID +
+                FROM_TABLE +
                 "WHERE title LIKE ? LIMIT 1",
                 tableName);
     }

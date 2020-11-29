@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.dao.genericdao;
 
-import com.ncedu.cheetahtest.exception.general.EntityNotFoundException;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,7 +18,7 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
 
     protected final Consts commonConsts;
 
-    public AbstractDaoImpl(RowMapper<T> rowMapper, JdbcTemplate jdbcTemplate,
+    protected AbstractDaoImpl(RowMapper<T> rowMapper, JdbcTemplate jdbcTemplate,
                            String[] rows, String tableName) {
         this.rowMapper = rowMapper;
         this.jdbcTemplate = jdbcTemplate;

@@ -33,7 +33,7 @@ CREATE TABLE project
     name        varchar(100) UNIQUE NOT NULL,
     link        varchar(200) UNIQUE NOT NULL,
     status      project_status      NOT NULL,
-    create_data timestamp           NOT NULL
+    create_date timestamp           NOT NULL
 );
 
 create table test_case
