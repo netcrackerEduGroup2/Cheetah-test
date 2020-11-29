@@ -3,6 +3,7 @@ package com.ncedu.cheetahtest.service.user;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
 import com.ncedu.cheetahtest.entity.user.UserDto;
+import com.ncedu.cheetahtest.entity.user.UserPaginatedDto;
 
 import java.util.Date;
 
@@ -23,4 +24,6 @@ public interface UserService {
     User changeUserStatus(long id, String status);
 
     User findUserById(long id);
+
+    UserPaginatedDto findUsersByNamePaginated(int page, int size, String title);
 }

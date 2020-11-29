@@ -2,6 +2,7 @@ package com.ncedu.cheetahtest.controller.userprofile;
 
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.UserDto;
+import com.ncedu.cheetahtest.entity.user.UserPaginatedDto;
 import com.ncedu.cheetahtest.entity.user.UserStatus;
 import com.ncedu.cheetahtest.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,30 +16,38 @@ import javax.websocket.server.PathParam;
 @Slf4j
 @CrossOrigin(origins = "${frontend.ulr}")
 public class UserController {
-  private final UserService userService;
+    private final UserService userService;
 
-  @Autowired
-  public UserController(UserService userService) {
-    this.userService = userService;
-  }
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
-  @PutMapping
-  public User editUser(@RequestBody UserDto user) {
-    return userService.editUser(user);
-  }
+    @PutMapping
+    public User editUser(@RequestBody UserDto user) {
+        return userService.editUser(user);
+    }
 
-  @PutMapping("/activate")
-  public User doActive(@RequestBody long id) {
-    return userService.changeUserStatus(id, UserStatus.ACTIVE.toString());
-  }
+    @PutMapping("/activate")
+    public User doActive(@RequestBody long id) {
+        return userService.changeUserStatus(id, UserStatus.ACTIVE.toString());
+    }
 
-  @PutMapping("/deactivate")
-  public User doInactive(@RequestBody long id) {
-    return userService.changeUserStatus(id, UserStatus.INACTIVE.toString());
-  }
+    @PutMapping("/deactivate")
+    public User doInactive(@RequestBody long id) {
+        return userService.changeUserStatus(id, UserStatus.INACTIVE.toString());
+    }
 
-  @GetMapping("/{id}")
-  public User searchUser(@PathParam("id") String id) {
-    return userService.findUserById(Long.parseLong(id));
-  }
+    @GetMapping("/{id}")
+    public User searchUser(@PathVariable("id") String id) {
+        return userService.findUserById(Long.parseLong(id));
+    }
+
+    @GetMapping("/search/findByName")
+    public UserPaginatedDto findUsersByNamePaginated(@RequestParam("page") int page,
+                                                     @RequestParam("size") int size,
+                                                     @RequestParam("title") String title) {
+        return userService.findUsersByNamePaginated(page, size, title);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.ncedu.cheetahtest.dao.user;
 
+import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
 import com.ncedu.cheetahtest.entity.user.UserDto;
@@ -8,7 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -16,13 +16,16 @@ import java.util.List;
 import static com.ncedu.cheetahtest.dao.user.UserConsts.*;
 
 @Repository
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private static final String[] rows =
+            {"id", "email", "password", "name",
+                    "role", "status", "last_request"};
 
     @Autowired
-    public UserDaoImpl(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public UserDaoImpl(JdbcTemplate jdbcTemplate) {
+        super(new UserRowMapper(), jdbcTemplate,
+                rows, "users");
     }
 
     @Override

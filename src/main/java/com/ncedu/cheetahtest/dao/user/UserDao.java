@@ -5,6 +5,7 @@ import com.ncedu.cheetahtest.entity.user.ResetToken;
 import com.ncedu.cheetahtest.entity.user.UserDto;
 
 import java.util.Date;
+import java.util.List;
 
 public interface UserDao {
 
@@ -25,4 +26,8 @@ public interface UserDao {
     User changeUserStatus(long id, String status);
 
     User findUserById(long id);
+
+    int getSearchedActiveTotalElements(String title);
+
+    List<User> findActiveByTitlePaginated(int page, int size, String title);
 }
