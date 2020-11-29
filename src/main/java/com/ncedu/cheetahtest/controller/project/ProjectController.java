@@ -43,10 +43,11 @@ public class ProjectController {
     }
 
     @GetMapping("/projects/search")
-    public ResponseEntity<List<Project>> getProjectsByTitle( @RequestParam int page,
-                                                             @RequestParam int size,
-                                                             @RequestParam String title) {
-        return ResponseEntity.ok(projectService.getProjectsPaginatedByTitle(page, size, title));
+    public ResponseProjectPaginated getProjectsByTitle( @RequestParam int page,
+                                                        @RequestParam int size,
+                                                        @RequestParam String title) {
+
+        return projectService.getProjectsPaginatedByTitle(page, size, title);
     }
 
 

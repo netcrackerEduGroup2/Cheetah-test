@@ -30,7 +30,7 @@ create table reset_token
 CREATE TABLE project
 (
     id          serial PRIMARY KEY  NOT NULL,
-    name        varchar(100) UNIQUE NOT NULL,
+    title       varchar(100) UNIQUE NOT NULL,
     link        varchar(200) UNIQUE NOT NULL,
     status      project_status      NOT NULL,
     create_date timestamp           NOT NULL

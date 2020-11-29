@@ -1,12 +1,10 @@
 package com.ncedu.cheetahtest.dao.project;
 
-import com.ncedu.cheetahtest.dao.genericdao.AbstractDao;
 import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.project.ProjectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -16,7 +14,7 @@ import java.util.List;
 @Repository
 public class ProjectDaoImpl extends AbstractDaoImpl<Project> implements ProjectDao {
     private final JdbcTemplate jdbcTemplate;
-    public static final String[] rows = {"id", "name", "link", "status", "create_date"};
+    public static final String[] rows = {"id", "title", "link", "status", "create_date"};
 
 
     @Autowired
@@ -39,7 +37,7 @@ public class ProjectDaoImpl extends AbstractDaoImpl<Project> implements ProjectD
         );
 
         List<Project> project = jdbcTemplate.query(
-            ProjectSqlConsts.SELECT_PROJECT_BY_NAME_QUERY,
+            ProjectSqlConsts.SELECT_PROJECT_BY_TITLE_QUERY,
             p -> p.setString(1, projectDto.getProject().getName()),
             new ProjectMapper()
         );

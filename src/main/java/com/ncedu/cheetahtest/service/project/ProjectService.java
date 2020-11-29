@@ -12,5 +12,5 @@ public interface ProjectService {
     List<Project> getAllArchievedProjects();
     void setArchievedStatus(int id);
     Project getProjectById(int id);
-    List<Project> getProjectsPaginatedByTitle(int page, int size, String title);
+    ResponseProjectPaginated getProjectsPaginatedByTitle(int page, int size, String title);
 }

@@ -1,7 +1,6 @@
 package com.ncedu.cheetahtest.service.project;
 
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
-import com.ncedu.cheetahtest.dao.project.ProjectDaoImpl;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.project.ProjectDto;
 import com.ncedu.cheetahtest.entity.project.ResponseProjectPaginated;
@@ -27,9 +26,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResponseProjectPaginated getAllProjects(int page, int size) {
-        int offset = (page - 1) * size;
         int totalElements = projectDao.getAmountAllElements();
-        List<Project> projects = projectDao.getAllPaginated(offset, size);
+        List<Project> projects = projectDao.getAllPaginated(page, size);
 
         return new ResponseProjectPaginated(projects, totalElements);
     }
@@ -50,7 +48,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> getProjectsPaginatedByTitle(int page, int size, String title) {
-        return projectDao.findAllByTitlePaginated(page, size, title);
+    public ResponseProjectPaginated getProjectsPaginatedByTitle(int page, int size, String title) {
+        int totalElements = projectDao.getSearchedAllTotalElements(title);
+        List<Project> projects = projectDao.findAllByTitlePaginated(page, size, title);
+
+        return new ResponseProjectPaginated(projects, totalElements);
     }
 }
