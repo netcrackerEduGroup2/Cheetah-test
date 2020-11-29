@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class CompActPrior {
     private int id;
-    private int CompId;
-    private int ActId;
+    private int compId;
+    private int actId;
     private int priority;
 }
