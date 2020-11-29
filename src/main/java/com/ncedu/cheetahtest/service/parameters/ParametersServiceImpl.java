@@ -31,6 +31,19 @@ public class ParametersServiceImpl implements ParameterService {
     }
 
     @Override
+    public PaginationParameter findAllByType(String type, int page, int size) {
+        int totalParameters = parametersDao.getTotalAllElements(type);
+        PaginationParameter paginationParameter = new PaginationParameter();
+        paginationParameter.setTotalParameters(totalParameters);
+        if (size * (page - 1) < totalParameters) {
+            paginationParameter.setParameters(
+                    parametersDao.findAllByType(type, size, size * (page - 1))
+            );
+        }
+        return paginationParameter;
+    }
+
+    @Override
     public Parameter createParameter(Parameter parameter) {
 
         try {
