@@ -12,11 +12,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class DataSetServiceImpl implements DataSetService {
     private final DataSetDao dataSetDao;
-    private final ParametersDao parametersDao;
     @Autowired
-    public DataSetServiceImpl(DataSetDao dataSetDao, ParametersDao parametersDao) {
+    public DataSetServiceImpl(DataSetDao dataSetDao) {
         this.dataSetDao = dataSetDao;
-        this.parametersDao = parametersDao;
     }
 
 
