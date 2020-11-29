@@ -1,8 +1,5 @@
 package com.ncedu.cheetahtest.dao.genericdao;
 
-import lombok.Data;
-
-@Data
 public class Consts {
 
     private final String selectAllRowsFromTable;
