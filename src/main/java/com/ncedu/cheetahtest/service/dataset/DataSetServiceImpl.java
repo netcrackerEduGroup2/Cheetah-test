@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.service.dataset;
 
 import com.ncedu.cheetahtest.dao.dataset.DataSetDao;
+import com.ncedu.cheetahtest.dao.parameters.ParametersDao;
 import com.ncedu.cheetahtest.entity.dataset.DataSet;
 import com.ncedu.cheetahtest.entity.dataset.PaginationDataset;
 import com.ncedu.cheetahtest.exception.helpers.EntityAlreadyExistException;
@@ -11,11 +12,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class DataSetServiceImpl implements DataSetService {
     private final DataSetDao dataSetDao;
-
+    private final ParametersDao parametersDao;
     @Autowired
-    public DataSetServiceImpl(DataSetDao dataSetDao) {
+    public DataSetServiceImpl(DataSetDao dataSetDao, ParametersDao parametersDao) {
         this.dataSetDao = dataSetDao;
+        this.parametersDao = parametersDao;
     }
+
+
+
 
     @Override
     public PaginationDataset findByTitleLike(String title, int idTestCase, int size, int page) {
@@ -46,6 +51,7 @@ public class DataSetServiceImpl implements DataSetService {
 
     @Override
     public void deleteDataSet(int id) {
+        parametersDao.deleteByIdDataSet(id);
         dataSetDao.deleteDataSet(id);
     }
 }

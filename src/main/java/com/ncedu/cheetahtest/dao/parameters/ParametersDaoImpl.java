@@ -102,4 +102,13 @@ public class ParametersDaoImpl implements ParametersDao {
             return parameters.get(0);
         } else return null;
     }
+
+    @Override
+    public void deleteByIdDataSet(int idDataSet) {
+        String sql = "DELETE FROM parameters WHERE data_set_id = ?";
+        jdbcTemplate.update(
+                sql,
+                idDataSet
+        );
+    }
 }
