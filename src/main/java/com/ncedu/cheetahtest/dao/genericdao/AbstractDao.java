@@ -13,8 +13,6 @@ public interface AbstractDao<T> {
 
     T findById(int id);
 
-    void deactivate(int id);
-
     int getSearchedTotalElements(String title);
 
     int getSearchedAllTotalElements(String title);
