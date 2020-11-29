@@ -3,7 +3,7 @@ package com.ncedu.cheetahtest.dao.testcase;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 
 
-public interface GTestCaseDao {
+public interface TestCaseDao {
 
     void save(TestCase testCase);
 

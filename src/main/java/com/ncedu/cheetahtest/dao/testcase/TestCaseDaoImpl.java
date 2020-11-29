@@ -1,7 +1,8 @@
 package com.ncedu.cheetahtest.dao.testcase;
 
-import com.ncedu.cheetahtest.dao.genericdao.AbstractDao;
+import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
+import com.ncedu.cheetahtest.exception.general.EntityNotFoundException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,14 +10,16 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.ncedu.cheetahtest.dao.testcase.GTestCaseConsts.*;
+import static com.ncedu.cheetahtest.dao.testcase.TestCaseConsts.*;
 
 @Repository
-public class GTestCaseDaoImpl extends AbstractDao<TestCase> implements GTestCaseDao {
+public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCaseDao {
+
+    private static final String[] rows = {"id", "title", "project_id", "status", "result"};
 
     @Autowired
-    public GTestCaseDaoImpl(JdbcTemplate jdbcTemplate) {
-        super(new TestCaseMapper(), jdbcTemplate, new GTestCaseConsts());
+    public TestCaseDaoImpl(JdbcTemplate jdbcTemplate) {
+        super(new TestCaseMapper(), jdbcTemplate, rows, "test_case");
     }
 
     @Override
@@ -62,5 +65,15 @@ public class GTestCaseDaoImpl extends AbstractDao<TestCase> implements GTestCase
         );
 
         return getSingleIntElement(testCase.getTitle(), GET_TEST_CASE_ID_BY_TITLE);
+    }
+
+    @Override
+    public void deactivate(int id) {
+        int result = jdbcTemplate.update(
+                DEACTIVATE_TEST_CASE_SQL,
+                id);
+        if (result != 1) {
+            throw new EntityNotFoundException("Exception in " + getClass().getName());
+        }
     }
 }

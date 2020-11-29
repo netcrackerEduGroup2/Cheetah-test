@@ -1,13 +1,13 @@
 package com.ncedu.cheetahtest.service.testcase;
 
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
-import com.ncedu.cheetahtest.dao.testcase.GTestCaseDaoImpl;
+import com.ncedu.cheetahtest.dao.testcase.TestCaseDaoImpl;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
 import com.ncedu.cheetahtest.exception.project.ProjectNotFoundException;
 import com.ncedu.cheetahtest.exception.testcase.InvalidParametersException;
-import com.ncedu.cheetahtest.exception.testcase.TestCaseAlreadyExistException;
+import com.ncedu.cheetahtest.exception.testcase.TestCaseAlreadyExistsException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TestCaseServiceImpl implements TestCaseService {
 
-    private final GTestCaseDaoImpl testCaseDao;
+    private final TestCaseDaoImpl testCaseDao;
     private final ProjectDao projectDao;
 
     @Override
@@ -51,7 +51,7 @@ public class TestCaseServiceImpl implements TestCaseService {
         if (testCaseWithSameTitle == null) {
             testCaseDao.save(testCase);
         } else {
-            throw new TestCaseAlreadyExistException();
+            throw new TestCaseAlreadyExistsException();
         }
     }
 
@@ -110,7 +110,7 @@ public class TestCaseServiceImpl implements TestCaseService {
             throw new ProjectNotFoundException();
         }
         if (testCaseWithSameTitle != null) {
-            throw new TestCaseAlreadyExistException();
+            throw new TestCaseAlreadyExistsException();
         }
 
         return testCaseDao.createTestCase(testCase);
