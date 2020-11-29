@@ -13,11 +13,11 @@ public interface AbstractDao<T> {
 
     T findById(int id);
 
-    int getSearchedTotalElements(String title);
+    int getSearchedActiveTotalElements(String title);
 
     int getSearchedAllTotalElements(String title);
 
-    List<T> findByTitlePaginated(int offset, int size, String title);
+    List<T> findActiveByTitlePaginated(int offset, int size, String title);
 
     List<T> findAllByTitlePaginated(int offset, int size, String title);
 

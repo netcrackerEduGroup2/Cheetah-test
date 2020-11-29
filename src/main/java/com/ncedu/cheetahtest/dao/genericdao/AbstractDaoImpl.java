@@ -90,7 +90,7 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
     }
 
     @Override
-    public int getSearchedTotalElements(String title) {
+    public int getSearchedActiveTotalElements(String title) {
         return getSingleIntElement("%" + title + "%",
                 commonConsts.getAmountActiveSearched());
     }
@@ -102,7 +102,7 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
     }
 
     @Override
-    public List<T> findByTitlePaginated(int offset, int size, String title) {
+    public List<T> findActiveByTitlePaginated(int offset, int size, String title) {
         return jdbcTemplate.query(
                 commonConsts.getActiveSearched(),
                 preparedStatement -> {

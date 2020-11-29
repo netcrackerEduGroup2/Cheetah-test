@@ -2,7 +2,6 @@ package com.ncedu.cheetahtest.service.testcase;
 
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
 import com.ncedu.cheetahtest.dao.testcase.TestCaseDao;
-import com.ncedu.cheetahtest.dao.testcase.TestCaseDaoImpl;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
@@ -77,9 +76,9 @@ public class TestCaseServiceImpl implements TestCaseService {
         int offset = getOffset(page, size);
 
         List<TestCase> testCaseList = testCaseDao
-                .findByTitlePaginated(offset, size, title);
+                .findActiveByTitlePaginated(offset, size, title);
 
-        int totalElements = testCaseDao.getSearchedTotalElements(title);
+        int totalElements = testCaseDao.getSearchedActiveTotalElements(title);
 
         return new TestCasePaginated(testCaseList, totalElements);
     }

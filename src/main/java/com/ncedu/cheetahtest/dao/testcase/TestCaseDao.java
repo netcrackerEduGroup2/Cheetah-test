@@ -24,11 +24,11 @@ public interface TestCaseDao {
 
     TestCase findById(int id);
 
-    int getSearchedTotalElements(String title);
+    int getSearchedActiveTotalElements(String title);
 
     int getSearchedAllTotalElements(String title);
 
-    List<TestCase> findByTitlePaginated(int offset, int size, String title);
+    List<TestCase> findActiveByTitlePaginated(int offset, int size, String title);
 
     List<TestCase> findAllByTitlePaginated(int offset, int size, String title);
 
