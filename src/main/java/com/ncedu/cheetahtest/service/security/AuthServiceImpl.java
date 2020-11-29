@@ -1,17 +1,17 @@
 package com.ncedu.cheetahtest.service.security;
 
+import com.ncedu.cheetahtest.config.security.jwt.JwtTokenProvider;
 import com.ncedu.cheetahtest.dao.user.UserDao;
-import com.ncedu.cheetahtest.entity.user.User;
-import com.ncedu.cheetahtest.entity.user.ResetToken;
 import com.ncedu.cheetahtest.entity.mail.PasswordDTO;
 import com.ncedu.cheetahtest.entity.security.AccessTokenDto;
 import com.ncedu.cheetahtest.entity.security.LoginDto;
 import com.ncedu.cheetahtest.entity.security.RegisterDto;
+import com.ncedu.cheetahtest.entity.user.ResetToken;
+import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.UserRole;
 import com.ncedu.cheetahtest.entity.user.UserStatus;
 import com.ncedu.cheetahtest.exception.security.BadCredentialsException;
 import com.ncedu.cheetahtest.exception.security.UserAlreadyExistsException;
-import com.ncedu.cheetahtest.config.security.jwt.JwtTokenProvider;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

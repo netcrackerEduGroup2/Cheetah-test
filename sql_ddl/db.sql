@@ -30,7 +30,8 @@ create table reset_token
 CREATE TABLE project
 (
     id          serial PRIMARY KEY  NOT NULL,
-    name        varchar(100) UNIQUE NOT NULL,
+
+    title       varchar(100) UNIQUE NOT NULL,
     link        varchar(200) UNIQUE NOT NULL,
     status      project_status      NOT NULL,
     create_date timestamp           NOT NULL
@@ -51,12 +52,15 @@ CREATE TABLE data_set
     title        varchar(100) UNIQUE,
     description  varchar(300),
     test_case_id integer            NOT NULL REFERENCES test_case (id)
+        on update cascade on delete cascade
+
 );
 
 CREATE TABLE parameters
 (
     id          serial PRIMARY KEY  NOT NULL,
-    data_set_id integer             NOT NULL REFERENCES data_set (id),
+    data_set_id integer             NOT NULL REFERENCES data_set (id)
+        on update cascade on delete cascade,
     type        varchar(100) UNIQUE NOT NULL,
     value       varchar(100)        NOT NULL
 );
@@ -64,6 +68,7 @@ CREATE TABLE parameters
 CREATE TABLE user_project
 (
     id          serial PRIMARY KEY  NOT NULL,
+
     project_id  integer      NOT NULL REFERENCES project (id),
     user_id     integer      NOT NULL REFERENCES users (id),
     user_status user_project_status NOT NULL
@@ -94,6 +99,9 @@ CREATE TABLE act_scenario
     priority         integer            NOT NULL,
     action_status    action_status      NOT NULL,
     param_id         integer REFERENCES parameters (id)
+        on update cascade on delete cascade
+
+
 );
 
 create table compound

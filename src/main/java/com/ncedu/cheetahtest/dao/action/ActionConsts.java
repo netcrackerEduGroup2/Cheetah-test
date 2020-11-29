@@ -2,63 +2,31 @@ package com.ncedu.cheetahtest.dao.action;
 
 public class ActionConsts {
 
-    public static final String SELECT_ALL =
-            "SELECT id,title , description , id_compound , id_test_scenario, status FROM actions";
-
-    public static final String SELECT_ACTIVE_ACTIONS_BY_TITLE =
-            "SELECT actions.id, actions.title , actions.description , actions.id_compound , actions.id_test_scenario, " +
-            "actions.status FROM actions INNER JOIN lib_act_compound ON actions.id = lib_act_compound.id_action " +
-            "INNER JOIN library ON lib_act_compound.id_library = library.id " +
-            "WHERE actions.title LIKE CONCAT('%',?,'%') AND library.id = ? AND actions.status ='active';";
-
-    public static final String GET_INACTIVE_ACTIONS_BY_TITLE =
-            "SELECT actions.id, actions.title , actions.description , actions.id_compound , actions.id_test_scenario, " +
-            "actions.status FROM actions INNER JOIN lib_act_compound ON actions.id = lib_act_compound.id_action " +
-            "INNER JOIN library ON lib_act_compound.id_library = library.id " +
-            "WHERE actions.title LIKE CONCAT('%',?,'%') AND library.id = ? AND actions.status = 'inactive';";
-
-    public static final String CREATE_ACTION =
-            "INSERT INTO actions (title , description , id_compound , id_test_scenario, status) " +
-            "VALUES (?, ?, ?, ?, ?::action_status);";
-
-    public static final String SELECT_CURRVAL_ACTION_ID =
-            "SELECT CURRVAL('actions_id_seq') ;";
-
-    public static final String FIND_ACTION_BY_ID =
-            "SELECT id, title , description , id_compound , id_test_scenario, status " +
-            "FROM actions " +
-            "WHERE id = ?;";
-
-    public static final String FIND_ACTIONS_BY_ID_COMPOUND =
-            "SELECT id, title , description , id_compound , id_test_scenario, status " +
-            "FROM actions " +
-            "WHERE id_compound = ?;";
-
-    public static final String FIND_ACTIONS_BY_ID_TESTSCENARIO =
-            "SELECT id, title , description , id_compound , id_test_scenario, status " +
-            "FROM actions " +
-            "WHERE id_test_scenario = ?;";
-
-    public static final String EDIT_ACTION =
-            "UPDATE actions SET title=?,description=?,id_compound=?,id_test_scenario=?,status=?::action_status " +
-            "WHERE id = ?;";
-
-    public static final String SET_TITLE =
-            "UPDATE actions SET title = ? WHERE id = ?;";
-
-    public static final String SET_DESCRIPTION =
-            "UPDATE actions SET description = ? WHERE id = ?;";
-
-    public static final String SET_COMPOUND_ID =
-            "UPDATE actions SET idCompound = ? WHERE id = ?;";
-
-    public static final String SET_TESTSCENARIO_ID =
-            "UPDATE actions SET idTestScenario = ? WHERE id = ?;";
-
-    public static final String SET_STATUS =
-            "UPDATE actions SET status = ?::action_status WHERE id = ?;";
-
-    public static final String REMOVE_ACTION_BY_ID =
-            "DELETE FROM actions WHERE id = ?;";
+    public static final String SELECT_ACTIONS_BY_TITLE_LIKE =
+            "SELECT action.id,action.title,action.type,description " +
+                    "FROM action " +
+                    "WHERE title LIKE CONCAT('%',?,'%') ORDER BY title limit ? offset ?";
+    public static final String GET_TOTAL_ELEMENTS = "SELECT count(*) FROM action WHERE title LIKE CONCAT('%',?,'%')";
+    public static final String GET_ACTIONS_IN_COMPOUND = "SELECT action.id, action.title, action.type, action.description " +
+            "FROM action INNER JOIN comp_act_prior ON action.id = comp_act_prior.action_id " +
+            "INNER JOIN compound c ON comp_act_prior.comp_id = c.id " +
+            "WHERE c.id = ? ORDER BY comp_act_prior.priority " +
+            "LIMIT ? OFFSET ?";
+    public static final String GET_TOTAL_ACTIONS_IN_COMP = "SELECT COUNT(*)" +
+            "FROM action INNER JOIN comp_act_prior ON action.id = comp_act_prior.action_id " +
+            "INNER JOIN compound c ON comp_act_prior.comp_id = c.id " +
+            "WHERE c.id = ? ";
+    public static final String GET_ACTION_BY_ID = "SELECT id, title, type,description FROM action WHERE id = ?";
+    public static final String GET_ACTION_BY_TITLE = "SELECT id, title, type,description FROM action WHERE title = ?";
+    public static final String EDIT_ACTION_DESC  = "UPDATE action SET description = ? WHERE id = ?";
+    public static final String SELECT_ALL_ACTIONS_BY_TITLE_LIKE = "SELECT action.id,action.title,action.type,description " +
+            "FROM action WHERE title LIKE CONCAT('%',?,'%') LIMIT 10";
+    public static final String GET_ALL_ACTIONS_IN_COMP = "SELECT action.id, action.title, action.type, action.description " +
+            "FROM action INNER JOIN comp_act_prior ON action.id = comp_act_prior.action_id " +
+            "INNER JOIN compound c ON comp_act_prior.comp_id = c.id " +
+            "WHERE c.id = ? ORDER BY comp_act_prior.priority ";
+    public static final String GET_ACTIONS_BY_TYPE = "SELECT id,title,type,description " +
+            "FROM action WHERE type LIKE CONCAT('%',?,'%') LIMIT ? OFFSET ?";
+    public static final String GET_TOTAL_ACTIONS_BY_TYPE = "SELECT COUNT(*) FROM action WHERE type LIKE CONCAT('%',?,'%')";
 
 }

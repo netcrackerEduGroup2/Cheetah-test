@@ -6,32 +6,18 @@ import com.ncedu.cheetahtest.entity.action.Action;
 import java.util.List;
 
 public interface ActionDao {
-    Action createAction(Action action);
 
-    Action findActionById(int id);
+    List<Action> selectActionsByTitleLike(String title,int limit, int offset);
+    int getTotalElements(String title);
+    List<Action> getActionsInCompound(int idCompound, int limit, int offset);
+    List<Action> getAllActionsInComp(int idComp);
+    int getTotalActionsInComp(int idCompound);
+    int getTotalActionsByType(String type);
+    Action getActionByTitle(String title);
+    Action getActionById(int id);
+    Action editActionDesc(String description, int id);
+    List<Action> selectAllActionsByTitleLike(String title);
+    List<Action> getActionsByType(String type, int limit, int offset);
 
-    List<Action> findActionsByIdCompound(int idCompound);
-
-    List<Action> findActionsByIdTestScenario(int idTestScenario);
-
-    List<Action> selectAll();
-
-    List<Action> selectActiveActionsByTitle(int idLibrary,String title);
-
-    Action setTitle(String title, int id);
-
-    Action setDescription(String description, int id);
-
-    Action setCompoundId(String compId, int id);
-
-    Action setTestScenarioId(String testScenarioId, int id);
-
-    Action editAction(Action actionDTO);
-
-    Action setStatus(String status, int id);
-
-    void removeActionById(int id);
-
-    List<Action> getInactiveActionsByTitle(int idLibrary,String title);
 
 }
