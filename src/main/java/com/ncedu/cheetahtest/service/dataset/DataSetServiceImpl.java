@@ -51,7 +51,6 @@ public class DataSetServiceImpl implements DataSetService {
 
     @Override
     public void deleteDataSet(int id) {
-        parametersDao.deleteByIdDataSet(id);
         dataSetDao.deleteDataSet(id);
     }
 }

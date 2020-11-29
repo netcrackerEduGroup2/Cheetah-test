@@ -51,12 +51,14 @@ CREATE TABLE data_set
     title        varchar(100) UNIQUE,
     description  varchar(300),
     test_case_id integer            NOT NULL REFERENCES test_case (id)
+        on update cascade on delete cascade
 );
 
 CREATE TABLE parameters
 (
     id          serial PRIMARY KEY  NOT NULL,
-    data_set_id integer             NOT NULL REFERENCES data_set (id),
+    data_set_id integer             NOT NULL REFERENCES data_set (id)
+        on update cascade on delete cascade,
     type        varchar(100) UNIQUE NOT NULL,
     value       varchar(100)        NOT NULL
 );
@@ -94,6 +96,7 @@ CREATE TABLE act_scenario
     priority         integer            NOT NULL,
     action_status    action_status      NOT NULL,
     param_id         integer REFERENCES parameters (id)
+        on update cascade on delete cascade
 );
 
 create table compound
