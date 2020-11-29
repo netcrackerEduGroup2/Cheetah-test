@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CountCompScenarioRowMapper implements RowMapper<Integer> {
-    public static String COUNT = "count";
+    public static final String COUNT = "count";
 
     @Override
     public Integer mapRow(ResultSet resultSet, int i) throws SQLException {
