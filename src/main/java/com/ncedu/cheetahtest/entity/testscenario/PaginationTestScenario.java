@@ -1,10 +1,11 @@
 package com.ncedu.cheetahtest.entity.testscenario;
 
-import com.ncedu.cheetahtest.entity.dataset.DataSet;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class PaginationTestScenario {
-    private int totalElements;
     private List<TestScenario> testScenarios;
+    private int totalElements;
 }

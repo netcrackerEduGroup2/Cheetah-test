@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "${frontend.ulr}")
-@RequestMapping("/api/test-scenario")
+@RequestMapping("/api/test-scenarios")
 public class TestScenarioController {
     private final TestScenarioService testScenarioService;
 
     @Autowired
-    public TestScenarioController(TestScenarioService testScenarioService){this.testScenarioService = testScenarioService;}
+    public TestScenarioController(TestScenarioService testScenarioService) {
+        this.testScenarioService = testScenarioService;
+    }
 
     @PostMapping
     public TestScenario createTestScenario(@RequestBody TestScenario testScenario) {
@@ -24,42 +26,42 @@ public class TestScenarioController {
             @RequestParam("title") String title,
             @RequestParam("size") int size,
             @RequestParam("page") int page,
-            @RequestParam("idTestCase") int idTestCase){
-        return testScenarioService.findByTitle(title,idTestCase,size,page);
+            @RequestParam("idTestCase") int idTestCase) {
+        return testScenarioService.findByTitle(title, idTestCase, size, page);
     }
 
     @GetMapping("/{id}")
-    public PaginationItems getItemsFromScenario(
-            @RequestParam("size") int size,
-            @RequestParam("page") int page,
-            @PathVariable("id") int idTestScenario){
-        return testScenarioService.getItemsFromScenario(idTestScenario,size,page);
+    public PaginationItems getItemsFromScenario( //TODO
+                                                 @RequestParam("size") int size,
+                                                 @RequestParam("page") int page,
+                                                 @PathVariable("id") int idTestScenario) {
+        return testScenarioService.getItemsFromScenario(idTestScenario, size, page);
     }
 
     @GetMapping("/{id}/all")
     public PaginationTestScenario getAllTestScenariosFromTestCase(
             @RequestParam("size") int size,
             @RequestParam("page") int page,
-            @PathVariable("id") int idTestCase){
-        return testScenarioService.getAllTestScenariosFromTestCase(idTestCase,size,page);
+            @PathVariable("id") int idTestCase) {
+        return testScenarioService.getAllTestScenariosFromTestCase(idTestCase, size, page);
     }
 
     @PutMapping
     public TestScenario editTestScenario(@RequestBody TestScenario testScenario,
-                                         @RequestParam("id") int id){
-        return testScenarioService.editTestScenario(testScenario,id);
+                                         @RequestParam("id") int id) {
+        return testScenarioService.editTestScenario(testScenario, id);
     }
 
     @GetMapping("/all")
     public PaginationTestScenario getAllTestScenarios(
             @RequestParam("size") int size,
-            @RequestParam("page") int page ){
-        return testScenarioService.getAllTestScenarios(size,page);
+            @RequestParam("page") int page) {
+        return testScenarioService.getAllTestScenarios(size, page);
     }
 
     @DeleteMapping
-    public ResponseTestScenario deleteTestScenario(@RequestParam("id") int id){
-        testScenarioService.deleteTestScenario(id);
+    public ResponseTestScenario deleteTestScenario(@RequestParam("id") int id) {
+        testScenarioService.deactivateTestScenario(id);
         return new ResponseTestScenario("Success");
     }
 }
