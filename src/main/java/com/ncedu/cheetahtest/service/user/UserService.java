@@ -5,7 +5,6 @@ import com.ncedu.cheetahtest.entity.user.ResetToken;
 import com.ncedu.cheetahtest.entity.user.UserDto;
 
 import java.util.Date;
-import java.util.List;
 
 public interface UserService {
 
@@ -29,4 +28,6 @@ public interface UserService {
 
     public List<User> getSearchUserByNameEmailRole(String user, String email,
                                                    String role);
+
+    List<UserDto> findUsersByName(int page, int size, String title);
 }

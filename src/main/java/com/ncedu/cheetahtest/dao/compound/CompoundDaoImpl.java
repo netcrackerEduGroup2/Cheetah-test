@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.dao.compound;
 
-import com.ncedu.cheetahtest.dao.action.CurrentValueRowMapper;
 import com.ncedu.cheetahtest.entity.compound.Compound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,129 +21,52 @@ public class CompoundDaoImpl implements CompoundDao {
     }
 
     @Override
-    public List<Compound> selectAll() {
-        return jdbcTemplate.query(
-                SELECT_ALL,
-                new CompoundRowMapper()
-        );
-    }
-
-    @Override
-    public List<Compound> selectActiveCompoundByTitle(int idLibrary, String title) {
-        return jdbcTemplate.query(
-                SELECT_ACTIVE_COMPOUND_BY_TITLE,
-                preparedStatement -> {
-                    preparedStatement.setString(1, title);
-                    preparedStatement.setInt(2, idLibrary);
-                },
-                new CompoundRowMapper()
-        );
-    }
-
-    @Override
-    public List<Compound> selectInactiveCompoundByTitle(int idLibrary, String title) {
-        return jdbcTemplate.query(
-                SELECT_INACTIVE_COMPOUND_BY_TITLE,
-                preparedStatement -> {
-                    preparedStatement.setString(1, title);
-                    preparedStatement.setInt(2, idLibrary);
-                },
-                new CompoundRowMapper()
-        );
-    }
-
-    @Override
-    public int createCompound(Compound compound) {
-        String sql = CREATE_COMPOUND;
+    public Compound createCompound(Compound compound) {
         jdbcTemplate.update(
-                sql,
+                CREATE_COMPOUND,
                 compound.getTitle(),
-                compound.getDescription(),
-                compound.getIdTestScenario(),
-                compound.getStatus()
+                compound.getDescription()
         );
-        sql = SELECT_CURRVAL_COMPOUNDS_ID;
-        List<Integer> currIndex = jdbcTemplate.query(sql, new CurrentValueRowMapper());
-        if(currIndex.size() == 1) {
-            return currIndex.get(0);
-        }
-        else return -1;
+        return this.findByTitle(compound.getTitle());
     }
 
-    @Override
-    public Compound findCompoundById(int id) {
+    private Compound findCompoundById(int id) {
         List<Compound> compounds = jdbcTemplate.query(
                 FIND_COMPOUND_BY_ID,
                 preparedStatement -> preparedStatement.setInt(1, id),
-                new CompoundRowMapper()
-        );
-
+                new CompoundRowMapper());
         if (compounds.size() == 1) {
             return compounds.get(0);
+        } else {
+            return null;
         }
-        return null;
+
     }
 
     @Override
-    public List<Compound> findCompoundByIdTestScenario(int idTestScenario) {
+    public List<Compound> selectCompoundsByTitleLike(String title, int limit, int offset) {
         return jdbcTemplate.query(
-                FIND_COMPOUND_BY_ID_TESTSCENARIO,
-                preparedStatement -> preparedStatement.setInt(1, idTestScenario),
+                SELECT_COMPOUND_BY_TITLE_LIKE,
+                preparedStatement -> {
+                    preparedStatement.setString(1, title);
+                    preparedStatement.setInt(2, limit);
+                    preparedStatement.setInt(3, offset);
+                },
                 new CompoundRowMapper()
         );
+
     }
 
     @Override
-    public Compound editCompound(Compound compoundDTO) {
+    public Compound editCompound(Compound compound, int id) {
         jdbcTemplate.update(
                 EDIT_COMPOUND,
-                 compoundDTO.getTitle(),
-                 compoundDTO.getDescription(),
-                 compoundDTO.getIdTestScenario(),
-                 compoundDTO.getStatus(),
-                 compoundDTO.getId()
-        );
-        return compoundDTO;
-    }
-
-    @Override
-    public Compound setTitle(String title, int id) {
-        jdbcTemplate.update(
-                SET_TITLE,
-                title,
+                compound.getTitle(),
+                compound.getDescription(),
                 id
         );
-        return this.findCompoundById(id);
-    }
 
-    @Override
-    public Compound setDescription(String description, int id) {
-        jdbcTemplate.update(
-                SET_DESCRIPTION,
-                description,
-                id
-        );
-        return this.findCompoundById(id);
-    }
-
-    @Override
-    public Compound setTestScenarioId(String testScenarioId, int id) {
-        jdbcTemplate.update(
-                SET_TESTSCENARIO_ID,
-                testScenarioId,
-                id
-        );
-        return this.findCompoundById(id);
-    }
-
-    @Override
-    public Compound setStatus(String status, int id) {
-        jdbcTemplate.update(
-                SET_STATUS,
-                status,
-                id
-        );
-        return this.findCompoundById(id);
+        return findCompoundById(id);
     }
 
     @Override
@@ -153,6 +75,33 @@ public class CompoundDaoImpl implements CompoundDao {
                 REMOVE_COMPOUND_BY_ID,
                 id
         );
+    }
 
+    @Override
+    public Compound findByTitle(String title) {
+        List<Compound> compounds = jdbcTemplate.query(
+                FIND_BY_TITLE,
+                preparedStatement -> preparedStatement.setString(1, title),
+                new CompoundRowMapper()
+        );
+        if (compounds.size() == 1) {
+            return compounds.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public int getTotalCompByTitle(String title) {
+        List<Integer> count = jdbcTemplate.query(
+                GET_TOTAL_COMP_BY_TITLE,
+                preparedStatement -> preparedStatement.setString(1, title),
+                new CountCompoundRowMapper()
+        );
+        if (count.size() == 1) {
+            return count.get(0);
+        } else {
+            return 0;
+        }
     }
 }

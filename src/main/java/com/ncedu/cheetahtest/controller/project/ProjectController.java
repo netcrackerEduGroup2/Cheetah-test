@@ -1,7 +1,10 @@
 package com.ncedu.cheetahtest.controller.project;
 
 import com.ncedu.cheetahtest.entity.project.Project;
+import com.ncedu.cheetahtest.entity.project.ProjectDto;
 import com.ncedu.cheetahtest.entity.project.ProjectResponse;
+import com.ncedu.cheetahtest.entity.project.ResponseProjectPaginated;
+import com.ncedu.cheetahtest.service.project.ProjectService;
 import com.ncedu.cheetahtest.service.project.ProjectServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,35 +14,63 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/project-management")
+@RequestMapping("/api/project-management/projects")
 @CrossOrigin(origins = "${frontend.ulr}")
 @Slf4j
 public class ProjectController {
-    private final ProjectServiceImpl projectService;
+    private final ProjectService projectService;
 
     @Autowired
     public ProjectController(ProjectServiceImpl projectService) {
         this.projectService = projectService;
     }
 
-    @GetMapping("/projects")
-    public ResponseEntity<List<Project>> getAllProjects() {
-        return ResponseEntity.ok(projectService.getAllProjects());
+    @PostMapping
+    public ResponseEntity<ProjectResponse> createProject(@RequestBody ProjectDto projectDto) {
+        projectService.createNewProject(projectDto);
+        return ResponseEntity.ok(new ProjectResponse("A new project has been created successfully!"));
     }
 
-    @GetMapping("/archieved")
+    @GetMapping
+    public ResponseProjectPaginated getAllProjects(@RequestParam int page,
+                                                   @RequestParam int size) {
+        return projectService.getAllProjects(page, size);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Project> getProjectById(@PathVariable int id) {
+        return ResponseEntity.ok(projectService.getProjectById(id));
+    }
+
+    @GetMapping("/search")
+    public ResponseProjectPaginated getProjectsByTitle(@RequestParam int page,
+                                                       @RequestParam int size,
+                                                       @RequestParam String title) {
+
+        return projectService.getProjectsPaginatedByTitle(page, size, title);
+    }
+
+    @GetMapping("/archive")
     public ResponseEntity<List<Project>> getAllArchievedProjects() {
         return ResponseEntity.ok(projectService.getAllArchievedProjects());
     }
 
-    @GetMapping("/projects/{id}")
-    public ResponseEntity<Project> getProjectById(@PathVariable("id") int projectId) {
-        return ResponseEntity.ok(projectService.getProjectById(projectId));
+    @PutMapping("/archive/{id}")
+    public ResponseEntity<ProjectResponse> setArchivedStatus(@PathVariable int id) {
+        projectService.setArchievedStatus(id);
+        return ResponseEntity.ok(new ProjectResponse("A project No. " + id + " has been archieved!"));
     }
 
-    @PostMapping("/projects")
-    public ResponseEntity<ProjectResponse> createProject(@RequestBody Project project) {
-        projectService.createNewProject(project);
-        return ResponseEntity.ok(new ProjectResponse("A new project has been created successfully!"));
+    @GetMapping("/active")
+    public ResponseProjectPaginated getActiveProjects(@RequestParam int page,
+                                                      @RequestParam int size) {
+        return projectService.getActiveProjects(page, size);
+    }
+
+    @GetMapping("/search/findActiveByTitle")
+    public ResponseProjectPaginated getActiveProjectsByTitle(@RequestParam int page,
+                                                             @RequestParam int size,
+                                                             @RequestParam String title) {
+        return projectService.getActiveProjectsByTitle(page, size, title);
     }
 }

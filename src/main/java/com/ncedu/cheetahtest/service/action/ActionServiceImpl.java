@@ -1,12 +1,8 @@
 package com.ncedu.cheetahtest.service.action;
 
 import com.ncedu.cheetahtest.dao.action.ActionDao;
-import com.ncedu.cheetahtest.dao.libactcompound.LibActCompoundDao;
 import com.ncedu.cheetahtest.entity.action.Action;
-import com.ncedu.cheetahtest.entity.libactcompound.LibActCompound;
-import com.ncedu.cheetahtest.exception.managelibraries.RightsPermissionException;
-import com.ncedu.cheetahtest.exception.managelibraries.UnproperInputException;
-import com.ncedu.cheetahtest.service.security.AuthService;
+import com.ncedu.cheetahtest.entity.action.PaginationAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,86 +11,56 @@ import java.util.List;
 @Service
 public class ActionServiceImpl implements ActionService {
     private final ActionDao actionDao;
-    private final LibActCompoundDao libActCompoundDao;
-    private final AuthService authService;
 
     @Autowired
-    public ActionServiceImpl(ActionDao actionDao, LibActCompoundDao libActCompoundDao, AuthService authService) {
-
+    public ActionServiceImpl(ActionDao actionDao) {
         this.actionDao = actionDao;
-        this.libActCompoundDao = libActCompoundDao;
-        this.authService = authService;
     }
 
-    @Override
-    public Action createAction(int idLibrary, Action actionDTO) {
 
-        if (actionDTO.getTitle() == null || isStatusUnProper(actionDTO.getStatus()) ){
-            throw new UnproperInputException();
-        } else {
-            Action createdAction = actionDao.createAction(actionDTO);
-            LibActCompound insert = new LibActCompound();
-            insert.setIdLibrary(idLibrary);
-            insert.setIdAction(createdAction.getId());
-            libActCompoundDao.createLibActCompound(insert);
-            return createdAction;
+    @Override
+    public PaginationAction getActionsByTitle(String title, int size, int page) {
+        int totalElements = actionDao.getTotalElements(title);
+        PaginationAction paginationAction = new PaginationAction();
+        paginationAction.setTotalElements(totalElements);
+        if (size * (page - 1) < totalElements) {
+            paginationAction.setList(actionDao.selectActionsByTitleLike(title, size, size * (page - 1)));
         }
+        return paginationAction;
 
     }
 
     @Override
-    public List<Action> selectAllActions() {
-        return actionDao.selectAll();
-    }
-
-    @Override
-    public Action getActionById(int id) {
-        return actionDao.findActionById(id);
-    }
-
-    @Override
-    public List<Action> getActiveActionsByTitle(int idLibrary,String title) {
-        return actionDao.selectActiveActionsByTitle(idLibrary,title);
-    }
-
-    @Override
-    public Action editAction(Action actionDTO) {
-        if (isStatusUnProper(actionDTO.getStatus())) {
-            throw new UnproperInputException();
-        } else {
-            return actionDao.editAction(actionDTO);
+    public PaginationAction getActionsInCompound(int idCompound, int size, int page) {
+        int totalActions = actionDao.getTotalActionsInComp(idCompound);
+        PaginationAction paginationAction = new PaginationAction();
+        paginationAction.setTotalElements(totalActions);
+        if (size * (page - 1) < totalActions) {
+            paginationAction.setList(actionDao.getActionsInCompound(idCompound, size, size * (page - 1)));
         }
+        return paginationAction;
+    }
+
+
+    @Override
+    public Action editActionDescription(String description, int id) {
+        return actionDao.editActionDesc(description, id);
 
     }
 
     @Override
-    public Action changeStatus(String status, int id) {
-        if(isStatusUnProper(status)){
-            throw new UnproperInputException();
+    public List<Action> getAllByTitleLike(String title) {
+        return actionDao.selectAllActionsByTitleLike(title);
+    }
+
+    @Override
+    public PaginationAction geActionsByType(String type, int size, int page) {
+        int totalElements = actionDao.getTotalActionsByType(type);
+        PaginationAction paginationAction = new PaginationAction();
+        paginationAction.setTotalElements(totalElements);
+        if (size * (page - 1) < totalElements) {
+            paginationAction.setList(actionDao.getActionsByType(type, size, size * (page - 1)));
         }
-        else return actionDao.setStatus(status,id);
-    }
-
-
-
-    @Override
-    public void deleteAction(String token,int idAction) {
-        if (authService.isAdmin(token)){
-            actionDao.removeActionById(idAction);
-            libActCompoundDao.removeByActionId(idAction);
-        }
-        else throw new RightsPermissionException();
-
-    }
-
-    @Override
-    public List<Action> getInactiveActionsByTitle(int idLibrary, String title) {
-        return actionDao.getInactiveActionsByTitle(idLibrary,title);
-    }
-
-    @Override
-    public boolean isStatusUnProper(String status) {
-        return !"active".equals(status) &&
-                !"inactive".equals(status);
+        return paginationAction;
     }
 }

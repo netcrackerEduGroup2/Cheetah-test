@@ -1,6 +1,8 @@
 package com.ncedu.cheetahtest.dao.project;
 
+import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
 import com.ncedu.cheetahtest.entity.project.Project;
+import com.ncedu.cheetahtest.entity.project.ProjectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -10,32 +12,52 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public class ProjectDaoImpl implements ProjectDao {
+public class ProjectDaoImpl extends AbstractDaoImpl<Project> implements ProjectDao {
     private final JdbcTemplate jdbcTemplate;
+    private static final String[] rows = {"id", "title", "link", "status", "create_date"};
+
 
     @Autowired
     public ProjectDaoImpl(JdbcTemplate jdbcTemplate) {
+        super(new ProjectMapper(), jdbcTemplate, rows, "project");
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
     @Override
-    public void createProject(Project project) {
-        String sqlQuery = ProjectSqlConsts.CREATE_PROJECT_QUERY;
+    public void createProject(ProjectDto projectDto) {
+        String sqlQueryForProjectTable = ProjectSqlConsts.CREATE_PROJECT_QUERY;
+        String sqlQueryForUserProjectTable = ProjectSqlConsts.CREATE_USER_PROJECT_QUERY;
+
         jdbcTemplate.update(
-                sqlQuery,
-                project.getName(),
-                project.getLink(),
-                project.getStatus(),
-                Timestamp.valueOf(LocalDateTime.now()),
-                project.getOwnerId()
+                sqlQueryForProjectTable,
+                projectDto.getProject().getTitle(),
+                projectDto.getProject().getLink(),
+                "ACTIVE",
+                Timestamp.valueOf(LocalDateTime.now())
         );
+
+        List<Project> project = jdbcTemplate.query(
+            ProjectSqlConsts.SELECT_PROJECT_BY_TITLE_QUERY,
+            p -> p.setString(1, projectDto.getProject().getTitle()),
+            new ProjectMapper()
+        );
+
+        int id = project.get(0).getId();
+
+        for (int watcherId: projectDto.getWatcherIds()) {
+            jdbcTemplate.update(
+                    sqlQueryForUserProjectTable,
+                    id,
+                    watcherId,
+                    "WATCHER"
+            );
+        }
     }
 
     @Override
-    public List<Project> getAllProjects() {
-        String sqlQuery = ProjectSqlConsts.SELECT_ALL_PROJECTS_QUERY;
-        return jdbcTemplate.query(sqlQuery, new ProjectMapper());
+    public void setArchievedStatus(int id) {
+        String sqlQuery = ProjectSqlConsts.SET_ARCHIEVED_STATUS_TO_PROJECT_QUERY;
+        jdbcTemplate.update(sqlQuery, id);
     }
 
     @Override
@@ -56,25 +78,5 @@ public class ProjectDaoImpl implements ProjectDao {
         if (projects.size() == 1) return projects.get(0);
 
         return null;
-    }
-
-    @Override
-    public List<Project> findByOwner(String ownerName) {
-        String sqlQuery = ProjectSqlConsts.SELECT_PROJECT_BY_OWNER_NAME_QUERY;
-        return jdbcTemplate.query(
-                sqlQuery,
-                preparedStatement -> preparedStatement.setString(1, ownerName),
-                new ProjectMapper()
-        );
-    }
-
-    @Override
-    public List<Project> findByCreationDate(Timestamp date) {
-        String sqlQuery = ProjectSqlConsts.SELECT_PROJECTS_BY_CREATION_DATE;
-        return jdbcTemplate.query(
-                sqlQuery,
-                preparedStatement -> preparedStatement.setTimestamp(1, date),
-                new ProjectMapper()
-        );
     }
 }

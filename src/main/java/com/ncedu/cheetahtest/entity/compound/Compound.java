@@ -7,6 +7,4 @@ public class Compound {
     private int id;
     private String title;
     private String description;
-    private int idTestScenario;
-    private String status;
 }
