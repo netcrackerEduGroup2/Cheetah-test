@@ -53,4 +53,20 @@ public class ProjectServiceImpl implements ProjectService {
 
         return new ResponseProjectPaginated(projects, totalElements);
     }
+
+    @Override
+    public ResponseProjectPaginated getActiveProjects(int page, int size) {
+        int totalElements = projectDao.getAmountActiveElements();
+        List<Project> projects = projectDao.getActivePaginated(page, size);
+
+        return new ResponseProjectPaginated(projects, totalElements);
+    }
+
+    @Override
+    public ResponseProjectPaginated getActiveProjectsByTitle(int page, int size, String title) {
+        int totalElements = projectDao.getSearchedActiveTotalElements(title);
+        List<Project> projects = projectDao.findActiveByTitlePaginated(page, size, title);
+
+        return new ResponseProjectPaginated(projects, totalElements);
+    }
 }

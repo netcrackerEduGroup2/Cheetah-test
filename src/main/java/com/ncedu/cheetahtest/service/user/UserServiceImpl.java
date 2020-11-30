@@ -85,8 +85,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public List<UserDto> findUsersByName(int page, int size, String title) {
+        List<User> users = userDao.findActiveByTitlePaginated(page, size, title);
+        List<UserDto> usersDto = new ArrayList<>();
+
+        for (User user : users) {
+            usersDto.add(
+                    new UserDto(
+                            user.getId(),
+                            user.getEmail(),
+                            user.getName(),
+                            user.getRole(),
+                            user.getStatus()
+                    ));
+        }
+
+        return usersDto;
+    }
+
+    @Override
+    @Transactional
     public void setUserLastRequest(String email, Date date) {
         userDao.setUserLastRequest(email, date);
     }
+
 
 }

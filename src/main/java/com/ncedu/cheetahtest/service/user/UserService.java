@@ -23,4 +23,6 @@ public interface UserService {
     User changeUserStatus(long id, String status);
 
     User findUserById(long id);
+
+    List<UserDto> findUsersByName(int page, int size, String title);
 }

@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/user")
 @Slf4j
@@ -40,4 +42,12 @@ public class UserController {
         return userService.findUserById(Long.parseLong(id));
     }
 
+    @GetMapping("/search/findByName")
+    public List<UserDto> findUsersByName(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String title
+    ) {
+        return userService.findUsersByName(page, size, title);
+    }
 }

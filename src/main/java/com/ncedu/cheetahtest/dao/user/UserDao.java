@@ -29,4 +29,5 @@ public interface UserDao {
 
     int getSearchedActiveTotalElements(String title);
 
+    List<User> findActiveByTitlePaginated(int page, int size, String title);
 }
