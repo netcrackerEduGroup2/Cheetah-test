@@ -1,6 +1,8 @@
 package com.ncedu.cheetahtest.service.project;
 
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
+import com.ncedu.cheetahtest.dao.project.ProjectMapper;
+import com.ncedu.cheetahtest.dao.project.ProjectSqlConsts;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.project.ProjectDto;
 import com.ncedu.cheetahtest.entity.project.ResponseProjectPaginated;
@@ -24,6 +26,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public void updateProjectById(int id, ProjectDto projectDto) {
+        projectDao.updateProjectById(id, projectDto);
+    }
+
+    @Override
     public ResponseProjectPaginated getAllProjects(int page, int size) {
         int totalElements = projectDao.getAmountAllElements();
         List<Project> projects = projectDao.getAllPaginated(page, size);
@@ -44,6 +51,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project getProjectById(int id) {
         return projectDao.findByProjectId(id);
+    }
+
+    public ProjectDto getProjectWithWatchersById(int id) {
+        return projectDao.findWithWatcherByProjectId(id);
     }
 
     @Override

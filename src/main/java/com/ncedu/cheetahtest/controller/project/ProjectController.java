@@ -42,6 +42,13 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getProjectById(id));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ProjectResponse> updateProject(@PathVariable int id,
+                                                         @RequestBody ProjectDto project) {
+        projectService.updateProjectById(id, project);
+        return ResponseEntity.ok(new ProjectResponse("The project No. "+id+" has been updated!"));
+    }
+
     @GetMapping("/search")
     public ResponseProjectPaginated getProjectsByTitle( @RequestParam int page,
                                                         @RequestParam int size,

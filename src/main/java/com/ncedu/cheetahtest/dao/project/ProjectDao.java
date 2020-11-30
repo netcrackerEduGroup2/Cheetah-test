@@ -15,6 +15,8 @@ public interface ProjectDao {
 
     void createProject(ProjectDto project);
 
+    void updateProjectById(int id, ProjectDto projectDto);
+
     void setArchievedStatus(int id);
 
     int getSearchedAllTotalElements(String title);
@@ -23,4 +25,5 @@ public interface ProjectDao {
 
     Project findByProjectId(int id);
 
+    ProjectDto findWithWatcherByProjectId(int id);
 }

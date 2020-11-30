@@ -5,6 +5,7 @@ import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.project.ProjectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -55,6 +56,45 @@ public class ProjectDaoImpl extends AbstractDaoImpl<Project> implements ProjectD
     }
 
     @Override
+    public void updateProjectById(int id, ProjectDto projectDto) {
+        String sqlQuery = ProjectSqlConsts.UPDATE_PROJECT_QUERY;
+
+        jdbcTemplate.update(
+                sqlQuery,
+                projectDto.getProject().getTitle(),
+                projectDto.getProject().getLink(),
+                id
+        );
+
+        List<Integer> currentWatchers = jdbcTemplate.query(
+                ProjectSqlConsts.SELECT_WATCHERS_QUERY,
+                p -> p.setInt(1, id),
+                (resultSet, i) -> resultSet.getInt("user_id")
+        );
+
+        List<Integer> newWatchers = projectDto.getWatcherIds();
+        for (int currentWatcher: currentWatchers) {
+            if (!newWatchers.contains(currentWatcher)) {
+                jdbcTemplate.update(
+                        ProjectSqlConsts.DELETE_FROM_USER_PROJECT_QUERY,
+                        currentWatcher
+                );
+            }
+        }
+
+        for (int newWatcher: newWatchers) {
+            if (!currentWatchers.contains(newWatcher)) {
+                jdbcTemplate.update(
+                    ProjectSqlConsts.CREATE_USER_PROJECT_QUERY,
+                    id,
+                    newWatcher,
+                    "WATCHER"
+                );
+            }
+        }
+    }
+
+    @Override
     public void setArchievedStatus(int id) {
         String sqlQuery = ProjectSqlConsts.SET_ARCHIEVED_STATUS_TO_PROJECT_QUERY;
         jdbcTemplate.update(sqlQuery, id);
@@ -69,6 +109,7 @@ public class ProjectDaoImpl extends AbstractDaoImpl<Project> implements ProjectD
     @Override
     public Project findByProjectId(int id) {
         String sqlQuery = ProjectSqlConsts.SELECT_PROJECT_BY_ID_QUERY;
+
         List<Project> projects = jdbcTemplate.query(
                 sqlQuery,
                 preparedStatement -> preparedStatement.setInt(1, id),
@@ -79,4 +120,30 @@ public class ProjectDaoImpl extends AbstractDaoImpl<Project> implements ProjectD
 
         return null;
     }
+
+    @Override
+    public ProjectDto findWithWatcherByProjectId(int id) {
+        String sqlQuery = ProjectSqlConsts.SELECT_PROJECT_BY_ID_QUERY;
+        ProjectDto projectDto = null;
+
+        List<Project> projects = jdbcTemplate.query(
+                sqlQuery,
+                preparedStatement -> preparedStatement.setInt(1, id),
+                new ProjectMapper()
+        );
+
+        if (projects.size() == 1) {
+            Project project = projects.get(0);
+            List<Integer> watchers = jdbcTemplate.query(
+                    ProjectSqlConsts.SELECT_WATCHERS_QUERY,
+                    p -> p.setInt(1, id),
+                    (resultSet, i) -> resultSet.getInt("user_id")
+            );
+            projectDto = new ProjectDto(project, watchers);
+        }
+
+        return projectDto;
+    }
+
+
 }
