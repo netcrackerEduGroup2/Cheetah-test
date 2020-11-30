@@ -6,7 +6,6 @@ import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.dao.user.UserDao;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
 import com.ncedu.cheetahtest.entity.user.UserDto;
-import com.ncedu.cheetahtest.entity.user.UserPaginatedDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
