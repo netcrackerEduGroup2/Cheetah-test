@@ -7,10 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ParametersRowMapper implements RowMapper<Parameter> {
-    public static String ID = "id";
-    public static String IDDATASET = "data_set_id";
-    public static String TYPE ="type";
-    public static String VALUE = "value";
+    public static final String ID = "id";
+    public static final String IDDATASET = "data_set_id";
+    public static final String TYPE ="type";
+    public static final String VALUE = "value";
 
     @Override
     public Parameter mapRow(ResultSet resultSet, int i) throws SQLException {

@@ -9,8 +9,10 @@ import com.ncedu.cheetahtest.entity.actscenario.ActStatus;
 import com.ncedu.cheetahtest.entity.compscenario.CompScenario;
 import com.ncedu.cheetahtest.entity.compscenario.CompScenarioCreationDTO;
 import com.ncedu.cheetahtest.entity.compscenario.PaginationCompScenario;
+import com.ncedu.cheetahtest.exception.helpers.EntityAlreadyExistException;
 import com.ncedu.cheetahtest.exception.helpers.UnproperInputException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,24 +36,18 @@ public class CompScenarioServiceImpl implements CompScenarioService {
         //list of id`s of parameters for future act_scenarios
         List<Integer> idParams = compScenarioCreationDTO.getIdParams();
         //created new comp_scenario (now it is raw without act_scenarios in it)
-        CompScenario compScenario = compScenarioDao.createCompScenario(compScenarioCreationDTO.getCompScenario());
+        CompScenario compScenario;
+        try {
+            compScenario = compScenarioDao.createCompScenario(compScenarioCreationDTO.getCompScenario());
+        } catch (DataIntegrityViolationException ex) {
+            throw new EntityAlreadyExistException();
+        }
+
         List<Action> actions = actionDao.getAllActionsInComp(compScenario.getIdCompound());
-        if (actions.size() != idParams.size()) throw new UnproperInputException();
+
         //now we have list of actions from which we will do our act_scenarios
         //it is mandatory for parameters to come in same order, as order in compound!
-        ActScenario actScenario = new ActScenario();
-        int priority = 1;
-        int index = 0;
-        while (index < idParams.size()) {
-            //now we are creating act_scenarios, constructing them from parts
-            actScenario.setActionId(actions.get(index).getId());
-            actScenario.setTestScenarioId(compScenario.getIdTestScenario());
-            actScenario.setPriority(priority);
-            actScenario.setParameterId(idParams.get(index));
-            actScenarioDao.createActScenario(actScenario);
-            index++;
-            priority++;
-        }
+        createContainedActionScenarios(idParams, actions, compScenario);
         //returning created comp_scenario which already has it`s act_scenarios made
         return compScenario;
     }
@@ -64,7 +60,13 @@ public class CompScenarioServiceImpl implements CompScenarioService {
         List<Action> actions = actionDao.getAllActionsInComp(compScenario.getIdCompound());
 
         actScenarioDao.deleteAllByIdCompScenario(id);
+        createContainedActionScenarios(idParams, actions, compScenario);
+        //returning created comp_scenario which already has it`s act_scenarios made
+        return compScenario;
+    }
 
+    private void createContainedActionScenarios(List<Integer> idParams, List<Action> actions, CompScenario compScenario) {
+        if (actions.size() != idParams.size()) throw new UnproperInputException();
         ActScenario actScenario = new ActScenario();
         int priority = 1;
         int index = 0;
@@ -78,8 +80,6 @@ public class CompScenarioServiceImpl implements CompScenarioService {
             index++;
             priority++;
         }
-        //returning created comp_scenario which already has it`s act_scenarios made
-        return compScenario;
     }
 
     @Override
@@ -96,9 +96,9 @@ public class CompScenarioServiceImpl implements CompScenarioService {
     @Override
     public PaginationCompScenario findByTitleInTestScenario(String title, int idTestScenario, int size, int page) {
         PaginationCompScenario paginationCompScenario = new PaginationCompScenario();
-        int totalElements = compScenarioDao.totalFindByTitleInTestScenario(title,idTestScenario);
+        int totalElements = compScenarioDao.totalFindByTitleInTestScenario(title, idTestScenario);
         if (size * (page - 1) < totalElements) {
-            paginationCompScenario.setCompScenarios(compScenarioDao.findByTitleInTestScenario(title,idTestScenario,size,size*(page - 1)));
+            paginationCompScenario.setCompScenarios(compScenarioDao.findByTitleInTestScenario(title, idTestScenario, size, size * (page - 1)));
         }
         return paginationCompScenario;
     }
@@ -110,18 +110,18 @@ public class CompScenarioServiceImpl implements CompScenarioService {
 
     @Override
     public List<CompScenario> findAllByTitleInTestScenario(String title, int idTestScenario) {
-        return compScenarioDao.findAllByTitleInTestScenario(title,idTestScenario);
+        return compScenarioDao.findAllByTitleInTestScenario(title, idTestScenario);
     }
 
     @Override
     public CompScenario editCompScenarioProps(CompScenario compScenario, int id) {
-        return compScenarioDao.editCompScenario(compScenario,id);
+        return compScenarioDao.editCompScenario(compScenario, id);
     }
 
 
     @Override
     public void setStatusForAllByIdTestScenario(ActStatus actStatus, int idTestScenario) {
-        compScenarioDao.setStatusForAllByIdTestScenario(actStatus,idTestScenario);
+        compScenarioDao.setStatusForAllByIdTestScenario(actStatus, idTestScenario);
     }
 
     @Override

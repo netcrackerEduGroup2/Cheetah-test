@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.List;
 
+import static com.ncedu.cheetahtest.dao.parameters.ParametersConsts.*;
+
 @Repository
 public class ParametersDaoImpl implements ParametersDao {
     private final JdbcTemplate jdbcTemplate;
@@ -20,10 +22,8 @@ public class ParametersDaoImpl implements ParametersDao {
 
     @Override
     public Parameter findById(int id) {
-        String sql = "SELECT id, data_set_id, type, value " +
-                "FROM parameters WHERE id = ?";
         List<Parameter> parameters = jdbcTemplate.query(
-                sql,
+                FIND_BY_ID,
                 preparedStatement -> preparedStatement.setInt(1, id),
                 new ParametersRowMapper()
         );
@@ -34,11 +34,8 @@ public class ParametersDaoImpl implements ParametersDao {
 
     @Override
     public List<Parameter> findByTypeLike(String type, int idDataSet, int limit, int offset) {
-        String sql = "SELECT id, data_set_id, type, value " +
-                "FROM parameters WHERE type LIKE CONCAT('%',?,'%') AND data_set_id=? " +
-                "ORDER BY type limit ? offset ?";
         return jdbcTemplate.query(
-                sql,
+                FIND_BY_TITLE_LIKE,
                 preparedStatement -> {
                     preparedStatement.setString(1, type);
                     preparedStatement.setInt(2, idDataSet);
@@ -51,9 +48,8 @@ public class ParametersDaoImpl implements ParametersDao {
 
     @Override
     public Parameter createParameter(Parameter parameter) {
-        String sql = "INSERT INTO parameters(data_set_id, type, value) VALUES (?,?,?)";
         jdbcTemplate.update(
-                sql,
+                CREATE_PARAMETERS,
                 parameter.getIdDataSet(),
                 parameter.getType(),
                 parameter.getValue()
@@ -63,10 +59,8 @@ public class ParametersDaoImpl implements ParametersDao {
 
     @Override
     public Parameter editParameter(Parameter parameter, int id) {
-        String sql = "UPDATE parameters SET data_set_id = ?, type = ?, value = ? " +
-                "WHERE id = ?";
         jdbcTemplate.update(
-                sql,
+                EDIT_PARAMETER,
                 parameter.getIdDataSet(),
                 parameter.getType(),
                 parameter.getValue(),
@@ -77,18 +71,17 @@ public class ParametersDaoImpl implements ParametersDao {
 
     @Override
     public void deleteParameter(int id) {
-        String sql = "DELETE FROM parameters WHERE id = ?";
-        jdbcTemplate.update(sql, id);
+        jdbcTemplate.update(DELETE_PARAMETER, id);
 
     }
 
     @Override
-    public int getTotalElements(int idDataSet,String type) {
-        String sql = "SELECT count(*) FROM parameters WHERE data_set_id= ? AND type LIKE concat('%',?,'%')";
-        List<Integer> count = jdbcTemplate.query(sql,
+    public int getTotalElements(int idDataSet, String type) {
+        List<Integer> count = jdbcTemplate.query(
+                GET_TOTAL_ELEMENTS,
                 preparedStatement -> {
-                    preparedStatement.setInt(1,idDataSet);
-                    preparedStatement.setString(2,type);
+                    preparedStatement.setInt(1, idDataSet);
+                    preparedStatement.setString(2, type);
                 },
                 new CountParametersRowMapper());
         if (count.size() == 1) return count.get(0);
@@ -97,10 +90,8 @@ public class ParametersDaoImpl implements ParametersDao {
 
     @Override
     public Parameter findByTypeAndIdDataSet(String type, int idDataSet) {
-        String sql = "SELECT id, data_set_id, type, value  FROM parameters " +
-                "WHERE type = ? AND data_set_id = ?";
         List<Parameter> parameters = jdbcTemplate.query(
-                sql,
+                FIND_BY_TITLE_AND_ID_DATA_SET,
                 preparedStatement -> {
                     preparedStatement.setString(1, type);
                     preparedStatement.setInt(2, idDataSet);
@@ -110,5 +101,14 @@ public class ParametersDaoImpl implements ParametersDao {
         if (parameters.size() == 1) {
             return parameters.get(0);
         } else return null;
+    }
+
+    @Override
+    public void deleteByIdDataSet(int idDataSet) {
+        String sql = "DELETE FROM parameters WHERE data_set_id = ?";
+        jdbcTemplate.update(
+                sql,
+                idDataSet
+        );
     }
 }

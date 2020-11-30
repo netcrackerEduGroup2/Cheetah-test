@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.List;
 
+import static com.ncedu.cheetahtest.dao.compscenario.CompScenarioConsts.*;
+
 @Repository
 public class CompScenarioDaoImpl implements CompScenarioDao {
     private final JdbcTemplate jdbcTemplate;
@@ -22,10 +24,8 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public CompScenario createCompScenario(CompScenario compScenario) {
-        String sql = "INSERT INTO comp_scenario (compound_id, test_scenario_id, priority, comp_status) " +
-                "VALUES (?,?,?,?::compound_status)";
         jdbcTemplate.update(
-                sql,
+                CREATE_COMP_SCENARIO,
                 compScenario.getIdCompound(),
                 compScenario.getIdTestScenario(),
                 compScenario.getPriority(),
@@ -37,10 +37,8 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public CompScenario editCompScenario(CompScenario compScenario, int id) {
-        String sql = "UPDATE comp_scenario SET compound_id = ?,test_scenario_id = ? , priority = ?, comp_status = ?::compound_status " +
-                "WHERE  id = ?";
         jdbcTemplate.update(
-                sql,
+                EDIT_COMP_SCENARIO,
                 compScenario.getIdCompound(),
                 compScenario.getIdTestScenario(),
                 compScenario.getPriority(),
@@ -52,17 +50,13 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public void deleteCompScenario(int id) {
-        String sql = "DELETE FROM comp_scenario WHERE id = ?";
-        jdbcTemplate.update(sql, id);
+        jdbcTemplate.update(DELETE_COMP_SCENARIO, id);
     }
 
     @Override
     public List<CompScenario> findByTitleLike(String title, int limit, int offset) {
-        String sql = "SELECT cs.id as cs_id, cs.compound_id as cs_compound_id, cs.test_scenario_id as cs_test_scenario_id, cs.priority as cs_priority, cs.comp_status as cs_comp_status, c.title as c_title " +
-                "FROM comp_scenario cs INNER JOIN compound c on c.id = cs.compound_id " +
-                "WHERE c.title LIKE CONCAT('%',?,'%') ORDER BY c.title LIMIT ? OFFSET ?";
         return jdbcTemplate.query(
-                sql,
+                FIND_BY_TITLE_LIKE,
                 preparedStatement -> {
                     preparedStatement.setString(1, title);
                     preparedStatement.setInt(2, limit);
@@ -74,11 +68,8 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public List<CompScenario> findByTitleInTestScenario(String title, int idTestScenario, int limit, int offset) {
-        String sql = "SELECT cs.id as cs_id, cs.compound_id as cs_compound_id, cs.test_scenario_id as cs_test_scenario_id, cs.priority as cs_priority, cs.comp_status as cs_comp_status , c.title as c_title " +
-                "FROM comp_scenario cs INNER JOIN compound c on c.id = cs.compound_id " +
-                "WHERE c.title LIKE CONCAT('%',?,'%') AND cs.test_scenario_id = ? ORDER BY cs.priority LIMIT ? OFFSET ?";
         return jdbcTemplate.query(
-                sql,
+                FIND_BY_TITLE_IN_TEST_SCENARIO,
                 preparedStatement -> {
                     preparedStatement.setString(1, title);
                     preparedStatement.setInt(2, idTestScenario);
@@ -91,11 +82,8 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public List<CompScenario> findAllByTitleLike(String title) {
-        String sql = "SELECT cs.id as cs_id, cs.compound_id as cs_compound_id, cs.test_scenario_id as cs_test_scenario_id, cs.priority as cs_priority, cs.comp_status as cs_comp_status , c.title as c_title " +
-                "FROM comp_scenario cs INNER JOIN compound c on c.id = cs.compound_id " +
-                "WHERE c.title LIKE CONCAT('%',?,'%') ORDER BY c.title ";
         return jdbcTemplate.query(
-                sql,
+                FIND_ALL_BY_TITLE_LIKE,
                 preparedStatement -> preparedStatement.setString(1, title),
                 new CompScenarioRowMapper()
         );
@@ -103,11 +91,8 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public List<CompScenario> findAllByTitleInTestScenario(String title, int idTestScenario) {
-        String sql = "SELECT cs.id as cs_id, cs.compound_id as cs_compound_id, cs.test_scenario_id as cs_test_scenario_id, cs.priority as cs_priority, cs.comp_status as cs_comp_status, c.title as c_title " +
-                "FROM comp_scenario cs INNER JOIN compound c on c.id = cs.compound_id " +
-                "WHERE c.title LIKE CONCAT('%',?,'%') AND cs.test_scenario_id = ? ORDER BY cs.priority ";
         return jdbcTemplate.query(
-                sql,
+                FIND_ALL_BY_TITLE_IN_TEST_SCENARIO,
                 preparedStatement -> {
                     preparedStatement.setString(1, title);
                     preparedStatement.setInt(2, idTestScenario);
@@ -118,10 +103,8 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public int totalFindByTitleLike(String title) {
-        String sql = "SELECT COUNT(*) FROM comp_scenario cs INNER JOIN compound c on c.id = cs.compound_id " +
-                "WHERE c.title LIKE CONCAT('%',?,'%') ";
         List<Integer> counts = jdbcTemplate.query(
-                sql,
+                TOTAL_FIND_BY_TITLE_LIKE,
                 preparedStatement -> preparedStatement.setString(1, title),
                 new CountCompScenarioRowMapper()
         );
@@ -132,10 +115,8 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public int totalFindByTitleInTestScenario(String title, int idTestScenario) {
-        String sql = "SELECT COUNT(*) FROM comp_scenario cs INNER JOIN compound c on c.id = cs.compound_id " +
-                "WHERE c.title LIKE CONCAT('%',?,'%') AND cs.test_scenario_id = ? ";
         List<Integer> counts = jdbcTemplate.query(
-                sql,
+                TOTAL_FIND_BY_TITLE_IN_TEST_SCENARIO,
                 preparedStatement -> {
                     preparedStatement.setString(1, title);
                     preparedStatement.setInt(2, idTestScenario);
@@ -149,9 +130,8 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public void setStatusForAllByIdTestScenario(ActStatus actStatus, int idTestScenario) {
-        String sql = "UPDATE comp_scenario SET comp_status = ?::action_status WHERE test_scenario_id = ?";
         jdbcTemplate.update(
-                sql,
+                SET_STATUS_FOR_ALL_BY_ID_TEST_SCENARIO,
                 actStatus.toString(),
                 idTestScenario
         );
@@ -160,12 +140,8 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public List<ActScenario> getAllActionScenarioInComp(int id) {
-        String sql = "SELECT s.id, s.action_id, s.test_scenario_id, s.priority, s.action_status, s.param_id ,a.title,a.type " +
-                "FROM act_scenario s INNER JOIN action a on a.id = s.action_id INNER JOIN comp_act_prior cap on a.id = cap.action_id " +
-                "INNER JOIN compound c on cap.comp_id = c.id INNER JOIN comp_scenario cs on c.id = cs.compound_id " +
-                "WHERE cs.id = ? ORDER BY cap.priority";
         return jdbcTemplate.query(
-                sql,
+                GET_ALL_ACTION_SCENARIO_IN_COMP,
                 preparedStatement -> preparedStatement.setInt(1, id),
                 new ActScenarioRowMapper()
         );
@@ -173,11 +149,8 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public CompScenario findById(int id) {
-        String sql = "SELECT cs.id as cs_id, cs.compound_id as cs_compound_id, cs.test_scenario_id as cs_test_scenario_id, cs.priority as cs_priority, cs.comp_status as cs_comp_status, c.title as c_title " +
-                "FROM comp_scenario cs INNER JOIN compound c on c.id = cs.compound_id " +
-                "WHERE cs.id = ?";
         List<CompScenario> compScenarios = jdbcTemplate.query(
-                sql,
+                FIND_BY_ID,
                 preparedStatement -> preparedStatement.setInt(1, id),
                 new CompScenarioRowMapper()
         );
@@ -190,11 +163,8 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public CompScenario findBySignature(CompScenario compScenario) {
-        String sql = "SELECT cs.id as cs_id, cs.compound_id as cs_compound_id, cs.test_scenario_id as cs_test_scenario_id, cs.priority as cs_priority, cs.comp_status as cs_comp_status, c.title as c_title " +
-                "FROM comp_scenario cs INNER JOIN compound c on c.id = cs.compound_id " +
-                "WHERE cs.compound_id = ? AND cs.test_scenario_id  =? AND cs.priority = ?";
         List<CompScenario> compScenarios = jdbcTemplate.query(
-                sql,
+                FIND_BY_SIGNATURE,
                 preparedStatement -> {
                     preparedStatement.setInt(1, compScenario.getIdCompound());
                     preparedStatement.setInt(2, compScenario.getIdTestScenario());
@@ -209,9 +179,8 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     @Override
     public void deleteAllByIdTestScenario(int idTestScenario) {
-        String sql = "DELETE FROM comp_scenario WHERE test_scenario_id = ?";
         jdbcTemplate.update(
-                sql,
+                DELETE_ALL_BY_TEST_SCENARIO,
                 idTestScenario);
 
     }
