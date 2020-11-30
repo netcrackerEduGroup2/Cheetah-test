@@ -53,6 +53,7 @@ public class UserController {
                                    @RequestParam("role") String role,
                                    @RequestParam("size") int size,
                                    @RequestParam("page") int page){
+
       return new UserPagination(userService.getSearchUserByNameEmailRole(name, email, role),
                                 size, page);
   }
