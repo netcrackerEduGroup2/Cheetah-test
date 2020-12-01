@@ -9,7 +9,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -149,4 +151,46 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
         }
         return null;
     }
+
+    @Override
+    public List<User> getAllActiveUser(){
+        return jdbcTemplate.query(FIND_ALL_ACTIVE_USERS_SQL, new UserRowMapper());
+    }
+
+    @Override
+    public List<User> getSearchUserByNameEmailRole(String name, String email,
+                                                   String role, int size, int page) {
+        final String preparateRole;
+        if (role.length() == 0){
+            preparateRole = "%";
+        }
+        else {
+            preparateRole = role.toUpperCase();
+        }
+        return jdbcTemplate.query(FIND_USER_BY_EMAIL_NAME_ROLE_SQL,
+                preparatedStatemetn -> {
+                    preparatedStatemetn.setString(1, "%" + email + "%");
+                    preparatedStatemetn.setString(2, "%" + name + "%");
+                    preparatedStatemetn.setString(3, preparateRole);
+                    preparatedStatemetn.setInt(4, size);
+                    preparatedStatemetn.setInt(5, (page - 1) * size);
+                },
+                new UserRowMapper());
+    }
+
+    @Override
+    public Integer getCountSearchUserByNameEmailRole(String name, String email,
+                                              String role){
+        final String preparateRole;
+        if (role.length() == 0){
+            preparateRole = "%";
+        }
+        else {
+            preparateRole = role.toUpperCase();
+        }
+        return jdbcTemplate.queryForObject(COUNT_USER_BY_EMAIL_NAME_ROLE_SQL,
+                new Object[] {"%" + email + "%", "%" + name + "%", preparateRole},
+                Integer.class);
+    }
 }
+
