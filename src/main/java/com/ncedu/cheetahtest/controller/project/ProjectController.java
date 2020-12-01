@@ -55,6 +55,13 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getAllArchievedProjects());
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ProjectResponse> updateProject(@PathVariable int id,
+                                                         @RequestBody Project project) {
+        projectService.updateProjectById(id, project);
+        return ResponseEntity.ok(new ProjectResponse("The project has been updated!"));
+    }
+
     @PutMapping("/archive/{id}")
     public ResponseEntity<ProjectResponse> setArchivedStatus(@PathVariable int id) {
         projectService.setArchievedStatus(id);
