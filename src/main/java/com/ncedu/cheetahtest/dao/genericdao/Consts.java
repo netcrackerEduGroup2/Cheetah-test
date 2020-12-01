@@ -21,9 +21,9 @@ public class Consts {
         StringBuilder select = new StringBuilder();
 
         for(int i = 0; i < rows.length; i++) {
-            if (rows[i].toLowerCase().equals("title")) {
+            if (rows[i].equalsIgnoreCase("title")) {
                 findBy = "title";
-            } else if (rows[i].toLowerCase().equals("name")){
+            } else if (rows[i].equalsIgnoreCase("name")){
                 findBy = "name";
             }
 

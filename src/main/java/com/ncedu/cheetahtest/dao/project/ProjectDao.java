@@ -23,13 +23,5 @@ public interface ProjectDao {
 
     Project findByProjectId(int id);
 
-    int getAmountActiveElements();
-
-    List<Project> getActivePaginated(int page, int size);
-
-    int getSearchedActiveTotalElements(String title);
-
-    List<Project> findActiveByTitlePaginated(int page, int size, String title);
-
     void updateProjectById(int id, Project project);
 }

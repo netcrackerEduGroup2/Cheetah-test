@@ -1,11 +1,12 @@
 package com.ncedu.cheetahtest.service.user;
 
+import com.ncedu.cheetahtest.dao.genericdao.AbstractDao;
 import com.ncedu.cheetahtest.dao.resettoken.ResetTokenDao;
 
 import com.ncedu.cheetahtest.entity.user.*;
 import com.ncedu.cheetahtest.dao.user.UserDao;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,16 +16,12 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private final ResetTokenDao resetTokenDao;
-
-    @Autowired
-    public UserServiceImpl(UserDao userDao, ResetTokenDao resetTokenDao) {
-        this.userDao = userDao;
-        this.resetTokenDao = resetTokenDao;
-    }
+    private final AbstractDao<User> userGenDao;
 
     @Override
     @Transactional
@@ -83,7 +80,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public List<UserDto> findUsersByName(int page, int size, String title) {
-        List<User> users = userDao.findActiveByTitlePaginated(page, size, title);
+        List<User> users = userGenDao.findActiveByTitlePaginated(page, size, title);
         List<UserDto> usersDto = new ArrayList<>();
 
         for (User user : users) {
@@ -109,21 +106,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserPaginatedDto getAllActiveUser(int size, int page){
-      List<User> users = userDao.getActivePaginated(page, size);
-      int total = userDao.getAmountActiveElements();
-      List<UserDto> usersDto = new ArrayList<>();
-
-      for (User user : users) {
-          usersDto.add(
-                  new UserDto(
-                          user.getId(),
-                          user.getEmail(),
-                          user.getName(),
-                          user.getRole(),
-                          user.getStatus()
-                  ));
-      }
-      return new UserPaginatedDto(usersDto, total);
+      List<User> users = userGenDao.getActivePaginated(page, size);
+      int total = userGenDao.getAmountActiveElements();
+      return mapUserToUserDto(users, total);
   }
 
   @Override
@@ -131,18 +116,22 @@ public class UserServiceImpl implements UserService {
                                                        int size, int page) {
       List<User> users = userDao.getSearchUserByNameEmailRole(name, email, role, size, page);
       int total = userDao.getCountSearchUserByNameEmailRole(name, email, role);
-      List<UserDto> usersDto = new ArrayList<>();
-
-      for (User user : users) {
-          usersDto.add(
-                  new UserDto(
-                          user.getId(),
-                          user.getEmail(),
-                          user.getName(),
-                          user.getRole(),
-                          user.getStatus()
-                  ));
-      }
-      return new UserPaginatedDto(usersDto, total);
+      return mapUserToUserDto(users, total);
   }
+
+    private UserPaginatedDto mapUserToUserDto(List<User> users, int total) {
+        List<UserDto> usersDto = new ArrayList<>();
+
+        for (User user : users) {
+            usersDto.add(
+                    new UserDto(
+                            user.getId(),
+                            user.getEmail(),
+                            user.getName(),
+                            user.getRole(),
+                            user.getStatus()
+                    ));
+        }
+        return new UserPaginatedDto(usersDto, total);
+    }
 }

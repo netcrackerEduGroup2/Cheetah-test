@@ -14,52 +14,52 @@ import java.util.List;
 @Slf4j
 @CrossOrigin(origins = "${frontend.ulr}")
 public class UserController {
-  private final UserService userService;
+    private final UserService userService;
 
-  @Autowired
-  public UserController(UserService userService) {
-    this.userService = userService;
-  }
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
-  @PutMapping
-  public User editUser(@RequestBody UserDto user) {
-    return userService.editUser(user);
-  }
+    @PutMapping
+    public User editUser(@RequestBody UserDto user) {
+        return userService.editUser(user);
+    }
 
-  @PostMapping("/activate")
-  public User doActive(@RequestBody long id) {
-    return userService.changeUserStatus(id, UserStatus.ACTIVE.toString());
-  }
+    @PostMapping("/activate")
+    public User doActive(@RequestBody long id) {
+        return userService.changeUserStatus(id, UserStatus.ACTIVE.toString());
+    }
 
     @PostMapping("/deactivate")
     public User doInactive(@RequestBody String email) {
         return userService.changeUserStatus(userService.findUserByEmail(email).getId(), UserStatus.INACTIVE.toString());
     }
 
-  @GetMapping("/{id}")
-  public User searchUser(@PathParam("id") String id) {
-    return userService.findUserById(Long.parseLong(id));
-  }
+    @GetMapping("/{id}")
+    public User searchUser(@PathParam("id") String id) {
+        return userService.findUserById(Long.parseLong(id));
+    }
 
-  @GetMapping("/profiles")
-  public UserPaginatedDto getProfileByEmail(@RequestParam("size") int size,
-                                            @RequestParam("page") int page) {
+    @GetMapping("/profiles")
+    public UserPaginatedDto getProfileByEmail(@RequestParam("size") int size,
+                                              @RequestParam("page") int page) {
         return userService.getAllActiveUser(size, page);
     }
 
     @GetMapping("/search-profiles")
     public UserPaginatedDto searchUser(@RequestParam("name") String name,
-                                     @RequestParam("email") String email,
-                                     @RequestParam("role") String role,
-                                     @RequestParam("size") int size,
-                                     @RequestParam("page") int page){
+                                       @RequestParam("email") String email,
+                                       @RequestParam("role") String role,
+                                       @RequestParam("size") int size,
+                                       @RequestParam("page") int page) {
         return userService.getSearchUserByNameEmailRole(name, email, role, size, page);
     }
 
     @PostMapping("/edit-user")
-    public User editUser(@RequestBody UserToUpdate name){
+    public User editUser(@RequestBody UserToUpdate name) {
         return userService.editUser(new UserDto(userService.findUserByEmail(name.previousEmail).getId(),
-                name.user.getEmail(), name.user.getName(),  name.user.getRole(), UserStatus.ACTIVE));
+                name.user.getEmail(), name.user.getName(), name.user.getRole(), UserStatus.ACTIVE));
     }
 
     @GetMapping("/search/findByName")
@@ -72,7 +72,7 @@ public class UserController {
     }
 }
 
-class UserToUpdate{
+class UserToUpdate {
     public User user;
     public String previousEmail;
 }

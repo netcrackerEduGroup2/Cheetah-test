@@ -1,5 +1,6 @@
 package com.ncedu.cheetahtest.service.testcase;
 
+import com.ncedu.cheetahtest.dao.genericdao.AbstractDao;
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
 import com.ncedu.cheetahtest.dao.testcase.TestCaseDao;
 import com.ncedu.cheetahtest.entity.project.Project;
@@ -20,12 +21,13 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     private final TestCaseDao testCaseDao;
     private final ProjectDao projectDao;
+    private final AbstractDao<TestCase> projectGenDao;
 
     @Override
     @Transactional
     public TestCasePaginated getTestCases(int page, int size) {
-        List<TestCase> testCaseList = testCaseDao.getActivePaginated(page, size);
-        int totalElements = testCaseDao.getAmountActiveElements();
+        List<TestCase> testCaseList = projectGenDao.getActivePaginated(page, size);
+        int totalElements = projectGenDao.getAmountActiveElements();
 
         return new TestCasePaginated(testCaseList, totalElements);
     }
@@ -34,8 +36,8 @@ public class TestCaseServiceImpl implements TestCaseService {
     @Transactional
     public TestCasePaginated getAllTestCases(int page, int size) {
 
-        List<TestCase> testCaseList = testCaseDao.getAllPaginated(page, size);
-        int totalElements = testCaseDao.getAmountAllElements();
+        List<TestCase> testCaseList = projectGenDao.getAllPaginated(page, size);
+        int totalElements = projectGenDao.getAmountAllElements();
 
         return new TestCasePaginated(testCaseList, totalElements);
     }
@@ -58,7 +60,7 @@ public class TestCaseServiceImpl implements TestCaseService {
     @Override
     @Transactional
     public TestCase findTestCaseById(int id) {
-        TestCase testCase = testCaseDao.findById(id);
+        TestCase testCase = projectGenDao.findById(id);
 
         if (testCase == null) {
             throw new TestCaseNotFoundException();
@@ -75,10 +77,10 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Override
     public TestCasePaginated findTestCasesByTitlePaginated(int page, int size, String title) {
-        List<TestCase> testCaseList = testCaseDao
+        List<TestCase> testCaseList = projectGenDao
                 .findActiveByTitlePaginated(page, size, title);
 
-        int totalElements = testCaseDao.getSearchedActiveTotalElements(title);
+        int totalElements = projectGenDao.getSearchedActiveTotalElements(title);
 
         return new TestCasePaginated(testCaseList, totalElements);
     }
@@ -88,10 +90,10 @@ public class TestCaseServiceImpl implements TestCaseService {
     public TestCasePaginated findAllTestCasesByTitlePaginated(
             int page, int size, String title) {
 
-        List<TestCase> testCaseList = testCaseDao
+        List<TestCase> testCaseList = projectGenDao
                 .findAllByTitlePaginated(page, size, title);
 
-        int totalElements = testCaseDao.getSearchedAllTotalElements(title);
+        int totalElements = projectGenDao.getSearchedAllTotalElements(title);
 
         return new TestCasePaginated(testCaseList, totalElements);
     }
