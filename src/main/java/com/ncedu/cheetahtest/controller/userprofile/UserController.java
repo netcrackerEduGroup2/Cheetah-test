@@ -1,14 +1,13 @@
 package com.ncedu.cheetahtest.controller.userprofile;
 
-import com.ncedu.cheetahtest.entity.user.User;
-import com.ncedu.cheetahtest.entity.user.UserDto;
-import com.ncedu.cheetahtest.entity.user.UserStatus;
+import com.ncedu.cheetahtest.entity.user.*;
 import com.ncedu.cheetahtest.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -27,7 +26,7 @@ public class UserController {
     return userService.editUser(user);
   }
 
-  @PutMapping("/activate")
+  @PostMapping("/activate")
   public User doActive(@RequestBody long id) {
     return userService.changeUserStatus(id, UserStatus.ACTIVE.toString());
   }
@@ -43,19 +42,18 @@ public class UserController {
   }
 
   @GetMapping("/profiles")
-  public UserPagination getProfileByEmail(@RequestParam("size") int size,
+  public UserPaginatedDto getProfileByEmail(@RequestParam("size") int size,
                                             @RequestParam("page") int page) {
-        return new UserPagination(userService.getAllActiveUser(), size, page);
+        return userService.getAllActiveUser(size, page);
     }
 
     @GetMapping("/search-profiles")
-    public UserPagination searchUser(@RequestParam("name") String name,
+    public UserPaginatedDto searchUser(@RequestParam("name") String name,
                                      @RequestParam("email") String email,
                                      @RequestParam("role") String role,
                                      @RequestParam("size") int size,
                                      @RequestParam("page") int page){
-        return new UserPagination(userService.getSearchUserByNameEmailRole(name, email, role),
-                size, page);
+        return userService.getSearchUserByNameEmailRole(name, email, role, size, page);
     }
 
     @PostMapping("/edit-user")

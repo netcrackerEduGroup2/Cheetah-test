@@ -2,11 +2,8 @@ package com.ncedu.cheetahtest.service.user;
 
 import com.ncedu.cheetahtest.dao.resettoken.ResetTokenDao;
 
-import com.ncedu.cheetahtest.entity.user.User;
+import com.ncedu.cheetahtest.entity.user.*;
 import com.ncedu.cheetahtest.dao.user.UserDao;
-import com.ncedu.cheetahtest.entity.user.ResetToken;
-import com.ncedu.cheetahtest.entity.user.UserDto;
-import com.ncedu.cheetahtest.entity.user.UserPaginatedDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -111,12 +108,41 @@ public class UserServiceImpl implements UserService {
 
 
   @Override
-  public List<User> getAllActiveUser(){
-    return userDao.getAllActiveUser();
+  public UserPaginatedDto getAllActiveUser(int size, int page){
+      List<User> users = userDao.getActivePaginated(page, size);
+      int total = userDao.getAmountActiveElements();
+      List<UserDto> usersDto = new ArrayList<>();
+
+      for (User user : users) {
+          usersDto.add(
+                  new UserDto(
+                          user.getId(),
+                          user.getEmail(),
+                          user.getName(),
+                          user.getRole(),
+                          user.getStatus()
+                  ));
+      }
+      return new UserPaginatedDto(usersDto, total);
   }
 
   @Override
-  public List<User> getSearchUserByNameEmailRole(String name, String email, String role) {
-    return userDao.getSearchUserByNameEmailRole(name, email, role);
+  public UserPaginatedDto getSearchUserByNameEmailRole(String name, String email, String role,
+                                                       int size, int page) {
+      List<User> users = userDao.getSearchUserByNameEmailRole(name, email, role, size, page);
+      int total = userDao.getCountSearchUserByNameEmailRole(name, email, role);
+      List<UserDto> usersDto = new ArrayList<>();
+
+      for (User user : users) {
+          usersDto.add(
+                  new UserDto(
+                          user.getId(),
+                          user.getEmail(),
+                          user.getName(),
+                          user.getRole(),
+                          user.getStatus()
+                  ));
+      }
+      return new UserPaginatedDto(usersDto, total);
   }
 }

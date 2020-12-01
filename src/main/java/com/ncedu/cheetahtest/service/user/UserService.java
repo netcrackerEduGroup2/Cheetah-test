@@ -3,8 +3,10 @@ package com.ncedu.cheetahtest.service.user;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
 import com.ncedu.cheetahtest.entity.user.UserDto;
+import com.ncedu.cheetahtest.entity.user.UserPaginatedDto;
 
 import java.util.Date;
+import java.util.List;
 
 public interface UserService {
 
@@ -24,10 +26,10 @@ public interface UserService {
 
     User findUserById(long id);
 
-    public List<User> getAllActiveUser();
+    UserPaginatedDto getAllActiveUser(int size, int page);
 
-    public List<User> getSearchUserByNameEmailRole(String user, String email,
-                                                   String role);
+    UserPaginatedDto getSearchUserByNameEmailRole(String user, String email,
+                                                   String role, int size, int page);
 
     List<UserDto> findUsersByName(int page, int size, String title);
 }
