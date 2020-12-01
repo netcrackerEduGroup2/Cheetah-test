@@ -15,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectDao projectDao;
+    private final AbstractDao<Project> projectGenDao;
 
     @Override
     public void createNewProject(ProjectDto newProjectDto) {
