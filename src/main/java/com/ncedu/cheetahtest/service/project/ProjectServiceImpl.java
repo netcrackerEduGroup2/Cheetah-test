@@ -24,8 +24,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResponseProjectPaginated getAllProjects(int page, int size) {
-        int totalElements = projectDao.getAmountAllElements();
-        List<Project> projects = projectDao.getAllPaginated(page, size);
+        int totalElements = projectGenDao.getAmountAllElements();
+        List<Project> projects = projectGenDao.getAllPaginated(page, size);
 
         return new ResponseProjectPaginated(projects, totalElements);
     }
@@ -47,8 +47,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResponseProjectPaginated getProjectsPaginatedByTitle(int page, int size, String title) {
-        int totalElements = projectDao.getSearchedAllTotalElements(title);
-        List<Project> projects = projectDao.findAllByTitlePaginated(page, size, title);
+        int totalElements = projectGenDao.getSearchedAllTotalElements(title);
+        List<Project> projects = projectGenDao.findAllByTitlePaginated(page, size, title);
 
         return new ResponseProjectPaginated(projects, totalElements);
     }

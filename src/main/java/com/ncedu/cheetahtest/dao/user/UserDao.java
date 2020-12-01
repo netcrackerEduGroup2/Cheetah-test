@@ -27,10 +27,6 @@ public interface UserDao {
 
     User findUserById(long id);
 
-    List<User> getAllActiveUser();
-
-    int getSearchedActiveTotalElements(String title);
-
     List<User> getSearchUserByNameEmailRole(String name, String email,
                                             String role, int size, int page);
 
