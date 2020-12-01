@@ -43,9 +43,9 @@ public class ProjectController {
     }
 
     @GetMapping("/search")
-    public ResponseProjectPaginated getProjectsByTitle( @RequestParam int page,
-                                                        @RequestParam int size,
-                                                        @RequestParam String title) {
+    public ResponseProjectPaginated getProjectsByTitle(@RequestParam int page,
+                                                       @RequestParam int size,
+                                                       @RequestParam String title) {
 
         return projectService.getProjectsPaginatedByTitle(page, size, title);
     }
@@ -58,6 +58,19 @@ public class ProjectController {
     @PutMapping("/archive/{id}")
     public ResponseEntity<ProjectResponse> setArchivedStatus(@PathVariable int id) {
         projectService.setArchievedStatus(id);
-        return ResponseEntity.ok(new ProjectResponse("A project No. "+id+" has been archieved!"));
+        return ResponseEntity.ok(new ProjectResponse("A project No. " + id + " has been archieved!"));
+    }
+
+    @GetMapping("/active")
+    public ResponseProjectPaginated getActiveProjects(@RequestParam int page,
+                                                      @RequestParam int size) {
+        return projectService.getActiveProjects(page, size);
+    }
+
+    @GetMapping("/search/findActiveByTitle")
+    public ResponseProjectPaginated getActiveProjectsByTitle(@RequestParam int page,
+                                                             @RequestParam int size,
+                                                             @RequestParam String title) {
+        return projectService.getActiveProjectsByTitle(page, size, title);
     }
 }

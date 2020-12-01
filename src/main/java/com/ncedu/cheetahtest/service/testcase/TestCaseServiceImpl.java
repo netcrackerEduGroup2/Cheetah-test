@@ -10,6 +10,7 @@ import com.ncedu.cheetahtest.exception.testcase.TestCaseAlreadyExistsException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class TestCaseServiceImpl implements TestCaseService {
     private final ProjectDao projectDao;
 
     @Override
+    @Transactional
     public TestCasePaginated getTestCases(int page, int size) {
         List<TestCase> testCaseList = testCaseDao.getActivePaginated(page, size);
         int totalElements = testCaseDao.getAmountActiveElements();
@@ -29,6 +31,7 @@ public class TestCaseServiceImpl implements TestCaseService {
     }
 
     @Override
+    @Transactional
     public TestCasePaginated getAllTestCases(int page, int size) {
 
         List<TestCase> testCaseList = testCaseDao.getAllPaginated(page, size);
@@ -38,6 +41,7 @@ public class TestCaseServiceImpl implements TestCaseService {
     }
 
     @Override
+    @Transactional
     public void save(TestCase testCase) {
         TestCase testCaseWithSameTitle = testCaseDao
                 .findTestCaseByTitleExceptCurrent(
@@ -52,6 +56,7 @@ public class TestCaseServiceImpl implements TestCaseService {
     }
 
     @Override
+    @Transactional
     public TestCase findTestCaseById(int id) {
         TestCase testCase = testCaseDao.findById(id);
 
@@ -63,6 +68,7 @@ public class TestCaseServiceImpl implements TestCaseService {
     }
 
     @Override
+    @Transactional
     public void deactivateTestCase(int id) {
         testCaseDao.deactivate(id);
     }
@@ -78,6 +84,7 @@ public class TestCaseServiceImpl implements TestCaseService {
     }
 
     @Override
+    @Transactional
     public TestCasePaginated findAllTestCasesByTitlePaginated(
             int page, int size, String title) {
 
@@ -90,6 +97,7 @@ public class TestCaseServiceImpl implements TestCaseService {
     }
 
     @Override
+    @Transactional
     public int createTestCase(TestCase testCase) {
         TestCase testCaseWithSameTitle = testCaseDao
                 .findTestCaseByTitleExceptCurrent(

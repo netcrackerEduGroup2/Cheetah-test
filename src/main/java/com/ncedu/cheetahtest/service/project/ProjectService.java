@@ -13,4 +13,8 @@ public interface ProjectService {
     void setArchievedStatus(int id);
     Project getProjectById(int id);
     ResponseProjectPaginated getProjectsPaginatedByTitle(int page, int size, String title);
+
+    ResponseProjectPaginated getActiveProjects(int page, int size);
+
+    ResponseProjectPaginated getActiveProjectsByTitle(int page, int size, String title);
 }
