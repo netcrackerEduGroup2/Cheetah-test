@@ -69,4 +69,9 @@ public class ProjectServiceImpl implements ProjectService {
 
         return new ResponseProjectPaginated(projects, totalElements);
     }
+
+    @Override
+    public void updateProjectById(int id, Project project) {
+        projectDao.updateProjectById(id, project);
+    }
 }
