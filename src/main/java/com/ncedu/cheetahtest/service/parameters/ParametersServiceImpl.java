@@ -4,6 +4,7 @@ import com.ncedu.cheetahtest.dao.parameters.ParametersDao;
 import com.ncedu.cheetahtest.entity.parameter.PaginationParameter;
 import com.ncedu.cheetahtest.entity.parameter.Parameter;
 import com.ncedu.cheetahtest.exception.helpers.EntityAlreadyExistException;
+import com.ncedu.cheetahtest.exception.helpers.ForeignKeyConstraintViolation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,11 @@ public class ParametersServiceImpl implements ParameterService {
 
     @Override
     public void deleteParameter(int id) {
-        parametersDao.deleteParameter(id);
+        try {
+            parametersDao.deleteParameter(id);
+        }catch (DataIntegrityViolationException e){
+            throw new ForeignKeyConstraintViolation();
+        }
+
     }
 }
