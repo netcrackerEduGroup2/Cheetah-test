@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.service.user;
 
-import com.ncedu.cheetahtest.dao.genericdao.AbstractDao;
 import com.ncedu.cheetahtest.dao.resettoken.ResetTokenDao;
 
 import com.ncedu.cheetahtest.entity.user.*;
@@ -21,7 +20,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private final ResetTokenDao resetTokenDao;
-    private final AbstractDao<User> userGenDao;
 
     @Override
     @Transactional
@@ -80,7 +78,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public List<UserDto> findUsersByName(int page, int size, String title) {
-        List<User> users = userGenDao.findActiveByTitlePaginated(page, size, title);
+        List<User> users = userDao.findActiveByTitlePaginated(page, size, title);
         List<UserDto> usersDto = new ArrayList<>();
 
         for (User user : users) {
@@ -105,9 +103,10 @@ public class UserServiceImpl implements UserService {
 
 
   @Override
+  @Transactional
   public UserPaginatedDto getAllActiveUser(int size, int page){
-      List<User> users = userGenDao.getActivePaginated(page, size);
-      int total = userGenDao.getAmountActiveElements();
+      List<User> users = userDao.getActivePaginated(page, size);
+      int total = userDao.getAmountActiveElements();
       return mapUserToUserDto(users, total);
   }
 

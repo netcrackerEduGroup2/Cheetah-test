@@ -10,12 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
-
     private final ProjectDao projectDao;
-    private final AbstractDao<Project> projectGenDao;
 
     @Override
     public void createNewProject(ProjectDto newProjectDto) {
@@ -55,16 +54,16 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResponseProjectPaginated getActiveProjects(int page, int size) {
-        int totalElements = projectGenDao.getAmountActiveElements();
-        List<Project> projects = projectGenDao.getActivePaginated(page, size);
+        int totalElements = projectDao.getAmountActiveElements();
+        List<Project> projects = projectDao.getActivePaginated(page, size);
 
         return new ResponseProjectPaginated(projects, totalElements);
     }
 
     @Override
     public ResponseProjectPaginated getActiveProjectsByTitle(int page, int size, String title) {
-        int totalElements = projectGenDao.getSearchedActiveTotalElements(title);
-        List<Project> projects = projectGenDao.findActiveByTitlePaginated(page, size, title);
+        int totalElements = projectDao.getSearchedActiveTotalElements(title);
+        List<Project> projects = projectDao.findActiveByTitlePaginated(page, size, title);
 
         return new ResponseProjectPaginated(projects, totalElements);
     }

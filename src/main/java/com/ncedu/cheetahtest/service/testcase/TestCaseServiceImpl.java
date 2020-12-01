@@ -10,6 +10,7 @@ import com.ncedu.cheetahtest.exception.project.ProjectNotFoundException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseAlreadyExistsException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,13 +22,12 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     private final TestCaseDao testCaseDao;
     private final ProjectDao projectDao;
-    private final AbstractDao<TestCase> projectGenDao;
 
     @Override
     @Transactional
     public TestCasePaginated getTestCases(int page, int size) {
-        List<TestCase> testCaseList = projectGenDao.getActivePaginated(page, size);
-        int totalElements = projectGenDao.getAmountActiveElements();
+        List<TestCase> testCaseList = testCaseDao.getActivePaginated(page, size);
+        int totalElements = testCaseDao.getAmountActiveElements();
 
         return new TestCasePaginated(testCaseList, totalElements);
     }
@@ -36,8 +36,8 @@ public class TestCaseServiceImpl implements TestCaseService {
     @Transactional
     public TestCasePaginated getAllTestCases(int page, int size) {
 
-        List<TestCase> testCaseList = projectGenDao.getAllPaginated(page, size);
-        int totalElements = projectGenDao.getAmountAllElements();
+        List<TestCase> testCaseList = testCaseDao.getAllPaginated(page, size);
+        int totalElements = testCaseDao.getAmountAllElements();
 
         return new TestCasePaginated(testCaseList, totalElements);
     }
@@ -60,7 +60,7 @@ public class TestCaseServiceImpl implements TestCaseService {
     @Override
     @Transactional
     public TestCase findTestCaseById(int id) {
-        TestCase testCase = projectGenDao.findById(id);
+        TestCase testCase = testCaseDao.findById(id);
 
         if (testCase == null) {
             throw new TestCaseNotFoundException();
@@ -77,10 +77,10 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Override
     public TestCasePaginated findTestCasesByTitlePaginated(int page, int size, String title) {
-        List<TestCase> testCaseList = projectGenDao
+        List<TestCase> testCaseList = testCaseDao
                 .findActiveByTitlePaginated(page, size, title);
 
-        int totalElements = projectGenDao.getSearchedActiveTotalElements(title);
+        int totalElements = testCaseDao.getSearchedActiveTotalElements(title);
 
         return new TestCasePaginated(testCaseList, totalElements);
     }
@@ -90,10 +90,10 @@ public class TestCaseServiceImpl implements TestCaseService {
     public TestCasePaginated findAllTestCasesByTitlePaginated(
             int page, int size, String title) {
 
-        List<TestCase> testCaseList = projectGenDao
+        List<TestCase> testCaseList = testCaseDao
                 .findAllByTitlePaginated(page, size, title);
 
-        int totalElements = projectGenDao.getSearchedAllTotalElements(title);
+        int totalElements = testCaseDao.getSearchedAllTotalElements(title);
 
         return new TestCasePaginated(testCaseList, totalElements);
     }
