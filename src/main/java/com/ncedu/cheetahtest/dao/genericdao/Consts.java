@@ -7,6 +7,8 @@ public class Consts {
     public static final  String WHERE_STATUS_ACTIVE = " WHERE status = 'ACTIVE' ";
     public static final  String ORDER_PAGINATED = " ORDER BY id LIMIT ? OFFSET ? ";
     public static final String SELECT_COUNT_ID = "SELECT count(id) ";
+    public static final String ILIKE = " ILIKE ? ";
+    public static final String LIMIT_1 = "LIMIT 1 ";
 
     private final String selectAllRowsFromTable;
     private final String tableName;
@@ -81,7 +83,9 @@ public class Consts {
                 SELECT_ROWS +
                 FROM_TABLE+
                 WHERE_STATUS_ACTIVE +
-                " AND " + findBy + " LIKE ? " +
+                " AND " +
+                findBy +
+                ILIKE +
                 ORDER_PAGINATED,
                 selectAllRowsFromTable, tableName);
     }
@@ -90,7 +94,9 @@ public class Consts {
         return String.format(
                 SELECT_ROWS +
                 FROM_TABLE +
-                " WHERE " + findBy + " LIKE ? " +
+                " WHERE " +
+                findBy +
+                ILIKE +
                 ORDER_PAGINATED,
                 selectAllRowsFromTable, tableName);
     }
@@ -100,7 +106,10 @@ public class Consts {
                 SELECT_COUNT_ID +
                 FROM_TABLE +
                 WHERE_STATUS_ACTIVE +
-                " AND " + findBy + " LIKE ? LIMIT 1",
+                " AND " +
+                findBy +
+                ILIKE +
+                LIMIT_1,
                 tableName);
     }
 
@@ -108,7 +117,10 @@ public class Consts {
         return String.format(
                 SELECT_COUNT_ID +
                 FROM_TABLE +
-                "WHERE " + findBy + " LIKE ? LIMIT 1",
+                "WHERE " +
+                findBy +
+                ILIKE +
+                LIMIT_1,
                 tableName);
     }
 }
