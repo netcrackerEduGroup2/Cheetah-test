@@ -79,4 +79,16 @@ public class ProjectDaoImpl extends AbstractDaoImpl<Project> implements ProjectD
 
         return null;
     }
+
+    @Override
+    public void updateProjectById(int id, Project projectDto) {
+        String sqlQuery = ProjectSqlConsts.UPDATE_PROJECT_QUERY;
+
+        jdbcTemplate.update(
+                sqlQuery,
+                projectDto.getTitle(),
+                projectDto.getLink(),
+                id
+        );
+    }
 }
