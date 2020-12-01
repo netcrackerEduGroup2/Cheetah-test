@@ -51,21 +51,14 @@ public class ProjectController {
     }
 
     @GetMapping("/archive")
-    public ResponseEntity<List<Project>> getAllArchivedProjects() {
+    public ResponseEntity<List<Project>> getAllArchievedProjects() {
         return ResponseEntity.ok(projectService.getAllArchievedProjects());
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ProjectResponse> updateProject(@PathVariable int id,
-                                                         @RequestBody Project project) {
-        projectService.updateProjectById(id, project);
-        return ResponseEntity.ok(new ProjectResponse("The project has been updated!"));
     }
 
     @PutMapping("/archive/{id}")
     public ResponseEntity<ProjectResponse> setArchivedStatus(@PathVariable int id) {
         projectService.setArchievedStatus(id);
-        return ResponseEntity.ok(new ProjectResponse("A project No. " + id + " has been archived!"));
+        return ResponseEntity.ok(new ProjectResponse("A project No. " + id + " has been archieved!"));
     }
 
     @GetMapping("/active")
