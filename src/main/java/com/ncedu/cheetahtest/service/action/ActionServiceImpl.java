@@ -70,4 +70,10 @@ public class ActionServiceImpl implements ActionService {
     public Action getActionById(int id) {
         return actionDao.getActionById(id);
     }
+
+    @Override
+    @Transactional
+    public List<Action> getActionsInCompoundNotPaginated(int idCompound) {
+        return actionDao.getActionsInCompoundNotPaginated(idCompound);
+    }
 }
