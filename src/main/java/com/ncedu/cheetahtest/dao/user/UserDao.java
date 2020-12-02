@@ -34,12 +34,4 @@ public interface UserDao {
 
     Integer getCountSearchUserByNameEmailRole(String name, String email,
                                             String role);
-
-    int getSearchedActiveTotalElements(String title);
-
-    List<User> findActiveByTitlePaginated(int page, int size, String title);
-
-    List<User> getActivePaginated(int page, int size);
-
-    int getAmountActiveElements();
 }
