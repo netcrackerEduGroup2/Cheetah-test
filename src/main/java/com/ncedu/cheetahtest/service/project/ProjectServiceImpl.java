@@ -1,21 +1,19 @@
 package com.ncedu.cheetahtest.service.project;
 
-import com.ncedu.cheetahtest.dao.genericdao.AbstractDao;
+import com.ncedu.cheetahtest.dao.genericdao.AbstractActiveDao;
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.project.ProjectDto;
 import com.ncedu.cheetahtest.entity.project.ResponseProjectPaginated;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-
 
 @Service
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectDao projectDao;
-    private final AbstractDao<Project> projectGenDao;
+    private final AbstractActiveDao<Project> projectGenDao;
 
     @Override
     public void createNewProject(ProjectDto newProjectDto) {
@@ -55,16 +53,16 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResponseProjectPaginated getActiveProjects(int page, int size) {
-        int totalElements = projectDao.getAmountActiveElements();
-        List<Project> projects = projectDao.getActivePaginated(page, size);
+        int totalElements = projectGenDao.getAmountActiveElements();
+        List<Project> projects = projectGenDao.getActivePaginated(page, size);
 
         return new ResponseProjectPaginated(projects, totalElements);
     }
 
     @Override
     public ResponseProjectPaginated getActiveProjectsByTitle(int page, int size, String title) {
-        int totalElements = projectDao.getSearchedActiveTotalElements(title);
-        List<Project> projects = projectDao.findActiveByTitlePaginated(page, size, title);
+        int totalElements = projectGenDao.getSearchedActiveTotalElements(title);
+        List<Project> projects = projectGenDao.findActiveByTitlePaginated(page, size, title);
 
         return new ResponseProjectPaginated(projects, totalElements);
     }

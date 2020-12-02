@@ -1,6 +1,6 @@
 package com.ncedu.cheetahtest.service.testcase;
 
-import com.ncedu.cheetahtest.dao.genericdao.AbstractDao;
+import com.ncedu.cheetahtest.dao.genericdao.AbstractActiveDao;
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
 import com.ncedu.cheetahtest.dao.testcase.TestCaseDao;
 import com.ncedu.cheetahtest.entity.project.Project;
@@ -10,7 +10,6 @@ import com.ncedu.cheetahtest.exception.project.ProjectNotFoundException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseAlreadyExistsException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,13 +20,14 @@ import java.util.List;
 public class TestCaseServiceImpl implements TestCaseService {
 
     private final TestCaseDao testCaseDao;
+    private final AbstractActiveDao<TestCase> testCaseGenDao;
     private final ProjectDao projectDao;
 
     @Override
     @Transactional
     public TestCasePaginated getTestCases(int page, int size) {
-        List<TestCase> testCaseList = testCaseDao.getActivePaginated(page, size);
-        int totalElements = testCaseDao.getAmountActiveElements();
+        List<TestCase> testCaseList = testCaseGenDao.getActivePaginated(page, size);
+        int totalElements = testCaseGenDao.getAmountActiveElements();
 
         return new TestCasePaginated(testCaseList, totalElements);
     }
@@ -36,8 +36,8 @@ public class TestCaseServiceImpl implements TestCaseService {
     @Transactional
     public TestCasePaginated getAllTestCases(int page, int size) {
 
-        List<TestCase> testCaseList = testCaseDao.getAllPaginated(page, size);
-        int totalElements = testCaseDao.getAmountAllElements();
+        List<TestCase> testCaseList = testCaseGenDao.getAllPaginated(page, size);
+        int totalElements = testCaseGenDao.getAmountAllElements();
 
         return new TestCasePaginated(testCaseList, totalElements);
     }
@@ -60,7 +60,7 @@ public class TestCaseServiceImpl implements TestCaseService {
     @Override
     @Transactional
     public TestCase findTestCaseById(int id) {
-        TestCase testCase = testCaseDao.findById(id);
+        TestCase testCase = testCaseGenDao.findById(id);
 
         if (testCase == null) {
             throw new TestCaseNotFoundException();
@@ -77,10 +77,10 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Override
     public TestCasePaginated findTestCasesByTitlePaginated(int page, int size, String title) {
-        List<TestCase> testCaseList = testCaseDao
+        List<TestCase> testCaseList = testCaseGenDao
                 .findActiveByTitlePaginated(page, size, title);
 
-        int totalElements = testCaseDao.getSearchedActiveTotalElements(title);
+        int totalElements = testCaseGenDao.getSearchedActiveTotalElements(title);
 
         return new TestCasePaginated(testCaseList, totalElements);
     }
@@ -90,10 +90,10 @@ public class TestCaseServiceImpl implements TestCaseService {
     public TestCasePaginated findAllTestCasesByTitlePaginated(
             int page, int size, String title) {
 
-        List<TestCase> testCaseList = testCaseDao
+        List<TestCase> testCaseList = testCaseGenDao
                 .findAllByTitlePaginated(page, size, title);
 
-        int totalElements = testCaseDao.getSearchedAllTotalElements(title);
+        int totalElements = testCaseGenDao.getSearchedAllTotalElements(title);
 
         return new TestCasePaginated(testCaseList, totalElements);
     }

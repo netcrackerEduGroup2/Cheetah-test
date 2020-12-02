@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
+public abstract class AbstractDaoImpl<T> implements AbstractActiveDao<T> {
 
     protected final RowMapper<T> rowMapper;
 
