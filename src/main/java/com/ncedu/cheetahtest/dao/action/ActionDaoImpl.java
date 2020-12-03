@@ -145,9 +145,7 @@ public class ActionDaoImpl implements ActionDao {
     public List<Action> getActionsInCompoundNotPaginated(int idCompound) {
         return jdbcTemplate.query(
                 GET_ACTIONS_IN_COMPOUND_NOT_PAGINATED,
-                preparedStatement -> {
-                    preparedStatement.setInt(1, idCompound);
-                },
+                preparedStatement -> preparedStatement.setInt(1, idCompound),
                 new ActionRowMapper()
         );
     }
