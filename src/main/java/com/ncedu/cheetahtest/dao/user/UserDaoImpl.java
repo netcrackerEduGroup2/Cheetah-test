@@ -153,4 +153,13 @@ public class UserDaoImpl implements UserDao {
     }
     return null;
   }
+
+  @Override
+  public List<UserDto> findByEmail(String title) {
+    return jdbcTemplate.query(
+            FIND_BY_EMAIL,
+            preparedStatement -> preparedStatement.setString(1,title),
+            new UserDtoRowMapper()
+    );
+  }
 }

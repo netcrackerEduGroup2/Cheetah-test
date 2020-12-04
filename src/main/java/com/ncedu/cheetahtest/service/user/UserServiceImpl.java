@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -84,4 +85,8 @@ public class UserServiceImpl implements UserService {
     userDao.setUserLastRequest(email, date);
   }
 
+  @Override
+  public List<UserDto> findByEmail(String email) {
+    return userDao.findByEmail(email);
+  }
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -40,5 +41,10 @@ public class UserController {
   @GetMapping("/{id}")
   public User searchUser(@PathParam("id") String id) {
     return userService.findUserById(Long.parseLong(id));
+  }
+
+  @GetMapping
+  public List<UserDto> findByEmail(@RequestParam("email") String email){
+    return userService.findByEmail(email);
   }
 }

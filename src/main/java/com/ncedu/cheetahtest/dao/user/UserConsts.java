@@ -10,4 +10,5 @@ public class UserConsts {
     public static final String EDIT_USER_SQL = "UPDATE users SET email = ?, name = ?, role = ?::user_role where id = ?";
     public static final String CHANGE_USER_STATUS_SQL = "UPDATE users SET status = ?::user_status where id = ?";
     public static final String FIND_USER_BY_ID_SQL = "SELECT id, email, password, name, role, status, last_request FROM users WHERE id = ? LIMIT 1";
+    public static final String FIND_BY_EMAIL = "SELECT id, email,name,role,status FROM users WHERE email LIKE CONCAT ('%',?,'%') ORDER BY email LIMIT 5";
 }
