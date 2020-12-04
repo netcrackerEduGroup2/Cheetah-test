@@ -31,7 +31,7 @@ public class TestScenarioController {
     }
 
     @GetMapping("/{id}")
-    public PaginationItems getItemsFromScenario( //TODO
+    public PaginationItems getItemsFromScenario(
                                                  @RequestParam("size") int size,
                                                  @RequestParam("page") int page,
                                                  @PathVariable("id") int idTestScenario) {

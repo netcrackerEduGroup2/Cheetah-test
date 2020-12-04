@@ -1,5 +1,6 @@
 package com.ncedu.cheetahtest.dao.testscenario;
 
+import com.ncedu.cheetahtest.entity.testscenario.ItemDTO;
 import com.ncedu.cheetahtest.entity.testscenario.TestScenario;
 
 import java.util.List;
@@ -23,11 +24,15 @@ public interface TestScenarioDao {
 
     TestScenario findByTitle(String title);
 
-    List<TestScenario> getAllPaginated(int page, int size);
+    List<TestScenario> getAllPaginated(int limit, int offset);
 
     int getAmountAllElements();
 
     void deactivate(int id);
 
     TestScenario findTestScenarioByTitleExceptCurrent(String title, int id);
+
+    int getAllItemsAmount(int idTestScenario);
+
+    List<ItemDTO> getAllItems(int idTestScenario, int limit, int offset);
 }

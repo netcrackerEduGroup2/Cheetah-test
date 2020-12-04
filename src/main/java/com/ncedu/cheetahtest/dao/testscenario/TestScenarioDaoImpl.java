@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.dao.testscenario;
 
 import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
+import com.ncedu.cheetahtest.entity.testscenario.ItemDTO;
 import com.ncedu.cheetahtest.entity.testscenario.TestScenario;
 import com.ncedu.cheetahtest.exception.general.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,16 @@ public class TestScenarioDaoImpl extends AbstractDaoImpl<TestScenario> implement
     }
 
     @Override
-    public TestScenario findById(int id) { //TODO
-        return null;
-    }//TODO
+    public TestScenario findById(int id) {
+        List<TestScenario> testScenarios = jdbcTemplate.query(
+                FIND_BY_ID,
+                preparedStatement -> preparedStatement.setInt(1, id),
+                new TestScenarioMapper()
+        );
+        if (testScenarios.size() == 1) {
+            return testScenarios.get(0);
+        } else return null;
+    }
 
     @Override
     public List<TestScenario> findByTitleLike(String title, int idTestCase, int limit, int offset) {
@@ -58,7 +66,7 @@ public class TestScenarioDaoImpl extends AbstractDaoImpl<TestScenario> implement
                 CREATE_TEST_SCENARIO,
                 testScenario.getTitle(),
                 testScenario.getDescription(),
-                testScenario.getStatus(),
+                testScenario.getStatus().toString(),
                 testScenario.getIdTestCase()
         );
         return this.findByTitle(testScenario.getTitle());
@@ -70,7 +78,7 @@ public class TestScenarioDaoImpl extends AbstractDaoImpl<TestScenario> implement
                 EDIT_TEST_SCENARIO,
                 testScenario.getTitle(),
                 testScenario.getDescription(),
-                testScenario.getStatus(),
+                testScenario.getStatus().toString(),
                 testScenario.getIdTestCase(),
                 id
         );
@@ -120,8 +128,15 @@ public class TestScenarioDaoImpl extends AbstractDaoImpl<TestScenario> implement
     }
 
     @Override
-    public List<TestScenario> getAllPaginated(int page, int size) {//TODO
-        return null;
+    public List<TestScenario> getAllPaginated(int limit, int offset) {
+        return jdbcTemplate.query(
+                GET_ALL_TEST_SCENARIOS,
+                preparedStatement -> {
+                    preparedStatement.setInt(1, limit);
+                    preparedStatement.setInt(2, offset);
+                },
+                new TestScenarioMapper()
+        );
     }
 
     @Override
@@ -157,6 +172,33 @@ public class TestScenarioDaoImpl extends AbstractDaoImpl<TestScenario> implement
         }
 
         return null;
+    }
+
+    @Override
+    public int getAllItemsAmount(int idTestScenario) {
+        List<Integer> count = jdbcTemplate.query(
+                GET_ALL_ITEMS_AMOUNT,
+                preparedStatement -> {
+                    preparedStatement.setInt(1, idTestScenario);
+                    preparedStatement.setInt(2, idTestScenario);
+                },
+                new CountTestScenarioRowMapper());
+        if (count.size() == 1) return count.get(0);
+        else return 0;
+    }
+
+    @Override
+    public List<ItemDTO> getAllItems(int idTestScenario, int limit, int offset) {
+        return jdbcTemplate.query(
+                GET_ALL_ITEMS,
+                preparedStatement -> {
+                    preparedStatement.setInt(1, idTestScenario);
+                    preparedStatement.setInt(2, idTestScenario);
+                    preparedStatement.setInt(3, limit);
+                    preparedStatement.setInt(4, offset);
+                },
+                new ItemMapper()
+        );
     }
 
 }

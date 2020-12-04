@@ -4,6 +4,7 @@ import com.ncedu.cheetahtest.dao.testcase.TestCaseDao;
 import com.ncedu.cheetahtest.dao.testscenario.TestScenarioDao;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testscenario.*;
+import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import com.ncedu.cheetahtest.exception.testscenario.TestScenarioAlreadyExistsException;
 import com.ncedu.cheetahtest.exception.testscenario.TestScenarioNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class TestScenarioServiceImpl implements TestScenarioService {
         TestCase testCase = testCaseDao.findById(testScenario.getIdTestCase());
 
         if (testCase == null) {
-            throw new TestScenarioNotFoundException();
+            throw new TestCaseNotFoundException();
         }
         if (testScenarioWithSameTitle != null) {
             throw new TestScenarioAlreadyExistsException();
@@ -50,9 +51,15 @@ public class TestScenarioServiceImpl implements TestScenarioService {
 
 
     @Override
-    public PaginationItems getItemsFromScenario(int idTestScenario, int size, int page) { //TODO
-        return null;
-    } //TODO !!!!!!
+    public PaginationItems getItemsFromScenario(int idTestScenario, int size, int page) {
+        int totalElements = testScenarioDao.getAllItemsAmount(idTestScenario);
+        PaginationItems paginationItems = new PaginationItems();
+        paginationItems.setTotalElements(totalElements);
+        if (size * (page - 1) < totalElements) {
+            paginationItems.setItemsFromTestScenario(testScenarioDao.getAllItems(idTestScenario, size, size * (page - 1)));
+        }
+        return paginationItems;
+    }
 
     @Override
     public PaginationTestScenario getAllTestScenariosFromTestCase(int idTestCase, int size, int page) {
@@ -72,12 +79,12 @@ public class TestScenarioServiceImpl implements TestScenarioService {
 
     @Override
     public PaginationTestScenario getAllTestScenarios(int size, int page) {
-        List<TestScenario> testScenarioList = testScenarioDao.getAllPaginated(page, size);
         int totalElements = testScenarioDao.getAmountAllElements();
         PaginationTestScenario paginationTestScenario = new PaginationTestScenario();
-        paginationTestScenario.setTestScenarios(testScenarioList);
         paginationTestScenario.setTotalElements(totalElements);
-
+        if (size * (page - 1) < totalElements) {
+            paginationTestScenario.setTestScenarios(testScenarioDao.getAllPaginated(size, size * (page - 1)));
+        }
         return paginationTestScenario;
     }
 
