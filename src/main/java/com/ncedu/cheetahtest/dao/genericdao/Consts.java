@@ -7,9 +7,12 @@ public class Consts {
     public static final  String WHERE_STATUS_ACTIVE = " WHERE status = 'ACTIVE' ";
     public static final  String ORDER_PAGINATED = " ORDER BY id LIMIT ? OFFSET ? ";
     public static final String SELECT_COUNT_ID = "SELECT count(id) ";
+    public static final String ILIKE = " ILIKE ? ";
+    public static final String LIMIT_1 = "LIMIT 1 ";
 
     private final String selectAllRowsFromTable;
     private final String tableName;
+    private String findBy;
 
     public Consts(String[] rows, String tableName) {
         selectAllRowsFromTable = formatArrayIntoString(rows);
@@ -20,6 +23,12 @@ public class Consts {
         StringBuilder select = new StringBuilder();
 
         for(int i = 0; i < rows.length; i++) {
+            if (rows[i].equalsIgnoreCase("title")) {
+                findBy = "title";
+            } else if (rows[i].equalsIgnoreCase("name")){
+                findBy = "name";
+            }
+
             select.append(rows[i]);
             if (i < rows.length - 1) {
                 select.append(", ");
@@ -69,20 +78,14 @@ public class Consts {
                 selectAllRowsFromTable, tableName);
     }
 
-    public String deactivate() {
-        return String.format(
-                "UPDATE %s " +
-                "SET status = 'INACTIVE'::status " +
-                " WHERE id = ?",
-                tableName);
-    }
-
     public String getActiveSearched() {
         return String.format(
                 SELECT_ROWS +
                 FROM_TABLE+
                 WHERE_STATUS_ACTIVE +
-                " AND title LIKE ? " +
+                " AND " +
+                findBy +
+                ILIKE +
                 ORDER_PAGINATED,
                 selectAllRowsFromTable, tableName);
     }
@@ -91,7 +94,9 @@ public class Consts {
         return String.format(
                 SELECT_ROWS +
                 FROM_TABLE +
-                " WHERE title LIKE ? " +
+                " WHERE " +
+                findBy +
+                ILIKE +
                 ORDER_PAGINATED,
                 selectAllRowsFromTable, tableName);
     }
@@ -101,7 +106,10 @@ public class Consts {
                 SELECT_COUNT_ID +
                 FROM_TABLE +
                 WHERE_STATUS_ACTIVE +
-                " AND title LIKE ? LIMIT 1",
+                " AND " +
+                findBy +
+                ILIKE +
+                LIMIT_1,
                 tableName);
     }
 
@@ -109,7 +117,10 @@ public class Consts {
         return String.format(
                 SELECT_COUNT_ID +
                 FROM_TABLE +
-                "WHERE title LIKE ? LIMIT 1",
+                "WHERE " +
+                findBy +
+                ILIKE +
+                LIMIT_1,
                 tableName);
     }
 }

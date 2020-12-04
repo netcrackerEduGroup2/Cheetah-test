@@ -19,4 +19,7 @@ public final class ProjectSqlConsts {
                                                                        "WHERE id = ?";
 
     public static final String SELECT_PROJECT_BY_ID_QUERY = SELECT_ALL_PROJECTS_QUERY + " WHERE id = ?";
+
+    public static final String UPDATE_PROJECT_QUERY = "UPDATE project SET (title, link) = (?, ?) " +
+            "WHERE id = ?";
 }

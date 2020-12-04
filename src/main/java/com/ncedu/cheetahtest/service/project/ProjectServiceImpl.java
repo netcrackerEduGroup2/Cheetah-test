@@ -1,22 +1,19 @@
 package com.ncedu.cheetahtest.service.project;
 
+import com.ncedu.cheetahtest.dao.genericdao.AbstractActiveDao;
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.project.ProjectDto;
 import com.ncedu.cheetahtest.entity.project.ResponseProjectPaginated;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectDao projectDao;
-
-    @Autowired
-    public ProjectServiceImpl(ProjectDao projectDao) {
-        this.projectDao = projectDao;
-    }
+    private final AbstractActiveDao<Project> projectGenDao;
 
     @Override
     public void createNewProject(ProjectDto newProjectDto) {
@@ -25,8 +22,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResponseProjectPaginated getAllProjects(int page, int size) {
-        int totalElements = projectDao.getAmountAllElements();
-        List<Project> projects = projectDao.getAllPaginated(page, size);
+        int totalElements = projectGenDao.getAmountAllElements();
+        List<Project> projects = projectGenDao.getAllPaginated(page, size);
 
         return new ResponseProjectPaginated(projects, totalElements);
     }
@@ -48,9 +45,30 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResponseProjectPaginated getProjectsPaginatedByTitle(int page, int size, String title) {
-        int totalElements = projectDao.getSearchedAllTotalElements(title);
-        List<Project> projects = projectDao.findAllByTitlePaginated(page, size, title);
+        int totalElements = projectGenDao.getSearchedAllTotalElements(title);
+        List<Project> projects = projectGenDao.findAllByTitlePaginated(page, size, title);
 
         return new ResponseProjectPaginated(projects, totalElements);
+    }
+
+    @Override
+    public ResponseProjectPaginated getActiveProjects(int page, int size) {
+        int totalElements = projectGenDao.getAmountActiveElements();
+        List<Project> projects = projectGenDao.getActivePaginated(page, size);
+
+        return new ResponseProjectPaginated(projects, totalElements);
+    }
+
+    @Override
+    public ResponseProjectPaginated getActiveProjectsByTitle(int page, int size, String title) {
+        int totalElements = projectGenDao.getSearchedActiveTotalElements(title);
+        List<Project> projects = projectGenDao.findActiveByTitlePaginated(page, size, title);
+
+        return new ResponseProjectPaginated(projects, totalElements);
+    }
+
+    @Override
+    public void updateProjectById(int id, Project project) {
+        projectDao.updateProjectById(id, project);
     }
 }
