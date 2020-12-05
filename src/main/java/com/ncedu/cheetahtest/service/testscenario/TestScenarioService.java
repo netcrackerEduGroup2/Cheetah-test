@@ -16,4 +16,6 @@ public interface TestScenarioService {
     TestScenario editTestScenario(TestScenario testScenario, int id);
 
     void deactivateTestScenario(int id);
+
+    TestScenario findById(int id);
 }

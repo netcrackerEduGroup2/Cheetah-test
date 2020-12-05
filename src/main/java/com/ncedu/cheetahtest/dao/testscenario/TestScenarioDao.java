@@ -6,7 +6,6 @@ import com.ncedu.cheetahtest.entity.testscenario.TestScenario;
 import java.util.List;
 
 public interface TestScenarioDao {
-    TestScenario findById(int id);
 
     List<TestScenario> findByTitleLike(String title, int idTestCase, int limit, int offset);
 
@@ -23,10 +22,6 @@ public interface TestScenarioDao {
     int getTestScenariosFromTestCaseAmount(int idTestCase);
 
     TestScenario findByTitle(String title);
-
-    List<TestScenario> getAllPaginated(int limit, int offset);
-
-    int getAmountAllElements();
 
     void deactivate(int id);
 

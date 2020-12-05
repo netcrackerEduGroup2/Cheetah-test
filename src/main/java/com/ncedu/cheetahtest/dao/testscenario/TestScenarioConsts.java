@@ -16,9 +16,6 @@ public class TestScenarioConsts {
     public static final String FIND_BY_TITLE = "SELECT id,title,description,status,test_case_id FROM test_scenario " +
             "WHERE title = ?";
 
-    public static final String FIND_BY_ID = "SELECT id,title,description,status,test_case_id FROM test_scenario " +
-            "WHERE id = ?";
-
     public static final String FIND_BY_TITLE_LIKE = "SELECT id,title,description,status,test_case_id " +
             "FROM test_scenario WHERE title LIKE CONCAT('%',?,'%') AND test_case_id=? " +
             "ORDER BY title limit ? offset ?";
@@ -31,10 +28,6 @@ public class TestScenarioConsts {
 
     public static final String GET_SCENARIOS_FROM_TEST_CASE_AMOUNT = "SELECT count(*) FROM test_scenario " +
             "WHERE test_case_id = ? ";
-
-    public static final String GET_ALL_TEST_SCENARIOS_AMOUNT = "SELECT count(*) FROM test_scenario";
-
-    public static final String GET_ALL_TEST_SCENARIOS = "SELECT id,title,description,status,test_case_id FROM test_scenario LIMIT ? OFFSET ?";
 
     public static final String FIND_TEST_SCENARIO_BY_TITLE_EXCEPT_CURRENT =
             "SELECT id,title,description,status,test_case_id FROM test_scenario " +

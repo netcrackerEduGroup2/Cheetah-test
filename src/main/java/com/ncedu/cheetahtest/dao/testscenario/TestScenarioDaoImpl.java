@@ -15,23 +15,11 @@ import static com.ncedu.cheetahtest.dao.testscenario.TestScenarioConsts.*;
 @Repository
 public class TestScenarioDaoImpl extends AbstractDaoImpl<TestScenario> implements TestScenarioDao {
 
-    private static final String[] rows = {"id", "title", "description", "project_id", "status"};
+    private static final String[] rows = {"id", "title", "description", "status", "test_case_id"};
 
     @Autowired
     public TestScenarioDaoImpl(JdbcTemplate jdbcTemplate) {
         super(new TestScenarioMapper(), jdbcTemplate, rows, "test_scenario");
-    }
-
-    @Override
-    public TestScenario findById(int id) {
-        List<TestScenario> testScenarios = jdbcTemplate.query(
-                FIND_BY_ID,
-                preparedStatement -> preparedStatement.setInt(1, id),
-                new TestScenarioMapper()
-        );
-        if (testScenarios.size() == 1) {
-            return testScenarios.get(0);
-        } else return null;
     }
 
     @Override
@@ -125,27 +113,6 @@ public class TestScenarioDaoImpl extends AbstractDaoImpl<TestScenario> implement
         if (testScenarios.size() == 1) {
             return testScenarios.get(0);
         } else return null;
-    }
-
-    @Override
-    public List<TestScenario> getAllPaginated(int limit, int offset) {
-        return jdbcTemplate.query(
-                GET_ALL_TEST_SCENARIOS,
-                preparedStatement -> {
-                    preparedStatement.setInt(1, limit);
-                    preparedStatement.setInt(2, offset);
-                },
-                new TestScenarioMapper()
-        );
-    }
-
-    @Override
-    public int getAmountAllElements() {
-        List<Integer> count = jdbcTemplate.query(
-                GET_ALL_TEST_SCENARIOS_AMOUNT,
-                new CountTestScenarioRowMapper());
-        if (count.size() == 1) return count.get(0);
-        else return 0;
     }
 
     @Override
