@@ -2,6 +2,7 @@ package com.ncedu.cheetahtest.service.mail;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,10 +12,12 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Objects;
 
 @Service
 @Slf4j
+
 public class EmailServiceImpl implements EmailService{
 
     public static final String NET_CRACKER_USERNAME = "spring.mail.username";
@@ -22,7 +25,8 @@ public class EmailServiceImpl implements EmailService{
     private final JavaMailSender emailSender;
     private final HtmlMail htmlMail;
     private final Environment environment;
-
+    @Value("${frontend.ulr}")
+    private String FRONT_URL;
     @Autowired
     public EmailServiceImpl(JavaMailSender emailSender, HtmlMail htmlMail, Environment environment) {
         this.emailSender = emailSender;
@@ -65,6 +69,16 @@ public class EmailServiceImpl implements EmailService{
             log.error(String.format("Couldn't send message: %s", e.getMessage()));
         } catch (FileNotFoundException e) {
             log.error(String.format("Couldn't find html file by given path: %s", e.getMessage()));
+        }
+    }
+
+    @Override
+    public void sendTestCaseReportToAddresses(List<String> emails, int idTestCase) {
+        String url = FRONT_URL+"/test-scenario/"+idTestCase+"/info";
+        String message = "Hi, testcase "+idTestCase+" was completed. \nTo see details, please follow the link:\n"+url;
+        System.out.println(message);
+        for ( String email: emails){
+            sendSimpleMessage(email,message,"TestCaseInfo");
         }
     }
 }
