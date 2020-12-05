@@ -58,7 +58,7 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
     private List<ActScenario> makeActionScenarioListOfScenario(List<Scenario> actionsAndCompounds) {
         List<ActScenario> actScenarios = new ArrayList<>(actionsAndCompounds.size());
 
-        for (Scenario scenario : actionsAndCompounds) {
+        actionsAndCompounds.forEach(scenario -> {
             if (scenario instanceof ActScenario) {
                 actScenarios.add((ActScenario) scenario);
             } else {
@@ -67,7 +67,7 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
                                 ((CompScenario) scenario).getId()
                         ));
             }
-        }
+        });
 
         return actScenarios;
     }

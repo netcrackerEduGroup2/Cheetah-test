@@ -22,6 +22,11 @@ public class TestCaseController {
         return testCaseService.getTestCases(page, size);
     }
 
+    @GetMapping("/test-cases/{id}")
+    public TestCase getATestCaseById(@PathVariable int id) {
+        return testCaseService.getATestCaseById(id);
+    }
+
     @GetMapping("/test-cases/search/findByTitle")
     public TestCasePaginated findTestCasesByTitlePaginated(
             @RequestParam int page,

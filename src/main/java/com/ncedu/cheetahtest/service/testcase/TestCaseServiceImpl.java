@@ -118,5 +118,10 @@ public class TestCaseServiceImpl implements TestCaseService {
         return testCaseDao.createTestCase(testCase);
     }
 
+    @Override
+    public TestCase getATestCaseById(int id) {
+        return testCaseGenDao.findById(id);
+    }
+
 }
 
