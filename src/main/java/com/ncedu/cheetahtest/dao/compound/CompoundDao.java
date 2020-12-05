@@ -16,4 +16,6 @@ public interface CompoundDao {
     void removeCompoundById(int id);
 
     int getTotalCompByTitle( String title);
+
+    Integer getCompoundIdByActionId(int id);
 }

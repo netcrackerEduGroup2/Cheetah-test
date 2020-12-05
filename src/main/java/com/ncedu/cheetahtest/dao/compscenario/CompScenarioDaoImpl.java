@@ -185,4 +185,15 @@ public class CompScenarioDaoImpl implements CompScenarioDao {
 
     }
 
+    @Override
+    public List<CompScenario> getAllByTestCaseId(int testCaseId) {
+        return jdbcTemplate.query(
+                GET_COMP_SCENARIO_BY_TEST_CASE_ID,
+                preparedStatement -> {
+                    preparedStatement.setInt(1, testCaseId);
+                },
+                new CompScenarioRowMapper()
+        );
+    }
+
 }

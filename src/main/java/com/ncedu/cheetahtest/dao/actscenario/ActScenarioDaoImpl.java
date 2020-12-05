@@ -167,6 +167,15 @@ public class ActScenarioDaoImpl implements ActScenarioDao {
     }
 
     @Override
+    public List<ActScenario> getAllByTestCaseId(int testCaseId) {
+        return jdbcTemplate.query(
+                GET_ALL_BY_TEST_CASE_ID,
+                preparedStatement -> preparedStatement.setInt(1, testCaseId),
+                new ActScenarioRowMapper()
+        );
+    }
+
+    @Override
     public ActScenario findBySignature(ActScenario actScenario) {
         List<ActScenario> actScenarios = jdbcTemplate.query(
                 FIND_BY_SIGNATURE,

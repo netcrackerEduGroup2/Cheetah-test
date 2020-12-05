@@ -3,6 +3,7 @@ package com.ncedu.cheetahtest.controller.testcase;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
 import com.ncedu.cheetahtest.service.testcase.TestCaseService;
+import com.ncedu.cheetahtest.service.testcase.run.TestCaseLauncher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -70,4 +71,9 @@ public class TestCaseController {
         return testCase;
     }
 
+    private final TestCaseLauncher testCaseLauncher;
+    @GetMapping("/getActScenariosById/{testCaseId}")
+    public void findAllTestCasesByTitlePaginated(@PathVariable int testCaseId) {
+        testCaseLauncher.formActionForSelenium(testCaseId);
+    }
 }

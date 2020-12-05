@@ -104,4 +104,17 @@ public class CompoundDaoImpl implements CompoundDao {
             return 0;
         }
     }
+
+    @Override
+    public Integer getCompoundIdByActionId(int id) {
+        List<Compound> count = jdbcTemplate.query(
+                GET_COMP_ID_BY_ACTION_ID,
+                preparedStatement -> preparedStatement.setInt(1, id),
+                new CompoundRowMapper()
+        );
+        if (count.size() == 1) {
+            return count.get(0).getId();
+        }
+        return null;
+    }
 }

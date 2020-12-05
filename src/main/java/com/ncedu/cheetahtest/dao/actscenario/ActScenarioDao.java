@@ -22,4 +22,5 @@ public interface ActScenarioDao {
     void deleteAllByIdTestScenario(int idTestScenario);
     void deleteAllByIdCompScenario(int idCompScenario);
 
+    List<ActScenario> getAllByTestCaseId(int testCaseId);
 }

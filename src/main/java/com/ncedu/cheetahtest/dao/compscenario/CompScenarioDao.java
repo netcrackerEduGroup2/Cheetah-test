@@ -21,4 +21,6 @@ public interface CompScenarioDao {
     CompScenario findById(int id);
     CompScenario findBySignature(CompScenario compScenario);
     void deleteAllByIdTestScenario(int idTestScenario);
+
+    List<CompScenario> getAllByTestCaseId(int testCaseId);
 }
