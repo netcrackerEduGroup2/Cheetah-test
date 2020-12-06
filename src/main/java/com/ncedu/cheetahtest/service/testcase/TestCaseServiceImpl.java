@@ -118,5 +118,13 @@ public class TestCaseServiceImpl implements TestCaseService {
         return testCaseDao.createTestCase(testCase);
     }
 
+    @Override
+    public TestCasePaginated getActiveTestCasesPaginatedByProjectId(int page, int size, int projectId) {
+        List<TestCase> testCaseList = testCaseDao.getActiveTestCasesPaginatedByProjectId(page, size, projectId);
+        int totalElements = testCaseDao.getAmountActiveElementsByProjectId(projectId);
+
+        return new TestCasePaginated(testCaseList, totalElements);
+    }
+
 }
 

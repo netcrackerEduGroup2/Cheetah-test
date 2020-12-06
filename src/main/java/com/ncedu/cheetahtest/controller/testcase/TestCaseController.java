@@ -21,6 +21,14 @@ public class TestCaseController {
         return testCaseService.getTestCases(page, size);
     }
 
+    @GetMapping("/test-cases/{projectId}")
+    public TestCasePaginated getActiveTestCasesPaginatedByProjectId(
+            @RequestParam int page,
+            @RequestParam int size,
+            @PathVariable int projectId) {
+        return testCaseService.getActiveTestCasesPaginatedByProjectId(page, size, projectId);
+    }
+
     @GetMapping("/test-cases/search/findByTitle")
     public TestCasePaginated findTestCasesByTitlePaginated(
             @RequestParam int page,

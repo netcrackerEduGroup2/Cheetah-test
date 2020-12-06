@@ -20,4 +20,6 @@ public interface TestCaseService {
     TestCasePaginated findAllTestCasesByTitlePaginated(int page, int size, String title);
 
     int createTestCase(TestCase testCase);
+
+    TestCasePaginated getActiveTestCasesPaginatedByProjectId(int page, int size, int projectId);
 }

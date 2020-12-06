@@ -2,6 +2,8 @@ package com.ncedu.cheetahtest.dao.testcase;
 
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 
+import java.util.List;
+
 public interface TestCaseDao {
 
     void save(TestCase testCase);
@@ -12,4 +14,7 @@ public interface TestCaseDao {
 
     void deactivate(int id);
 
+    List<TestCase> getActiveTestCasesPaginatedByProjectId(int page, int size, int projectId);
+
+    int getAmountActiveElementsByProjectId(int projectId);
 }
