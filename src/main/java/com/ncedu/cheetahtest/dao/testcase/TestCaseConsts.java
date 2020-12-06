@@ -38,13 +38,28 @@ public class TestCaseConsts {
     public static final String GET_TEST_CASE_PAGINATED_BY_PROJECT_ID =
             SELECT_ALL_PARAMS_FROM_TEST_CASE +
             "WHERE project_id = ? " +
-            "AND status = 'ACTIVE'" +
+            "AND status = 'ACTIVE' " +
             "ORDER BY id LIMIT ? OFFSET ?";
 
     public static final String GET_AMOUNT_OF_ACTIVE_TEST_CASES_BY_PROJECT_ID =
             "SELECT COUNT(id) " +
             "FROM test_case " +
-            "WHERE status = 'ACTIVE'" +
+            "WHERE status = 'ACTIVE' " +
+            "AND project_id = ?" +
+            "LIMIT 1";
+
+    public static final String FIND_BY_TITLE_TEST_CASE_PAGINATED_BY_PROJECT_ID =
+            SELECT_ALL_PARAMS_FROM_TEST_CASE +
+            "WHERE project_id = ? " +
+            "AND status = 'ACTIVE' " +
+            "AND title ILIKE ? " +
+            "ORDER BY id LIMIT ? OFFSET ?";
+
+    public static final String GET_AMOUNT_OF_ACTIVE_TEST_CASES_BY_PROJECT_ID_AND_ILIKE =
+            "SELECT COUNT(id) " +
+            "FROM test_case " +
+            "WHERE status = 'ACTIVE' " +
+            "AND title ILIKE ? " +
             "AND project_id = ?" +
             "LIMIT 1";
 }

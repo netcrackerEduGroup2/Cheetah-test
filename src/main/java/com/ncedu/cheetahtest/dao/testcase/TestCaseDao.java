@@ -17,4 +17,8 @@ public interface TestCaseDao {
     List<TestCase> getActiveTestCasesPaginatedByProjectId(int page, int size, int projectId);
 
     int getAmountActiveElementsByProjectId(int projectId);
+
+    List<TestCase> findTestCasesByTitlePaginatedAndByProjectId(int page, int size, String keyword, int projectId);
+
+    int getAmountByTitlePaginatedAndByProjectId(String keyword, int projectId);
 }

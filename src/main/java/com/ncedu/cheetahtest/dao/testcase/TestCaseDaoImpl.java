@@ -101,8 +101,40 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
     public int getAmountActiveElementsByProjectId(int projectId) {
         List<Integer> amount = jdbcTemplate.query(
                 GET_AMOUNT_OF_ACTIVE_TEST_CASES_BY_PROJECT_ID,
+                preparedStatement -> preparedStatement.setInt(1, projectId),
+                (resultSet, i) -> resultSet.getInt(1)
+        );
+
+        if (amount.size() == 1) {
+            return amount.get(0);
+        }
+
+        return 0;
+    }
+
+    @Override
+    public List<TestCase> findTestCasesByTitlePaginatedAndByProjectId(int page, int size, String keyword, int projectId) {
+        int offset = getOffset(page, size);
+
+        return jdbcTemplate.query(
+                FIND_BY_TITLE_TEST_CASE_PAGINATED_BY_PROJECT_ID,
                 preparedStatement -> {
                     preparedStatement.setInt(1, projectId);
+                    preparedStatement.setString(2, "%" + keyword + "%");
+                    preparedStatement.setInt(3, size);
+                    preparedStatement.setInt(4, offset);
+                },
+                rowMapper
+        );
+    }
+
+    @Override
+    public int getAmountByTitlePaginatedAndByProjectId(String keyword, int projectId) {
+        List<Integer> amount = jdbcTemplate.query(
+                GET_AMOUNT_OF_ACTIVE_TEST_CASES_BY_PROJECT_ID_AND_ILIKE,
+                preparedStatement -> {
+                    preparedStatement.setString(1, "%" + keyword + "%");
+                    preparedStatement.setInt(2, projectId);
                 },
                 (resultSet, i) -> resultSet.getInt(1)
         );

@@ -37,6 +37,16 @@ public class TestCaseController {
         return testCaseService.findTestCasesByTitlePaginated(page, size, keyword);
     }
 
+    @GetMapping("/test-cases/search/findByTitle/{projectId}")
+    public TestCasePaginated findTestCasesByTitlePaginatedAndByProjectId(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String keyword,
+            @PathVariable int projectId) {
+        return testCaseService.findTestCasesByTitlePaginatedAndByProjectId(page, size, keyword, projectId);
+    }
+
+
     // Active and Inactive test cases
     @GetMapping("/all-test-cases")
     public TestCasePaginated getAllTestCases(@RequestParam int page,

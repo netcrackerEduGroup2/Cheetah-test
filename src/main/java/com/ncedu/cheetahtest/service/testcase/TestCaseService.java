@@ -22,4 +22,6 @@ public interface TestCaseService {
     int createTestCase(TestCase testCase);
 
     TestCasePaginated getActiveTestCasesPaginatedByProjectId(int page, int size, int projectId);
+
+    TestCasePaginated findTestCasesByTitlePaginatedAndByProjectId(int page, int size, String keyword, int projectId);
 }
