@@ -20,7 +20,8 @@ public class HistoryActionDaoImpl implements HistoryActionDao {
 
 
     @Override
-    public void addAction(String result, String screenshotURL, int generalOrder, int idHistoryTestCase) {
+    public void addAction(String result, String screenshotURL, int generalOrder,
+                          int idHistoryTestCase, int compoundId) {
         jdbcTemplate.update(
                 ADD_HISTORY_ACTION,
                 preparedStatement -> {
@@ -28,6 +29,7 @@ public class HistoryActionDaoImpl implements HistoryActionDao {
                     preparedStatement.setString(2, screenshotURL);
                     preparedStatement.setInt(3, generalOrder);
                     preparedStatement.setInt(4, idHistoryTestCase);
+                    preparedStatement.setInt(5, compoundId);
                 });
     }
 }

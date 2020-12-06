@@ -139,6 +139,7 @@ CREATE TABLE history_test_case
 CREATE TABLE action_result
 (
   id              serial PRIMARY KEY  NOT NULL,
+  compound_id     integer             NOT NULL,
   result          varchar(100)        NOT NULL,
   screenshot_url  varchar(100)        NOT NULL,
   general_order    integer             NOT NULL,
