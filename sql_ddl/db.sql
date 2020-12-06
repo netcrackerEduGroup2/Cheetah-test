@@ -127,3 +127,32 @@ CREATE TABLE comp_scenario
     priority         integer            NOT NULL,
     comp_status      compound_status    NOT NULL
 );
+
+CREATE TABLE history_test_case
+(
+    id              serial PRIMARY KEY  NOT NULL,
+    result          test_case_result    NOT NULL,
+    date_completed  timestamp           NOT NULL,
+    id_test_case    integer             NOT NULL REFERENCES test_case(id)
+);
+
+CREATE TABLE action_result
+(
+  id              serial PRIMARY KEY  NOT NULL,
+  result          varchar(100)        NOT NULL,
+  screenshot_url  varchar(100)        NOT NULL,
+  general_order    integer             NOT NULL,
+  id_history_test_case    integer     NOT NULL REFERENCES history_test_case(id)
+);
+
+CREATE TABLE compound_result
+(
+  id              serial PRIMARY KEY  NOT NULL,
+  action_type     varchar(100)        NOT NULL,
+  element         varchar(100)        NOT NULL,
+  argument        varchar(100)        NOT NULL,
+  general_order  integer             NOT NULL,
+  id_history_test_case    integer     NOT NULL REFERENCES history_test_case(id)
+);
+
+
