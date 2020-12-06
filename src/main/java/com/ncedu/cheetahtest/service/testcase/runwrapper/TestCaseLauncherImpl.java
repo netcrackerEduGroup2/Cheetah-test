@@ -1,15 +1,16 @@
-package com.ncedu.cheetahtest.service.testcase.run;
+package com.ncedu.cheetahtest.service.testcase.runwrapper;
 
 import com.ncedu.cheetahtest.dao.actscenario.ActScenarioDao;
 import com.ncedu.cheetahtest.dao.compound.CompoundDao;
 import com.ncedu.cheetahtest.dao.compscenario.CompScenarioDao;
-import com.ncedu.cheetahtest.entity.action.ActionResult;
-import com.ncedu.cheetahtest.entity.action.ActionStatus;
-import com.ncedu.cheetahtest.entity.action.SeleniumAction;
 import com.ncedu.cheetahtest.entity.actscenario.ActScenario;
 import com.ncedu.cheetahtest.entity.compscenario.CompScenario;
 import com.ncedu.cheetahtest.entity.scenario.Scenario;
+import com.ncedu.cheetahtest.entity.selenium.ActionResult;
+import com.ncedu.cheetahtest.entity.selenium.ActionResultStatus;
+import com.ncedu.cheetahtest.entity.selenium.SeleniumAction;
 import com.ncedu.cheetahtest.service.compscenario.CompScenarioService;
+import com.ncedu.cheetahtest.service.selenium.TestCaseExecutor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,13 +27,13 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
     private final CompoundDao compoundDao;
     private final CompScenarioDao compScenarioDao;
     private final CompScenarioService compScenarioService;
+    private final TestCaseExecutor testCaseExecutor;
 
     @Override
     @Transactional
     public void formActionForSelenium(int testCaseId) {
         List<ActScenario> actScenarios = actScenarioDao.getAllByTestCaseId(testCaseId);
         List<CompScenario> compScenarios = compScenarioDao.getAllByTestCaseId(testCaseId);
-
 
         System.out.println("---------------ACT SCENARIO--------------");
         actScenarios.forEach(actScenario -> System.out.println(actScenario + "\n"));
@@ -72,6 +73,7 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
         return actScenarios;
     }
 
+    @Transactional
     public List<SeleniumAction> mapActScenarioToSeleniumAction(
             List<ActScenario> actScenarios) {
 
@@ -92,13 +94,19 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
     private List<ActionResult> processActions(List<SeleniumAction> actionList) {
         List<ActionResult> actionResults = new ArrayList<>();
 
-        actionList.forEach((seleniumAction -> actionResults.add(new ActionResult(
-                seleniumAction,
-                ActionStatus.SUCCESSFUL,
-                "RESULT DESCRIPTION",
-                "URL"
-        ))));
+        for (SeleniumAction seleniumAction : actionList) {
+            ActionResult theActionResult = testCaseExecutor.executeAction(seleniumAction);
+            actionResults.add(theActionResult);
 
+            // TODO add actionResult to db
+
+            if (theActionResult.getStatus().equals(ActionResultStatus.FAIL)) {
+                testCaseExecutor.close();
+                break;
+            }
+        }
+
+        testCaseExecutor.close();
         return actionResults;
     }
 }
