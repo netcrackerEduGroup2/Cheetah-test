@@ -1,10 +1,9 @@
-package com.ncedu.cheetahtest.service.testcaseexecution;
+package com.ncedu.cheetahtest.service.selenium;
 
 import com.ncedu.cheetahtest.entity.selenium.ActionResult;
 import com.ncedu.cheetahtest.entity.selenium.SeleniumAction;
 
-import java.util.List;
-
 public interface TestCaseExecutor {
-    List<ActionResult> execute(List<SeleniumAction> actions);
+    ActionResult executeAction(SeleniumAction action);
+    void close();
 }
