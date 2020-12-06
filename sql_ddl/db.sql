@@ -145,14 +145,5 @@ CREATE TABLE action_result
   id_history_test_case    integer     NOT NULL REFERENCES history_test_case(id)
 );
 
-CREATE TABLE compound_result
-(
-  id              serial PRIMARY KEY  NOT NULL,
-  action_type     varchar(100)        NOT NULL,
-  element         varchar(100)        NOT NULL,
-  argument        varchar(100)        NOT NULL,
-  general_order  integer             NOT NULL,
-  id_history_test_case    integer     NOT NULL REFERENCES history_test_case(id)
-);
 
 
