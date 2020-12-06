@@ -1,4 +1,4 @@
-package com.ncedu.cheetahtest.service.testcaseexecution;
+package com.ncedu.cheetahtest.service.selenium;
 
 import com.ncedu.cheetahtest.entity.selenium.ActionResult;
 import com.ncedu.cheetahtest.entity.selenium.SeleniumAction;
