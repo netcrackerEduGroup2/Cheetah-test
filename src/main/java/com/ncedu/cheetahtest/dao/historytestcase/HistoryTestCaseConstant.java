@@ -5,4 +5,9 @@ public class HistoryTestCaseConstant {
             "INSERT INTO history_test_case " +
                     " (result, date_completed, id_test_case) " +
                     "  VALUES (?, ?, ?);";
+
+    public static final String HISTORY_TEST_CASE_PAGINATION =
+            "SELECT id, result, date_completed, id_test_case " +
+            "   FROM history_test_case " +
+            "   LIMIT ? OFFSET ?;";
 }
