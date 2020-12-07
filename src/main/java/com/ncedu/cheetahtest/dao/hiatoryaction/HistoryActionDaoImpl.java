@@ -25,9 +25,9 @@ public class HistoryActionDaoImpl implements HistoryActionDao {
 
     @Override
     public void addAction(String result, String screenshotURL, int generalOrder,
-                          int idHistoryTestCase, int compoundId) {
+                          int idHistoryTestCase, int compoundId, int idAction, String element, String argument) {
         jdbcTemplate.update(ADD_HISTORY_ACTION, result, screenshotURL,
-                generalOrder, idHistoryTestCase, compoundId);
+                generalOrder, idHistoryTestCase, compoundId, element, argument, idAction);
 
     }
 

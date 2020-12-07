@@ -36,11 +36,17 @@ public class HistoryTestCaseDaoImpl implements HistoryTestCaseDao {
 
     @Override
     public List<HistoryTestCase> getPage(int size, int page) {
-        return jdbcTemplate.query(HISTORY_TEST_CASE_PAGINATION,
+        return jdbcTemplate.query(HISTORY_TEST_CASE_FAILED_COMPLETED_PAGINATION,
                 preparedStatement -> {
                     preparedStatement.setInt(1, size);
                     preparedStatement.setInt(2, (page - 1) * size);
                 },
                 new HistoryTestCaseMapper());
+    }
+
+    @Override
+    public Integer getCountTestCaseFailedCompleted(){
+        return jdbcTemplate.queryForObject(COUNT_TEST_CASE_FAILED_COMPLETED,
+                Integer.class);
     }
 }

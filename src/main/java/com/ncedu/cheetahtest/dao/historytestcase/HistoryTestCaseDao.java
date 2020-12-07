@@ -10,5 +10,7 @@ public interface HistoryTestCaseDao {
 
     void editTestCaseResultById(int testCaseId, String result);
 
+    Integer getCountTestCaseFailedCompleted();
+
     List<HistoryTestCase> getPage(int size, int page);
 }

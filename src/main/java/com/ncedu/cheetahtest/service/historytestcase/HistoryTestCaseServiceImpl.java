@@ -21,7 +21,7 @@ public class HistoryTestCaseServiceImpl implements HistoryTestCaseService {
     @Override
     public HistoryTestCasePagination getPage(int size, int page){
         List<HistoryTestCase> historyTestCases = historyTestCaseDao.getPage(size, page);
-        int total = 5;
+        int total = historyTestCaseDao.getCountTestCaseFailedCompleted();
         List<HistoryTestCaseDto> historyTestCaseDtos = new ArrayList<>();
 
         for (HistoryTestCase testCase : historyTestCases) {

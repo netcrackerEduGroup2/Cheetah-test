@@ -144,6 +144,9 @@ CREATE TABLE action_result
   screenshot_url  varchar(100)        NOT NULL,
   general_order    integer             NOT NULL,
   id_history_test_case    integer     NOT NULL REFERENCES history_test_case(id)
+  element          varchar(100)        NOT NULL,
+  argument         varchar(100)        NOT NULL,
+  id_action       integer      UNIQUE NOT NULL REFERENCES action (id)
 );
 
 
