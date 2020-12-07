@@ -1,7 +1,7 @@
 package com.ncedu.cheetahtest.dao.user;
 
-import com.ncedu.cheetahtest.entity.user.ResetToken;
 import com.ncedu.cheetahtest.entity.user.User;
+import com.ncedu.cheetahtest.entity.user.ResetToken;
 import com.ncedu.cheetahtest.entity.user.UserDto;
 
 import java.util.Date;
@@ -26,6 +26,14 @@ public interface UserDao {
     User changeUserStatus(long id, String status);
 
     User findUserById(long id);
+
+    List<User> getAllActiveUser();
+
+    List<User> getSearchUserByNameEmailRole(String name, String email,
+                                            String role, int size, int page);
+
+    Integer getCountSearchUserByNameEmailRole(String name, String email,
+                                              String role);
 
     List<UserDto> findByEmail(String title);
 }
