@@ -3,12 +3,15 @@ package com.ncedu.cheetahtest.service.testcase.runwrapper;
 import com.ncedu.cheetahtest.dao.actscenario.ActScenarioDao;
 import com.ncedu.cheetahtest.dao.compound.CompoundDao;
 import com.ncedu.cheetahtest.dao.compscenario.CompScenarioDao;
+import com.ncedu.cheetahtest.dao.hiatoryaction.HistoryActionDao;
+import com.ncedu.cheetahtest.dao.historytestcase.HistoryTestCaseDao;
 import com.ncedu.cheetahtest.entity.actscenario.ActScenario;
 import com.ncedu.cheetahtest.entity.compscenario.CompScenario;
 import com.ncedu.cheetahtest.entity.scenario.Scenario;
 import com.ncedu.cheetahtest.entity.selenium.ActionResult;
 import com.ncedu.cheetahtest.entity.selenium.ActionResultStatus;
 import com.ncedu.cheetahtest.entity.selenium.SeleniumAction;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 import com.ncedu.cheetahtest.service.compscenario.CompScenarioService;
 import com.ncedu.cheetahtest.service.selenium.TestCaseExecutor;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,6 +32,8 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
     private final CompScenarioDao compScenarioDao;
     private final CompScenarioService compScenarioService;
     private final TestCaseExecutor testCaseExecutor;
+    private final HistoryActionDao historyActionDao;
+    private final HistoryTestCaseDao historyTestCaseDao;
 
     @Override
     @Transactional
@@ -52,7 +58,7 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
         List<ActScenario> actScenariosOfActAndComps = makeActionScenarioListOfScenario(actionsAndCompounds);
 
         List<SeleniumAction> seleniumActions = mapActScenarioToSeleniumAction(actScenariosOfActAndComps);
-        List<ActionResult> actionResults = processActions(seleniumActions);
+        List<ActionResult> actionResults = processActions(seleniumActions, testCaseId);
         actionResults.forEach(actionResult -> System.out.println(actionResult + "\n"));
     }
 
@@ -91,14 +97,30 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
         return seleniumActions;
     }
 
-    private List<ActionResult> processActions(List<SeleniumAction> actionList) {
+    @Override
+    @Transactional
+    public List<ActionResult> processActions(List<SeleniumAction> actionList, int testCaseId) {
         List<ActionResult> actionResults = new ArrayList<>();
 
-        for (SeleniumAction seleniumAction : actionList) {
-            ActionResult theActionResult = testCaseExecutor.executeAction(seleniumAction);
+        int testCaseHistoryId = historyTestCaseDao.addTestCase(
+                TestCaseResult.CREATED.toString(),
+                new Date(),
+                testCaseId
+        );
+
+        for (int i = 0; i < actionList.size(); i++) {
+            SeleniumAction theAction = actionList.get(i);
+
+            ActionResult theActionResult = testCaseExecutor.executeAction(theAction);
             actionResults.add(theActionResult);
 
-            // TODO add actionResult to db
+            historyActionDao.addAction(
+                    theActionResult.getResultDescription(),
+                    theActionResult.getScreenshotUrl(),
+                    i + 1,
+                    testCaseHistoryId,
+                    theActionResult.getAction().getCompoundId());
+
 
             if (theActionResult.getStatus().equals(ActionResultStatus.FAIL)) {
                 testCaseExecutor.close();

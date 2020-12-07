@@ -18,7 +18,6 @@ public class HistoryActionDaoImpl implements HistoryActionDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-
     @Override
     public void addAction(String result, String screenshotURL, int generalOrder,
                           int idHistoryTestCase, int compoundId) {
