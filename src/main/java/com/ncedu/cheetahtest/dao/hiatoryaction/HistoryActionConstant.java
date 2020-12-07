@@ -10,4 +10,12 @@ public class HistoryActionConstant {
                     " FROM action_result " +
                     " WHERE id_history_test_case = ? " +
                     " ORDER BY general_order;";
+
+    public static final String GET_RUN_ACRIONS_BY_ID_TEST_CASE_HISTORY =
+            "SELECT ar.id AS ar_id, ar.compound_id AS ar_compound_id, ar.result AS ar_result, " +
+            "   ar.screenshot_url AS ar_screenshot_url, a.type AS a_type," +
+            "   ar.action_element AS ar_action_element, ar.argument AS ar_argument" +
+            "FROM action_result ar INNER JOIN action a ON ar.id_action = a.id" +
+            "WHERE ar.id_history_test_case=?;";
+
 }

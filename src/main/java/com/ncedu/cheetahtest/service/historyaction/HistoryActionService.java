@@ -4,7 +4,7 @@ import com.ncedu.cheetahtest.entity.historyacrion.HistoryAction;
 
 import java.util.List;
 
-public interface HistoryActionService {
+public interface HistoryActionService<T> {
 
-    List<HistoryAction> getActionByIdTestCaseHistory(int idTestCaseHistory);
+    List<T> getActionByIdTestCaseHistory(int idTestCaseHistory);
 }

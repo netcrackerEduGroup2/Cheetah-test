@@ -11,7 +11,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class HistoryActionServiceImpl implements HistoryActionService{
+public class HistoryActionServiceImpl implements HistoryActionService<HistoryAction> {
 
     private final HistoryActionDao historyActionDao;
 
