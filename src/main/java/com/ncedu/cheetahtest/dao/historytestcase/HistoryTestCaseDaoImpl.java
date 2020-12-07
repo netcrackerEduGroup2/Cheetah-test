@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -13,11 +15,14 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Objects;
 
-import static com.ncedu.cheetahtest.dao.historytestcase.HistoryTestCaseConstant.ADD_HISTORY_TEST_CASE;
-import static com.ncedu.cheetahtest.dao.historytestcase.HistoryTestCaseConstant.HISTORY_TEST_CASE_PAGINATION;
+import static com.ncedu.cheetahtest.dao.historytestcase.HistoryTestCaseConstant.*;
 
 @Repository
 public class HistoryTestCaseDaoImpl implements HistoryTestCaseDao {
@@ -54,5 +59,11 @@ public class HistoryTestCaseDaoImpl implements HistoryTestCaseDao {
                     preparedStatement.setInt(2, (page - 1) * size);
                 },
                 new HistoryTestCaseMapper());
+    }
+
+    @Override
+    public void editTestCaseResultById(int testCaseId, String result) {
+        jdbcTemplate.update(EDIT_HISTORY_TEST_CASE_RESULT,
+                result, testCaseId);
     }
 }
