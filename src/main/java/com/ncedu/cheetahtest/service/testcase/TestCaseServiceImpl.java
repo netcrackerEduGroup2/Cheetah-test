@@ -59,8 +59,8 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Override
     @Transactional
-    public TestCase findTestCaseById(int id) {
-        TestCase testCase = testCaseGenDao.findById(id);
+    public TestCase findTestCaseByProjectIdAndTestCaseId(int projectId, int id) {
+        TestCase testCase = testCaseDao.findTestCaseByProjectIdAndTestCaseId(projectId, id);
 
         if (testCase == null) {
             throw new TestCaseNotFoundException();

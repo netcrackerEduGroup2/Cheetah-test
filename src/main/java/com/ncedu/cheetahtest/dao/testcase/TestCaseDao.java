@@ -8,6 +8,8 @@ public interface TestCaseDao {
 
     void save(TestCase testCase);
 
+    TestCase findTestCaseByProjectIdAndTestCaseId(int projectId, int id);
+
     TestCase findTestCaseByTitleExceptCurrent(String title, int id);
 
     int createTestCase(TestCase testCase);

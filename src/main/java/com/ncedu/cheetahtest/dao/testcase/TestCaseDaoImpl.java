@@ -42,6 +42,24 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
     }
 
     @Override
+    public TestCase findTestCaseByProjectIdAndTestCaseId(int projectId, int id) {
+        List<TestCase> testCase = jdbcTemplate.query(
+                FIND_TEST_CASE_BY_PROJECT_ID_AND_TEST_CASE_ID,
+                preparedStatement -> {
+                    preparedStatement.setInt(1, projectId);
+                    preparedStatement.setInt(2, id);
+                },
+                new TestCaseMapper()
+        );
+
+        if (testCase.size() == 1) {
+            return testCase.get(0);
+        }
+
+        return null;
+    }
+
+    @Override
     public TestCase findTestCaseByTitleExceptCurrent(String title, int id) {
         List<TestCase> testCases = jdbcTemplate.query(
                 FIND_TEST_CASE_BY_TITLE_EXCEPT_CURRENT,

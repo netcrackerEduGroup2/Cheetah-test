@@ -62,4 +62,9 @@ public class TestCaseConsts {
             "AND title ILIKE ? " +
             "AND project_id = ?" +
             "LIMIT 1";
+
+    public static final String FIND_TEST_CASE_BY_PROJECT_ID_AND_TEST_CASE_ID =
+            "SELECT id, title, project_id, status, result " +
+            "FROM test_case " +
+            "WHERE project_id = ? AND id = ?";
 }
