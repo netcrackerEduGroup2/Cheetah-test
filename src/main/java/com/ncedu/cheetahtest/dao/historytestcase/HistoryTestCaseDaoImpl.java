@@ -1,7 +1,7 @@
 package com.ncedu.cheetahtest.dao.historytestcase;
 
 
-import com.ncedu.cheetahtest.entity.history.HistoryTestCase;
+import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

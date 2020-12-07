@@ -1,4 +1,4 @@
-package com.ncedu.cheetahtest.entity.history;
+package com.ncedu.cheetahtest.entity.historytestcase;
 
 import lombok.Data;
 

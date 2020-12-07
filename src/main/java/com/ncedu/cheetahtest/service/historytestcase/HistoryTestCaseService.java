@@ -1,6 +1,6 @@
 package com.ncedu.cheetahtest.service.historytestcase;
 
-import com.ncedu.cheetahtest.entity.history.HistoryTestCasePagination;
+import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCasePagination;
 
 public interface HistoryTestCaseService {
 

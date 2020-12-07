@@ -1,6 +1,6 @@
 package com.ncedu.cheetahtest.dao.historytestcase;
 
-import com.ncedu.cheetahtest.entity.history.HistoryTestCase;
+import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCase;
 
 import java.util.List;
 
