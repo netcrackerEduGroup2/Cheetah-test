@@ -56,11 +56,12 @@ public class MailRestController {
 
         return new ResponseEntity<>(new GenericResponse("user.fetched"), HttpStatus.OK);
     }
-    @PostMapping("{idTestCase}/send-report")
+    @PostMapping("/projects/{idProject}/test-cases/{idTestCase}/send-report")
     public ResponseEntity<GenericResponse> sendMessage(@PathVariable int idTestCase,
+                                                        @PathVariable int idProject,
                                                        @RequestBody List<String> emails){
-            emailService.sendTestCaseReportToAddresses(emails,idTestCase);
-            return new ResponseEntity(new GenericResponse("Success"), HttpStatus.OK);
+            emailService.sendTestCaseReportToAddresses(emails,idTestCase,idProject);
+            return new ResponseEntity<>(new GenericResponse("Success"), HttpStatus.OK);
     }
 
     @PostMapping("/save-password")

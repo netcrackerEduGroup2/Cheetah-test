@@ -7,5 +7,7 @@ public interface EmailService {
 
     void sendMessageWithAttachment(String to, String text, String subject, String htmlPath);
 
-    void sendTestCaseReportToAddresses(List<String> emails,int idTestCase);
+    void sendTestCaseReportToAddresses(List<String> emails,int idTestCase,int idProject);
+
+
 }
