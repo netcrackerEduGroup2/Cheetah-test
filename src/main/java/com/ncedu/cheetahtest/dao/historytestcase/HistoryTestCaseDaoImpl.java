@@ -10,8 +10,7 @@ import javax.sql.DataSource;
 
 import java.util.List;
 
-import static com.ncedu.cheetahtest.dao.historytestcase.HistoryTestCaseConstant.ADD_HISTORY_TEST_CASE;
-import static com.ncedu.cheetahtest.dao.historytestcase.HistoryTestCaseConstant.HISTORY_TEST_CASE_PAGINATION;
+import static com.ncedu.cheetahtest.dao.historytestcase.HistoryTestCaseConstant.*;
 
 @Repository
 public class HistoryTestCaseDaoImpl implements HistoryTestCaseDao {
@@ -25,13 +24,14 @@ public class HistoryTestCaseDaoImpl implements HistoryTestCaseDao {
 
     @Override
     public void addTestCase(String result, String dateCompleted, int testCaseId) {
-        jdbcTemplate.update(
-                ADD_HISTORY_TEST_CASE,
-                preparedStatement -> {
-                    preparedStatement.setString(1, result);
-                    preparedStatement.setString(2, dateCompleted);
-                    preparedStatement.setInt(3, testCaseId);
-                });
+        jdbcTemplate.update(ADD_HISTORY_TEST_CASE,
+                result, dateCompleted, testCaseId);
+    }
+
+    @Override
+    public void editTestCaseResultById(int testCaseId, String result) {
+        jdbcTemplate.update(EDIT_HISTORY_TEST_CASE_RESULT,
+                result, testCaseId);
     }
 
     @Override

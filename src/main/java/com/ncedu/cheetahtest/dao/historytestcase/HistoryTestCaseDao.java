@@ -8,5 +8,7 @@ public interface HistoryTestCaseDao {
 
     void addTestCase(String result, String dateCompleted, int testCaseId);
 
+    void editTestCaseResultById(int testCaseId, String result);
+
     List<HistoryTestCase> getPage(int size, int page);
 }
