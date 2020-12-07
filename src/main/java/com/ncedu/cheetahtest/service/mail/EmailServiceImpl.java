@@ -76,7 +76,7 @@ public class EmailServiceImpl implements EmailService{
     public void sendTestCaseReportToAddresses(List<String> emails, int idTestCase, int idProject) {
         String url = FRONT_URL+"/projects/"+idProject+"/test-cases/"+idTestCase;
         String message = "Hi, testcase "+idTestCase+" was completed. \nTo see details, please follow the link:\n"+url;
-        System.out.println(message);
+        log.info(message);
         for ( String email: emails){
             sendSimpleMessage(email,message,"TestCaseInfo");
         }
