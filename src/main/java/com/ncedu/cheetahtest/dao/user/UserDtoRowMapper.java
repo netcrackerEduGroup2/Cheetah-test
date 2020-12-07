@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.dao.user;
 
-import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.UserDto;
 import com.ncedu.cheetahtest.entity.user.UserRole;
 import com.ncedu.cheetahtest.entity.user.UserStatus;
@@ -21,9 +20,9 @@ public class UserDtoRowMapper implements RowMapper<UserDto> {
     @Override
     public UserDto mapRow(ResultSet rs, int i) throws SQLException {
 
-        UserDto user = new UserDto(rs.getInt(ID),rs.getString(EMAIL),
+        return new UserDto(rs.getInt(ID),rs.getString(EMAIL),
                 rs.getString(NAME),UserRole.valueOf(rs.getString(ROLE)),
                 UserStatus.valueOf(rs.getString(STATUS)));
-        return user;
+
     }
 }

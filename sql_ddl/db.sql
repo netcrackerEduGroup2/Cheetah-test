@@ -113,12 +113,3 @@ create table comp_act_prior
     comp_id   integer            NOT NULL REFERENCES compound (id),
     priority  integer            NOT NULL
 );
-
-CREATE TABLE comp_scenario
-(
-    id               serial PRIMARY KEY NOT NULL,
-    compound_id      integer            NOT NULL REFERENCES compound (id),
-    test_scenario_id integer            NOT NULL REFERENCES test_scenario (id),
-    priority         integer            NOT NULL,
-    comp_status      compound_status    NOT NULL
-);
