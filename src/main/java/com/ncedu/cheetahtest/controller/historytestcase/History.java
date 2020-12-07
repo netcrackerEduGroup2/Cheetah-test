@@ -1,6 +1,6 @@
-package com.ncedu.cheetahtest.controller.history;
+package com.ncedu.cheetahtest.controller.historytestcase;
 
-import com.ncedu.cheetahtest.entity.history.HistoryTestCasePagination;
+import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCasePagination;
 import com.ncedu.cheetahtest.service.historytestcase.HistoryTestCaseService;
 
 import lombok.extern.slf4j.Slf4j;
