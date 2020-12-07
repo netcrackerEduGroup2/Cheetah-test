@@ -136,19 +136,17 @@ CREATE TABLE history_test_case
     id_test_case    integer             NOT NULL REFERENCES test_case(id)
 );
 
-
 CREATE TABLE action_result
 (
-  id              serial PRIMARY KEY  NOT NULL,
-  compound_id     integer             NOT NULL,
-  result          varchar(100)        NOT NULL,
-  screenshot_url  varchar(100)        NOT NULL,
-  general_order    integer             NOT NULL,
-  id_history_test_case    integer     NOT NULL REFERENCES history_test_case(id),
-  action_element          varchar(100)        NOT NULL,
-  argument         varchar(100)        NOT NULL,
-  id_action       integer      UNIQUE NOT NULL REFERENCES action (id)
+    id              serial PRIMARY KEY  NOT NULL,
+    compound_id     integer             NOT NULL,
+    result          varchar(100)        NOT NULL,
+    screenshot_url  varchar(100)        NOT NULL,
+    general_order    integer             NOT NULL,
+    id_history_test_case    integer     NOT NULL REFERENCES history_test_case(id),
+    element          varchar(100)        NOT NULL,
+    argument         varchar(100)        NOT NULL,
+    id_action       integer       NOT NULL REFERENCES action (id)
 );
-
 
 

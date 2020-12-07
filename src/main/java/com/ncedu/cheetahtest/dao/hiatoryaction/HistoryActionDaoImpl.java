@@ -33,8 +33,6 @@ public class HistoryActionDaoImpl implements HistoryActionDao {
     @Override
     public List<HistoryAction> getHistoryActionByTestHistoryId(int testCaseHistoryId) {
         return jdbcTemplate.query(GET_HISTORY_ACTION_BY_TEST_HISTORY_ID,
-                preparedStatement -> {
-                    preparedStatement.setInt(1, testCaseHistoryId);
-                }, new HistoryAcrionMapper());
+                preparedStatement -> preparedStatement.setInt(1, testCaseHistoryId), new HistoryAcrionMapper());
     }
 }
