@@ -15,17 +15,6 @@ public class ActionExecutorProviderImpl implements ActionExecutorProvider {
 
     private final Map<String, ActionExecutor> actionMap;
 
-    private final String MISSING_ARGUMENT = "Missing argument.";
-    private final String MISSING_ELEMENT_IDENTIFIER = "Missing element identifier.";
-    private final String SUCCESSFULLY_EXECUTED = "Action was successfully executed.";
-    private final String CANNOT_FIND_SUCH_ELEMENT = "Action execution failed. Can't find such element.";
-    private final String SIMPLE_FAIL = "Action execution failed.";
-
-    private final String URL_CANNOT_BE_REACHED = "This ULR can’t be reached.";
-
-    private final String TEXT_MATCHES = "Text of the element matches the argument value";
-    private final String TEXT_DOES_NOT_MATCH = "Text of the element doesn't match the argument value";
-
     public ActionExecutorProviderImpl() {
         actionMap = new HashMap<>();
 
@@ -66,22 +55,22 @@ public class ActionExecutorProviderImpl implements ActionExecutorProvider {
     private ActionResult getPage(SeleniumAction action, WebDriver webDriver) {
 
         if (action.getArgument() == null) {
-            return getFailResult(action, MISSING_ARGUMENT);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ARGUMENT);
         }
 
         try {
             webDriver.get(action.getArgument());
         } catch (WebDriverException e) {
-            return getFailResult(action, URL_CANNOT_BE_REACHED);
+            return getFailResult(action, ResultMessagesConstants.URL_CANNOT_BE_REACHED);
         }
 
-        return getSuccessResult(action, SUCCESSFULLY_EXECUTED);
+        return getSuccessResult(action, ResultMessagesConstants.SUCCESSFULLY_EXECUTED);
     }
 
     private ActionResult checkTitle(SeleniumAction action, WebDriver webDriver) {
 
         if (action.getArgument() == null) {
-            return getFailResult(action, MISSING_ARGUMENT);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ARGUMENT);
         }
 
         if (webDriver.getTitle().equals(action.getArgument())) {
@@ -93,7 +82,7 @@ public class ActionExecutorProviderImpl implements ActionExecutorProvider {
 
     private ActionResult checkUrl(SeleniumAction action, WebDriver webDriver) {
         if (action.getArgument() == null) {
-            return getFailResult(action, MISSING_ARGUMENT);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ARGUMENT);
         }
 
         if (webDriver.getCurrentUrl().equals(action.getArgument())) {
@@ -127,7 +116,7 @@ public class ActionExecutorProviderImpl implements ActionExecutorProvider {
     private ActionResult hoverElementById(SeleniumAction action, WebDriver webDriver) {
 
         if (action.getElement() == null) {
-            return getFailResult(action, MISSING_ELEMENT_IDENTIFIER);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ELEMENT_IDENTIFIER);
         }
 
         try {
@@ -136,15 +125,15 @@ public class ActionExecutorProviderImpl implements ActionExecutorProvider {
             Actions actions = new Actions(webDriver);
             actions.moveToElement(webElement).build().perform();
 
-            return getSuccessResult(action, SUCCESSFULLY_EXECUTED);
+            return getSuccessResult(action, ResultMessagesConstants.SUCCESSFULLY_EXECUTED);
         } catch (WebDriverException e) {
-            return getFailResult(action, CANNOT_FIND_SUCH_ELEMENT);
+            return getFailResult(action, ResultMessagesConstants.CANNOT_FIND_SUCH_ELEMENT);
         }
     }
 
     private ActionResult hoverElementByClassName(SeleniumAction action, WebDriver webDriver) {
         if (action.getElement() == null) {
-            return getFailResult(action, MISSING_ELEMENT_IDENTIFIER);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ELEMENT_IDENTIFIER);
         }
 
         try {
@@ -153,15 +142,15 @@ public class ActionExecutorProviderImpl implements ActionExecutorProvider {
             Actions actions = new Actions(webDriver);
             actions.moveToElement(webElement).build().perform();
 
-            return getSuccessResult(action, SUCCESSFULLY_EXECUTED);
+            return getSuccessResult(action, ResultMessagesConstants.SUCCESSFULLY_EXECUTED);
         } catch (WebDriverException e) {
-            return getFailResult(action, CANNOT_FIND_SUCH_ELEMENT);
+            return getFailResult(action, ResultMessagesConstants.CANNOT_FIND_SUCH_ELEMENT);
         }
     }
 
     private ActionResult hoverElementByCssSelector(SeleniumAction action, WebDriver webDriver) {
         if (action.getElement() == null) {
-            return getFailResult(action, MISSING_ELEMENT_IDENTIFIER);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ELEMENT_IDENTIFIER);
         }
 
         try {
@@ -170,58 +159,58 @@ public class ActionExecutorProviderImpl implements ActionExecutorProvider {
             Actions actions = new Actions(webDriver);
             actions.moveToElement(webElement).build().perform();
 
-            return getSuccessResult(action, SUCCESSFULLY_EXECUTED);
+            return getSuccessResult(action, ResultMessagesConstants.SUCCESSFULLY_EXECUTED);
         } catch (WebDriverException e) {
-            return getFailResult(action, CANNOT_FIND_SUCH_ELEMENT);
+            return getFailResult(action, ResultMessagesConstants.CANNOT_FIND_SUCH_ELEMENT);
         }
     }
 
     private ActionResult checkElementPresenceById(SeleniumAction action, WebDriver webDriver) {
 
         if (action.getElement() == null) {
-            return getFailResult(action, MISSING_ELEMENT_IDENTIFIER);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ELEMENT_IDENTIFIER);
         }
 
         try {
             webDriver.findElement(By.id(action.getElement()));
 
-            return getSuccessResult(action, SUCCESSFULLY_EXECUTED);
+            return getSuccessResult(action, ResultMessagesConstants.SUCCESSFULLY_EXECUTED);
         } catch (WebDriverException e) {
-            return getFailResult(action, CANNOT_FIND_SUCH_ELEMENT);
+            return getFailResult(action, ResultMessagesConstants.CANNOT_FIND_SUCH_ELEMENT);
         }
     }
 
     private ActionResult checkElementPresenceClassName(SeleniumAction action, WebDriver webDriver) {
         if (action.getElement() == null) {
-            return getFailResult(action, MISSING_ELEMENT_IDENTIFIER);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ELEMENT_IDENTIFIER);
         }
 
         try {
             webDriver.findElement(By.className(action.getElement()));
 
-            return getSuccessResult(action, SUCCESSFULLY_EXECUTED);
+            return getSuccessResult(action, ResultMessagesConstants.SUCCESSFULLY_EXECUTED);
         } catch (WebDriverException e) {
-            return getFailResult(action, CANNOT_FIND_SUCH_ELEMENT);
+            return getFailResult(action, ResultMessagesConstants.CANNOT_FIND_SUCH_ELEMENT);
         }
     }
 
     private ActionResult checkElementPresenceByCssSelector(SeleniumAction action, WebDriver webDriver) {
         if (action.getElement() == null) {
-            return getFailResult(action, MISSING_ELEMENT_IDENTIFIER);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ELEMENT_IDENTIFIER);
         }
 
         try {
             webDriver.findElement(By.cssSelector(action.getElement()));
 
-            return getSuccessResult(action, SUCCESSFULLY_EXECUTED);
+            return getSuccessResult(action, ResultMessagesConstants.SUCCESSFULLY_EXECUTED);
         } catch (WebDriverException e) {
-            return getFailResult(action, CANNOT_FIND_SUCH_ELEMENT);
+            return getFailResult(action, ResultMessagesConstants.CANNOT_FIND_SUCH_ELEMENT);
         }
     }
 
     private ActionResult clickElementById(SeleniumAction action, WebDriver webDriver) {
         if (action.getElement() == null) {
-            return getFailResult(action, MISSING_ELEMENT_IDENTIFIER);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ELEMENT_IDENTIFIER);
         }
 
         try {
@@ -230,15 +219,15 @@ public class ActionExecutorProviderImpl implements ActionExecutorProvider {
             Actions actions = new Actions(webDriver);
             actions.moveToElement(webElement).click().build().perform();
 
-            return getSuccessResult(action, SUCCESSFULLY_EXECUTED);
+            return getSuccessResult(action, ResultMessagesConstants.SUCCESSFULLY_EXECUTED);
         } catch (WebDriverException e) {
-            return getFailResult(action, CANNOT_FIND_SUCH_ELEMENT);
+            return getFailResult(action, ResultMessagesConstants.CANNOT_FIND_SUCH_ELEMENT);
         }
     }
 
     private ActionResult clickElementByClassName(SeleniumAction action, WebDriver webDriver) {
         if (action.getElement() == null) {
-            return getFailResult(action, MISSING_ELEMENT_IDENTIFIER);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ELEMENT_IDENTIFIER);
         }
 
         try {
@@ -247,15 +236,15 @@ public class ActionExecutorProviderImpl implements ActionExecutorProvider {
             Actions actions = new Actions(webDriver);
             actions.moveToElement(webElement).click().build().perform();
 
-            return getSuccessResult(action, SUCCESSFULLY_EXECUTED);
+            return getSuccessResult(action, ResultMessagesConstants.SUCCESSFULLY_EXECUTED);
         } catch (WebDriverException e) {
-            return getFailResult(action, CANNOT_FIND_SUCH_ELEMENT);
+            return getFailResult(action, ResultMessagesConstants.CANNOT_FIND_SUCH_ELEMENT);
         }
     }
 
     private ActionResult clickElementByCssSelector(SeleniumAction action, WebDriver webDriver) {
         if (action.getElement() == null) {
-            return getFailResult(action, MISSING_ELEMENT_IDENTIFIER);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ELEMENT_IDENTIFIER);
         }
 
         try {
@@ -264,19 +253,19 @@ public class ActionExecutorProviderImpl implements ActionExecutorProvider {
             Actions actions = new Actions(webDriver);
             actions.moveToElement(webElement).click().build().perform();
 
-            return getSuccessResult(action, SUCCESSFULLY_EXECUTED);
+            return getSuccessResult(action, ResultMessagesConstants.SUCCESSFULLY_EXECUTED);
         } catch (WebDriverException e) {
-            return getFailResult(action, CANNOT_FIND_SUCH_ELEMENT);
+            return getFailResult(action, ResultMessagesConstants.CANNOT_FIND_SUCH_ELEMENT);
         }
     }
 
     private ActionResult fillById(SeleniumAction action, WebDriver webDriver) {
         if (action.getElement() == null) {
-            return getFailResult(action, MISSING_ELEMENT_IDENTIFIER);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ELEMENT_IDENTIFIER);
         }
 
         if (action.getArgument() == null) {
-            return getFailResult(action, MISSING_ARGUMENT);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ARGUMENT);
         }
 
         try {
@@ -284,19 +273,19 @@ public class ActionExecutorProviderImpl implements ActionExecutorProvider {
             Actions actions = new Actions(webDriver);
             actions.moveToElement(webElement).sendKeys(action.getArgument()).build().perform();
 
-            return getSuccessResult(action, SUCCESSFULLY_EXECUTED);
+            return getSuccessResult(action, ResultMessagesConstants.SUCCESSFULLY_EXECUTED);
         } catch (WebDriverException e) {
-            return getFailResult(action, CANNOT_FIND_SUCH_ELEMENT);
+            return getFailResult(action, ResultMessagesConstants.CANNOT_FIND_SUCH_ELEMENT);
         }
     }
 
     private ActionResult fillByClassName(SeleniumAction action, WebDriver webDriver) {
         if (action.getElement() == null) {
-            return getFailResult(action, MISSING_ELEMENT_IDENTIFIER);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ELEMENT_IDENTIFIER);
         }
 
         if (action.getArgument() == null) {
-            return getFailResult(action, MISSING_ARGUMENT);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ARGUMENT);
         }
 
         try {
@@ -304,20 +293,20 @@ public class ActionExecutorProviderImpl implements ActionExecutorProvider {
             Actions actions = new Actions(webDriver);
             actions.moveToElement(webElement).sendKeys(action.getArgument()).build().perform();
 
-            return getSuccessResult(action, SUCCESSFULLY_EXECUTED);
+            return getSuccessResult(action, ResultMessagesConstants.SUCCESSFULLY_EXECUTED);
         } catch (WebDriverException e) {
-            return getFailResult(action, CANNOT_FIND_SUCH_ELEMENT);
+            return getFailResult(action, ResultMessagesConstants.CANNOT_FIND_SUCH_ELEMENT);
         }
     }
 
     private ActionResult fillByCssSelector(SeleniumAction action, WebDriver webDriver) {
 
         if (action.getElement() == null) {
-            return getFailResult(action, MISSING_ELEMENT_IDENTIFIER);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ELEMENT_IDENTIFIER);
         }
 
         if (action.getArgument() == null) {
-            return getFailResult(action, MISSING_ARGUMENT);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ARGUMENT);
         }
 
         try {
@@ -325,75 +314,75 @@ public class ActionExecutorProviderImpl implements ActionExecutorProvider {
             Actions actions = new Actions(webDriver);
             actions.moveToElement(webElement).sendKeys(action.getArgument()).build().perform();
 
-            return getSuccessResult(action, SUCCESSFULLY_EXECUTED);
+            return getSuccessResult(action, ResultMessagesConstants.SUCCESSFULLY_EXECUTED);
         } catch (WebDriverException e) {
-            return getFailResult(action, CANNOT_FIND_SUCH_ELEMENT);
+            return getFailResult(action, ResultMessagesConstants.CANNOT_FIND_SUCH_ELEMENT);
         }
     }
 
     private ActionResult checkElementTextById(SeleniumAction action, WebDriver webDriver) {
         if (action.getElement() == null) {
-            return getFailResult(action, MISSING_ELEMENT_IDENTIFIER);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ELEMENT_IDENTIFIER);
         }
 
         if (action.getArgument() == null) {
-            return getFailResult(action, MISSING_ARGUMENT);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ARGUMENT);
         }
 
         try {
             WebElement webElement = webDriver.findElement(By.id(action.getElement()));
 
             if (webElement.getText().equals(action.getArgument())) {
-                return getSuccessResult(action, TEXT_MATCHES);
+                return getSuccessResult(action, ResultMessagesConstants.TEXT_MATCHES);
             } else {
-                return getFailResult(action, TEXT_DOES_NOT_MATCH);
+                return getFailResult(action, ResultMessagesConstants.TEXT_DOES_NOT_MATCH);
             }
         } catch (WebDriverException e) {
-            return getFailResult(action, CANNOT_FIND_SUCH_ELEMENT);
+            return getFailResult(action, ResultMessagesConstants.CANNOT_FIND_SUCH_ELEMENT);
         }
     }
 
     private ActionResult checkElementTextClassName(SeleniumAction action, WebDriver webDriver) {
         if (action.getElement() == null) {
-            return getFailResult(action, MISSING_ELEMENT_IDENTIFIER);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ELEMENT_IDENTIFIER);
         }
 
         if (action.getArgument() == null) {
-            return getFailResult(action, MISSING_ARGUMENT);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ARGUMENT);
         }
 
         try {
             WebElement webElement = webDriver.findElement(By.className(action.getElement()));
 
             if (webElement.getText().equals(action.getArgument())) {
-                return getSuccessResult(action, TEXT_MATCHES);
+                return getSuccessResult(action, ResultMessagesConstants.TEXT_MATCHES);
             } else {
-                return getFailResult(action, TEXT_DOES_NOT_MATCH);
+                return getFailResult(action, ResultMessagesConstants.TEXT_DOES_NOT_MATCH);
             }
         } catch (WebDriverException e) {
-            return getFailResult(action, CANNOT_FIND_SUCH_ELEMENT);
+            return getFailResult(action, ResultMessagesConstants.CANNOT_FIND_SUCH_ELEMENT);
         }
     }
 
     private ActionResult checkElementTextCssSelector(SeleniumAction action, WebDriver webDriver) {
         if (action.getElement() == null) {
-            return getFailResult(action, MISSING_ELEMENT_IDENTIFIER);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ELEMENT_IDENTIFIER);
         }
 
         if (action.getArgument() == null) {
-            return getFailResult(action, MISSING_ARGUMENT);
+            return getFailResult(action, ResultMessagesConstants.MISSING_ARGUMENT);
         }
 
         try {
             WebElement webElement = webDriver.findElement(By.cssSelector(action.getElement()));
 
             if (webElement.getText().equals(action.getArgument())) {
-                return getSuccessResult(action, TEXT_MATCHES);
+                return getSuccessResult(action, ResultMessagesConstants.TEXT_MATCHES);
             } else {
-                return getFailResult(action, TEXT_DOES_NOT_MATCH);
+                return getFailResult(action, ResultMessagesConstants.TEXT_DOES_NOT_MATCH);
             }
         } catch (WebDriverException e) {
-            return getFailResult(action, CANNOT_FIND_SUCH_ELEMENT);
+            return getFailResult(action, ResultMessagesConstants.CANNOT_FIND_SUCH_ELEMENT);
         }      }
 
     private ActionResult pressEnter(SeleniumAction action, WebDriver webDriver) {
@@ -401,9 +390,9 @@ public class ActionExecutorProviderImpl implements ActionExecutorProvider {
             Actions actions = new Actions(webDriver);
             actions.sendKeys(Keys.ENTER).build().perform();
 
-            return getSuccessResult(action, SUCCESSFULLY_EXECUTED);
+            return getSuccessResult(action, ResultMessagesConstants.SUCCESSFULLY_EXECUTED);
         } catch (WebDriverException e) {
-            return getFailResult(action, SIMPLE_FAIL);
+            return getFailResult(action, ResultMessagesConstants.SIMPLE_FAIL);
         }
     }
 
