@@ -80,18 +80,30 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
             ActionResult theActionResult = testCaseExecutor.executeAction(theAction);
             actionResults.add(theActionResult);
 
-            historyActionDao.addAction(
-                    theActionResult.getResultDescription(),
-                    theActionResult.getScreenshotUrl(),
-                    i + 1,
-                    testCaseHistoryId,
-                    theActionResult.getAction().getCompoundId(),
-                    theActionResult.getAction().getActionId(),
-                    theActionResult.getAction().getElement(),
-                    theActionResult.getAction().getArgument());
+            Integer compId = theActionResult.getAction().getCompoundId();
+
+            if (compId != null) {
+                historyActionDao.addAction(
+                        theActionResult.getResultDescription(),
+                        theActionResult.getScreenshotUrl(),
+                        i + 1,
+                        testCaseHistoryId,
+                        compId,
+                        theActionResult.getAction().getActionId(),
+                        theActionResult.getAction().getElement(),
+                        theActionResult.getAction().getArgument());
+            } else {
+                historyActionDao.addAction(
+                        theActionResult.getResultDescription(),
+                        theActionResult.getScreenshotUrl(),
+                        i + 1,
+                        testCaseHistoryId,
+                        theActionResult.getAction().getActionId(),
+                        theActionResult.getAction().getElement(),
+                        theActionResult.getAction().getArgument());
+            }
 
             if (theActionResult.getStatus().equals(ActionResultStatus.FAIL)) {
-                testCaseExecutor.close();
                 break;
             }
         }
