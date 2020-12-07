@@ -146,7 +146,7 @@ CREATE TABLE action_result
   id_history_test_case    integer     NOT NULL REFERENCES history_test_case(id),
   action_element          varchar(100)        NOT NULL,
   argument         varchar(100)        NOT NULL,
-  id_action       integer      UNIQUE NOT NULL REFERENCES action (id)
+  id_action       integer              NOT NULL REFERENCES action (id)
 );
 
 
