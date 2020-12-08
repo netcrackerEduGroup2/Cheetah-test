@@ -2,8 +2,7 @@ package com.ncedu.cheetahtest.controller.testcase;
 
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
-import com.ncedu.cheetahtest.service.testcase.crud.TestCaseService;
-import com.ncedu.cheetahtest.service.testcase.runwrapper.TestCaseLauncher;
+import com.ncedu.cheetahtest.service.testcase.TestCaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +21,18 @@ public class TestCaseController {
         return testCaseService.getTestCases(page, size);
     }
 
-    @GetMapping("/test-cases/{id}")
-    public TestCase getATestCaseById(@PathVariable int id) {
-        return testCaseService.getATestCaseById(id);
+    @GetMapping("/projects/{projectId}/test-cases")
+    public TestCasePaginated getActiveTestCasesPaginatedByProjectId(
+            @RequestParam int page,
+            @RequestParam int size,
+            @PathVariable int projectId) {
+        return testCaseService.getActiveTestCasesPaginatedByProjectId(page, size, projectId);
+    }
+
+    @GetMapping("/projects/{projectId}/test-cases/{id}")
+    public ResponseEntity<TestCase> getTestCaseById(@PathVariable int projectId,
+                                                    @PathVariable int id) {
+        return ResponseEntity.ok(testCaseService.findTestCaseByProjectIdAndTestCaseId(projectId, id));
     }
 
     @GetMapping("/test-cases/search/findByTitle")
@@ -34,6 +42,16 @@ public class TestCaseController {
             @RequestParam String keyword) {
         return testCaseService.findTestCasesByTitlePaginated(page, size, keyword);
     }
+
+    @GetMapping("/projects/{projectId}/test-cases/search/findByTitle")
+    public TestCasePaginated findTestCasesByTitlePaginatedAndByProjectId(
+            @PathVariable int projectId,
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String keyword) {
+        return testCaseService.findTestCasesByTitlePaginatedAndByProjectId(page, size, keyword, projectId);
+    }
+
 
     // Active and Inactive test cases
     @GetMapping("/all-test-cases")
@@ -76,9 +94,4 @@ public class TestCaseController {
         return testCase;
     }
 
-    private final TestCaseLauncher testCaseLauncher;
-    @GetMapping("/getActScenariosById/{testCaseId}")
-    public void findAllTestCasesByTitlePaginated(@PathVariable int testCaseId) {
-        testCaseLauncher.formActionForSelenium(testCaseId);
-    }
 }

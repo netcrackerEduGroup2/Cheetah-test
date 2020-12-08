@@ -1,4 +1,4 @@
-package com.ncedu.cheetahtest.service.testcase.crud;
+package com.ncedu.cheetahtest.service.testcase;
 
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
@@ -11,7 +11,7 @@ public interface TestCaseService {
 
     void save(TestCase testCase);
 
-    TestCase findTestCaseById(int id);
+    TestCase findTestCaseByProjectIdAndTestCaseId(int projectId, int id);
 
     void deactivateTestCase(int id);
 
@@ -21,6 +21,8 @@ public interface TestCaseService {
 
     int createTestCase(TestCase testCase);
 
-    TestCase getATestCaseById(int id);
+    TestCasePaginated getActiveTestCasesPaginatedByProjectId(int page, int size, int projectId);
+
+    TestCasePaginated findTestCasesByTitlePaginatedAndByProjectId(int page, int size, String keyword, int projectId);
 
 }

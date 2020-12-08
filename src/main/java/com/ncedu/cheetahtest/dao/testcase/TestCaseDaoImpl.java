@@ -5,10 +5,15 @@ import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.exception.general.EntityNotFoundException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 import static com.ncedu.cheetahtest.dao.testcase.TestCaseConsts.*;
 
@@ -34,6 +39,24 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
         if (result != 1) {
             throw new TestCaseNotFoundException();
         }
+    }
+
+    @Override
+    public TestCase findTestCaseByProjectIdAndTestCaseId(int projectId, int id) {
+        List<TestCase> testCase = jdbcTemplate.query(
+                FIND_TEST_CASE_BY_PROJECT_ID_AND_TEST_CASE_ID,
+                preparedStatement -> {
+                    preparedStatement.setInt(1, projectId);
+                    preparedStatement.setInt(2, id);
+                },
+                new TestCaseMapper()
+        );
+
+        if (testCase.size() == 1) {
+            return testCase.get(0);
+        }
+
+        return null;
     }
 
     @Override
@@ -75,5 +98,69 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
         if (result != 1) {
             throw new EntityNotFoundException("Exception in " + getClass().getName());
         }
+    }
+
+    @Override
+    public List<TestCase> getActiveTestCasesPaginatedByProjectId(int page, int size, int projectId) {
+        int offset = getOffset(page, size);
+
+        return jdbcTemplate.query(
+                GET_TEST_CASE_PAGINATED_BY_PROJECT_ID,
+                preparedStatement -> {
+                    preparedStatement.setInt(1, projectId);
+                    preparedStatement.setInt(2, size);
+                    preparedStatement.setInt(3, offset);
+                },
+                rowMapper
+        );
+    }
+
+    @Override
+    public int getAmountActiveElementsByProjectId(int projectId) {
+        List<Integer> amount = jdbcTemplate.query(
+                GET_AMOUNT_OF_ACTIVE_TEST_CASES_BY_PROJECT_ID,
+                preparedStatement -> preparedStatement.setInt(1, projectId),
+                (resultSet, i) -> resultSet.getInt(1)
+        );
+
+        if (amount.size() == 1) {
+            return amount.get(0);
+        }
+
+        return 0;
+    }
+
+    @Override
+    public List<TestCase> findTestCasesByTitlePaginatedAndByProjectId(int page, int size, String keyword, int projectId) {
+        int offset = getOffset(page, size);
+
+        return jdbcTemplate.query(
+                FIND_BY_TITLE_TEST_CASE_PAGINATED_BY_PROJECT_ID,
+                preparedStatement -> {
+                    preparedStatement.setInt(1, projectId);
+                    preparedStatement.setString(2, "%" + keyword + "%");
+                    preparedStatement.setInt(3, size);
+                    preparedStatement.setInt(4, offset);
+                },
+                rowMapper
+        );
+    }
+
+    @Override
+    public int getAmountByTitlePaginatedAndByProjectId(String keyword, int projectId) {
+        List<Integer> amount = jdbcTemplate.query(
+                GET_AMOUNT_OF_ACTIVE_TEST_CASES_BY_PROJECT_ID_AND_ILIKE,
+                preparedStatement -> {
+                    preparedStatement.setString(1, "%" + keyword + "%");
+                    preparedStatement.setInt(2, projectId);
+                },
+                (resultSet, i) -> resultSet.getInt(1)
+        );
+
+        if (amount.size() == 1) {
+            return amount.get(0);
+        }
+
+        return 0;
     }
 }

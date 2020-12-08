@@ -1,4 +1,4 @@
-package com.ncedu.cheetahtest.service.testcase.crud;
+package com.ncedu.cheetahtest.service.testcase;
 
 import com.ncedu.cheetahtest.dao.genericdao.AbstractActiveDao;
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
@@ -59,8 +59,8 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Override
     @Transactional
-    public TestCase findTestCaseById(int id) {
-        TestCase testCase = testCaseGenDao.findById(id);
+    public TestCase findTestCaseByProjectIdAndTestCaseId(int projectId, int id) {
+        TestCase testCase = testCaseDao.findTestCaseByProjectIdAndTestCaseId(projectId, id);
 
         if (testCase == null) {
             throw new TestCaseNotFoundException();
@@ -119,8 +119,21 @@ public class TestCaseServiceImpl implements TestCaseService {
     }
 
     @Override
-    public TestCase getATestCaseById(int id) {
-        return testCaseGenDao.findById(id);
+    public TestCasePaginated getActiveTestCasesPaginatedByProjectId(int page, int size, int projectId) {
+        List<TestCase> testCaseList = testCaseDao.getActiveTestCasesPaginatedByProjectId(page, size, projectId);
+        int totalElements = testCaseDao.getAmountActiveElementsByProjectId(projectId);
+
+        return new TestCasePaginated(testCaseList, totalElements);
+    }
+
+    @Override
+    public TestCasePaginated findTestCasesByTitlePaginatedAndByProjectId(int page, int size, String keyword, int projectId) {
+        List<TestCase> testCaseList = testCaseDao
+                .findTestCasesByTitlePaginatedAndByProjectId(page, size, keyword, projectId);
+
+        int totalElements = testCaseDao.getAmountByTitlePaginatedAndByProjectId(keyword, projectId);
+
+        return new TestCasePaginated(testCaseList, totalElements);
     }
 
 }
