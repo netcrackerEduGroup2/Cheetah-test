@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -41,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User searchUser(@PathParam("id") String id) {
+    public User searchUser(@PathVariable("id") String id) {
         return userService.findUserById(Long.parseLong(id));
     }
 
@@ -75,6 +74,7 @@ public class UserController {
         return userService.findUsersByName(page, size, title);
     }
 
+
     @PostMapping("/uploadUserPhoto")
     public String uploadFile(@RequestPart(value = "file") MultipartFile file,
                              @RequestParam("id") int id) {
@@ -84,6 +84,11 @@ public class UserController {
     @DeleteMapping("/deleteUserPhoto")
     public String deleteTestScenario(@RequestParam("url") String url) {
         return this.amazonClientService.deleteUserPhotoFromS3Bucket(url);
+
+    @GetMapping
+    public List<UserDto> findByEmail(@RequestParam("email") String email) {
+        return userService.findByEmail(email);
+
     }
 }
 
