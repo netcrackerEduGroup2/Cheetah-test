@@ -32,7 +32,12 @@ public class LibraryController {
         return compoundService.createCompound(compoundCreationBody.getCompound(), compoundCreationBody.getActions());
     }
 
-    @GetMapping
+    @GetMapping("/all") // findCompoundsByTitleLike WITHOUT pagination
+    public List<Compound> findCompoundsByTitleLike(@RequestParam("title") String title) {
+        return compoundService.getCompoundsByTitleLike(title);
+    }
+
+    @GetMapping // findCompoundsByTitleLike WITH pagination
     public PaginationCompound findCompoundsByTitleLike(@RequestParam("title") String title,
                                                        @RequestParam("size") int size,
                                                        @RequestParam("page") int page) {

@@ -9,4 +9,6 @@ public class TestScenario {
     private String description;
     private StatusTestScenario status;
     private int idTestCase;
+
+    public TestScenario() { status = StatusTestScenario.INACTIVE;}
 }
