@@ -61,8 +61,8 @@ CREATE TABLE parameters
     id          serial PRIMARY KEY  NOT NULL,
     data_set_id integer             NOT NULL REFERENCES data_set (id)
         on update cascade on delete cascade,
-    type        varchar(100) UNIQUE NOT NULL,
-    value       varchar(100)        NOT NULL
+    type        varchar(300),
+    value       varchar(300)
 );
 
 CREATE TABLE user_project
@@ -100,8 +100,6 @@ CREATE TABLE act_scenario
     action_status    action_status      NOT NULL,
     param_id         integer REFERENCES parameters (id)
         on update cascade on delete cascade
-
-
 );
 
 create table compound

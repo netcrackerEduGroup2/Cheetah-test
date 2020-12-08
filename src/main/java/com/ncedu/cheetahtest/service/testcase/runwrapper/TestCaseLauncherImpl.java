@@ -41,7 +41,6 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
         actionResults.forEach(actionResult -> System.out.println(actionResult + "\n"));
     }
 
-    @Transactional
     public List<SeleniumAction> mapActScenarioToSeleniumAction(
             List<ActScenario> actScenarios) {
 
@@ -60,8 +59,6 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
         return seleniumActions;
     }
 
-    @Override
-    @Transactional
     public List<ActionResult> processActions(List<SeleniumAction> actionList, int testCaseId) {
 
         TestCaseExecutor testCaseExecutor = applicationContext.getBean(TestCaseExecutorImpl.class);

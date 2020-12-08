@@ -7,6 +7,4 @@ import java.util.List;
 
 public interface TestCaseLauncher {
     void formActionForSelenium(int testCaseId);
-
-    List<ActionResult> processActions(List<SeleniumAction> actionList, int testCaseId);
 }
