@@ -78,11 +78,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!--		<dependency>-->
-<!--			<groupId>com.oracle.database.jdbc</groupId>-->
-<!--			<artifactId>ojdbc8</artifactId>-->
-<!--			<scope>runtime</scope>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -116,6 +111,11 @@
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk</artifactId>
 			<version>1.11.133</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-server</artifactId>
+			<version>4.0.0-alpha-2</version>
 		</dependency>
 	</dependencies>
 
