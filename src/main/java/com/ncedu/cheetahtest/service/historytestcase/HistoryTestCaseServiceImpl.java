@@ -30,7 +30,7 @@ public class HistoryTestCaseServiceImpl implements HistoryTestCaseService {
                             testCase.getId(),
                             testCase.getResult(),
                             testCase.getDataCompleted(),
-                            testCase.getIdTestCase()));
+                            testCase.getTitle()));
         }
         return new HistoryTestCasePagination(historyTestCaseDtos, total);
     }

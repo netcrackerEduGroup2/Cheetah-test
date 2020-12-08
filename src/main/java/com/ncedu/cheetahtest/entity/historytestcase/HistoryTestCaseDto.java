@@ -10,12 +10,12 @@ public class HistoryTestCaseDto {
     private int id;
     private TestCaseResult result;
     private Date dataCompleted;
-    private int idTestCase;
+    private String title;
 
-    public HistoryTestCaseDto(int id, TestCaseResult result, Date dataCompleted, int idTestCase) {
+    public HistoryTestCaseDto(int id, TestCaseResult result, Date dataCompleted, String title) {
         this.id = id;
         this.result = result;
         this.dataCompleted = dataCompleted;
-        this.idTestCase = idTestCase;
+        this.title = title;
     }
 }
