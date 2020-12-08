@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -46,9 +47,10 @@ public class AmazonClientService {
         try {
             File file = convertMultiPartToFile(multipartFile);
             String fileName = generateFileName(multipartFile);
-            fileUrl = "https://"+bucketName+endpointUrl+"/userPhoto/"+fileName;
-            uploadFileTos3bucket("userPhoto/"+fileName, file);
+            fileUrl = "https://" + bucketName + endpointUrl + "/userPhoto/" + fileName;
+            uploadFileTos3bucket("userPhoto/" + fileName, file);
             file.delete();
+
             userService.setUserPhotoUrl(id, fileUrl);
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,25 +63,35 @@ public class AmazonClientService {
         String fileUrl = "";
         try {
             String fileName = generateFileName(file);
-            fileUrl = "https://"+bucketName+endpointUrl+"/screenshots/"+fileName;
-            uploadFileTos3bucket("screenshots/"+fileName, file);
-            file.delete();
+            fileUrl = "https://" + bucketName + endpointUrl + "/screenshots/" + fileName;
+            uploadFileTos3bucket("screenshots/" + fileName, file);
+
+            try {
+                if (file.delete()) {
+                    System.out.println(file.getName() + " deleted locally");
+                } else {
+                    System.out.println("failed locally deleting file");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return fileUrl;
     }
 
-    public File convertMultiPartToFile(MultipartFile file) throws IOException { //TODO return to private
-        File convFile = new File(file.getOriginalFilename());
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getBytes());
-        fos.close();
+    private File convertMultiPartToFile(MultipartFile file) throws IOException {
+        File convFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
+        try (FileOutputStream fos = new FileOutputStream(convFile)) {
+            fos.write(file.getBytes());
+        }
+
         return convFile;
     }
 
     private String generateFileName(MultipartFile multiPart) {
-        return new Date().getTime() + "-" + multiPart.getOriginalFilename().replace(" ", "_");
+        return new Date().getTime() + "-" + Objects.requireNonNull(multiPart.getOriginalFilename()).replace(" ", "_");
     }
 
     private String generateFileName(File file) {
@@ -93,13 +105,13 @@ public class AmazonClientService {
 
     public String deleteUserPhotoFromS3Bucket(String fileUrl) {
         String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
-        s3client.deleteObject(new DeleteObjectRequest(bucketName, "userPhoto/"+fileName));
+        s3client.deleteObject(new DeleteObjectRequest(bucketName, "userPhoto/" + fileName));
         return "Successfully deleted";
     }
 
     public String deleteScreenshotFromS3Bucket(String fileUrl) {
         String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
-        s3client.deleteObject(new DeleteObjectRequest(bucketName, "screenshots/"+fileName));
+        s3client.deleteObject(new DeleteObjectRequest(bucketName, "screenshots/" + fileName));
         return "Successfully deleted";
     }
 }
