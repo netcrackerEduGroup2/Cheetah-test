@@ -20,6 +20,6 @@ public class HistoryActionConstant {
             " WHERE ar.id_history_test_case=?; ";
 
     public static final String GET_ALL_ID_HISTORY_TEST_CASE =
-            "SELECT id FROM history_test_case LIMIT 10;";
+            "SELECT id FROM history_test_case;";
 
 }
