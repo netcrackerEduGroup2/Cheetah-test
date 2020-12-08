@@ -9,8 +9,7 @@ import javax.sql.DataSource;
 
 import java.util.List;
 
-import static com.ncedu.cheetahtest.dao.hiatoryaction.HistoryActionConstant.ADD_HISTORY_ACTION;
-import static com.ncedu.cheetahtest.dao.hiatoryaction.HistoryActionConstant.GET_HISTORY_ACTION_BY_TEST_HISTORY_ID;
+import static com.ncedu.cheetahtest.dao.hiatoryaction.HistoryActionConstant.*;
 
 @Repository
 public class HistoryActionDaoImpl implements HistoryActionDao {
