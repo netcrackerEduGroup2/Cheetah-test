@@ -1,12 +1,9 @@
 package com.ncedu.cheetahtest.entity.actscenario;
 
-import com.ncedu.cheetahtest.entity.scenario.Scenario;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class ActScenario extends Scenario {
+public class ActScenario {
     private int id;
     private int actionId;
     private int testScenarioId;
@@ -16,24 +13,10 @@ public class ActScenario extends Scenario {
     private String actionType;
     private String parameterType;
     private String parameterValue;
+    private int priority;
 
     public ActScenario() {
         actStatus = ActStatus.INACTIVE;
     }
 
-    @Override
-    public String toString() {
-        return "ActScenario{" +
-                "id=" + id +
-                ", actionId=" + actionId +
-                ", testScenarioId=" + testScenarioId +
-                ", actStatus=" + actStatus +
-                ", parameterId=" + parameterId +
-                ", actionTitle='" + actionTitle + '\'' +
-                ", actionType='" + actionType + '\'' +
-                ", parameterType='" + parameterType + '\'' +
-                ", parameterValue='" + parameterValue + '\'' +
-                ", prior='" + getPriority() + '\'' +
-                '}';
-    }
 }
