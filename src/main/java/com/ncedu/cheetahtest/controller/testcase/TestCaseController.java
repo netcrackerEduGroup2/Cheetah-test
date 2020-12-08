@@ -21,6 +21,20 @@ public class TestCaseController {
         return testCaseService.getTestCases(page, size);
     }
 
+    @GetMapping("/projects/{projectId}/test-cases")
+    public TestCasePaginated getActiveTestCasesPaginatedByProjectId(
+            @RequestParam int page,
+            @RequestParam int size,
+            @PathVariable int projectId) {
+        return testCaseService.getActiveTestCasesPaginatedByProjectId(page, size, projectId);
+    }
+
+    @GetMapping("/projects/{projectId}/test-cases/{id}")
+    public ResponseEntity<TestCase> getTestCaseById(@PathVariable int projectId,
+                                                    @PathVariable int id) {
+        return ResponseEntity.ok(testCaseService.findTestCaseByProjectIdAndTestCaseId(projectId, id));
+    }
+
     @GetMapping("/test-cases/search/findByTitle")
     public TestCasePaginated findTestCasesByTitlePaginated(
             @RequestParam int page,
@@ -28,6 +42,16 @@ public class TestCaseController {
             @RequestParam String keyword) {
         return testCaseService.findTestCasesByTitlePaginated(page, size, keyword);
     }
+
+    @GetMapping("/projects/{projectId}/test-cases/search/findByTitle")
+    public TestCasePaginated findTestCasesByTitlePaginatedAndByProjectId(
+            @PathVariable int projectId,
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String keyword) {
+        return testCaseService.findTestCasesByTitlePaginatedAndByProjectId(page, size, keyword, projectId);
+    }
+
 
     // Active and Inactive test cases
     @GetMapping("/all-test-cases")

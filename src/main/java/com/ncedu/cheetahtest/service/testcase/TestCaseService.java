@@ -11,7 +11,7 @@ public interface TestCaseService {
 
     void save(TestCase testCase);
 
-    TestCase findTestCaseById(int id);
+    TestCase findTestCaseByProjectIdAndTestCaseId(int projectId, int id);
 
     void deactivateTestCase(int id);
 
@@ -20,4 +20,9 @@ public interface TestCaseService {
     TestCasePaginated findAllTestCasesByTitlePaginated(int page, int size, String title);
 
     int createTestCase(TestCase testCase);
+
+    TestCasePaginated getActiveTestCasesPaginatedByProjectId(int page, int size, int projectId);
+
+    TestCasePaginated findTestCasesByTitlePaginatedAndByProjectId(int page, int size, String keyword, int projectId);
+
 }
