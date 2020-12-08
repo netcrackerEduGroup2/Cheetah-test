@@ -25,9 +25,8 @@ public class RunHistoryActionDaoImpl implements RunHistoryActionDao {
     @Override
     public List<RunAction> getRunActionByTestHistoryId(int testCaseHistoryId) {
         return jdbcTemplate.query(GET_RUN_ACRIONS_BY_ID_TEST_CASE_HISTORY,
-                preparedStatement -> {
-                    preparedStatement.setInt(1, testCaseHistoryId);
-                },
+                preparedStatement ->
+                    preparedStatement.setInt(1, testCaseHistoryId),
                 new RunActionMapper());
     }
 
