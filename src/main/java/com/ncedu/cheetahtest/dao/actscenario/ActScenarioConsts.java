@@ -51,6 +51,18 @@ public class ActScenarioConsts {
             "s.priority as s_priority, s.action_status as s_action_status, s.param_id as s_param_id , a.title as a_title, " +
             "a.type as a_type, p.type as p_type,p.value as p_value " +
             "FROM act_scenario s INNER JOIN action a on a.id = s.action_id " +
-            "INNER JOIN parameters p on s.param_id = p.id WHERE s.action_id = ? AND s.test_scenario_id = ? AND s.priority = ?";
+            "INNER JOIN parameters p on s.param_id = p.id WHERE s.action_id = ? " +
+            "AND s.test_scenario_id = ? AND s.priority = ?";
 
+    public static final String GET_ALL_BY_TEST_CASE_ID =
+            "SELECT s.id as s_id, s.action_id as s_action_id, s.test_scenario_id as s_test_scenario_id," +
+            " s.priority as s_priority, s.action_status as s_action_status, s.param_id as s_param_id, a.title as a_title," +
+            " a.type as a_type , p.type as p_type , p.value as p_value " +
+            "FROM act_scenario s INNER JOIN action a ON a.id = s.action_id " +
+            "INNER JOIN parameters p ON s.param_id = p.id " +
+            "WHERE test_scenario_id IN " +
+                "(SELECT id " +
+                "FROM test_scenario " +
+                "WHERE test_case_id IN " +
+                    "(SELECT id FROM test_case WHERE id = ?)) ORDER BY s.priority";
 }

@@ -1,14 +1,18 @@
 package com.ncedu.cheetahtest.dao.historytestcase;
 
-
 import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-
+import java.sql.*;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static com.ncedu.cheetahtest.dao.historytestcase.HistoryTestCaseConstant.*;
 
@@ -23,10 +27,29 @@ public class HistoryTestCaseDaoImpl implements HistoryTestCaseDao {
     }
 
     @Override
-    public void addTestCase(String result, String dateCompleted, int testCaseId) {
-        jdbcTemplate.update(ADD_HISTORY_TEST_CASE,
-                result, dateCompleted, testCaseId);
+    public int addTestCase(String result, Date dateCompleted, int testCaseId) {
+
+        final PreparedStatementCreator psc = connection -> {
+            final PreparedStatement ps = connection.prepareStatement(ADD_HISTORY_TEST_CASE,
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, result);
+            ps.setTimestamp(2, new Timestamp(dateCompleted.getTime()));
+            ps.setInt(3, testCaseId);
+            return ps;
+        };
+        final KeyHolder holder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(psc, holder);
+
+        Integer newId;
+        if (Objects.requireNonNull(holder.getKeys()).size() > 1) {
+            newId = (Integer) Objects.requireNonNull(holder.getKeys()).get("id");
+        } else {
+            newId = Objects.requireNonNull(holder.getKey()).intValue();
+        }
+        return newId;
     }
+
 
     @Override
     public void editTestCaseResultById(int testCaseId, String result) {
@@ -45,7 +68,7 @@ public class HistoryTestCaseDaoImpl implements HistoryTestCaseDao {
     }
 
     @Override
-    public Integer getCountTestCaseFailedCompleted(){
+    public Integer getCountTestCaseFailedCompleted() {
         return jdbcTemplate.queryForObject(COUNT_TEST_CASE_FAILED_COMPLETED,
                 Integer.class);
     }

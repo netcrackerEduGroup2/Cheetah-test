@@ -13,5 +13,6 @@ public class CompoundConsts {
     public static final String FIND_BY_TITLE = "SELECT compound.id, compound.title,compound.description " +
             "FROM compound WHERE title = ?";
     public static final String GET_TOTAL_COMP_BY_TITLE = "SELECT COUNT(*) FROM compound WHERE title LIKE CONCAT('%',?,'%')";
+    public static final String GET_COMP_ID_BY_ACTION_ID = "SELECT id, title, description FROM compound WHERE id IN (SELECT comp_id FROM comp_act_prior WHERE action_id = ?) LIMIT 1";
 
 }

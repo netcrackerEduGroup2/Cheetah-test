@@ -4,7 +4,7 @@ public class HistoryTestCaseConstant {
     public static final String ADD_HISTORY_TEST_CASE =
             "INSERT INTO history_test_case " +
                     " (result, date_completed, id_test_case) " +
-                    "  VALUES (?, ?, ?);";
+                    "  VALUES (?::test_case_result, ?, ?);";
 
     public static final String HISTORY_TEST_CASE_FAILED_COMPLETED_PAGINATION =
             "SELECT h.id AS h_id, h.result AS h_result, h.date_completed AS " +
