@@ -22,12 +22,18 @@ public class ParametersController {
     public Parameter createParameter(@RequestBody Parameter parameter) {
         return parameterService.createParameter(parameter);
     }
-    @GetMapping
+    @GetMapping("/{idDataSet}")
     public PaginationParameter findParameterByType(@PathVariable int idDataSet,
                                                    @RequestParam("type") String type,
                                                    @RequestParam("size") int size,
                                                    @RequestParam("page") int page){
         return parameterService.findByType(type,idDataSet,page,size);
+    }
+    @GetMapping
+    public PaginationParameter findAllByType(@RequestParam("type") String type,
+                                              @RequestParam("size") int size,
+                                              @RequestParam("page") int page){
+        return parameterService.findAllByType(type,size,page);
     }
     @PutMapping
     public Parameter editParameter(@RequestBody Parameter parameter,
