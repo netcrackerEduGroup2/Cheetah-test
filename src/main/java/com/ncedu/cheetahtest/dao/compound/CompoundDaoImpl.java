@@ -61,9 +61,7 @@ public class CompoundDaoImpl implements CompoundDao {
     public List<Compound> selectCompoundsByTitleLike(String title) {
         return jdbcTemplate.query(
                 SELECT_COMPOUND_BY_TITLE_LIKE_WITHOUT_PAGINATION,
-                preparedStatement -> {
-                    preparedStatement.setString(1, title);
-                },
+                preparedStatement -> preparedStatement.setString(1, title),
                 new CompoundRowMapper()
         );
 
