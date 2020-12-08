@@ -76,8 +76,8 @@ public class TestCaseExecutorImpl implements TestCaseExecutor {
             Thread.sleep(1000);
             WebDriverWait wait = new WebDriverWait(webDriver, 30);
             wait.until(expectation);
-        } catch (Throwable error) {
-            log.error("Timeout waiting for Page Load Request to complete.");
+        } catch (InterruptedException e) {
+            log.error("Timeout waiting for Page Load Request to complete. Exception: " + e.getMessage());
         }
     }
 }
