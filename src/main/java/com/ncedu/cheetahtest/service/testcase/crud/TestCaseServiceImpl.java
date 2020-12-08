@@ -1,4 +1,4 @@
-package com.ncedu.cheetahtest.service.testcase;
+package com.ncedu.cheetahtest.service.testcase.crud;
 
 import com.ncedu.cheetahtest.dao.genericdao.AbstractActiveDao;
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
@@ -9,6 +9,7 @@ import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
 import com.ncedu.cheetahtest.exception.project.ProjectNotFoundException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseAlreadyExistsException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
+import com.ncedu.cheetahtest.service.testcase.TestCaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

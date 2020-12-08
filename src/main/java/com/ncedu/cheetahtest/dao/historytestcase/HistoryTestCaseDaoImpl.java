@@ -43,7 +43,7 @@ public class HistoryTestCaseDaoImpl implements HistoryTestCaseDao {
 
         Integer newId;
         if (Objects.requireNonNull(holder.getKeys()).size() > 1) {
-            newId = (Integer) holder.getKeys().get("id");
+            newId = (Integer) Objects.requireNonNull(holder.getKeys()).get("id");
         } else {
             newId = Objects.requireNonNull(holder.getKey()).intValue();
         }
