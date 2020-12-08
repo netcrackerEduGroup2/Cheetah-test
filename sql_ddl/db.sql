@@ -16,7 +16,8 @@ create table users
     name         varchar(100)        not null,
     role         user_role           not null,
     status       user_status         not null,
-    last_request timestamp
+    last_request timestamp                   ,
+    photo_url     varchar(300)
 );
 
 create table reset_token

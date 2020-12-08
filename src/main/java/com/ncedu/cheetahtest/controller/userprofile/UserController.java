@@ -1,8 +1,7 @@
 package com.ncedu.cheetahtest.controller.userprofile;
 
-import com.ncedu.cheetahtest.entity.testscenario.ResponseTestScenario;
 import com.ncedu.cheetahtest.entity.user.*;
-import com.ncedu.cheetahtest.service.cloud.AmazonClient;
+import com.ncedu.cheetahtest.service.cloud.AmazonClientService;
 import com.ncedu.cheetahtest.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.websocket.server.PathParam;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -18,12 +18,12 @@ import java.util.List;
 @CrossOrigin(origins = "${frontend.ulr}")
 public class UserController {
     private final UserService userService;
-    private final AmazonClient amazonClient;
+    private final AmazonClientService amazonClientService;
 
     @Autowired
-    public UserController(UserService userService, AmazonClient amazonClient) {
+    public UserController(UserService userService, AmazonClientService amazonClientService) {
         this.userService = userService;
-        this.amazonClient = amazonClient;
+        this.amazonClientService = amazonClientService;
     }
 
     @PutMapping
@@ -77,13 +77,14 @@ public class UserController {
     }
 
     @PostMapping("/edit-user/uploadPhoto")
-    public String uploadFile(@RequestPart(value = "file") MultipartFile file) { //TODO add id
-        return this.amazonClient.uploadFile(file);
+    public String uploadFile(@RequestPart(value = "file") MultipartFile file,
+                             @RequestParam("id") int id) {
+        return this.amazonClientService.uploadUserPhoto(file, id);
     }
 
-    @DeleteMapping("/edit-user/uploadPhoto") //TODO this block should be deleted (only for tests)
+    @DeleteMapping("/edit-user/deletePhoto")
     public String deleteTestScenario(@RequestParam("url") String url) {
-        return this.amazonClient.deleteFileFromS3Bucket(url);
+        return this.amazonClientService.deleteUserPhotoFromS3Bucket(url);
     }
 }
 

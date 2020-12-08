@@ -116,6 +116,18 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
     }
 
     @Override
+    public void setPhotoUrl(long id, String url) {
+
+        jdbcTemplate.execute(SET_USER_PHOTO_URL_SQL,
+                (PreparedStatementCallback<Boolean>) preparedStatement -> {
+                    preparedStatement.setString(1, url);
+                    preparedStatement.setLong(2, id);
+
+                    return preparedStatement.execute();
+                });
+    }
+
+    @Override
     public User editUser(UserDto user) {
 
         int result = jdbcTemplate.update(EDIT_USER_SQL,
