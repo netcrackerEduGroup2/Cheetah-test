@@ -47,6 +47,21 @@ public class ParametersDaoImpl implements ParametersDao {
     }
 
     @Override
+    public List<Parameter> findAllByType(String type, int limit, int offset) {
+
+        return jdbcTemplate.query(
+                FIND_ALL_BY_TYPE,
+                preparedStatement -> {
+                    preparedStatement.setString(1,type);
+                    preparedStatement.setInt(2,limit);
+                    preparedStatement.setInt(3,offset);
+                },
+                new ParametersRowMapper()
+        );
+
+    }
+
+    @Override
     public Parameter createParameter(Parameter parameter) {
         jdbcTemplate.update(
                 CREATE_PARAMETERS,
@@ -83,6 +98,16 @@ public class ParametersDaoImpl implements ParametersDao {
                     preparedStatement.setInt(1, idDataSet);
                     preparedStatement.setString(2, type);
                 },
+                new CountParametersRowMapper());
+        if (count.size() == 1) return count.get(0);
+        else return 0;
+    }
+
+    @Override
+    public int getTotalAllElements(String  type) {
+        List<Integer> count = jdbcTemplate.query(
+                GET_TOTAL_ALL_ELEMENTS,
+                preparedStatement -> preparedStatement.setString(1, type),
                 new CountParametersRowMapper());
         if (count.size() == 1) return count.get(0);
         else return 0;

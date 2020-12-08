@@ -119,15 +119,6 @@ create table comp_act_prior
     priority  integer            NOT NULL
 );
 
-CREATE TABLE comp_scenario
-(
-    id               serial PRIMARY KEY NOT NULL,
-    compound_id      integer            NOT NULL REFERENCES compound (id),
-    test_scenario_id integer            NOT NULL REFERENCES test_scenario (id),
-    priority         integer            NOT NULL,
-    comp_status      compound_status    NOT NULL
-);
-
 CREATE TABLE history_test_case
 (
     id              serial PRIMARY KEY  NOT NULL,
@@ -148,6 +139,4 @@ CREATE TABLE action_result
   argument         varchar(100)        NOT NULL,
   id_action       integer              NOT NULL REFERENCES action (id)
 );
-
-
 
