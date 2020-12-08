@@ -17,6 +17,7 @@ public class TestCaseController {
     private final TestCaseService testCaseService;
     private final TestCaseLauncher testCaseLauncher;
 
+
     @GetMapping("/test-cases")
     public TestCasePaginated getActiveTestCases(@RequestParam int page,
                                                 @RequestParam int size) {
@@ -97,8 +98,9 @@ public class TestCaseController {
     }
 
     @GetMapping("/getActScenariosById/{id}")
-    public void runTestCase(@PathVariable int id){
+    public ResponseEntity<String> runTestCase(@PathVariable int id)   {
         testCaseLauncher.formActionForSelenium(id);
+        return ResponseEntity.ok("Test case run is being executed.");
     }
 
 }
