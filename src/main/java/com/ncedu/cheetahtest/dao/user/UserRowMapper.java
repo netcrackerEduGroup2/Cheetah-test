@@ -17,6 +17,7 @@ public class UserRowMapper implements RowMapper<User> {
     public static final String ROLE = "role";
     public static final String STATUS = "status";
     public static final String LAST_REQUEST = "last_request";
+    public static final String PHOTO_URL = "photo_url";
 
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -29,6 +30,7 @@ public class UserRowMapper implements RowMapper<User> {
         user.setRole(UserRole.valueOf(rs.getString(ROLE)));
         user.setStatus(UserStatus.valueOf(rs.getString(STATUS)));
         user.setLastRequest(rs.getTimestamp(LAST_REQUEST));
+        user.setPhotoUrl(rs.getString(PHOTO_URL));
 
         return user;
     }

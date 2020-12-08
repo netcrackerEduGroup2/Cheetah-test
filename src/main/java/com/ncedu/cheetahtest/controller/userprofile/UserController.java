@@ -1,13 +1,12 @@
 package com.ncedu.cheetahtest.controller.userprofile;
 
-import com.ncedu.cheetahtest.entity.user.User;
-import com.ncedu.cheetahtest.entity.user.UserDto;
-import com.ncedu.cheetahtest.entity.user.UserPaginatedDto;
-import com.ncedu.cheetahtest.entity.user.UserStatus;
+import com.ncedu.cheetahtest.entity.user.*;
+import com.ncedu.cheetahtest.service.cloud.AmazonClientService;
 import com.ncedu.cheetahtest.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,10 +16,12 @@ import java.util.List;
 @CrossOrigin(origins = "${frontend.ulr}")
 public class UserController {
     private final UserService userService;
+    private final AmazonClientService amazonClientService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AmazonClientService amazonClientService) {
         this.userService = userService;
+        this.amazonClientService = amazonClientService;
     }
 
     @PutMapping
@@ -71,6 +72,18 @@ public class UserController {
             @RequestParam String title
     ) {
         return userService.findUsersByName(page, size, title);
+    }
+
+
+    @PostMapping("/uploadUserPhoto")
+    public String uploadFile(@RequestPart(value = "file") MultipartFile file,
+                             @RequestParam("id") int id) {
+        return this.amazonClientService.uploadUserPhoto(file, id);
+    }
+
+    @DeleteMapping("/deleteUserPhoto")
+    public String deleteTestScenario(@RequestParam("url") String url) {
+        return this.amazonClientService.deleteUserPhotoFromS3Bucket(url);
     }
 
     @GetMapping

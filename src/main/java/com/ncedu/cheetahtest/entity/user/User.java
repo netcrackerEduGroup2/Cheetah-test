@@ -14,12 +14,13 @@ public class User {
     private UserRole role;
     private UserStatus status;
     private Date lastRequest;
+    private String photoUrl;
 
     public User() {
 
     }
 
-    public User(int id, String email, String pass, String name, UserRole role, UserStatus status, Date lastRequest) {
+    public User(int id, String email, String pass, String name, UserRole role, UserStatus status, Date lastRequest, String photoUrl) {
         this.id = id;
         this.email = email;
         this.pass = pass;
@@ -27,6 +28,7 @@ public class User {
         this.role = role;
         this.status = status;
         this.lastRequest = lastRequest;
+        this.photoUrl = photoUrl;
     }
 
     public User(int id) {
