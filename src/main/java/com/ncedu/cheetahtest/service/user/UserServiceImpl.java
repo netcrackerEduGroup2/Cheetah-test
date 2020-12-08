@@ -2,9 +2,11 @@ package com.ncedu.cheetahtest.service.user;
 
 import com.ncedu.cheetahtest.dao.genericdao.AbstractActiveDao;
 import com.ncedu.cheetahtest.dao.resettoken.ResetTokenDao;
-
-import com.ncedu.cheetahtest.entity.user.*;
 import com.ncedu.cheetahtest.dao.user.UserDao;
+import com.ncedu.cheetahtest.entity.user.ResetToken;
+import com.ncedu.cheetahtest.entity.user.User;
+import com.ncedu.cheetahtest.entity.user.UserDto;
+import com.ncedu.cheetahtest.entity.user.UserPaginatedDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -134,4 +136,9 @@ public class UserServiceImpl implements UserService {
         }
         return new UserPaginatedDto(usersDto, total);
     }
+
+  @Override
+  public List<UserDto> findByEmail(String email) {
+    return userDao.findByEmail(email);
+  }
 }

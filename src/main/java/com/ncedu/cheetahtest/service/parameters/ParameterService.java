@@ -5,6 +5,7 @@ import com.ncedu.cheetahtest.entity.parameter.Parameter;
 
 public interface ParameterService {
     PaginationParameter findByType(String type,int idDataSet,int page,int size);
+    PaginationParameter findAllByType(String type , int page,int size);
     Parameter createParameter(Parameter parameter);
     Parameter editParameter(Parameter parameter,int id);
     void deleteParameter(int id);
