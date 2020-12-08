@@ -153,9 +153,9 @@ public abstract class AbstractDaoImpl<T> implements AbstractActiveDao<T> {
         return 0;
     }
 
-    private int getOffset(int page, int size) {
+    public static int getOffset(int page, int size) {
         if (page <= 0 || size < 0) {
-            throw new InvalidParametersException("In " + getClass().getName());
+            throw new InvalidParametersException();
         }
 
         return size * (page - 1);
