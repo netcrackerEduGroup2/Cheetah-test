@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.List;
 
+import static com.ncedu.cheetahtest.dao.hiatoryaction.HistoryActionConstant.GET_ALL_ID_HISTORY_TEST_CASE;
 import static com.ncedu.cheetahtest.dao.hiatoryaction.HistoryActionConstant.GET_RUN_ACRIONS_BY_ID_TEST_CASE_HISTORY;
 
 @Repository
@@ -24,8 +25,13 @@ public class RunHistoryActionDaoImpl implements RunHistoryActionDao {
     @Override
     public List<RunAction> getRunActionByTestHistoryId(int testCaseHistoryId) {
         return jdbcTemplate.query(GET_RUN_ACRIONS_BY_ID_TEST_CASE_HISTORY,
-                preparedStatement -> {
-                    preparedStatement.setInt(1, testCaseHistoryId);
-                }, new RunActionMapper());
+                preparedStatement ->
+                    preparedStatement.setInt(1, testCaseHistoryId),
+                new RunActionMapper());
+    }
+
+    @Override
+    public List<Integer> getAllTestAcseHistoryId() {
+        return jdbcTemplate.queryForList(GET_ALL_ID_HISTORY_TEST_CASE, Integer.class);
     }
 }

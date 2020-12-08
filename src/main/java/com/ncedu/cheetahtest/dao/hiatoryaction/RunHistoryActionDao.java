@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface RunHistoryActionDao {
     List<RunAction> getRunActionByTestHistoryId(int testCaseHistoryId);
+    List<Integer> getAllTestAcseHistoryId();
 }

@@ -9,10 +9,10 @@ import java.sql.SQLException;
 
 public class HistoryTestCaseMapper implements RowMapper<HistoryTestCase> {
 
-    public static final String ID = "id";
-    public static final String RESULT = "result";
-    public static final String DATA_COMPLETED = "date_completed";
-    public static final String ID_TEST_CASE = "id_test_case";
+    public static final String ID = "h_id";
+    public static final String RESULT = "h_result";
+    public static final String DATA_COMPLETED = "h_date_completed";
+    public static final String TITLE= "t_title";
 
     @Override
     public HistoryTestCase mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -21,7 +21,7 @@ public class HistoryTestCaseMapper implements RowMapper<HistoryTestCase> {
         historyTestCase.setId(resultSet.getInt(ID));
         historyTestCase.setResult(TestCaseResult.valueOf(resultSet.getString(RESULT)));
         historyTestCase.setDataCompleted(resultSet.getTimestamp(DATA_COMPLETED));
-        historyTestCase.setIdTestCase(resultSet.getInt(ID_TEST_CASE));
+        historyTestCase.setTitle(resultSet.getString(TITLE));
 
         return historyTestCase;
     }

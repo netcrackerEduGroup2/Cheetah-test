@@ -61,8 +61,8 @@ CREATE TABLE parameters
     id          serial PRIMARY KEY  NOT NULL,
     data_set_id integer             NOT NULL REFERENCES data_set (id)
         on update cascade on delete cascade,
-    type        varchar(300),
-    value       varchar(300)
+    type        varchar(100) UNIQUE NOT NULL,
+    value       varchar(100)        NOT NULL
 );
 
 CREATE TABLE user_project
@@ -119,15 +119,6 @@ create table comp_act_prior
     priority  integer            NOT NULL
 );
 
-CREATE TABLE comp_scenario
-(
-    id               serial PRIMARY KEY NOT NULL,
-    compound_id      integer            NOT NULL REFERENCES compound (id),
-    test_scenario_id integer            NOT NULL REFERENCES test_scenario (id),
-    priority         integer            NOT NULL,
-    comp_status      compound_status    NOT NULL
-);
-
 CREATE TABLE history_test_case
 (
     id              serial PRIMARY KEY  NOT NULL,
@@ -138,15 +129,14 @@ CREATE TABLE history_test_case
 
 CREATE TABLE action_result
 (
-    id              serial PRIMARY KEY  NOT NULL,
-    compound_id     integer,
-    result          varchar(100)        NOT NULL,
-    screenshot_url  varchar(100)        NOT NULL,
-    general_order    integer             NOT NULL,
-    id_history_test_case    integer     NOT NULL REFERENCES history_test_case(id),
-    element          varchar(100)        NOT NULL,
-    argument         varchar(100)        NOT NULL,
-    id_action       integer       NOT NULL REFERENCES action (id)
+  id              serial PRIMARY KEY  NOT NULL,
+  compound_id     integer,
+  result          varchar(100)        NOT NULL,
+  screenshot_url  varchar(100)        NOT NULL,
+  general_order    integer             NOT NULL,
+  id_history_test_case    integer     NOT NULL REFERENCES history_test_case(id),
+  action_element          varchar(100)        NOT NULL,
+  argument         varchar(100)        NOT NULL,
+  id_action       integer              NOT NULL REFERENCES action (id)
 );
-
 

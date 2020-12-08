@@ -2,7 +2,7 @@ package com.ncedu.cheetahtest.service.historyaction;
 
 import java.util.List;
 
-public interface HistoryActionService<T> {
+public interface HistoryActionService {
 
-    List<T> getActionByIdTestCaseHistory(int idTestCaseHistory);
+    List<HistoryAction> getActionByIdTestCaseHistory(int idTestCaseHistory);
 }

@@ -10,5 +10,5 @@ public class HistoryTestCase {
     private int id;
     private TestCaseResult result;
     private Date dataCompleted;
-    private int idTestCase;
+    private String title;
 }

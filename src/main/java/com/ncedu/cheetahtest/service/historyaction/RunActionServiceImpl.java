@@ -13,13 +13,13 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RunActionServiceImpl implements HistoryActionService<RunActionDto>  {
+public class RunActionServiceImpl implements RunActionService  {
 
     private final RunHistoryActionDao runHistoryActionDao;
 
     @Override
     public List<RunActionDto> getActionByIdTestCaseHistory(int idTestCaseHistory) {
-        List<RunAction> runActions = new ArrayList<>();
+        List<RunAction> runActions = runHistoryActionDao.getRunActionByTestHistoryId(idTestCaseHistory);
         List<RunActionDto> runActionDtos = new ArrayList<>();
 
         for (RunAction action : runActions) {
@@ -34,5 +34,10 @@ public class RunActionServiceImpl implements HistoryActionService<RunActionDto> 
                             action.getArgument()));
         }
         return runActionDtos;
+    }
+
+    @Override
+    public List<Integer> getAllIdTestCase() {
+        return runHistoryActionDao.getAllTestAcseHistoryId();
     }
 }

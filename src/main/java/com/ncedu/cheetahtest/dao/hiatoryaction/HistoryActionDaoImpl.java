@@ -9,7 +9,8 @@ import javax.sql.DataSource;
 
 import java.util.List;
 
-import static com.ncedu.cheetahtest.dao.hiatoryaction.HistoryActionConstant.*;
+import static com.ncedu.cheetahtest.dao.hiatoryaction.HistoryActionConstant.ADD_HISTORY_ACTION;
+import static com.ncedu.cheetahtest.dao.hiatoryaction.HistoryActionConstant.GET_HISTORY_ACTION_BY_TEST_HISTORY_ID;
 
 @Repository
 public class HistoryActionDaoImpl implements HistoryActionDao {
@@ -20,6 +21,7 @@ public class HistoryActionDaoImpl implements HistoryActionDao {
     public HistoryActionDaoImpl(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
+
 
     @Override
     public void addAction(String result, String screenshotURL, int generalOrder,
@@ -41,6 +43,8 @@ public class HistoryActionDaoImpl implements HistoryActionDao {
     @Override
     public List<HistoryAction> getHistoryActionByTestHistoryId(int testCaseHistoryId) {
         return jdbcTemplate.query(GET_HISTORY_ACTION_BY_TEST_HISTORY_ID,
-                preparedStatement -> preparedStatement.setInt(1, testCaseHistoryId), new HistoryAcrionMapper());
+                preparedStatement ->
+                        preparedStatement.setInt(1, testCaseHistoryId),
+                new HistoryAcrionMapper());
     }
 }
