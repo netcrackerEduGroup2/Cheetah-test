@@ -12,6 +12,7 @@ import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 import com.ncedu.cheetahtest.service.selenium.TestCaseExecutor;
 import com.ncedu.cheetahtest.service.selenium.TestCaseExecutorImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TestCaseLauncherImpl implements TestCaseLauncher {
 
     private final ActScenarioDao actScenarioDao;
@@ -38,7 +40,7 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
         List<SeleniumAction> seleniumActions = mapActScenarioToSeleniumAction(actScenarios);
         List<ActionResult> actionResults = processActions(seleniumActions, testCaseId);
 
-        actionResults.forEach(actionResult -> System.out.println(actionResult + "\n"));
+        actionResults.forEach(actionResult -> log.info(actionResult + "\n"));
     }
 
     public List<SeleniumAction> mapActScenarioToSeleniumAction(
