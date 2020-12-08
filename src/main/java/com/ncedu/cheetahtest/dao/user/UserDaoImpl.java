@@ -1,17 +1,15 @@
 package com.ncedu.cheetahtest.dao.user;
 
 import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
-import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
+import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -191,6 +189,14 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
         return jdbcTemplate.queryForObject(COUNT_USER_BY_EMAIL_NAME_ROLE_SQL,
                 new Object[] {"%" + email + "%", "%" + name + "%", preparateRole},
                 Integer.class);
+    }
+    @Override
+    public List<UserDto> findByEmail(String title) {
+        return jdbcTemplate.query(
+                FIND_BY_EMAIL,
+                preparedStatement -> preparedStatement.setString(1,title),
+                new UserDtoRowMapper()
+        );
     }
 }
 

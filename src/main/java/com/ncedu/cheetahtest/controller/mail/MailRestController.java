@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -54,6 +55,13 @@ public class MailRestController {
         emailService.sendMessageWithAttachment(email.getEmail(), constructUrl(token), SUBJECT, HTML_PATH);
 
         return new ResponseEntity<>(new GenericResponse("user.fetched"), HttpStatus.OK);
+    }
+    @PostMapping("/projects/{idProject}/test-cases/{idTestCase}/send-report")
+    public ResponseEntity<GenericResponse> sendMessage(@PathVariable int idTestCase,
+                                                        @PathVariable int idProject,
+                                                       @RequestBody List<String> emails){
+            emailService.sendTestCaseReportToAddresses(emails,idTestCase,idProject);
+            return new ResponseEntity<>(new GenericResponse("Success"), HttpStatus.OK);
     }
 
     @PostMapping("/save-password")

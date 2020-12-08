@@ -100,6 +100,8 @@ CREATE TABLE act_scenario
     action_status    action_status      NOT NULL,
     param_id         integer REFERENCES parameters (id)
         on update cascade on delete cascade
+
+
 );
 
 create table compound

@@ -1,12 +1,14 @@
 package com.ncedu.cheetahtest.controller.userprofile;
 
-import com.ncedu.cheetahtest.entity.user.*;
+import com.ncedu.cheetahtest.entity.user.User;
+import com.ncedu.cheetahtest.entity.user.UserDto;
+import com.ncedu.cheetahtest.entity.user.UserPaginatedDto;
+import com.ncedu.cheetahtest.entity.user.UserStatus;
 import com.ncedu.cheetahtest.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -37,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User searchUser(@PathParam("id") String id) {
+    public User searchUser(@PathVariable("id") String id) {
         return userService.findUserById(Long.parseLong(id));
     }
 
@@ -69,6 +71,11 @@ public class UserController {
             @RequestParam String title
     ) {
         return userService.findUsersByName(page, size, title);
+    }
+
+    @GetMapping
+    public List<UserDto> findByEmail(@RequestParam("email") String email) {
+        return userService.findByEmail(email);
     }
 }
 
