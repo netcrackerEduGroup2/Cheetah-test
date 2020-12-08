@@ -42,9 +42,9 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
         List<ActScenario> actScenarios = actScenarioDao.getAllByTestCaseId(testCaseId);
 
         List<SeleniumAction> seleniumActions = mapActScenarioToSeleniumAction(actScenarios);
-        List<ActionResult> actionResults = processActions(seleniumActions, testCaseId);
+        processActions(seleniumActions, testCaseId);
 
-        actionResults.forEach(actionResult -> log.info(actionResult + "\n"));
+
     }
 
     public List<SeleniumAction> mapActScenarioToSeleniumAction(
@@ -81,6 +81,9 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
             SeleniumAction theAction = actionList.get(i);
 
             ActionResult theActionResult = testCaseExecutor.executeAction(theAction);
+
+            log.info(theActionResult.toString());
+
             actionResults.add(theActionResult);
 
             Integer compId = theActionResult.getAction().getCompoundId();
