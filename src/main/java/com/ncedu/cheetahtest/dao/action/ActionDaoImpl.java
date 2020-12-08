@@ -61,6 +61,16 @@ public class ActionDaoImpl implements ActionDao {
         );
     }
 
+    //getActionsInCompound, but without pagination
+    @Override
+    public List<Action> getActionsInCompound(int idCompound) {
+        return jdbcTemplate.query(
+                GET_ACTIONS_IN_COMPOUND_WITHOUT_PAGINATION,
+                preparedStatement -> preparedStatement.setInt(1, idCompound),
+                new ActionRowMapper()
+        );
+    }
+
     @Override
     public int getTotalActionsInComp(int idCompound) {
         List<Integer> counts = jdbcTemplate.query(

@@ -21,6 +21,8 @@ public interface UserDao {
 
     void setUserLastRequest(String email, Date lastRequest);
 
+    void setPhotoUrl(long id, String url);
+
     User editUser(UserDto user);
 
     User changeUserStatus(long id, String status);

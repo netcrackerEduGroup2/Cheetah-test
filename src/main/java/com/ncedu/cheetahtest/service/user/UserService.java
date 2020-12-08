@@ -20,6 +20,8 @@ public interface UserService {
 
     void setUserLastRequest(String email, Date date);
 
+    void setUserPhotoUrl(long id, String url);
+
     User editUser(UserDto user);
 
     User changeUserStatus(long id, String status);
@@ -29,7 +31,7 @@ public interface UserService {
     UserPaginatedDto getAllActiveUser(int size, int page);
 
     UserPaginatedDto getSearchUserByNameEmailRole(String user, String email,
-                                                   String role, int size, int page);
+                                                  String role, int size, int page);
 
     List<UserDto> findUsersByName(int page, int size, String title);
 

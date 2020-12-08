@@ -107,6 +107,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public void setUserPhotoUrl(long id, String url) {
+        userDao.setPhotoUrl(id, url);
+    }
+
+    @Override
+    @Transactional
     public UserPaginatedDto getAllActiveUser(int size, int page) {
         List<User> users = userGenDao.getActivePaginated(page, size);
         int total = userGenDao.getAmountActiveElements();

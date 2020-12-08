@@ -17,8 +17,8 @@ public class TestScenarioController {
     }
 
     @PostMapping
-    public TestScenario createTestScenario(@RequestBody TestScenario testScenario) {
-        return testScenarioService.createTestScenario(testScenario);
+    public TestScenario createTestScenario(@RequestBody TestScenarioCreatingBody testScenCreatBody) {
+        return testScenarioService.createTestScenario(testScenCreatBody.getTestScenario(), testScenCreatBody.getActAndCompID());
     }
 
     @GetMapping

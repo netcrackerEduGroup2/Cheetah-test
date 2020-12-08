@@ -9,6 +9,8 @@ public interface CompoundDao {
 
     List<Compound> selectCompoundsByTitleLike(String title, int limit, int size);
 
+    List<Compound> selectCompoundsByTitleLike(String title);
+
     Compound editCompound(Compound compoundDTO, int id);
 
     Compound findByTitle(String title);
