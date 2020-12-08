@@ -3,6 +3,7 @@ package com.ncedu.cheetahtest.service.selenium;
 import com.ncedu.cheetahtest.entity.selenium.ActionResult;
 import com.ncedu.cheetahtest.entity.selenium.ActionResultStatus;
 import com.ncedu.cheetahtest.entity.selenium.SeleniumAction;
+import com.ncedu.cheetahtest.service.cloud.AmazonClientService;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -17,11 +18,13 @@ import java.io.File;
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class TestCaseExecutorImpl implements TestCaseExecutor {
 
+    private AmazonClientService amazonClientService;
     private ActionExecutorProvider actionExecutorProvider;
     private WebDriver webDriver;
 
     @Autowired
-    public TestCaseExecutorImpl(ActionExecutorProvider actionExecutorProvider, WebDriver webDriver) {
+    public TestCaseExecutorImpl(AmazonClientService amazonClientService, ActionExecutorProvider actionExecutorProvider, WebDriver webDriver) {
+        this.amazonClientService = amazonClientService;
         this.actionExecutorProvider = actionExecutorProvider;
         this.webDriver = webDriver;
     }
@@ -45,9 +48,8 @@ public class TestCaseExecutorImpl implements TestCaseExecutor {
         actionResult = actionExecutor.execute(action, webDriver);
 
         File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
-
-        // TODO add screenshot saving and getting a link on it
-        actionResult.setScreenshotUrl("/screenshot/url");
+        String screenshotUrl = amazonClientService.uploadScreenshot(screenshot);
+        actionResult.setScreenshotUrl(screenshotUrl);
 
         return actionResult;
     }

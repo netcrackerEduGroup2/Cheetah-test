@@ -20,7 +20,7 @@ public class SeleniumConfig {
     public WebDriver getWebDriver() {
         ChromeOptions options = new ChromeOptions();
         options.setBinary(googleChromeBin);
-        options.addArguments("--headless", "--disable-gpu", "--no-sandbox");
+        options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--window-size=1920,1080");
 
         return new ChromeDriver(options);
     }
