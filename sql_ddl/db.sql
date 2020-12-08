@@ -118,3 +118,25 @@ create table comp_act_prior
     comp_id   integer            NOT NULL REFERENCES compound (id),
     priority  integer            NOT NULL
 );
+
+CREATE TABLE history_test_case
+(
+    id              serial PRIMARY KEY  NOT NULL,
+    result          test_case_result    NOT NULL,
+    date_completed  timestamp           NOT NULL,
+    id_test_case    integer             NOT NULL REFERENCES test_case(id)
+);
+
+CREATE TABLE action_result
+(
+  id              serial PRIMARY KEY  NOT NULL,
+  compound_id     integer,
+  result          varchar(100)        NOT NULL,
+  screenshot_url  varchar(100)        NOT NULL,
+  general_order    integer             NOT NULL,
+  id_history_test_case    integer     NOT NULL REFERENCES history_test_case(id),
+  action_element          varchar(100)        NOT NULL,
+  argument         varchar(100)        NOT NULL,
+  id_action       integer              NOT NULL REFERENCES action (id)
+);
+
