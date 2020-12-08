@@ -58,6 +58,18 @@ public class CompoundDaoImpl implements CompoundDao {
     }
 
     @Override
+    public List<Compound> selectCompoundsByTitleLike(String title) {
+        return jdbcTemplate.query(
+                SELECT_COMPOUND_BY_TITLE_LIKE_WITHOUT_PAGINATION,
+                preparedStatement -> {
+                    preparedStatement.setString(1, title);
+                },
+                new CompoundRowMapper()
+        );
+
+    }
+
+    @Override
     public Compound editCompound(Compound compound, int id) {
         jdbcTemplate.update(
                 EDIT_COMPOUND,

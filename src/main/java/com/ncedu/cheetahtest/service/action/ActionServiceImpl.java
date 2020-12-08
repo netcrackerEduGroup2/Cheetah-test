@@ -42,6 +42,11 @@ public class ActionServiceImpl implements ActionService {
         return paginationAction;
     }
 
+    @Override
+    public List<Action> getActionsInCompound(int idCompound) {
+        return actionDao.getActionsInCompound(idCompound);
+    }
+
 
     @Override
     public Action editActionDescription(String description, int id) {

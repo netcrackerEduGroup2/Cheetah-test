@@ -68,6 +68,11 @@ public class CompoundServiceImpl implements CompoundService {
     }
 
     @Override
+    public List<Compound> getCompoundsByTitleLike(String title) {
+        return compoundDao.selectCompoundsByTitleLike(title);
+    }
+
+    @Override
     public PaginationCompound getCompoundsByTitleLike(String title, int size, int page) {
         PaginationCompound paginationCompound = new PaginationCompound();
         int totalElements = compoundDao.getTotalCompByTitle(title);

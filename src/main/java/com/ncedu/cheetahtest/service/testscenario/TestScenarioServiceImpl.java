@@ -1,17 +1,26 @@
 package com.ncedu.cheetahtest.service.testscenario;
 
+import com.ncedu.cheetahtest.dao.actscenario.ActScenarioDao;
+import com.ncedu.cheetahtest.dao.compscenario.CompScenarioDao;
 import com.ncedu.cheetahtest.dao.genericdao.AbstractActiveDao;
 import com.ncedu.cheetahtest.dao.testscenario.TestScenarioDao;
+import com.ncedu.cheetahtest.entity.action.Action;
+import com.ncedu.cheetahtest.entity.actscenario.ActScenario;
+import com.ncedu.cheetahtest.entity.compscenario.CompScenario;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testscenario.*;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import com.ncedu.cheetahtest.exception.testscenario.TestScenarioAlreadyExistsException;
 import com.ncedu.cheetahtest.exception.testscenario.TestScenarioNotFoundException;
+import com.ncedu.cheetahtest.service.action.ActionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.ncedu.cheetahtest.entity.testscenario.StatusTestScenario.ACTIVE;
+import static com.ncedu.cheetahtest.entity.testscenario.StatusTestScenario.INACTIVE;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +29,8 @@ public class TestScenarioServiceImpl implements TestScenarioService {
     private final TestScenarioDao testScenarioDao;
     private final AbstractActiveDao<TestScenario> testScenarioGenDao;
     private final AbstractActiveDao<TestCase> testCaseGenDao;
+    private final ActScenarioDao actScenarioDao;
+    private final ActionService actionService;
 
     @Override
     @Transactional
@@ -35,7 +46,8 @@ public class TestScenarioServiceImpl implements TestScenarioService {
 
     @Override
     @Transactional
-    public TestScenario createTestScenario(TestScenario testScenario) {
+    public TestScenario createTestScenario(TestScenario testScenario, List<ActionsAndCompoundsID> actAndCompID) {
+        TestScenario createdTestScen;
         TestScenario testScenarioWithSameTitle = testScenarioDao
                 .findTestScenarioByTitleExceptCurrent(
                         testScenario.getTitle(),
@@ -50,7 +62,33 @@ public class TestScenarioServiceImpl implements TestScenarioService {
             throw new TestScenarioAlreadyExistsException();
         }
 
-        return testScenarioDao.createTestScenario(testScenario);
+        testScenario.setStatus(ACTIVE);
+        createdTestScen = testScenarioDao.createTestScenario(testScenario);
+
+        CompScenario compScenario = new CompScenario();
+        ActScenario actScenario = new ActScenario();
+
+        int priority = 1;
+        for (ActionsAndCompoundsID actAndComp: actAndCompID) {
+            if (actAndComp.getKind().equals("ACTION")){
+                actScenario.setActionId(actAndComp.getId());
+                actScenario.setTestScenarioId(createdTestScen.getId());
+                actScenario.setPriority(priority);
+                actScenarioDao.createActScenario(actScenario);
+            } else if (actAndComp.getKind().equals("COMPOUND")){
+                List<Action> actions = actionService.getActionsInCompound(actAndComp.getId());
+                for(Action action: actions){
+                    actScenario.setActionId(action.getId());
+                    actScenario.setTestScenarioId(createdTestScen.getId());
+                    actScenario.setPriority(priority);
+                    actScenarioDao.createActScenario(actScenario);
+                    priority++;
+                }
+            }
+            priority++;
+        }
+
+        return createdTestScen;
     }
 
 
