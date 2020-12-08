@@ -9,6 +9,7 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ncedu.cheetahtest.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Objects;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AmazonClientService {
@@ -49,11 +51,20 @@ public class AmazonClientService {
             String fileName = generateFileName(multipartFile);
             fileUrl = "https://" + bucketName + endpointUrl + "/userPhoto/" + fileName;
             uploadFileTos3bucket("userPhoto/" + fileName, file);
-            file.delete();
+
+            try {
+                if (file.delete()) {
+                    System.out.println(file.getName() + " deleted locally");
+                } else {
+                    System.out.println("failed locally deleting file");
+                }
+            } catch (Exception e) {
+                log.error(e.toString());
+            }
 
             userService.setUserPhotoUrl(id, fileUrl);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.toString());
         }
         return fileUrl;
     }
@@ -73,10 +84,10 @@ public class AmazonClientService {
                     System.out.println("failed locally deleting file");
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e.toString());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.toString());
         }
         return fileUrl;
     }

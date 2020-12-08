@@ -75,13 +75,13 @@ public class UserController {
         return userService.findUsersByName(page, size, title);
     }
 
-    @PostMapping("/edit-user/uploadPhoto")
+    @PostMapping("/uploadUserPhoto")
     public String uploadFile(@RequestPart(value = "file") MultipartFile file,
                              @RequestParam("id") int id) {
         return this.amazonClientService.uploadUserPhoto(file, id);
     }
 
-    @DeleteMapping("/edit-user/deletePhoto")
+    @DeleteMapping("/deleteUserPhoto")
     public String deleteTestScenario(@RequestParam("url") String url) {
         return this.amazonClientService.deleteUserPhotoFromS3Bucket(url);
     }
