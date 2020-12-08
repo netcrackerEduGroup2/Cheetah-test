@@ -84,11 +84,11 @@ public class UserController {
     @DeleteMapping("/deleteUserPhoto")
     public String deleteTestScenario(@RequestParam("url") String url) {
         return this.amazonClientService.deleteUserPhotoFromS3Bucket(url);
+    }
 
     @GetMapping
     public List<UserDto> findByEmail(@RequestParam("email") String email) {
         return userService.findByEmail(email);
-
     }
 }
 
