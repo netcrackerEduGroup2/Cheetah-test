@@ -1,12 +1,10 @@
 package com.ncedu.cheetahtest.service.testscenario;
 
 import com.ncedu.cheetahtest.dao.actscenario.ActScenarioDao;
-import com.ncedu.cheetahtest.dao.compscenario.CompScenarioDao;
 import com.ncedu.cheetahtest.dao.genericdao.AbstractActiveDao;
 import com.ncedu.cheetahtest.dao.testscenario.TestScenarioDao;
 import com.ncedu.cheetahtest.entity.action.Action;
 import com.ncedu.cheetahtest.entity.actscenario.ActScenario;
-import com.ncedu.cheetahtest.entity.compscenario.CompScenario;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testscenario.*;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
@@ -20,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.ncedu.cheetahtest.entity.testscenario.StatusTestScenario.ACTIVE;
-import static com.ncedu.cheetahtest.entity.testscenario.StatusTestScenario.INACTIVE;
 
 @Service
 @RequiredArgsConstructor
@@ -65,7 +62,6 @@ public class TestScenarioServiceImpl implements TestScenarioService {
         testScenario.setStatus(ACTIVE);
         createdTestScen = testScenarioDao.createTestScenario(testScenario);
 
-        CompScenario compScenario = new CompScenario();
         ActScenario actScenario = new ActScenario();
 
         int priority = 1;
