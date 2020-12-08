@@ -26,25 +26,6 @@ public class HistoryTestCaseDaoImpl implements HistoryTestCaseDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-//    @Override
-//    public int addTestCase(String result, Date dateCompleted, int testCaseId) {
-//        KeyHolder keyHolder = new GeneratedKeyHolder();
-//
-//        jdbcTemplate.update(
-//                connection -> {
-//                    PreparedStatement ps = connection
-//                            .prepareStatement(ADD_HISTORY_TEST_CASE);
-//                    ps.setString(1, result);
-//                    ps.setTimestamp(2, new Timestamp(dateCompleted.getTime()));
-//                    ps.setInt(3, testCaseId);
-//                    return ps;
-//                }, keyHolder);
-//
-//
-//
-//        return (int) Objects.requireNonNull(keyHolder.getKey(), "Id is null");
-//    }
-
     @Override
     public int addTestCase(String result, Date dateCompleted, int testCaseId) {
 

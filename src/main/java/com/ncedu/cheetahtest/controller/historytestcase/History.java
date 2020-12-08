@@ -21,8 +21,6 @@ public class History {
     @GetMapping("/test-case")
     public HistoryTestCasePagination getHistoryTestCase(@RequestParam("size") int size,
                                                         @RequestParam("page") int page){
-        System.out.println(size);
-        System.out.println(page);
         return historyTestCaseService.getPage(size, page);
     }
 
