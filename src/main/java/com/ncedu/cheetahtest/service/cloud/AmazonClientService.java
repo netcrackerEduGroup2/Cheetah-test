@@ -54,9 +54,9 @@ public class AmazonClientService {
 
             try {
                 if (file.delete()) {
-                    System.out.println(file.getName() + " deleted locally");
+                    log.info(file.getName() + " deleted locally");
                 } else {
-                    System.out.println("failed locally deleting file");
+                    log.info("failed locally deleting file");
                 }
             } catch (Exception e) {
                 log.error(e.toString());
@@ -79,9 +79,9 @@ public class AmazonClientService {
 
             try {
                 if (file.delete()) {
-                    System.out.println(file.getName() + " deleted locally");
+                    log.info(file.getName() + " deleted locally");
                 } else {
-                    System.out.println("failed locally deleting file");
+                    log.info("failed locally deleting file");
                 }
             } catch (Exception e) {
                 log.error(e.toString());
