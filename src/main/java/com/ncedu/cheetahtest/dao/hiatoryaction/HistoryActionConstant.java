@@ -17,7 +17,7 @@ public class HistoryActionConstant {
             "   ar.screenshot_url AS ar_screenshot_url, a.type AS a_type," +
             "   ar.action_element AS ar_action_element, ar.argument AS ar_argument" +
             " FROM action_result AS ar INNER JOIN action AS a ON ar.id_action = a.id " +
-            " WHERE ar.id_history_test_case=?; ";
+            " WHERE ar.id_history_test_case=? ORDER BY action_result.general_order; ";
 
     public static final String GET_ALL_ID_HISTORY_TEST_CASE =
             "SELECT id FROM history_test_case;";
