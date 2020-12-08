@@ -1,7 +1,9 @@
 package com.ncedu.cheetahtest.entity.runaction;
 
 import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
+import lombok.Data;
 
+@Data
 public class RunActionDto {
     private int id;
     private int compoundId;
