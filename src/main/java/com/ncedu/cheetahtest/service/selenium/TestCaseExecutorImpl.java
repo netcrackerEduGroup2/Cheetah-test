@@ -78,6 +78,7 @@ public class TestCaseExecutorImpl implements TestCaseExecutor {
             wait.until(expectation);
         } catch (InterruptedException e) {
             log.error("Timeout waiting for Page Load Request to complete. Exception: " + e.getMessage());
+            Thread.currentThread().interrupt();
         }
     }
 }
