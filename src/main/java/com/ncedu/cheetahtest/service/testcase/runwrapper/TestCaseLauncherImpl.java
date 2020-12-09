@@ -14,6 +14,8 @@ import com.ncedu.cheetahtest.service.selenium.TestCaseExecutorImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@EnableAsync
 public class TestCaseLauncherImpl implements TestCaseLauncher {
 
     private final ActScenarioDao actScenarioDao;
@@ -34,13 +37,14 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
 
     @Override
     @Transactional
+    @Async
     public void formActionForSelenium(int testCaseId) {
         List<ActScenario> actScenarios = actScenarioDao.getAllByTestCaseId(testCaseId);
 
         List<SeleniumAction> seleniumActions = mapActScenarioToSeleniumAction(actScenarios);
-        List<ActionResult> actionResults = processActions(seleniumActions, testCaseId);
+        processActions(seleniumActions, testCaseId);
 
-        actionResults.forEach(actionResult -> log.info(actionResult + "\n"));
+
     }
 
     public List<SeleniumAction> mapActScenarioToSeleniumAction(
@@ -77,6 +81,9 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
             SeleniumAction theAction = actionList.get(i);
 
             ActionResult theActionResult = testCaseExecutor.executeAction(theAction);
+
+            log.info(theActionResult.toString());
+
             actionResults.add(theActionResult);
 
             Integer compId = theActionResult.getAction().getCompoundId();

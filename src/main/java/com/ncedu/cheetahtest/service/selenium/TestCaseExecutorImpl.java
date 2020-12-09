@@ -4,18 +4,24 @@ import com.ncedu.cheetahtest.entity.selenium.ActionResult;
 import com.ncedu.cheetahtest.entity.selenium.ActionResultStatus;
 import com.ncedu.cheetahtest.entity.selenium.SeleniumAction;
 import com.ncedu.cheetahtest.service.cloud.AmazonClientService;
+import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.Objects;
 
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Slf4j
 public class TestCaseExecutorImpl implements TestCaseExecutor {
 
     private AmazonClientService amazonClientService;
@@ -47,6 +53,7 @@ public class TestCaseExecutorImpl implements TestCaseExecutor {
 
         actionResult = actionExecutor.execute(action, webDriver);
 
+        waitForPageLoaded();
         File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
         String screenshotUrl = amazonClientService.uploadScreenshot(screenshot);
         actionResult.setScreenshotUrl(screenshotUrl);
@@ -58,5 +65,20 @@ public class TestCaseExecutorImpl implements TestCaseExecutor {
     public void close() {
         webDriver.close();
         webDriver.quit();
+    }
+
+    public void waitForPageLoaded() {
+        ExpectedCondition<Boolean> expectation =
+                driver -> ((JavascriptExecutor) Objects.requireNonNull(driver))
+                        .executeScript("return document.readyState")
+                        .toString().equals("complete");
+        try {
+            Thread.sleep(1000);
+            WebDriverWait wait = new WebDriverWait(webDriver, 30);
+            wait.until(expectation);
+        } catch (InterruptedException e) {
+            log.error("Timeout waiting for Page Load Request to complete. Exception: " + e.getMessage());
+            Thread.currentThread().interrupt();
+        }
     }
 }
