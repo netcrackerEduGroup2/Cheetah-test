@@ -117,7 +117,12 @@
 			<artifactId>selenium-server</artifactId>
 			<version>4.0.0-alpha-2</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.impossibl.pgjdbc-ng</groupId>
+            <artifactId>pgjdbc-ng-all</artifactId>
+            <version>0.8.6</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

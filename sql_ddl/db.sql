@@ -7,6 +7,8 @@ create type test_case_status as enum ('ACTIVE' , 'INACTIVE');
 create type test_scenario_status as enum ('ACTIVE' , 'INACTIVE');
 create type test_case_result as enum ('FAILED' , 'COMPLETE', 'CREATED');
 create type user_project_status as enum ('WATCHER' , 'DEVELOPER');
+create type read_notification_status as enum ('UNREAD','READ');
+create type notification_status as enum ('COMPLETE', 'FAILED', 'INPROCESS');
 
 create table users
 (
@@ -16,8 +18,8 @@ create table users
     name         varchar(100)        not null,
     role         user_role           not null,
     status       user_status         not null,
-    last_request timestamp                   ,
-    photo_url     varchar(300)
+    last_request timestamp,
+    photo_url    varchar(300)
 );
 
 create table reset_token
@@ -70,8 +72,8 @@ CREATE TABLE user_project
 (
     id          serial PRIMARY KEY  NOT NULL,
 
-    project_id  integer      NOT NULL REFERENCES project (id),
-    user_id     integer      NOT NULL REFERENCES users (id),
+    project_id  integer             NOT NULL REFERENCES project (id),
+    user_id     integer             NOT NULL REFERENCES users (id),
     user_status user_project_status NOT NULL
 );
 
@@ -122,22 +124,51 @@ create table comp_act_prior
 
 CREATE TABLE history_test_case
 (
-    id              serial PRIMARY KEY  NOT NULL,
-    result          test_case_result    NOT NULL,
-    date_completed  timestamp           NOT NULL,
-    id_test_case    integer             NOT NULL REFERENCES test_case(id)
+    id             serial PRIMARY KEY NOT NULL,
+    result         test_case_result   NOT NULL,
+    date_completed timestamp          NOT NULL,
+    id_test_case   integer            NOT NULL REFERENCES test_case (id)
 );
 
 CREATE TABLE action_result
 (
-  id              serial PRIMARY KEY  NOT NULL,
-  compound_id     integer,
-  result          varchar(100)        NOT NULL,
-  screenshot_url  varchar(100)        NOT NULL,
-  general_order    integer             NOT NULL,
-  id_history_test_case    integer     NOT NULL REFERENCES history_test_case(id),
-  action_element          varchar(100)        NOT NULL,
-  argument         varchar(100)        NOT NULL,
-  id_action       integer              NOT NULL REFERENCES action (id)
+    id                   serial PRIMARY KEY NOT NULL,
+    compound_id          integer,
+    result               varchar(100)       NOT NULL,
+    screenshot_url       varchar(100)       NOT NULL,
+    general_order        integer            NOT NULL,
+    id_history_test_case integer            NOT NULL REFERENCES history_test_case (id),
+    action_element       varchar(100)       NOT NULL,
+    argument             varchar(100)       NOT NULL,
+    id_action            integer            NOT NULL REFERENCES action (id)
 );
 
+CREATE TABLE notifications
+(
+    id                  serial PRIMARY KEY       NOT NULL,
+    user_id             integer                  NOT NULL REFERENCES users (id),
+    notification_status notification_status      NOT NULL,
+    date                timestamp                NOT NULL,
+    test_case_id        integer                  NOT NULL,
+    project_id          integer                  Not Null,
+    read_status         read_notification_status NOT NULL
+);
+CREATE OR REPLACE FUNCTION notify_change() RETURNS TRIGGER AS
+$$
+BEGIN
+    SELECT pg_notify('table_changed', TG_TABLE_NAME);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER table_change
+    AFTER INSERT OR UPDATE OR DELETE
+    ON history_test_case
+    FOR EACH ROW
+EXECUTE PROCEDURE notify_change();
+
+CREATE TRIGGER table_change
+    AFTER INSERT OR UPDATE OR DELETE
+    ON action_result
+    FOR EACH ROW
+EXECUTE PROCEDURE notify_change();
