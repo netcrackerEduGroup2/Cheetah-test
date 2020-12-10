@@ -97,10 +97,17 @@ public class TestCaseController {
         return testCase;
     }
 
-    @GetMapping("/getActScenariosById/{id}")
+    @GetMapping("/runTestCase/{id}")
     public ResponseEntity<String> runTestCase(@PathVariable int id)   {
         testCaseLauncher.formActionForSelenium(id);
-        return ResponseEntity.ok("Test case run is being executed.");
+        return ResponseEntity.ok("Test case is being executed.");
     }
 
+    @GetMapping("/runTestCases")
+    public ResponseEntity<String> runTestCases(@RequestBody Integer[] ids)   {
+        for (int testCaseId : ids) {
+            testCaseLauncher.formActionForSelenium(testCaseId);
+        }
+        return ResponseEntity.ok("Test cases are being executed.");
+    }
 }

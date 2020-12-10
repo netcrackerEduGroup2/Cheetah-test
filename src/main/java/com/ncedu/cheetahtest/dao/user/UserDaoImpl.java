@@ -20,7 +20,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
 
     private static final String[] rows =
             {"id", "email", "password", "name",
-                    "role", "status", "last_request"};
+                    "role", "status", "last_request", "photo_url"};
 
     @Autowired
     public UserDaoImpl(JdbcTemplate jdbcTemplate) {
