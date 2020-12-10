@@ -1,12 +1,15 @@
 package com.ncedu.cheetahtest.controller.testcase;
 
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseIdsDto;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
 import com.ncedu.cheetahtest.service.testcase.crud.TestCaseService;
 import com.ncedu.cheetahtest.service.testcase.runwrapper.TestCaseLauncher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -104,7 +107,8 @@ public class TestCaseController {
     }
 
     @GetMapping("/runTestCases")
-    public ResponseEntity<String> runTestCases(@RequestBody Integer[] ids)   {
+    public ResponseEntity<String> runTestCases(@RequestBody TestCaseIdsDto testCaseIdsDto)   {
+        int[] ids = testCaseIdsDto.getIds();
         for (int testCaseId : ids) {
             testCaseLauncher.formActionForSelenium(testCaseId);
         }
