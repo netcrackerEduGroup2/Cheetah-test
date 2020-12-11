@@ -15,6 +15,6 @@ public class UserConsts {
     public static final String FIND_USER_BY_EMAIL_NAME_ROLE_SQL = "SELECT * FROM users WHERE email LIKE ? AND name LIKE ? AND role::text LIKE ? AND status='ACTIVE' LIMIT ? OFFSET ?;";
     public static final String COUNT_USER_BY_EMAIL_NAME_ROLE_SQL = "SELECT count(*) FROM users WHERE email LIKE ? AND name LIKE ? AND role::text LIKE ? AND status='ACTIVE';";
     public static final String FIND_BY_EMAIL = "SELECT id, email,name,role,status FROM users WHERE email LIKE CONCAT ('%',?,'%') ORDER BY email LIMIT 5";
-    public static final String GET_USERS_BY_PROJECT_ID = "SELECT id FROM users INNER JOIN user_project up on users.id = up.user_id " +
+    public static final String GET_USERS_BY_PROJECT_ID = "SELECT users.id FROM users INNER JOIN user_project up on users.id = up.user_id " +
             "INNER JOIN project p on p.id = up.project_id WHERE p.id = ?";
 }

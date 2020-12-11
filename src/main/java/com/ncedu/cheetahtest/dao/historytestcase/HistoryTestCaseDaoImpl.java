@@ -2,6 +2,7 @@ package com.ncedu.cheetahtest.dao.historytestcase;
 
 import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCase;
 import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCaseFull;
+import com.ncedu.cheetahtest.service.notifications.TestCaseNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;

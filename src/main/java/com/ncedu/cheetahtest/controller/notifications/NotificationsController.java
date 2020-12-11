@@ -22,22 +22,22 @@ public class NotificationsController {
     }
 
     @PutMapping("/{id}")
-    TestCaseNotification editNotification(@PathVariable int id,
+    public TestCaseNotification editNotification(@PathVariable int id,
                                           @RequestBody TestCaseNotification testCaseNotification){
         return testCaseNotificationService.editNotification(testCaseNotification,id);
     }
     @GetMapping("")
-    PaginatedTestCaseNotification getNotificationsByUserID(@RequestParam("idUser") int idUser,
+    public PaginatedTestCaseNotification getNotificationsByUserID(@RequestParam("idUser") int idUser,
                                                               @RequestParam("size") int size,
                                                               @RequestParam ("page") int page){
         return testCaseNotificationService.getNotificationsByUserIdPaginated(idUser,size,page);
     }
     @GetMapping("/all")
-    List<TestCaseNotification> getAllNotificationsByUserID(@RequestParam("idUser") int idUser){
+    public List<TestCaseNotification> getAllNotificationsByUserID(@RequestParam("idUser") int idUser){
         return testCaseNotificationService.getAllNotificationsByUserId(idUser);
     }
     @DeleteMapping
-    NotificationResponse deleteNotification(@RequestParam("id") int id){
+    public NotificationResponse deleteNotification(@RequestParam("id") int id){
         testCaseNotificationService.deleteNotification(id);
         return new NotificationResponse("Sucess");
     }

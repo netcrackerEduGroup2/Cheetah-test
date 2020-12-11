@@ -10,28 +10,24 @@ import com.ncedu.cheetahtest.entity.notification.NotificationStatus;
 import com.ncedu.cheetahtest.entity.notification.ReadStatus;
 import com.ncedu.cheetahtest.entity.notification.TestCaseNotification;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class TestCaseNotificationServiceImpl implements TestCaseNotificationService {
     private final NotificationsDao notificationsDao;
     private final HistoryTestCaseDao historyTestCaseDao;
     private final ProjectDao projectDao;
     private final UserDao userDao;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
-    @Autowired
-    public TestCaseNotificationServiceImpl(NotificationsDao notificationsDao, HistoryTestCaseDao historyTestCaseDao,
-                                           ProjectDao projectDao, UserDao userDao) {
-        this.notificationsDao = notificationsDao;
-        this.historyTestCaseDao = historyTestCaseDao;
-        this.projectDao = projectDao;
-        this.userDao = userDao;
-    }
+
 
 
     @Override
@@ -56,8 +52,17 @@ public class TestCaseNotificationServiceImpl implements TestCaseNotificationServ
             testCaseNotification.setUserId(userId);
             notificationsDao.createNotification(testCaseNotification);
         }
+        sendNotificationsToUsers(userIds);
 
 
+    }
+    private void  sendNotificationsToUsers(List<Integer> userIds){
+        PaginatedTestCaseNotification paginatedTestCaseNotification;
+        for(int userId: userIds){
+           paginatedTestCaseNotification = this.getNotificationsByUserIdPaginated(userId,5,1);
+           simpMessagingTemplate.convertAndSend("/topic/notification",paginatedTestCaseNotification);
+
+        }
     }
 
     @Override

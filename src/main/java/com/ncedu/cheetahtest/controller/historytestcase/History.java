@@ -1,8 +1,8 @@
 package com.ncedu.cheetahtest.controller.historytestcase;
 
+import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCaseFull;
 import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCasePagination;
 import com.ncedu.cheetahtest.service.historytestcase.HistoryTestCaseService;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +22,11 @@ public class History {
     public HistoryTestCasePagination getHistoryTestCase(@RequestParam("size") int size,
                                                         @RequestParam("page") int page){
         return historyTestCaseService.getPage(size, page);
+    }
+    @PostMapping
+    public HistoryTestCaseFull createHistoryTestCase(@RequestBody HistoryTestCaseFull historyTestCaseFull){
+        return historyTestCaseService.create(historyTestCaseFull.getResult().toString(),
+                historyTestCaseFull.getDataCompleted(),historyTestCaseFull.getIdTestCase());
     }
 
 }

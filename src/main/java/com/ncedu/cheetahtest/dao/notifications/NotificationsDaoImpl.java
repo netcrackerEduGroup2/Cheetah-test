@@ -22,7 +22,7 @@ public class NotificationsDaoImpl implements NotificationsDao {
     @Override
     public void createNotification(TestCaseNotification testCaseNotification) {
         String sql = "INSERT INTO notifications (user_id, notification_status, date, test_case_id, project_id, read_status) " +
-                "VALUES (?,?::notification_status,?,?,?,?::read_status)";
+                "VALUES (?,?::notification_status,?,?,?,?::read_notification_status)";
         jdbcTemplate.update(
                 sql,
                 testCaseNotification.getUserId(),
@@ -37,12 +37,11 @@ public class NotificationsDaoImpl implements NotificationsDao {
     @Override
     public TestCaseNotification editNotification(TestCaseNotification testCaseNotification, int id) {
         String sql = "UPDATE notifications SET user_id = ?, notification_status = ?::notification_status, " +
-                "test_case_id = ?,project_id = ? ,read_status =?::read_status WHERE id = ?";
+                "test_case_id = ?,project_id = ? ,read_status =?::read_notification_status WHERE id = ?";
         jdbcTemplate.update(
                 sql,
                 testCaseNotification.getUserId(),
                 testCaseNotification.getNotificationStatus().toString(),
-                testCaseNotification.getDate(),
                 testCaseNotification.getTestCaseId(),
                 testCaseNotification.getProjectId(),
                 testCaseNotification.getReadStatus().toString(),
