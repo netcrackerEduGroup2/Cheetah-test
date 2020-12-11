@@ -40,11 +40,19 @@ CREATE TABLE project
 
 create table test_case
 (
-    id         serial PRIMARY KEY  NOT NULL,
-    title      varchar(100) UNIQUE NOT NULL,
-    project_id integer REFERENCES project (id),
-    status     test_case_status    NOT NULL,
-    result     test_case_result    NOT NULL
+    id                  serial           not null
+        constraint test_case_pkey
+            primary key,
+    title               varchar(100)     not null
+        constraint test_case_title_key
+            unique,
+    project_id          integer
+        constraint test_case_project_id_fkey
+            references project,
+    status              test_case_status not null,
+    result              test_case_result not null,
+    execution_cron_date varchar(50),
+    repeatable          boolean
 );
 
 CREATE TABLE data_set
