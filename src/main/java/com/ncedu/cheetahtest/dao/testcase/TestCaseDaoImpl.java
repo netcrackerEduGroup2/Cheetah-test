@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,7 +21,7 @@ import static com.ncedu.cheetahtest.dao.testcase.TestCaseConsts.*;
 @Repository
 public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCaseDao {
 
-    private static final String[] rows = {"id", "title", "project_id", "status", "result"};
+    private static final String[] rows = {"id", "title", "project_id", "status", "result", "execution_cron_date", "repeatable"};
 
     @Autowired
     public TestCaseDaoImpl(JdbcTemplate jdbcTemplate) {
@@ -162,5 +163,18 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
         }
 
         return 0;
+    }
+
+    @Override
+    public List<TestCase> getActiveTestCasesWithExecutionDate() {
+        return jdbcTemplate.query(GET_ACTIVE_TEST_CASES_WITH_EXECUTION_DATE, rowMapper);
+    }
+
+    @Override
+    public void setExecutionDateToNull(int id) {
+        int result = jdbcTemplate.update(SET_EXECUTION_DATE_TO_NULL, id);
+        if (result != 1) {
+            throw new TestCaseNotFoundException();
+        }
     }
 }

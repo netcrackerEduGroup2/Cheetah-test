@@ -23,4 +23,8 @@ public interface TestCaseDao {
     List<TestCase> findTestCasesByTitlePaginatedAndByProjectId(int page, int size, String keyword, int projectId);
 
     int getAmountByTitlePaginatedAndByProjectId(String keyword, int projectId);
+
+    List<TestCase> getActiveTestCasesWithExecutionDate();
+
+    void setExecutionDateToNull(int id);
 }
