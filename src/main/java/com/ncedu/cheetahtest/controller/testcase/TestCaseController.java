@@ -1,7 +1,7 @@
 package com.ncedu.cheetahtest.controller.testcase;
 
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
-import com.ncedu.cheetahtest.entity.testcase.TestCaseIdsDto;
+import com.ncedu.cheetahtest.entity.testcase.IdsDto;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
 
 import com.ncedu.cheetahtest.service.testcase.crud.TestCaseService;
@@ -101,8 +101,8 @@ public class TestCaseController {
     }
 
     @GetMapping("/run-test-cases")
-    public ResponseEntity<String> runTestCases(@RequestBody TestCaseIdsDto testCaseIdsDto)   {
-        int[] ids = testCaseIdsDto.getIds();
+    public ResponseEntity<String> runTestCases(@RequestBody IdsDto idsDto)   {
+        int[] ids = idsDto.getIds();
         for (int testCaseId : ids) {
             testCaseLauncher.formActionForSelenium(testCaseId);
         }

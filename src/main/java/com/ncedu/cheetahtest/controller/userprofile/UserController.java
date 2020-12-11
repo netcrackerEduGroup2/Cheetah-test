@@ -1,10 +1,13 @@
 package com.ncedu.cheetahtest.controller.userprofile;
 
+import com.ncedu.cheetahtest.entity.testcase.IdsDto;
 import com.ncedu.cheetahtest.entity.user.*;
 import com.ncedu.cheetahtest.service.cloud.AmazonClientService;
 import com.ncedu.cheetahtest.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -89,6 +92,18 @@ public class UserController {
     @GetMapping
     public List<UserDto> findByEmail(@RequestParam("email") String email) {
         return userService.findByEmail(email);
+    }
+
+    @GetMapping("/watchers/{projectId}")
+    public List<UserDto> getByProjectId(@PathVariable int projectId) {
+        return userService.getWatchersByProjectId(projectId);
+    }
+
+
+    @PutMapping("/watchers/{projectId}")
+    public IdsDto getByProjectId(@PathVariable int projectId, @RequestBody IdsDto idsDto) {
+        userService.saveWatchers(projectId, idsDto.getIds());
+        return idsDto;
     }
 }
 

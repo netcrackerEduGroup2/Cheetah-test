@@ -38,4 +38,10 @@ public interface UserDao {
                                               String role);
 
     List<UserDto> findByEmail(String title);
+
+    List<UserDto> getWatchersByProjectId(int projectId);
+
+    void deleteAllWatchersForProject(int projectId);
+
+    void addWatchersForProject(int projectId, int[] ids);
 }
