@@ -2,11 +2,9 @@ package com.ncedu.cheetahtest.service.testcase.scheduling;
 
 import com.ncedu.cheetahtest.dao.testcase.TestCaseDao;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
-import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import com.ncedu.cheetahtest.service.testcase.runwrapper.TestCaseLauncher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.naming.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

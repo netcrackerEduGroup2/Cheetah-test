@@ -3,7 +3,6 @@ package com.ncedu.cheetahtest.service.testcase.scheduling;
 import com.ncedu.cheetahtest.dao.genericdao.AbstractDao;
 import com.ncedu.cheetahtest.dao.testcase.TestCaseDao;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
-import com.ncedu.cheetahtest.exception.testcase.TestCaseAlreadyExistsException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseScheduleAlreadyCreatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
