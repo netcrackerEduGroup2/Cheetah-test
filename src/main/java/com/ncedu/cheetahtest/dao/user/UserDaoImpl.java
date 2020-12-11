@@ -4,7 +4,6 @@ import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.UserDto;
-import com.ncedu.cheetahtest.exception.project.ProjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
