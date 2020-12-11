@@ -75,4 +75,15 @@ public class TestCaseConsts {
             UPDATE +
             "execution_cron_date = NULL " +
             "where id = ?";
+
+    public static final String SET_EXECUTION_DATE_AND_REPEATABILITY =
+            UPDATE +
+            "execution_cron_date = ?, " +
+            "repeatable = ?" +
+            "WHERE id = ?";
+
+    public static final String DELETE_EXECUTION_DATE_AND_REPEATABILITY =
+            UPDATE +
+            "execution_cron_date = null " +
+            "WHERE id = ?";
 }

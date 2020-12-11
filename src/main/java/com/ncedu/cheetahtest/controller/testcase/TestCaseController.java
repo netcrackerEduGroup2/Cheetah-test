@@ -3,9 +3,12 @@ package com.ncedu.cheetahtest.controller.testcase;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseIdsDto;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
 import com.ncedu.cheetahtest.service.testcase.crud.TestCaseService;
 import com.ncedu.cheetahtest.service.testcase.runwrapper.TestCaseLauncher;
+import com.ncedu.cheetahtest.service.testcase.scheduling.TestCaseScheduler;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +16,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 @CrossOrigin(origins = "${frontend.ulr}")
 @RequiredArgsConstructor
+@Slf4j
 public class TestCaseController {
 
     private final TestCaseService testCaseService;
     private final TestCaseLauncher testCaseLauncher;
-
 
     @GetMapping("/test-cases")
     public TestCasePaginated getActiveTestCases(@RequestParam int page,
@@ -98,13 +101,7 @@ public class TestCaseController {
         return testCase;
     }
 
-    @GetMapping("/runTestCase/{id}")
-    public ResponseEntity<String> runTestCase(@PathVariable int id)   {
-        testCaseLauncher.formActionForSelenium(id);
-        return ResponseEntity.ok("Test case is being executed.");
-    }
-
-    @GetMapping("/runTestCases")
+    @GetMapping("/run-test-cases")
     public ResponseEntity<String> runTestCases(@RequestBody TestCaseIdsDto testCaseIdsDto)   {
         int[] ids = testCaseIdsDto.getIds();
         for (int testCaseId : ids) {
