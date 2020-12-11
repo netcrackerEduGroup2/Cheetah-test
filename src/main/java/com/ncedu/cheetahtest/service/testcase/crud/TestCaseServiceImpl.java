@@ -150,5 +150,10 @@ public class TestCaseServiceImpl implements TestCaseService {
         testCaseDao.deleteExecutionCronDateAndRepeatability(testCaseId);
     }
 
+    @Override
+    public List<TestCase> getActiveTestCasesWithExecutionDate() {
+        return testCaseDao.getActiveTestCasesWithExecutionDate();
+    }
+
 }
 

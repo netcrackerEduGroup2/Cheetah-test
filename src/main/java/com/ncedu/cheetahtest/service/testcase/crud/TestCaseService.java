@@ -4,6 +4,8 @@ import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
 
+import java.util.List;
+
 public interface TestCaseService {
 
     TestCasePaginated getTestCases(int page, int size);
@@ -29,4 +31,6 @@ public interface TestCaseService {
     void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto);
 
     void deleteExecutionCronDateAndRepeatability(int testCaseId);
+
+    List<TestCase> getActiveTestCasesWithExecutionDate();
 }
