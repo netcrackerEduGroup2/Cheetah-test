@@ -210,5 +210,14 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
                 new UserDtoRowMapper()
         );
     }
+
+    @Override
+    public List<Integer> getUsersIdByProjectId(int idProject) {
+        return jdbcTemplate.query(
+                GET_USERS_BY_PROJECT_ID,
+                preparedStatement -> preparedStatement.setInt(1, idProject),
+                new UserIdRowMapper()
+        );
+    }
 }
 

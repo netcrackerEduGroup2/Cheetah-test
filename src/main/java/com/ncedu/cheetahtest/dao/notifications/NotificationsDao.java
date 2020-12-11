@@ -17,4 +17,6 @@ public interface NotificationsDao {
 
     TestCaseNotification findById(int id);
 
+    int countNotificationsByUserId(int userId);
+
 }

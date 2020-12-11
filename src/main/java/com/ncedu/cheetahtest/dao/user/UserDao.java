@@ -38,4 +38,6 @@ public interface UserDao {
                                               String role);
 
     List<UserDto> findByEmail(String title);
+
+    List<Integer> getUsersIdByProjectId(int idProject);
 }

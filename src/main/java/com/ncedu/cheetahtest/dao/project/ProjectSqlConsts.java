@@ -22,4 +22,6 @@ public final class ProjectSqlConsts {
 
     public static final String UPDATE_PROJECT_QUERY = "UPDATE project SET (title, link) = (?, ?) " +
             "WHERE id = ?";
+    public static final String FIND_PROJECT_BY_ID_TEST_CASE_QUERY = "SELECT id, title, link, status, create_date FROM project INNER JOIN test_case tc on project.id = tc.project_id " +
+            "WHERE tc.id = ?";
 }

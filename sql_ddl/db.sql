@@ -153,22 +153,3 @@ CREATE TABLE notifications
     project_id          integer                  Not Null,
     read_status         read_notification_status NOT NULL
 );
-CREATE OR REPLACE FUNCTION notify_change() RETURNS TRIGGER AS
-$$
-BEGIN
-    SELECT pg_notify('table_changed', TG_TABLE_NAME);
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER table_change
-    AFTER INSERT OR UPDATE OR DELETE
-    ON history_test_case
-    FOR EACH ROW
-EXECUTE PROCEDURE notify_change();
-
-CREATE TRIGGER table_change
-    AFTER INSERT OR UPDATE OR DELETE
-    ON action_result
-    FOR EACH ROW
-EXECUTE PROCEDURE notify_change();

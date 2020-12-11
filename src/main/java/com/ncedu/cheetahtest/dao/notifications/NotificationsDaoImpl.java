@@ -1,7 +1,6 @@
 package com.ncedu.cheetahtest.dao.notifications;
 
 import com.ncedu.cheetahtest.entity.notification.TestCaseNotification;
-import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -80,8 +79,8 @@ public class NotificationsDaoImpl implements NotificationsDao {
                 sql,
                 preparedStatement -> {
                     preparedStatement.setInt(1, userId);
-                    preparedStatement.setInt(2,limit);
-                    preparedStatement.setInt(3,offset);
+                    preparedStatement.setInt(2, limit);
+                    preparedStatement.setInt(3, offset);
                 },
                 new NotificationsRowMapper()
         );
@@ -99,5 +98,17 @@ public class NotificationsDaoImpl implements NotificationsDao {
         if (testCaseNotifications.size() == 1) {
             return testCaseNotifications.get(0);
         } else return null;
+    }
+
+    @Override
+    public int countNotificationsByUserId(int userId) {
+        String sql = "SELECT count(*) FROM notifications WHERE user_id = ?";
+        List<Integer> counts = jdbcTemplate.query(
+                sql,
+                preparedStatement -> preparedStatement.setInt(1, userId),
+                new NotificationsCountRowMapper());
+        if (counts.size() == 1) {
+            return counts.get(0);
+        } else return 0;
     }
 }
