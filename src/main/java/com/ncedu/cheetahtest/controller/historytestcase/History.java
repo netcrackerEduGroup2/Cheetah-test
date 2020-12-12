@@ -33,7 +33,6 @@ public class History {
     @PutMapping("/{idHistoryTestCase}")
     public HistoryTestCaseFull editHistoryTestCaseStatus(@PathVariable("idHistoryTestCase") int idHistoryTestCase,
                                                      @RequestBody TestCaseResult testCaseResult){
-        System.out.println("here");
         return historyTestCaseService.editHistoryTestCaseStatus(idHistoryTestCase,testCaseResult);
     }
 
