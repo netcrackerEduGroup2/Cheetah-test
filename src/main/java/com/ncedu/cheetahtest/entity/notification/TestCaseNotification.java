@@ -13,6 +13,8 @@ public class TestCaseNotification {
     private int testCaseId;
     private int projectId;
     private ReadStatus readStatus;
+    private String title;
+    private String description;
 
     public TestCaseNotification() {
         this.date = new Date();

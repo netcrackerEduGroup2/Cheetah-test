@@ -1,46 +1,53 @@
 package com.ncedu.cheetahtest.controller.notifications;
 
-import com.ncedu.cheetahtest.dao.notifications.NotificationsDao;
-import com.ncedu.cheetahtest.dao.notifications.PaginatedTestCaseNotification;
 import com.ncedu.cheetahtest.entity.notification.NotificationResponse;
 import com.ncedu.cheetahtest.entity.notification.TestCaseNotification;
 import com.ncedu.cheetahtest.service.notifications.TestCaseNotificationService;
+import com.ncedu.cheetahtest.service.notifications.WebSocketNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.security.Principal;
 import java.util.List;
 
-@RestController
+@Controller
 @CrossOrigin(origins = "${frontend.ulr}")
-@RequestMapping("/api/notifications")
 public class NotificationsController {
-    private TestCaseNotificationService testCaseNotificationService;
+    private final TestCaseNotificationService testCaseNotificationService;
+    private final WebSocketNotificationService wsNotificationService;
+
     @Autowired
-    public NotificationsController(TestCaseNotificationService testCaseNotificationService) {
+    public NotificationsController(TestCaseNotificationService testCaseNotificationService,
+                                   WebSocketNotificationService wsNotificationService) {
         this.testCaseNotificationService = testCaseNotificationService;
+        this.wsNotificationService = wsNotificationService;
     }
 
-    @PutMapping("/{id}")
-    public TestCaseNotification editNotification(@PathVariable int id,
-                                          @RequestBody TestCaseNotification testCaseNotification){
-        return testCaseNotificationService.editNotification(testCaseNotification,id);
-    }
-    @GetMapping("")
-    public PaginatedTestCaseNotification getNotificationsByUserID(@RequestParam("idUser") int idUser,
-                                                              @RequestParam("size") int size,
-                                                              @RequestParam ("page") int page){
-        return testCaseNotificationService.getNotificationsByUserIdPaginated(idUser,size,page);
-    }
-    @GetMapping("/all")
-    public List<TestCaseNotification> getAllNotificationsByUserID(@RequestParam("idUser") int idUser){
+
+    @MessageMapping("/notifications")
+    @SendToUser
+    public List<TestCaseNotification> getAllNotificationsByUserID(@Header("Authorization") String token, Principal principal) {
+        int idUser = parseTokenAndGetId(token);
+        wsNotificationService.addConnection(idUser, principal.getName());
         return testCaseNotificationService.getAllNotificationsByUserId(idUser);
     }
-    @DeleteMapping
-    public NotificationResponse deleteNotification(@RequestParam("id") int id){
+
+    @MessageMapping("delete-notification")
+    @SendToUser
+    public NotificationResponse deleteNotification(int id) {
         testCaseNotificationService.deleteNotification(id);
-        return new NotificationResponse("Sucess");
+        return new NotificationResponse("Success");
     }
 
+    private int parseTokenAndGetId(String token) {
+        String[] split_string = token.split("\\.");
+        String body = split_string[1];
+        int idIndex = body.indexOf("\"id\":");
+        return Integer.parseInt(body.substring(idIndex + 5, idIndex + 6));
+    }
 
 }
