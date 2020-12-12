@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.dao.testcase;
 
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
 
 import java.util.List;
 
@@ -23,4 +24,12 @@ public interface TestCaseDao {
     List<TestCase> findTestCasesByTitlePaginatedAndByProjectId(int page, int size, String keyword, int projectId);
 
     int getAmountByTitlePaginatedAndByProjectId(String keyword, int projectId);
+
+    List<TestCase> getActiveTestCasesWithExecutionDate();
+
+    void setExecutionDateToNull(int id);
+
+    void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto);
+
+    void deleteExecutionCronDateAndRepeatability(int testCaseId);
 }

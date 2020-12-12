@@ -7,7 +7,7 @@ public class TestCaseConsts {
     }
 
     public static final String SELECT_ALL_PARAMS_FROM_TEST_CASE =
-            "SELECT id, title, project_id, status, result " +
+            "SELECT id, title, project_id, status, result, repeatable, execution_cron_date " +
                     "FROM test_case ";
 
     public static final String UPDATE = "UPDATE test_case SET ";
@@ -64,7 +64,26 @@ public class TestCaseConsts {
             "LIMIT 1";
 
     public static final String FIND_TEST_CASE_BY_PROJECT_ID_AND_TEST_CASE_ID =
-            "SELECT id, title, project_id, status, result " +
-            "FROM test_case " +
+            SELECT_ALL_PARAMS_FROM_TEST_CASE +
             "WHERE project_id = ? AND id = ?";
+
+    public static final String GET_ACTIVE_TEST_CASES_WITH_EXECUTION_DATE =
+            SELECT_ALL_PARAMS_FROM_TEST_CASE +
+            "WHERE execution_cron_date IS NOT NULL ";
+
+    public static final String SET_EXECUTION_DATE_TO_NULL =
+            UPDATE +
+            "execution_cron_date = NULL " +
+            "where id = ?";
+
+    public static final String SET_EXECUTION_DATE_AND_REPEATABILITY =
+            UPDATE +
+            "execution_cron_date = ?, " +
+            "repeatable = ?" +
+            "WHERE id = ?";
+
+    public static final String DELETE_EXECUTION_DATE_AND_REPEATABILITY =
+            UPDATE +
+            "execution_cron_date = null " +
+            "WHERE id = ?";
 }

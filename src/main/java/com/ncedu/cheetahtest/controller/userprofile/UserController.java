@@ -1,6 +1,10 @@
 package com.ncedu.cheetahtest.controller.userprofile;
 
-import com.ncedu.cheetahtest.entity.user.*;
+import com.ncedu.cheetahtest.entity.testcase.IdsDto;
+import com.ncedu.cheetahtest.entity.user.User;
+import com.ncedu.cheetahtest.entity.user.UserDto;
+import com.ncedu.cheetahtest.entity.user.UserPaginatedDto;
+import com.ncedu.cheetahtest.entity.user.UserStatus;
 import com.ncedu.cheetahtest.service.cloud.AmazonClientService;
 import com.ncedu.cheetahtest.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -89,6 +93,18 @@ public class UserController {
     @GetMapping
     public List<UserDto> findByEmail(@RequestParam("email") String email) {
         return userService.findByEmail(email);
+    }
+
+    @GetMapping("/watchers/{projectId}")
+    public List<UserDto> getByProjectId(@PathVariable int projectId) {
+        return userService.getWatchersByProjectId(projectId);
+    }
+
+
+    @PutMapping("/watchers/{projectId}")
+    public IdsDto getByProjectId(@PathVariable int projectId, @RequestBody IdsDto idsDto) {
+        userService.saveWatchers(projectId, idsDto.getIds());
+        return idsDto;
     }
 }
 

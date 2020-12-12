@@ -36,4 +36,8 @@ public interface UserService {
     List<UserDto> findUsersByName(int page, int size, String title);
 
     List<UserDto> findByEmail(String email);
+
+    List<UserDto> getWatchersByProjectId(int projectId);
+
+    void saveWatchers(int projectId, int[] ids);
 }
