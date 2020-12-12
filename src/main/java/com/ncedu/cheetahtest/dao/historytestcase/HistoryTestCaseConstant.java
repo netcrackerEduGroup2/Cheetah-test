@@ -20,7 +20,7 @@ public class HistoryTestCaseConstant {
 
     public static final String EDIT_HISTORY_TEST_CASE_RESULT =
             "UPDATE history_test_case " +
-                    " SET result = ? " +
+                    " SET result = ?::test_case_result " +
                     " WHERE id = ?; ";
     public static final String GET_BY_ID = "SELECT id, result, date_completed, id_test_case FROM history_test_case WHERE id = ?";
 }

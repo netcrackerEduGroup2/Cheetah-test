@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.dao.notifications;
 
 import com.ncedu.cheetahtest.entity.notification.TestCaseNotification;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -109,5 +110,15 @@ public class NotificationsDaoImpl implements NotificationsDao {
         if (counts.size() == 1) {
             return counts.get(0);
         } else return 0;
+    }
+
+    @Override
+    public void changeStatusByTestCaseId(int idTestCase, TestCaseResult testCaseResult) {
+        String sql = "UPDATE notifications SET notification_status =?::notification_status WHERE test_case_id = ?";
+        jdbcTemplate.update(
+                sql,
+                testCaseResult.toString(),
+                idTestCase
+        );
     }
 }

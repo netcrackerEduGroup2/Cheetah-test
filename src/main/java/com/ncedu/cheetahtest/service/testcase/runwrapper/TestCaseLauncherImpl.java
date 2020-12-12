@@ -9,6 +9,7 @@ import com.ncedu.cheetahtest.entity.selenium.ActionResult;
 import com.ncedu.cheetahtest.entity.selenium.ActionResultStatus;
 import com.ncedu.cheetahtest.entity.selenium.SeleniumAction;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
+import com.ncedu.cheetahtest.service.notifications.TestCaseProgressService;
 import com.ncedu.cheetahtest.service.selenium.TestCaseExecutor;
 import com.ncedu.cheetahtest.service.selenium.TestCaseExecutorImpl;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
     private final ApplicationContext applicationContext;
     private final HistoryActionDao historyActionDao;
     private final HistoryTestCaseDao historyTestCaseDao;
+    private final TestCaseProgressService testCaseProgressService;
 
     @Override
     @Transactional
@@ -71,6 +73,10 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
 
         List<ActionResult> actionResults = new ArrayList<>();
 
+        //this int added to perform progress of testcase notifications
+        int totalActionResults = actionList.size();
+        //----
+
         int testCaseHistoryId = historyTestCaseDao.addTestCase(
                 TestCaseResult.CREATED.toString(),
                 new Date(),
@@ -85,6 +91,8 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
             log.info(theActionResult.toString());
 
             actionResults.add(theActionResult);
+
+            testCaseProgressService.calculateAndSendProgress(testCaseId,totalActionResults,actionResults);
 
             Integer compId = theActionResult.getAction().getCompoundId();
 

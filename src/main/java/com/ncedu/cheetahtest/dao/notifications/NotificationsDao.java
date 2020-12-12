@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.dao.notifications;
 
 import com.ncedu.cheetahtest.entity.notification.TestCaseNotification;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 
 import java.util.List;
 
@@ -18,5 +19,7 @@ public interface NotificationsDao {
     TestCaseNotification findById(int id);
 
     int countNotificationsByUserId(int userId);
+
+    void changeStatusByTestCaseId(int idTestCase, TestCaseResult testCaseResult);
 
 }

@@ -5,6 +5,7 @@ import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCase;
 import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCaseDto;
 import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCaseFull;
 import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCasePagination;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 import com.ncedu.cheetahtest.service.notifications.TestCaseNotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,5 +45,12 @@ public class HistoryTestCaseServiceImpl implements HistoryTestCaseService {
        int id =  historyTestCaseDao.addTestCase(result, dateCompleted, testCaseId);
        testCaseNotificationService.notifyAboutTestCaseCompletion(id);
        return historyTestCaseDao.getById(id);
+    }
+
+    @Override
+    public HistoryTestCaseFull editHistoryTestCaseStatus(int idHistoryTestCase, TestCaseResult testCaseResult) {
+        historyTestCaseDao.editTestCaseResultById(idHistoryTestCase,testCaseResult.toString());
+        testCaseNotificationService.notifyAboutTestCaseStatusChange(idHistoryTestCase,testCaseResult);
+        return historyTestCaseDao.getById(idHistoryTestCase);
     }
 }

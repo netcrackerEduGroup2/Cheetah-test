@@ -56,11 +56,22 @@ public class TestCaseNotificationServiceImpl implements TestCaseNotificationServ
 
 
     }
+
+    @Override
+    public void notifyAboutTestCaseStatusChange(int historyTestCaseId, TestCaseResult testCaseResult) {
+        HistoryTestCaseFull historyTestCase = historyTestCaseDao.getById(historyTestCaseId);
+        int projectId =projectDao.findProjectByTestCaseId(historyTestCase.getIdTestCase()).getId();
+        notificationsDao.changeStatusByTestCaseId(historyTestCase.getIdTestCase(),testCaseResult);
+        List<Integer> userIds = userDao.getUsersIdByProjectId(projectId);
+        sendNotificationsToUsers(userIds);
+
+    }
+
     private void  sendNotificationsToUsers(List<Integer> userIds){
         PaginatedTestCaseNotification paginatedTestCaseNotification;
         for(int userId: userIds){
            paginatedTestCaseNotification = this.getNotificationsByUserIdPaginated(userId,5,1);
-           simpMessagingTemplate.convertAndSend("/topic/notification",paginatedTestCaseNotification);
+           simpMessagingTemplate.convertAndSend("/topic/notification/"+userId,paginatedTestCaseNotification);
 
         }
     }
