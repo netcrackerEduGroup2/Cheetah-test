@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.service.notifications;
 
 import com.ncedu.cheetahtest.entity.notification.TestCaseNotification;
+import com.ncedu.cheetahtest.entity.progress.TestCaseProgressReport;
 import com.ncedu.cheetahtest.entity.websocketDTO.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -34,5 +35,14 @@ public class WebSocketNotificationServiceImpl implements WebSocketNotificationSe
         message.setMessageType("NOTIFICATIONS");
         message.setPayload(notifications);
         simpMessagingTemplate.convertAndSendToUser(username, "/notifications", message);
+    }
+
+    @Override
+    public void sendProgressToUser(int idUser, TestCaseProgressReport testCaseProgressReport) {
+        String username = connections.get(idUser);
+        Message message = new Message();
+        message.setMessageType("TEST_CASE_ACTIONS");
+        message.setPayload(testCaseProgressReport);
+        simpMessagingTemplate.convertAndSendToUser(username,"/test-case-execution-actions",message);
     }
 }

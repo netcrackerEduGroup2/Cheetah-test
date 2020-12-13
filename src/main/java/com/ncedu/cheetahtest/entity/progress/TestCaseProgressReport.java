@@ -9,4 +9,5 @@ import java.util.List;
 public class TestCaseProgressReport {
     private int totalActionResults;
     private List<ActionResult> completed;
+    private int idTestCase;
 }

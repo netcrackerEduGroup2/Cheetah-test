@@ -38,6 +38,7 @@ public class TestCaseNotificationServiceImpl implements TestCaseNotificationServ
         } else {
             testCaseNotification.setNotificationStatus(NotificationStatus.INPROCESS);
         }
+
         int projectId = projectDao.findProjectByTestCaseId(historyTestCase.getIdTestCase()).getId();
         testCaseNotification.setProjectId(projectId);
         testCaseNotification.setTestCaseId(historyTestCase.getIdTestCase());
