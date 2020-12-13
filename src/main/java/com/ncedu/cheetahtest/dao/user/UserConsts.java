@@ -17,4 +17,7 @@ public class UserConsts {
     public static final String FIND_BY_EMAIL = "SELECT id, email,name,role,status FROM users WHERE email LIKE CONCAT ('%',?,'%') ORDER BY email LIMIT 5";
     public static final String GET_USERS_BY_PROJECT_ID = "SELECT users.id FROM users INNER JOIN user_project up on users.id = up.user_id " +
             "INNER JOIN project p on p.id = up.project_id WHERE p.id = ?";
+    public static final String FIND_WATCHERS_BY_PROJECT_ID = "SELECT id, email, name, role, status FROM users WHERE id IN (SELECT user_id FROM user_project WHERE project_id = ? AND user_status = 'WATCHER')";
+    public static final String REMOVE_WATCHERS_FROM_PROJECT = "DELETE FROM user_project WHERE project_id = ? AND user_status = 'WATCHER'";
+    public static final String CREATE_WATCHER_SQL = "INSERT INTO user_project(project_id, user_id, user_status) VALUES (?, ?, 'WATCHER')";
 }

@@ -40,4 +40,10 @@ public interface UserDao {
     List<UserDto> findByEmail(String title);
 
     List<Integer> getUsersIdByProjectId(int idProject);
+
+    List<UserDto> getWatchersByProjectId(int projectId);
+
+    void deleteAllWatchersForProject(int projectId);
+
+    void addWatchersForProject(int projectId, int[] ids);
 }
