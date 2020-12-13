@@ -32,7 +32,7 @@ public class WebSocketNotificationServiceImpl implements WebSocketNotificationSe
     public void sendNotificationToUser(int idUser, List<TestCaseNotification> notifications) {
         String username = connections.get(idUser);
         Message message = new Message();
-        message.setMessageType("NOTIFICATIONS");
+        message.setMessageType("notifications");
         message.setPayload(notifications);
         simpMessagingTemplate.convertAndSendToUser(username, "/notifications", message);
     }
@@ -41,8 +41,8 @@ public class WebSocketNotificationServiceImpl implements WebSocketNotificationSe
     public void sendProgressToUser(int idUser, TestCaseProgressReport testCaseProgressReport) {
         String username = connections.get(idUser);
         Message message = new Message();
-        message.setMessageType("TEST_CASE_ACTIONS");
+        message.setMessageType("test-case-execution-actions");
         message.setPayload(testCaseProgressReport);
-        simpMessagingTemplate.convertAndSendToUser(username,"/test-case-execution-actions",message);
+        simpMessagingTemplate.convertAndSendToUser(username,"/notifications",message);
     }
 }

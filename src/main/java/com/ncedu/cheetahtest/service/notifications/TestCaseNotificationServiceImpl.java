@@ -132,5 +132,10 @@ public class TestCaseNotificationServiceImpl implements TestCaseNotificationServ
         return paginatedTestCaseNotification;
     }
 
-
+    @Override
+    public TestCaseNotification editReadStatus(ReadStatus readStatus, int id) {
+        TestCaseNotification testCaseNotification = notificationsDao.findById(id);
+        testCaseNotification.setReadStatus(readStatus);
+        return notificationsDao.editNotification(testCaseNotification,id);
+    }
 }

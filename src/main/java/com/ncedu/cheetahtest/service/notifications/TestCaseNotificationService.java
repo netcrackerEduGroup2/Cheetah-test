@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.service.notifications;
 
 import com.ncedu.cheetahtest.dao.notifications.PaginatedTestCaseNotification;
+import com.ncedu.cheetahtest.entity.notification.ReadStatus;
 import com.ncedu.cheetahtest.entity.notification.TestCaseNotification;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 
@@ -21,4 +22,6 @@ public interface TestCaseNotificationService {
     void notifyAboutTestCaseCompletion(int historyTestCaseId);
 
     void notifyAboutTestCaseStatusChange(int historyTestCaseId, TestCaseResult testCaseResult);
+
+    TestCaseNotification editReadStatus(ReadStatus readStatus,int id);
 }
