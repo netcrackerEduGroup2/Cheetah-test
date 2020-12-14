@@ -43,7 +43,7 @@ public class HistoryTestCaseServiceImpl implements HistoryTestCaseService {
     @Override
     public HistoryTestCaseFull create(String result, Date dateCompleted, int testCaseId) {
        int id =  historyTestCaseDao.addTestCase(result, dateCompleted, testCaseId);
-       testCaseNotificationService.notifyAboutTestCaseCompletion(id);
+       testCaseNotificationService.notifyAboutTestCaseExecution(id);
        return historyTestCaseDao.getById(id);
     }
 

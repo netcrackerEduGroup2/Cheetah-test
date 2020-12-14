@@ -35,7 +35,7 @@ public class WebSocketNotificationServiceImpl implements WebSocketNotificationSe
         message.setEvent("notifications");
         message.setData(notifications);
         if(username!=null){
-            simpMessagingTemplate.convertAndSendToUser(username, "/notifications", message);
+            simpMessagingTemplate.convertAndSendToUser(username, "/queue/notifications", message);
         }
 
     }
@@ -47,7 +47,7 @@ public class WebSocketNotificationServiceImpl implements WebSocketNotificationSe
         message.setEvent("test-case-execution-actions");
         message.setData(testCaseProgressReport);
         if(username!=null){
-            simpMessagingTemplate.convertAndSendToUser(username, "/notifications", message);
+            simpMessagingTemplate.convertAndSendToUser(username, "/queue/notifications", message);
         }
     }
 }

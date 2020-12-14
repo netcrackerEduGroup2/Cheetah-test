@@ -19,7 +19,7 @@ public interface TestCaseNotificationService {
     PaginatedTestCaseNotification getNotificationsByUserIdPaginated(int userId, int size, int page);
 
     //methods below are used by performing tests methods to notify users
-    void notifyAboutTestCaseCompletion(int historyTestCaseId);
+    void notifyAboutTestCaseExecution(int historyTestCaseId);
 
     void notifyAboutTestCaseStatusChange(int historyTestCaseId, TestCaseResult testCaseResult);
 

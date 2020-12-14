@@ -28,7 +28,7 @@ public class TestCaseNotificationServiceImpl implements TestCaseNotificationServ
 
 
     @Override
-    public void notifyAboutTestCaseCompletion(int historyTestCaseId) {
+    public void notifyAboutTestCaseExecution(int historyTestCaseId) {
         TestCaseNotification testCaseNotification = new TestCaseNotification();
         HistoryTestCaseFull historyTestCase = historyTestCaseDao.getById(historyTestCaseId);
         if (historyTestCase.getResult() == TestCaseResult.COMPLETE) {

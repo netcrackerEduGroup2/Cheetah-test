@@ -8,6 +8,7 @@ import java.util.Date;
 
 public interface HistoryTestCaseService {
 
+
     HistoryTestCasePagination getPage(int size, int page);
 
     HistoryTestCaseFull create(String result, Date dateCompleted, int testCaseId);

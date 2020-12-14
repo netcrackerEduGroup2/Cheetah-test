@@ -15,7 +15,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/notifications")
-                .setAllowedOrigins(frontUrl)
+                .setAllowedOrigins("*")
                 .setHandshakeHandler(new WebSocketHandshake());
         registry.addEndpoint("/notifications")
                 .setAllowedOrigins(frontUrl)
@@ -26,6 +26,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/notifications");
+        config.enableSimpleBroker("/queue");
     }
 }

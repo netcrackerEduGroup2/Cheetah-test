@@ -28,7 +28,7 @@ public class TestCaseProgressServiceImpl implements TestCaseProgressService{
         testCaseProgressReport.setIdTestCase(idTestCase);
 
         //todo Delete that
-        log.info("\n Progress Report:\n");
+        log.info("\n Progress Report About testcase "+idTestCase+ " progress: "+completed.size()+ "/"+ totalActionResults);
         log.info(testCaseProgressReport.toString());
         log.info("\n");
 
