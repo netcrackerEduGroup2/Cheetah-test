@@ -32,17 +32,22 @@ public class WebSocketNotificationServiceImpl implements WebSocketNotificationSe
     public void sendNotificationToUser(int idUser, List<TestCaseNotification> notifications) {
         String username = connections.get(idUser);
         Message message = new Message();
-        message.setMessageType("notifications");
-        message.setPayload(notifications);
-        simpMessagingTemplate.convertAndSendToUser(username, "/notifications", message);
+        message.setEvent("notifications");
+        message.setData(notifications);
+        if(username!=null){
+            simpMessagingTemplate.convertAndSendToUser(username, "/notifications", message);
+        }
+
     }
 
     @Override
     public void sendProgressToUser(int idUser, TestCaseProgressReport testCaseProgressReport) {
         String username = connections.get(idUser);
         Message message = new Message();
-        message.setMessageType("test-case-execution-actions");
-        message.setPayload(testCaseProgressReport);
-        simpMessagingTemplate.convertAndSendToUser(username,"/notifications",message);
+        message.setEvent("test-case-execution-actions");
+        message.setData(testCaseProgressReport);
+        if(username!=null){
+            simpMessagingTemplate.convertAndSendToUser(username, "/notifications", message);
+        }
     }
 }

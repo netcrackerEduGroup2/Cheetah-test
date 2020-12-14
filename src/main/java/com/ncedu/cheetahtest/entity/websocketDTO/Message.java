@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class Message {
-    private String messageType;
-    private Object payload;
+    private String event;
+    private Object data;
 }
