@@ -47,7 +47,6 @@
     <orderEntry type="library" name="Maven: javax.validation:validation-api:2.0.1.Final" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-jdbc:2.4.0" level="project" />
     <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:3.4.5" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.30" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:5.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.3.1" level="project" />
@@ -247,5 +246,8 @@
     <orderEntry type="library" name="Maven: eu.neilalexander:jnacl:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: net.jcip:jcip-annotations:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.27" level="project" />
+    <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: com.mchange:mchange-commons-java:0.2.11" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.30" level="project" />
   </component>
 </module>

@@ -69,11 +69,13 @@ public class TestCaseConsts {
 
     public static final String GET_ACTIVE_TEST_CASES_WITH_EXECUTION_DATE =
             SELECT_ALL_PARAMS_FROM_TEST_CASE +
-            "WHERE execution_cron_date IS NOT NULL ";
+            "WHERE execution_cron_date IS NOT NULL " +
+            "AND status = 'ACTIVE'";
 
-    public static final String SET_EXECUTION_DATE_TO_NULL =
+    public static final String SET_EXECUTION_DATE_AND_REPEATABILITY_TO_NULL =
             UPDATE +
-            "execution_cron_date = NULL " +
+            "execution_cron_date = NULL, " +
+            "repeatable = NULL " +
             "where id = ?";
 
     public static final String SET_EXECUTION_DATE_AND_REPEATABILITY =
@@ -84,6 +86,17 @@ public class TestCaseConsts {
 
     public static final String DELETE_EXECUTION_DATE_AND_REPEATABILITY =
             UPDATE +
-            "execution_cron_date = null " +
+            "execution_cron_date = NULL, " +
+            "repeatable = NULL " +
+            "WHERE id = ?";
+
+    public static final String SET_RESULT_TO_SUCCESS =
+            UPDATE +
+            "result = 'COMPLETE' " +
+            "WHERE id = ?";
+
+    public static final String SET_RESULT_TO_FAIL =
+            UPDATE +
+            "result = 'FAILED' " +
             "WHERE id = ?";
 }

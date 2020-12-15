@@ -3,7 +3,10 @@ package com.ncedu.cheetahtest.service.testcase.scheduling;
 import com.ncedu.cheetahtest.dao.genericdao.AbstractDao;
 import com.ncedu.cheetahtest.dao.testcase.TestCaseDao;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseScheduleAlreadyCreatedException;
+import com.ncedu.cheetahtest.exception.testcase.TestCaseScheduleNotFoundException;
+import com.ncedu.cheetahtest.service.testcase.crud.TestCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 
 @Service
@@ -22,17 +26,20 @@ public class TestCaseSchedulerImpl implements TestCaseScheduler {
     private final Map<Integer, ScheduledFuture<?>> testCaseScheduleMap;
     private final TestCaseDao testCaseDao;
     private final AbstractDao<TestCase> testCaseGenDao;
+    private final TestCaseService testCaseService;
 
     @Autowired
     public TestCaseSchedulerImpl(ThreadPoolTaskScheduler taskScheduler,
                                  ApplicationContext applicationContext,
                                  TestCaseDao testCaseDao,
-                                 AbstractDao<TestCase> testCaseGenDao) {
+                                 AbstractDao<TestCase> testCaseGenDao,
+                                 TestCaseService testCaseService ) {
 
         this.taskScheduler = taskScheduler;
         this.applicationContext = applicationContext;
         this.testCaseDao = testCaseDao;
         this.testCaseGenDao = testCaseGenDao;
+        this.testCaseService = testCaseService;
 
         testCaseScheduleMap = new HashMap<>();
     }
@@ -47,22 +54,33 @@ public class TestCaseSchedulerImpl implements TestCaseScheduler {
     }
 
     @Override
-    public void createTestCaseSchedule(int testCaseId) {
+    public void createTestCaseSchedule(TestCaseScheduleDto testCaseScheduleDto) {
+        int testCaseId = testCaseScheduleDto.getTestCaseId();
+
         if (testCaseScheduleMap.get(testCaseId) != null) {
             throw new TestCaseScheduleAlreadyCreatedException();
         }
+        testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
 
         TestCase theTestCase = testCaseGenDao.findById(testCaseId);
         scheduleAndPutInMapTestCase(testCaseId, theTestCase);
     }
 
     @Override
-    public void updateTestCaseSchedule(int testCaseId) {
+    public void updateTestCaseSchedule(TestCaseScheduleDto testCaseScheduleDto) {
+        int testCaseId = testCaseScheduleDto.getTestCaseId();
+
+        testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
+
         TestCase theTestCase = testCaseGenDao.findById(testCaseId);
+        ScheduledFuture<?> future = testCaseScheduleMap.get(testCaseId);
 
-        testCaseScheduleMap.get(testCaseId).cancel(false);
-
-        scheduleAndPutInMapTestCase(testCaseId, theTestCase);
+        if (future != null) {
+            testCaseScheduleMap.get(testCaseId).cancel(false);
+            scheduleAndPutInMapTestCase(testCaseId, theTestCase);
+        } else {
+            throw new TestCaseScheduleNotFoundException();
+        }
     }
 
     @Override
