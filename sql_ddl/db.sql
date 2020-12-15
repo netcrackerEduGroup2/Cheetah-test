@@ -33,7 +33,7 @@ CREATE TABLE project
     id          serial PRIMARY KEY  NOT NULL,
 
     title       varchar(100) UNIQUE NOT NULL,
-    link        varchar(200) UNIQUE NOT NULL,
+    link        varchar(300) UNIQUE NOT NULL,
     status      project_status      NOT NULL,
     create_date timestamp           NOT NULL
 );
@@ -70,8 +70,8 @@ CREATE TABLE parameters
     id          serial PRIMARY KEY  NOT NULL,
     data_set_id integer             NOT NULL REFERENCES data_set (id)
         on update cascade on delete cascade,
-    type        varchar(100) UNIQUE NOT NULL,
-    value       varchar(100)        NOT NULL
+    type        varchar(300),
+    value       varchar(300)
 );
 
 CREATE TABLE user_project
@@ -140,12 +140,12 @@ CREATE TABLE action_result
 (
   id              serial PRIMARY KEY  NOT NULL,
   compound_id     integer,
-  result          varchar(100)        NOT NULL,
-  screenshot_url  varchar(100)        NOT NULL,
+  result          varchar(300)        NOT NULL,
+  screenshot_url  varchar(300)        NOT NULL,
   general_order    integer             NOT NULL,
   id_history_test_case    integer     NOT NULL REFERENCES history_test_case(id),
-  action_element          varchar(100)        NOT NULL,
-  argument         varchar(100)        NOT NULL,
+  action_element          varchar(300)        NOT NULL,
+  argument         varchar(300)        NOT NULL,
   id_action       integer              NOT NULL REFERENCES action (id)
 );
 
