@@ -64,8 +64,7 @@ public class TestCaseConsts {
             "LIMIT 1";
 
     public static final String FIND_TEST_CASE_BY_PROJECT_ID_AND_TEST_CASE_ID =
-            "SELECT id, title, project_id, status, result " +
-            "FROM test_case " +
+            SELECT_ALL_PARAMS_FROM_TEST_CASE +
             "WHERE project_id = ? AND id = ?";
 
     public static final String CHECK_REPEATEBLE_TEST_CASE =
