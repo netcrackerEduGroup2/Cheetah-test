@@ -23,7 +23,6 @@ public class TestCaseRunnableTask implements Runnable {
 
     @Override
     public void run() {
-
         testCaseLauncher.formActionForSelenium(testCase.getId());
 
         if (!testCase.isRepeatable()) {

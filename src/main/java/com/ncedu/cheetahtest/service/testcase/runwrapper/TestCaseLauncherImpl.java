@@ -47,12 +47,16 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
 
         List<ActionResult> actionResults = processActions(seleniumActions, testCaseId);
 
-        ActionResult lastActionResult = actionResults.get(actionResults.size() - 1);
+        ActionResult lastActionResult;
 
-        if (lastActionResult.getStatus() == ActionResultStatus.SUCCESS) {
-            testCaseDao.setResultToSuccess(testCaseId);
-        } else {
-            testCaseDao.setResultToFail(testCaseId);
+        if (actionResults.size() > 0) {
+            lastActionResult = actionResults.get(actionResults.size() - 1);
+
+            if (lastActionResult.getStatus() == ActionResultStatus.SUCCESS) {
+                testCaseDao.setResultToSuccess(testCaseId);
+            } else {
+                testCaseDao.setResultToFail(testCaseId);
+            }
         }
     }
 
@@ -75,6 +79,11 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
     }
 
     public List<ActionResult> processActions(List<SeleniumAction> actionList, int testCaseId) {
+
+        if (actionList.size() <= 0) {
+            log.info("No actions in testcase with id=" + testCaseId + ".");
+            return new ArrayList<>();
+        }
 
         TestCaseExecutor testCaseExecutor = applicationContext.getBean(TestCaseExecutorImpl.class);
 
