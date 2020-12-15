@@ -2,10 +2,12 @@ package com.ncedu.cheetahtest.controller.testcase;
 
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
+import com.ncedu.cheetahtest.exception.testcase.InvalidCronExpressionException;
 import com.ncedu.cheetahtest.service.testcase.crud.TestCaseService;
 import com.ncedu.cheetahtest.service.testcase.scheduling.TestCaseScheduler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.CronExpression;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +31,13 @@ public class TestCaseScheduleController {
     @PostMapping
     public ResponseEntity<String> createTestCaseSchedule(@RequestBody TestCaseScheduleDto testCaseScheduleDto) {
 
-        testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
+        boolean isValidCron = CronExpression.isValidExpression(testCaseScheduleDto.getExecutionCronDate());
 
-        testCaseScheduler.createTestCaseSchedule(testCaseScheduleDto.getTestCaseId());
+        if (!isValidCron) {
+            throw new InvalidCronExpressionException();
+        }
+
+        testCaseScheduler.createTestCaseSchedule(testCaseScheduleDto);
 
         String response = "Test case has been scheduled. Id = " + testCaseScheduleDto.getTestCaseId();
 
@@ -42,9 +48,13 @@ public class TestCaseScheduleController {
     @PutMapping
     public ResponseEntity<String> updateTestCaseSchedule(@RequestBody TestCaseScheduleDto testCaseScheduleDto) {
 
-        testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
+        boolean isValidCron = CronExpression.isValidExpression(testCaseScheduleDto.getExecutionCronDate());
 
-        testCaseScheduler.updateTestCaseSchedule(testCaseScheduleDto.getTestCaseId());
+        if (!isValidCron) {
+            throw new InvalidCronExpressionException();
+        }
+
+        testCaseScheduler.updateTestCaseSchedule(testCaseScheduleDto);
 
         String response = "Test case schedule has been updated. Id = " + testCaseScheduleDto.getTestCaseId();
 

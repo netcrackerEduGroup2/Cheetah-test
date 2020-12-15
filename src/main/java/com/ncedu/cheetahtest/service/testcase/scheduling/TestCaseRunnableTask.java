@@ -27,6 +27,7 @@ public class TestCaseRunnableTask implements Runnable {
 
         if (!testCase.isRepeatable()) {
             testCaseScheduler.getTestCaseScheduleMap().get(testCase.getId()).cancel(false);
+            testCaseScheduler.getTestCaseScheduleMap().remove(testCase.getId());
             testCaseDao.setExecutionDateToNull(testCase.getId());
         }
 
