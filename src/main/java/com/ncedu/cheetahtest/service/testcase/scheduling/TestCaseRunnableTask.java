@@ -23,7 +23,9 @@ public class TestCaseRunnableTask implements Runnable {
 
     @Override
     public void run() {
+
         testCaseLauncher.formActionForSelenium(testCase.getId());
+
         if (!testCase.isRepeatable()) {
             testCaseScheduler.getTestCaseScheduleMap().get(testCase.getId()).cancel(false);
             testCaseScheduler.getTestCaseScheduleMap().remove(testCase.getId());

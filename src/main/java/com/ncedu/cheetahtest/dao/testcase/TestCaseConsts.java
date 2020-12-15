@@ -84,7 +84,8 @@ public class TestCaseConsts {
             UPDATE +
             "execution_cron_date = ?, " +
             "repeatable = ? " +
-            WHERE_ID_EQUALS_Q;
+            WHERE_ID_EQUALS_Q +
+            "AND status = 'ACTIVE'";
 
     public static final String DELETE_EXECUTION_DATE_AND_REPEATABILITY =
             UPDATE +

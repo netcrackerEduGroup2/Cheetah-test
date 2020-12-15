@@ -138,6 +138,22 @@ public abstract class AbstractDaoImpl<T> implements AbstractActiveDao<T> {
     }
 
     @Override
+    public T findActiveById(int id) {
+
+        List<T> list = jdbcTemplate.query(
+                commonConsts.getActiveById(),
+                preparedStatement -> preparedStatement.setInt(1, id),
+                rowMapper
+        );
+
+        if (list.size() == 1) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    @Override
     public int getSingleIntElement(String title, String getAmountOfAllSearchedTestCases) {
         List<Integer> amountOfTestCases = jdbcTemplate.query(
                 getAmountOfAllSearchedTestCases,
@@ -160,5 +176,6 @@ public abstract class AbstractDaoImpl<T> implements AbstractActiveDao<T> {
 
         return size * (page - 1);
     }
+
 
 }
