@@ -49,7 +49,7 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
 
         ActionResult lastActionResult;
 
-        if (actionResults.size() > 0) {
+        if (!actionResults.isEmpty()) {
             lastActionResult = actionResults.get(actionResults.size() - 1);
 
             if (lastActionResult.getStatus() == ActionResultStatus.SUCCESS) {
@@ -80,7 +80,7 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
 
     public List<ActionResult> processActions(List<SeleniumAction> actionList, int testCaseId) {
 
-        if (actionList.size() <= 0) {
+        if (actionList.isEmpty()) {
             log.info("No actions in testcase with id=" + testCaseId + ".");
             return new ArrayList<>();
         }
