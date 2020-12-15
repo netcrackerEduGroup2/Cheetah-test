@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.dao.testscenario;
 
-import com.ncedu.cheetahtest.entity.testscenario.ItemDTO;
 import com.ncedu.cheetahtest.entity.testscenario.TestScenario;
 
 import java.util.List;
