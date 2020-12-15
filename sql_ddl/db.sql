@@ -33,18 +33,26 @@ CREATE TABLE project
     id          serial PRIMARY KEY  NOT NULL,
 
     title       varchar(100) UNIQUE NOT NULL,
-    link        varchar(200) UNIQUE NOT NULL,
+    link        varchar(300) UNIQUE NOT NULL,
     status      project_status      NOT NULL,
     create_date timestamp           NOT NULL
 );
 
 create table test_case
 (
-    id         serial PRIMARY KEY  NOT NULL,
-    title      varchar(100) UNIQUE NOT NULL,
-    project_id integer REFERENCES project (id),
-    status     test_case_status    NOT NULL,
-    result     test_case_result    NOT NULL
+    id                  serial           not null
+        constraint test_case_pkey
+            primary key,
+    title               varchar(100)     not null
+        constraint test_case_title_key
+            unique,
+    project_id          integer
+        constraint test_case_project_id_fkey
+            references project,
+    status              test_case_status not null,
+    result              test_case_result not null,
+    execution_cron_date varchar(50),
+    repeatable          boolean
 );
 
 CREATE TABLE data_set
@@ -62,8 +70,8 @@ CREATE TABLE parameters
     id          serial PRIMARY KEY  NOT NULL,
     data_set_id integer             NOT NULL REFERENCES data_set (id)
         on update cascade on delete cascade,
-    type        varchar(100) UNIQUE NOT NULL,
-    value       varchar(100)        NOT NULL
+    type        varchar(300),
+    value       varchar(300)
 );
 
 CREATE TABLE user_project
@@ -132,12 +140,12 @@ CREATE TABLE action_result
 (
   id              serial PRIMARY KEY  NOT NULL,
   compound_id     integer,
-  result          varchar(100)        NOT NULL,
-  screenshot_url  varchar(100)        NOT NULL,
+  result          varchar(300)        NOT NULL,
+  screenshot_url  varchar(300)        NOT NULL,
   general_order    integer             NOT NULL,
   id_history_test_case    integer     NOT NULL REFERENCES history_test_case(id),
-  action_element          varchar(100)        NOT NULL,
-  argument         varchar(100)        NOT NULL,
+  action_element          varchar(300)        NOT NULL,
+  argument         varchar(300)        NOT NULL,
   id_action       integer              NOT NULL REFERENCES action (id)
 );
 

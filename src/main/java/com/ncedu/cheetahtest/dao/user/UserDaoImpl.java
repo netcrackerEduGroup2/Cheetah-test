@@ -20,7 +20,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
 
     private static final String[] rows =
             {"id", "email", "password", "name",
-                    "role", "status", "last_request"};
+                    "role", "status", "last_request", "photo_url"};
 
     @Autowired
     public UserDaoImpl(JdbcTemplate jdbcTemplate) {
@@ -163,7 +163,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
     }
 
     @Override
-    public List<User> getAllActiveUser(){
+    public List<User> getAllActiveUser() {
         return jdbcTemplate.query(FIND_ALL_ACTIVE_USERS_SQL, new UserRowMapper());
     }
 
@@ -171,10 +171,9 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
     public List<User> getSearchUserByNameEmailRole(String name, String email,
                                                    String role, int size, int page) {
         final String preparateRole;
-        if (role.length() == 0){
+        if (role.length() == 0) {
             preparateRole = "%";
-        }
-        else {
+        } else {
             preparateRole = role.toUpperCase();
         }
         return jdbcTemplate.query(FIND_USER_BY_EMAIL_NAME_ROLE_SQL,
@@ -190,25 +189,53 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
 
     @Override
     public Integer getCountSearchUserByNameEmailRole(String name, String email,
-                                              String role){
+                                                     String role) {
         final String preparateRole;
-        if (role.length() == 0){
+        if (role.length() == 0) {
             preparateRole = "%";
-        }
-        else {
+        } else {
             preparateRole = role.toUpperCase();
         }
         return jdbcTemplate.queryForObject(COUNT_USER_BY_EMAIL_NAME_ROLE_SQL,
-                new Object[] {"%" + email + "%", "%" + name + "%", preparateRole},
+                new Object[]{"%" + email + "%", "%" + name + "%", preparateRole},
                 Integer.class);
     }
+
     @Override
     public List<UserDto> findByEmail(String title) {
         return jdbcTemplate.query(
                 FIND_BY_EMAIL,
-                preparedStatement -> preparedStatement.setString(1,title),
+                preparedStatement -> preparedStatement.setString(1, title),
                 new UserDtoRowMapper()
         );
+    }
+
+    @Override
+    public List<UserDto> getWatchersByProjectId(int projectId) {
+        return jdbcTemplate.query(
+                FIND_WATCHERS_BY_PROJECT_ID,
+                preparedStatement -> preparedStatement.setInt(1, projectId),
+                new UserDtoRowMapper()
+        );
+    }
+
+    @Override
+    public void deleteAllWatchersForProject(int projectId) {
+        jdbcTemplate.update(
+                REMOVE_WATCHERS_FROM_PROJECT,
+                projectId);
+
+    }
+
+    @Override
+    public void addWatchersForProject(int projectId, int[] ids) {
+        for (int id : ids) {
+            jdbcTemplate.update(
+                    CREATE_WATCHER_SQL,
+                    projectId,
+                    id
+            );
+        }
     }
 }
 

@@ -43,8 +43,6 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
 
         List<SeleniumAction> seleniumActions = mapActScenarioToSeleniumAction(actScenarios);
         processActions(seleniumActions, testCaseId);
-
-
     }
 
     public List<SeleniumAction> mapActScenarioToSeleniumAction(
