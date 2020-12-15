@@ -10,5 +10,7 @@ public class TestScenario {
     private StatusTestScenario status;
     private int idTestCase;
 
-    public TestScenario() { status = StatusTestScenario.INACTIVE;}
+    public TestScenario() {
+        status = StatusTestScenario.INACTIVE;
+    }
 }

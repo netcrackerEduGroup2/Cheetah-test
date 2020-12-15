@@ -18,24 +18,26 @@ public class TestScenarioController {
 
     @PostMapping
     public TestScenario createTestScenario(@RequestBody TestScenarioCreatingBody testScenCreatBody) {
-        return testScenarioService.createTestScenario(testScenCreatBody.getTestScenario(), testScenCreatBody.getActAndCompID());
+        return testScenarioService.createTestScenario(testScenCreatBody.getTestScenario(), testScenCreatBody.getActionsAndCompoundsDto());
     }
+
+    @GetMapping("/{idTestCase}")
+    public PaginationTestScenario findTestScenarioByTitleAndTestCaseId(
+            @RequestParam("title") String title,
+            @RequestParam("size") int size,
+            @RequestParam("page") int page,
+            @PathVariable("idTestCase") int idTestCase) {
+        return testScenarioService.findByTitleAndTestCaseId(title, idTestCase, size, page);
+    }
+
+
 
     @GetMapping
     public PaginationTestScenario findTestScenarioByTitle(
             @RequestParam("title") String title,
             @RequestParam("size") int size,
-            @RequestParam("page") int page,
-            @RequestParam("idTestCase") int idTestCase) {
-        return testScenarioService.findByTitle(title, idTestCase, size, page);
-    }
-
-    @GetMapping("/{id}")
-    public PaginationItems getItemsFromScenario(
-                                                 @RequestParam("size") int size,
-                                                 @RequestParam("page") int page,
-                                                 @PathVariable("id") int idTestScenario) {
-        return testScenarioService.getItemsFromScenario(idTestScenario, size, page);
+            @RequestParam("page") int page) {
+        return testScenarioService.findByTitle(title, size, page);
     }
 
     @GetMapping("/{id}/all")

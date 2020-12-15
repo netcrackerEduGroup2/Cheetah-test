@@ -7,5 +7,5 @@ import java.util.List;
 @Data
 public class TestScenarioCreatingBody {
     private TestScenario testScenario;
-    private List<ActionsAndCompoundsID> actAndCompID;
+    private List<ActionsAndCompoundsID> actionsAndCompoundsDto;
 }

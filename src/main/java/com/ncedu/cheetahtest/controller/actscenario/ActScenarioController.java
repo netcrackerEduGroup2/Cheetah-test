@@ -32,6 +32,13 @@ public class ActScenarioController {
                                                  @RequestParam("page") int page){
         return actScenarioService.findByTitleLike(title,size,page);
     }
+
+    //same as without /all but doesn`t have pagination
+    @GetMapping("/test-scenarios/act-scenarios/all")
+    public List<ActScenario> findAllByTitle(@RequestParam("title") String title){
+        return actScenarioService.findAllByTitleLike(title);
+    }
+
     @GetMapping("/test-scenarios/{idTestScenario}/act-scenarios")
     public PaginationActScenario findByTitleInTestScenPaginated(@RequestParam("title") String title,
                                              @RequestParam("size") int size,
@@ -39,11 +46,17 @@ public class ActScenarioController {
                                              @PathVariable int idTestScenario){
         return actScenarioService.findByTitleInTestScenario(title,idTestScenario,size,page);
     }
-    //same as without /all but doesn`t have pagination
-    @GetMapping("/test-scenarios/act-scenarios/all")
-    public List<ActScenario> findAllByTitlePaginated(@RequestParam("title") String title){
-        return actScenarioService.findAllByTitleLike(title);
+
+    @GetMapping("/test-scenarios/{idTestScenario}/gparams")
+    public List<ActScenario> findByIdInTestScen(@PathVariable int idTestScenario){
+        return actScenarioService.findByIdInTestScenario(idTestScenario);
     }
+
+    @GetMapping("/test-scenarios/{idTestScenario}/g")
+    public List<ActScenario> findAllByIdTestScenarioWithoutParams(@PathVariable int idTestScenario){
+        return actScenarioService.findAllByIdTestScenarioWithoutParams(idTestScenario);
+    }
+
     @GetMapping("/test-scenarios/{idTestScenario}/act-scenarios/all")
     public List<ActScenario> findAllByTitle(@RequestParam("title") String title,
                                                      @PathVariable int idTestScenario){
@@ -52,6 +65,10 @@ public class ActScenarioController {
     @PutMapping("/test-scenarios/act-scenarios/{idActScen}")
     public ActScenario editActScenario(@RequestBody ActScenario actScenario, @PathVariable int idActScen){
         return actScenarioService.editActScenario(actScenario,idActScen);
+    }
+    @PutMapping("/act-scenarios/s/{idActScen}")
+    public ActScenario setParametr(@RequestBody ActScenario actScenario, @PathVariable int idActScen){
+        return actScenarioService.setParametr(actScenario.getParameterId(),idActScen);
     }
     @DeleteMapping("/test-scenarios/act-scenarios/{idActScen}")
     public ActScenarioResponseStatus deleteActScenario(@PathVariable int idActScen){

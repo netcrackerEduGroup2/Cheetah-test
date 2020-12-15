@@ -42,6 +42,14 @@ public class ActScenarioDaoImpl implements ActScenarioDao {
                 id);
         return this.findById(id);
     }
+    @Override
+    public ActScenario setParametr(int idParam, int id) {
+        jdbcTemplate.update(
+                SET_PARAMETR,
+                idParam,
+                id);
+        return this.findById(id);
+    }
 
     @Override
     public List<ActScenario> findByTitleLike(String title, int limit, int offset) {
@@ -96,6 +104,22 @@ public class ActScenarioDaoImpl implements ActScenarioDao {
         jdbcTemplate.update(DELETE_ACT_SCENARIO, id);
     }
 
+    @Override
+    public List<ActScenario> findAllByIdTestScenarioWithoutParams(int idTestScenario) {
+        return jdbcTemplate.query(
+                FIND_BY_ID_IN_TEST_SCENARIO_WITHOUT_PARAMS,
+                preparedStatement -> preparedStatement.setInt(1, idTestScenario),
+                new ActScenairoRawMapperWithoutParameters()
+        );
+    }
+    @Override
+    public List<ActScenario> findAllByIdTestScenario(int idTestScenario) {
+        return jdbcTemplate.query(
+                FIND_BY_ID_IN_TEST_SCENARIO,
+                preparedStatement -> preparedStatement.setInt(1, idTestScenario),
+                new ActScenarioRowMapper()
+        );
+    }
 
     @Override
     public ActScenario setStatus(ActStatus actStatus, int id) {
