@@ -27,4 +27,14 @@ public interface TestCaseDao {
     boolean getTestCaseRepeatable(int id);
 
     String getExecutionDateById(int id);
+  
+    void setExecutionDateToNull(int id);
+
+    void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto);
+
+    void deleteExecutionCronDateAndRepeatability(int testCaseId);
+
+    void setResultToSuccess(int testCaseId);
+
+    void setResultToFail(int testCaseId);
 }
