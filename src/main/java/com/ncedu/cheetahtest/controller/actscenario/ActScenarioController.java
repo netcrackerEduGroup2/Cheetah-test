@@ -47,12 +47,12 @@ public class ActScenarioController {
         return actScenarioService.findByTitleInTestScenario(title,idTestScenario,size,page);
     }
 
-    @GetMapping("/test-scenarios/{idTestScenario}/gparams")
+    @GetMapping("/test-scenarios/{idTestScenario}/general-with-params")
     public List<ActScenario> findByIdInTestScen(@PathVariable int idTestScenario){
         return actScenarioService.findByIdInTestScenario(idTestScenario);
     }
 
-    @GetMapping("/test-scenarios/{idTestScenario}/g")
+    @GetMapping("/test-scenarios/{idTestScenario}/general")
     public List<ActScenario> findAllByIdTestScenarioWithoutParams(@PathVariable int idTestScenario){
         return actScenarioService.findAllByIdTestScenarioWithoutParams(idTestScenario);
     }
@@ -66,7 +66,7 @@ public class ActScenarioController {
     public ActScenario editActScenario(@RequestBody ActScenario actScenario, @PathVariable int idActScen){
         return actScenarioService.editActScenario(actScenario,idActScen);
     }
-    @PutMapping("/act-scenarios/s/{idActScen}")
+    @PutMapping("/test-scenarios/act-scenarios/set/{idActScen}")
     public ActScenario setParametr(@RequestBody ActScenario actScenario, @PathVariable int idActScen){
         return actScenarioService.setParametr(actScenario.getParameterId(),idActScen);
     }

@@ -12,13 +12,13 @@ public class TestScenarioConsts {
     public static final String DELETE_TEST_SCENARIO = "DELETE FROM test_scenario WHERE id = ?";
 
     public static final String GET_TOTAL_ELEMENTS_FROM_SEARCH_BY_ID_TEST_CASE = "SELECT count(*) FROM test_scenario " +
-            "WHERE test_case_id = ? AND title LIKE concat('%',?,'%') AND status = 'ACTIVE'::test_scenario_status;";
+            "WHERE test_case_id = ? AND lower(title) LIKE concat('%',?,'%') AND status = 'ACTIVE'::test_scenario_status;";
 
     public static final String GET_TOTAL_ELEMENTS_FROM_SEARCH = "SELECT count(*) FROM test_scenario " +
             "WHERE title LIKE concat('%',?,'%') AND status = 'ACTIVE'::test_scenario_status;";
 
     public static final String FIND_BY_TITLE = "SELECT id,title,description,status,test_case_id FROM test_scenario " +
-            "WHERE title = ?";
+            "WHERE lower(title) = ?";
 
     public static final String FIND_BY_TITLE_AND_ID_TEST_CASE_LIKE = "SELECT id,title,description,status,test_case_id " +
             "FROM test_scenario WHERE title LIKE CONCAT('%',?,'%') AND test_case_id=? AND status = 'ACTIVE'::test_scenario_status " +
