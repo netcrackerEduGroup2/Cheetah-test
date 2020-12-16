@@ -62,6 +62,26 @@ public class ParametersDaoImpl implements ParametersDao {
     }
 
     @Override
+    public List<Parameter> findAllByIdDataSet(int idDataSet) {
+
+        return jdbcTemplate.query(
+                FIND_ALL_BY_ID_DATA_SET,
+                preparedStatement -> preparedStatement.setInt(1,idDataSet),
+                new ParametersRowMapper()
+        );
+
+    }
+
+    @Override
+    public List<Parameter> findAllByIdTestCase(int idTestCase) {
+        return jdbcTemplate.query(
+                FIND_ALL_BY_ID_TEST_CASE,
+                preparedStatement -> preparedStatement.setInt(1,idTestCase),
+                new ParametersRowMapper()
+        );
+    }
+
+    @Override
     public Parameter createParameter(Parameter parameter) {
         jdbcTemplate.update(
                 CREATE_PARAMETERS,
@@ -130,9 +150,8 @@ public class ParametersDaoImpl implements ParametersDao {
 
     @Override
     public void deleteByIdDataSet(int idDataSet) {
-        String sql = "DELETE FROM parameters WHERE data_set_id = ?";
         jdbcTemplate.update(
-                sql,
+                DELETE_BY_ID_DATA_SET,
                 idDataSet
         );
     }

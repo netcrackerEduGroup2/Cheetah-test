@@ -5,6 +5,7 @@ import com.ncedu.cheetahtest.dao.genericdao.AbstractActiveDao;
 import com.ncedu.cheetahtest.dao.testscenario.TestScenarioDao;
 import com.ncedu.cheetahtest.entity.action.Action;
 import com.ncedu.cheetahtest.entity.actscenario.ActScenario;
+import com.ncedu.cheetahtest.entity.actscenario.ActStatus;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testscenario.*;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
@@ -31,12 +32,24 @@ public class TestScenarioServiceImpl implements TestScenarioService {
 
     @Override
     @Transactional
-    public PaginationTestScenario findByTitle(String title, int idTestCase, int size, int page) {
-        int totalTestScenarios = testScenarioDao.getTotalElements(idTestCase, title);
+    public PaginationTestScenario findByTitleAndTestCaseId(String title, int idTestCase, int size, int page) {
+        int totalTestScenarios = testScenarioDao.getTotalElementsByTitleAndIdTestCase(idTestCase, title);
         PaginationTestScenario paginationTestScenario = new PaginationTestScenario();
         paginationTestScenario.setTotalElements(totalTestScenarios);
         if (size * (page - 1) < totalTestScenarios) {
-            paginationTestScenario.setTestScenarios(testScenarioDao.findByTitleLike(title, idTestCase, size, size * (page - 1)));
+            paginationTestScenario.setTestScenarios(testScenarioDao.findByTitleLikeAndIdTestCase(title, idTestCase, size, size * (page - 1)));
+        }
+        return paginationTestScenario;
+    }
+
+    @Override
+    @Transactional
+    public PaginationTestScenario findByTitle(String title, int size, int page) {
+        int totalTestScenarios = testScenarioDao.getTotalElementsByTitle(title);
+        PaginationTestScenario paginationTestScenario = new PaginationTestScenario();
+        paginationTestScenario.setTotalElements(totalTestScenarios);
+        if (size * (page - 1) < totalTestScenarios) {
+            paginationTestScenario.setTestScenarios(testScenarioDao.findByTitleLike(title, size, size * (page - 1)));
         }
         return paginationTestScenario;
     }
@@ -44,7 +57,6 @@ public class TestScenarioServiceImpl implements TestScenarioService {
     @Override
     @Transactional
     public TestScenario createTestScenario(TestScenario testScenario, List<ActionsAndCompoundsID> actAndCompID) {
-        TestScenario createdTestScen;
         TestScenario testScenarioWithSameTitle = testScenarioDao
                 .findTestScenarioByTitleExceptCurrent(
                         testScenario.getTitle(),
@@ -60,45 +72,36 @@ public class TestScenarioServiceImpl implements TestScenarioService {
         }
 
         testScenario.setStatus(ACTIVE);
+        TestScenario createdTestScen;
         createdTestScen = testScenarioDao.createTestScenario(testScenario);
 
         ActScenario actScenario = new ActScenario();
 
         int priority = 1;
-        for (ActionsAndCompoundsID actAndComp: actAndCompID) {
+        for (ActionsAndCompoundsID actAndComp : actAndCompID) {
             if (actAndComp.getKind().equals("ACTION")){
                 actScenario.setActionId(actAndComp.getId());
                 actScenario.setTestScenarioId(createdTestScen.getId());
                 actScenario.setPriority(priority);
+                actScenario.setActStatus(ActStatus.ACTIVE);
                 actScenarioDao.createActScenario(actScenario);
+                priority++;
             } else if (actAndComp.getKind().equals("COMPOUND")){
                 List<Action> actions = actionService.getActionsInCompound(actAndComp.getId());
                 for(Action action: actions){
                     actScenario.setActionId(action.getId());
                     actScenario.setTestScenarioId(createdTestScen.getId());
                     actScenario.setPriority(priority);
+                    actScenario.setActStatus(ActStatus.ACTIVE);
                     actScenarioDao.createActScenario(actScenario);
                     priority++;
                 }
             }
-            priority++;
         }
 
         return createdTestScen;
     }
 
-
-    @Override
-    @Transactional
-    public PaginationItems getItemsFromScenario(int idTestScenario, int size, int page) {
-        int totalElements = testScenarioDao.getAllItemsAmount(idTestScenario);
-        PaginationItems paginationItems = new PaginationItems();
-        paginationItems.setTotalElements(totalElements);
-        if (size * (page - 1) < totalElements) {
-            paginationItems.setItemsFromTestScenario(testScenarioDao.getAllItems(idTestScenario, size, size * (page - 1)));
-        }
-        return paginationItems;
-    }
 
     @Override
     @Transactional
