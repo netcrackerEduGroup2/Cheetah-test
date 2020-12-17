@@ -35,7 +35,6 @@ import java.util.Objects;
 
 @Service
 @Slf4j
-
 public class EmailServiceImpl implements EmailService{
 
     public static final String NET_CRACKER_USERNAME = "spring.mail.username";

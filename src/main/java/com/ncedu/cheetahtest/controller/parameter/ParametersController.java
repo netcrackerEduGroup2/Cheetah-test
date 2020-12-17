@@ -7,6 +7,8 @@ import com.ncedu.cheetahtest.service.parameters.ParameterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "${frontend.ulr}")
 @RequestMapping("/api/parameters")
@@ -35,6 +37,16 @@ public class ParametersController {
                                               @RequestParam("page") int page){
         return parameterService.findAllByType(type,size,page);
     }
+    @GetMapping("/all/{idDataSet}")
+    public List<Parameter> findAllByIdDataSet(@PathVariable int idDataSet){
+        return parameterService.findAllByIdDataSet(idDataSet);
+    }
+
+    @GetMapping("/all/{idTestCase}/test-case")
+    public List<Parameter> findAllByIdTestCase(@PathVariable int idTestCase){
+        return parameterService.findAllByIdTestCase(idTestCase);
+    }
+
     @PutMapping
     public Parameter editParameter(@RequestBody Parameter parameter,
                                    @RequestParam("id") int id){

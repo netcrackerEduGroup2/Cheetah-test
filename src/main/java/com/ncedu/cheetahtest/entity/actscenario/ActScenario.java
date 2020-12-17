@@ -8,7 +8,7 @@ public class ActScenario {
     private int actionId;
     private int testScenarioId;
     private ActStatus actStatus;
-    private int parameterId;
+    private Integer parameterId;
     private String actionTitle;
     private String actionType;
     private String parameterType;

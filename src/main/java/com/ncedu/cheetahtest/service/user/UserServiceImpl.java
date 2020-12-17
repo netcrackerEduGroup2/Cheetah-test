@@ -143,8 +143,9 @@ public class UserServiceImpl implements UserService {
         return new UserPaginatedDto(usersDto, total);
     }
 
-  @Override
-  public List<UserDto> findByEmail(String email) {
-    return userDao.findByEmail(email);
-  }
+    @Override
+    public List<UserDto> findByEmail(String email) {
+        return userDao.findByEmail(email);
+    }
+
 }

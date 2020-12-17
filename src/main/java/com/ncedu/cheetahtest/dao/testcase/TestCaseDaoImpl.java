@@ -184,16 +184,7 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
         }
     }
 
-    @Override
-    public void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto) {
-        int result = jdbcTemplate.update(SET_EXECUTION_DATE_AND_REPEATABILITY,
-                testCaseScheduleDto.getExecutionCronDate(),
-                testCaseScheduleDto.isRepeatable(),
-                testCaseScheduleDto.getTestCaseId());
-        if (result != 1) {
-            throw new TestCaseNotFoundException();
-        }
-    }
+
 
     @Override
     public void deleteExecutionCronDateAndRepeatability(int testCaseId) {

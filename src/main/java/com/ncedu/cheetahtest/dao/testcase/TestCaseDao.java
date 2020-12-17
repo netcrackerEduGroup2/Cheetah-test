@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.dao.testcase;
 
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
 
 import java.util.List;
 
@@ -30,7 +31,6 @@ public interface TestCaseDao {
   
     void setExecutionDateToNull(int id);
 
-    void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto);
 
     void deleteExecutionCronDateAndRepeatability(int testCaseId);
 

@@ -2,6 +2,9 @@ package com.ncedu.cheetahtest.service.testcase.crud;
 
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
+
+import java.util.List;
 
 public interface TestCaseService {
 

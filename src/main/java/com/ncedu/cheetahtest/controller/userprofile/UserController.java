@@ -1,6 +1,11 @@
 package com.ncedu.cheetahtest.controller.userprofile;
 
-import com.ncedu.cheetahtest.entity.user.*;
+import ch.qos.logback.core.db.dialect.SybaseSqlAnywhereDialect;
+import com.ncedu.cheetahtest.entity.testcase.IdsDto;
+import com.ncedu.cheetahtest.entity.user.User;
+import com.ncedu.cheetahtest.entity.user.UserDto;
+import com.ncedu.cheetahtest.entity.user.UserPaginatedDto;
+import com.ncedu.cheetahtest.entity.user.UserStatus;
 import com.ncedu.cheetahtest.service.cloud.AmazonClientService;
 import com.ncedu.cheetahtest.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -74,11 +79,16 @@ public class UserController {
         return userService.findUsersByName(page, size, title);
     }
 
+    @GetMapping("/url-user-photo")
+    public String getUserPhoto(@RequestParam("email") String email){
+        return userService.findUserByEmail(email).getPhotoUrl();
+    }
 
     @PostMapping("/uploadUserPhoto")
     public String uploadFile(@RequestPart(value = "file") MultipartFile file,
-                             @RequestParam("id") int id) {
-        return this.amazonClientService.uploadUserPhoto(file, id);
+                             @RequestParam("email") String email) {
+        return this.amazonClientService.uploadUserPhoto(file,
+                userService.findUserByEmail(email).getId());
     }
 
     @DeleteMapping("/deleteUserPhoto")
@@ -90,6 +100,7 @@ public class UserController {
     public List<UserDto> findByEmail(@RequestParam("email") String email) {
         return userService.findByEmail(email);
     }
+
 }
 
 class UserToUpdate {

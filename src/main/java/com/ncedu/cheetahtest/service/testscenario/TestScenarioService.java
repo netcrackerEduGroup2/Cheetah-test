@@ -5,11 +5,11 @@ import com.ncedu.cheetahtest.entity.testscenario.*;
 import java.util.List;
 
 public interface TestScenarioService {
-    PaginationTestScenario findByTitle(String title, int idTestCase, int size, int page);
+    PaginationTestScenario findByTitleAndTestCaseId(String title, int idTestCase, int size, int page);
+
+    PaginationTestScenario findByTitle(String title, int size, int page);
 
     TestScenario createTestScenario(TestScenario testScenario, List<ActionsAndCompoundsID> actAndCompID);
-
-    PaginationItems getItemsFromScenario(int idTestScenario, int size, int page);
 
     PaginationTestScenario getAllTestScenarios(int size, int page);
 
