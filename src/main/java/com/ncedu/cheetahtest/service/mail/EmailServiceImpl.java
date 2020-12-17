@@ -38,6 +38,12 @@ import java.util.Objects;
 public class EmailServiceImpl implements EmailService{
 
     public static final String NET_CRACKER_USERNAME = "spring.mail.username";
+    public static final String LOG_SEND_EMAIL = "Email has been sent to ";
+    public static final String CANNT_SAVE_MESSAG = "Couldn't send message: %s";
+    public static final String HTML_NOT_FOUND = "Couldn't find html file by given path: %s";
+    public static final String BR = "<br>\n";
+    public static final String HTML_TAB = "&emsp;&emsp;&emsp;&emsp;&emsp;";
+    public static final String PATH_TO_XLS = "src/main/resources/excel/mail.xls";
 
     private final JavaMailSender emailSender;
     private final HtmlMail htmlMail;
@@ -92,12 +98,12 @@ public class EmailServiceImpl implements EmailService{
             helper.setText("", htmlString);
             emailSender.send(message);
 
-            log.info("Email has been sent to " + to);
+            log.info(LOG_SEND_EMAIL + to);
 
         } catch (MessagingException e) {
-            log.error(String.format("Couldn't send message: %s", e.getMessage()));
+            log.error(String.format(CANNT_SAVE_MESSAG, e.getMessage()));
         } catch (FileNotFoundException e) {
-            log.error(String.format("Couldn't find html file by given path: %s", e.getMessage()));
+            log.error(String.format(HTML_NOT_FOUND, e.getMessage()));
         }
     }
 
@@ -120,7 +126,7 @@ public class EmailServiceImpl implements EmailService{
             MimeMessage message = emailSender.createMimeMessage();
 
 
-            try {
+            try (Workbook workbook = new XSSFWorkbook()) {
 
                 MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
@@ -132,7 +138,7 @@ public class EmailServiceImpl implements EmailService{
 
 
 
-                List<String> strs = new ArrayList<String>();
+                List<String> strs = new ArrayList<>();
                 strs.add((isRepeatable ? "Repeatable " : "One-time ") + "test case");
                 strs.add(userDao.findUserByEmail(email).getName());
                 strs.add(testCaseDao.findTestCaseByProjectIdAndTestCaseId(idProject, idProject).getTitle());
@@ -147,8 +153,6 @@ public class EmailServiceImpl implements EmailService{
                 message.setSubject(titleEmail);
 
                 List<ActScenario> actScenarioList = actScenarioDao.getAllByTestCaseId(idTestCase);
-
-                Workbook workbook = new XSSFWorkbook();
 
                 Sheet sheet = workbook.createSheet(strs.get(1));
 
@@ -186,8 +190,9 @@ public class EmailServiceImpl implements EmailService{
                 headerStyle.setFont(font);
 
                 List<Action> actionList = new ArrayList<>();
-                String actions = new String();
+
                 int rowCountExcel = 1;
+                StringBuilder stringBuilder = new StringBuilder();
                 for (ActScenario actScenario : actScenarioList) {
                     lineCount++;
                     actionList.add(actionDao.getActionById(actScenario.getActionId()));
@@ -203,10 +208,12 @@ public class EmailServiceImpl implements EmailService{
                     headerCell = header.createCell(2);
                     headerCell.setCellValue(actionList.get(actionList.size() - 1).getDescription());
                     headerCell.setCellStyle(headerStyle);
-                    actions += "> " + actionList.get(actionList.size() - 1).getTitle()
-                            + "&emsp;&emsp;&emsp;&emsp;&emsp;" + actionList.get(actionList.size() - 1).getType()
-                            + "&emsp;&emsp;&emsp;&emsp;&emsp;" + actionList.get(actionList.size() - 1).getDescription() + "<br>\n";
+                    stringBuilder.append("> " + actionList.get(actionList.size() - 1).getTitle()
+                            + HTML_TAB + actionList.get(actionList.size() - 1).getType()
+                            + HTML_TAB + actionList.get(actionList.size() - 1).getDescription() + BR);
                 }
+
+                String actions = stringBuilder.toString();
 
                 if(isRepeatable) {
                     lineCount++;
@@ -216,13 +223,13 @@ public class EmailServiceImpl implements EmailService{
                     headerCell.setCellValue(executionDate);
                     headerCell.setCellStyle(headerStyle);
                     actions += "<p>Execution date:</p>";
-                    actions += "> " + executionDate + "<br>\n";
+                    actions += "> " + executionDate + BR;
                 }
 
                 strs.add(actions);
 
                 Collections.reverse(strs);
-                strs.add("height: " + (new Integer(lineCount * 100).toString()) + "px;");
+                strs.add("height: " + (Integer.toString(lineCount * 100)) + "px;");
                 Collections.reverse(strs);
 
 
@@ -231,11 +238,9 @@ public class EmailServiceImpl implements EmailService{
 
                 helper.setText("", htmlString);
 
-                File excelFile = new File("src/main/resources/excel/mail.xls");
+                File excelFile = new File(PATH_TO_XLS);
 
-                String path = excelFile.getAbsolutePath();
-
-                FileOutputStream outputStream = new FileOutputStream("src/main/resources/excel/mail.xls");
+                FileOutputStream outputStream = new FileOutputStream(PATH_TO_XLS);
 
                 workbook.write(outputStream);
                 workbook.close();
@@ -247,12 +252,12 @@ public class EmailServiceImpl implements EmailService{
 
                 emailSender.send(message);
 
-                log.info("Email has been sent to " + emails);
+                log.info(LOG_SEND_EMAIL + emails);
 
             } catch (MessagingException e) {
-                log.error(String.format("Couldn't send message: %s", e.getMessage()));
+                log.error(String.format(CANNT_SAVE_MESSAG, e.getMessage()));
             } catch (FileNotFoundException e) {
-                log.error(String.format("Couldn't find html file by given path: %s", e.getMessage()));
+                log.error(String.format(HTML_NOT_FOUND, e.getMessage()));
             } catch (IOException e) {
                 log.error(String.format("Couldn't write excel file: %s", e.getMessage()));
             }
@@ -266,16 +271,14 @@ public class EmailServiceImpl implements EmailService{
         for (String email : specificReport.getEmails()) {
 
             MimeMessage message = emailSender.createMimeMessage();
-            try {
+            try (Workbook workbook = new XSSFWorkbook()) {
 
-                List<String> strs = new ArrayList<String>();
+                List<String> strs = new ArrayList<>();
 
                 strs.add(userDao.findUserByEmail(email).getName());
 
                 List<Project> projectList = userDao.getProjectsByUserId(userDao.findUserByEmail(email).getId());
                 List<TestCase> testCaseList = new ArrayList<>();
-
-                Workbook workbook = new XSSFWorkbook();
 
                 Sheet sheet = workbook.createSheet("Specific");
 
@@ -286,7 +289,7 @@ public class EmailServiceImpl implements EmailService{
                 sheet.setColumnWidth(1, 7000);
 
 
-                String str = "";
+
                 int i = 0;
                 int iRow = 0;
                 Row header = sheet.createRow(iRow++);
@@ -311,10 +314,11 @@ public class EmailServiceImpl implements EmailService{
                 headerStyleTan.setFillPattern(FillPatternType.SOLID_FOREGROUND);
                 headerStyleTan.setFont(font);
                 headerCell.setCellStyle(headerStyleTan);
-                if (specificReport.getSendProjectUse()){
+                StringBuilder stringBuilder = new StringBuilder();
+                if (specificReport.getSendProjectUse() == true){
 
                     for (Project project: projectList){
-                        str += "<h2>Project" + project.getTitle() + "</h2>\n";
+                        stringBuilder.append("<h2>Project" + project.getTitle() + "</h2>\n");
                         header = sheet.createRow(iRow++);
 
 
@@ -332,21 +336,21 @@ public class EmailServiceImpl implements EmailService{
                             headerCell.setCellValue(testCase.getTitle());
 
                             headerCell.setCellStyle(headerStyleGray);
-                            str += testCase.getTitle() + "<br>\n";
+                            stringBuilder.append(testCase.getTitle() + BR);
                             i++;
                         }
                     }
                 }
-                strs.add(str);
-                str = "";
-                if(specificReport.getSendTestCaseAllDone()) {
-                    str += "<h2>All  test cases</h2>\n";
+                strs.add(stringBuilder.toString());
+                stringBuilder = new StringBuilder();
+                if(specificReport.getSendTestCaseAllDone() == true) {
+                    stringBuilder.append("<h2>All  test cases</h2>\n");
                     header = sheet.createRow(iRow++);
                     headerCell = header.createCell(0);
                     headerCell.setCellValue("All  test cases");
                     headerCell.setCellStyle(headerStyleDarkGray);
                     for (TestCase testCase: testCaseList) {
-                        str += testCase.getTitle() + "<br>\n";
+                        stringBuilder.append(testCase.getTitle() + BR);
                         header = sheet.createRow(iRow++);
                         headerCell = header.createCell(1);
                         headerCell.setCellValue(testCase.getTitle());
@@ -354,31 +358,29 @@ public class EmailServiceImpl implements EmailService{
                         i++;
                     }
                 }
-                else {
-                    if (!specificReport.getSendSelectTestCaseId().isEmpty()) {
-                        str += "<h2>Selected completed test cases</h2>\n";
-                        header = sheet.createRow(iRow++);
-                        headerCell = header.createCell(0);
-                        headerCell.setCellValue("Selected completed test cases");
-                        headerCell.setCellStyle(headerStyleDarkGray);
-                        for(Project project: projectList) {
-                            for (TestCase testCase : testCaseList) {
-                                if(testCase.getProjectId() == project.getId()) {
-                                    str +=  testCase.getTitle() + "<br>\n";
-                                    str +=  testCase.getTitle() + "<br>\n";
-                                    header = sheet.createRow(iRow++);
-                                    headerCell = header.createCell(1);
-                                    headerCell.setCellValue(testCase.getTitle());
-                                    headerCell.setCellStyle(headerStyleGray);
-                                    i++;
-                                }
+                else if (!specificReport.getSendSelectTestCaseId().isEmpty()) {
+                    stringBuilder.append("<h2>Selected completed test cases</h2>\n");
+                    header = sheet.createRow(iRow++);
+                    headerCell = header.createCell(0);
+                    headerCell.setCellValue("Selected completed test cases");
+                    headerCell.setCellStyle(headerStyleDarkGray);
+                    for(Project project: projectList) {
+                        for (TestCase testCase : testCaseList) {
+                            if(testCase.getProjectId() == project.getId()) {
+                                stringBuilder.append(testCase.getTitle() + BR);
+                                stringBuilder.append(testCase.getTitle() + BR);
+                                header = sheet.createRow(iRow++);
+                                headerCell = header.createCell(1);
+                                headerCell.setCellValue(testCase.getTitle());
+                                headerCell.setCellStyle(headerStyleGray);
+                                i++;
                             }
                         }
                     }
                 }
-                strs.add(str);
+                strs.add(stringBuilder.toString());
                 Collections.reverse(strs);
-                strs.add("height: " + (new Integer(i * 100).toString()) + "px;");
+                strs.add("height: " + (Integer.toString(i * 100)) + "px;");
                 Collections.reverse(strs);
                 MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
@@ -394,23 +396,23 @@ public class EmailServiceImpl implements EmailService{
                 helper.setText("", htmlString);
                 helper.addInline("topImageId", new File("src/main/resources/image/mail.png"));
 
-                FileOutputStream outputStream = new FileOutputStream("src/main/resources/excel/mail.xls");
+                FileOutputStream outputStream = new FileOutputStream(PATH_TO_XLS);
 
                 workbook.write(outputStream);
                 workbook.close();
 
-                File excelFile = new File("src/main/resources/excel/mail.xls");
+                File excelFile = new File(PATH_TO_XLS);
 
                 helper.addAttachment("special.xlsx", excelFile);
 
                 emailSender.send(message);
 
-                log.info("Email has been sent to " + email);
+                log.info(LOG_SEND_EMAIL + email);
 
             } catch (MessagingException e) {
-                log.error(String.format("Couldn't send message: %s", e.getMessage()));
+                log.error(String.format(CANNT_SAVE_MESSAG, e.getMessage()));
             } catch (FileNotFoundException e) {
-                log.error(String.format("Couldn't find html file by given path: %s", e.getMessage()));
+                log.error(String.format(HTML_NOT_FOUND, e.getMessage()));
             } catch (IOException e) {
                 log.error(String.format("Couldn't write excel file: %s", e.getMessage()));
             }

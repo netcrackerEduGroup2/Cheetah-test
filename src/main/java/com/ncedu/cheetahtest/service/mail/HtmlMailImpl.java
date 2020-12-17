@@ -42,7 +42,7 @@ public class HtmlMailImpl implements HtmlMail {
     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 
 
-      String tmp = new String();
+      String tmp = "";
       int i = 0;
       while (reader.ready()) {
         tmp = reader.readLine();
@@ -55,7 +55,7 @@ public class HtmlMailImpl implements HtmlMail {
       return Optional.of(htmlStringBuilder.toString());
 
     } catch (IOException e) {
-      e.printStackTrace();
+      e.getMessage();
     }
 
     return Optional.empty();

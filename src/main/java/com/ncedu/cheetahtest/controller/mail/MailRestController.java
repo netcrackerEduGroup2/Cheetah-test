@@ -30,6 +30,7 @@ public class MailRestController {
     private static final String HTML_PATH = "src/main/resources/mail/email.html";
     private static final String HTML_GENERATE_ONE_TEST_CASE = "src/main/resources/mail/generate-one-test-case.html";
     private static final String HTML_SPECIFIC_REPORT = "src/main/resources/mail/specific-report.html";
+    private static final String SUCCESS = "Success";
 
     @Value("${frontend.ulr}/reset-password?token=")
     private String FRONT_URL;
@@ -64,7 +65,7 @@ public class MailRestController {
                                                         @PathVariable int idProject,
                                                        @RequestBody List<String> emails){
             emailService.sendTestCaseReportToAddresses(emails,idTestCase,idProject);
-            return new ResponseEntity<>(new GenericResponse("Success"), HttpStatus.OK);
+            return new ResponseEntity<>(new GenericResponse(SUCCESS), HttpStatus.OK);
     }
 
     @PostMapping("/projects/{idProject}/test-cases/{idTestCase}/send-generate-report")
@@ -74,14 +75,14 @@ public class MailRestController {
         emailService
                 .sendGenerateTestCaseReportToAddresses(emails, idTestCase,
                         idProject,HTML_GENERATE_ONE_TEST_CASE);
-        return new ResponseEntity<>(new GenericResponse("Success"), HttpStatus.OK);
+        return new ResponseEntity<>(new GenericResponse(SUCCESS), HttpStatus.OK);
     }
 
     @PostMapping("/specific-report")
     public ResponseEntity<GenericResponse> sendSpecificReport(@RequestBody SpecificReport specificReport){
 
         emailService.sendSpecificReport(specificReport, HTML_SPECIFIC_REPORT);
-        return new ResponseEntity<>(new GenericResponse("Success"), HttpStatus.OK);
+        return new ResponseEntity<>(new GenericResponse(SUCCESS), HttpStatus.OK);
     }
 
     @PostMapping("/save-password")

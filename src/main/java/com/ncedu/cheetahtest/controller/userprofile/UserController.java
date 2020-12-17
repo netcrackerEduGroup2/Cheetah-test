@@ -1,7 +1,5 @@
 package com.ncedu.cheetahtest.controller.userprofile;
 
-import ch.qos.logback.core.db.dialect.SybaseSqlAnywhereDialect;
-import com.ncedu.cheetahtest.entity.testcase.IdsDto;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.UserDto;
 import com.ncedu.cheetahtest.entity.user.UserPaginatedDto;
