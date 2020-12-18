@@ -27,7 +27,7 @@ public interface TestCaseDao {
     boolean getTestCaseRepeatable(int id);
 
     String getExecutionDateById(int id);
-  
+
     void setExecutionDateToNull(int id);
 
 

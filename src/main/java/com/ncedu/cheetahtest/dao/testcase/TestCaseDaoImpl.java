@@ -162,14 +162,12 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
 
     @Override
     public boolean getTestCaseRepeatable(int id) {
-        return jdbcTemplate.queryForObject(CHECK_REPEATEBLE_TEST_CASE, new Object[] {id},
-                Boolean.class);
+        return jdbcTemplate.queryForObject(CHECK_REPEATEBLE_TEST_CASE, Boolean.class, id);
     }
 
     @Override
     public String getExecutionDateById(int id) {
-        return jdbcTemplate.queryForObject(GET__EXECUTION_DATE_BY_ID, new Object[] {id},
-                String.class);
+        return jdbcTemplate.queryForObject(GET__EXECUTION_DATE_BY_ID, String.class, id);
     }
 
     @Override

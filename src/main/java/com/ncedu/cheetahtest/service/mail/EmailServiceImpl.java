@@ -243,7 +243,6 @@ public class EmailServiceImpl implements EmailService{
                 FileOutputStream outputStream = new FileOutputStream(PATH_TO_XLS);
 
                 workbook.write(outputStream);
-                workbook.close();
 
                 helper.addAttachment("one-test-case.xlsx", excelFile);
 
@@ -315,7 +314,7 @@ public class EmailServiceImpl implements EmailService{
                 headerStyleTan.setFont(font);
                 headerCell.setCellStyle(headerStyleTan);
                 StringBuilder stringBuilder = new StringBuilder();
-                if (specificReport.getSendProjectUse() == true){
+                if (Boolean.TRUE.equals(specificReport.getSendProjectUse())){
 
                     for (Project project: projectList){
                         stringBuilder.append("<h2>Project" + project.getTitle() + "</h2>\n");
@@ -343,7 +342,7 @@ public class EmailServiceImpl implements EmailService{
                 }
                 strs.add(stringBuilder.toString());
                 stringBuilder = new StringBuilder();
-                if(specificReport.getSendTestCaseAllDone() == true) {
+                if(Boolean.TRUE.equals(specificReport.getSendTestCaseAllDone())) {
                     stringBuilder.append("<h2>All  test cases</h2>\n");
                     header = sheet.createRow(iRow++);
                     headerCell = header.createCell(0);
@@ -399,7 +398,6 @@ public class EmailServiceImpl implements EmailService{
                 FileOutputStream outputStream = new FileOutputStream(PATH_TO_XLS);
 
                 workbook.write(outputStream);
-                workbook.close();
 
                 File excelFile = new File(PATH_TO_XLS);
 
