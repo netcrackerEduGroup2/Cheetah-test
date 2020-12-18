@@ -34,4 +34,5 @@ public class HistoryTestCaseServiceImpl implements HistoryTestCaseService {
         }
         return new HistoryTestCasePagination(historyTestCaseDtos, total);
     }
+
 }

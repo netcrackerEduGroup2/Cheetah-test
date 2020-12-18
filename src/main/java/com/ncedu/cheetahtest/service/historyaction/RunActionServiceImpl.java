@@ -1,6 +1,8 @@
 package com.ncedu.cheetahtest.service.historyaction;
 
 import com.ncedu.cheetahtest.dao.hiatoryaction.RunHistoryActionDao;
+import com.ncedu.cheetahtest.entity.actionresult.ActionResultForInfoDto;
+import com.ncedu.cheetahtest.entity.pagination.PaginationContainer;
 import com.ncedu.cheetahtest.entity.runaction.RunAction;
 import com.ncedu.cheetahtest.entity.runaction.RunActionDto;
 import lombok.RequiredArgsConstructor;
@@ -39,5 +41,21 @@ public class RunActionServiceImpl implements RunActionService  {
     @Override
     public List<Integer> getAllIdTestCase() {
         return runHistoryActionDao.getAllTestAcseHistoryId();
+    }
+
+    @Override
+    public List<ActionResultForInfoDto> getActionsHistoryOfHTC(int idHTC) {
+        return runHistoryActionDao.getLastRunDetailsByHTCId(idHTC);
+    }
+
+    @Override
+    public PaginationContainer<ActionResultForInfoDto> getActionsHistoryOfHTCPaginated(int idHTC, int size, int page) {
+        PaginationContainer<ActionResultForInfoDto> paginationContainer = new PaginationContainer<>();
+        int totalElements = runHistoryActionDao.countLastRunDetailsByHTCIdPaginated(idHTC);
+        paginationContainer.setTotalElements(totalElements);
+        if (size * (page - 1) < totalElements) {
+            paginationContainer.setElements(runHistoryActionDao.getLastRunDetailsByHTCIdPaginated(idHTC, size, size * (page - 1)));
+        }
+        return paginationContainer;
     }
 }
