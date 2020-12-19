@@ -6,6 +6,7 @@ import com.ncedu.cheetahtest.dao.hiatoryaction.HistoryActionDao;
 import com.ncedu.cheetahtest.dao.historytestcase.HistoryTestCaseDao;
 import com.ncedu.cheetahtest.dao.testcase.TestCaseDao;
 import com.ncedu.cheetahtest.entity.actscenario.ActScenario;
+import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCaseFull;
 import com.ncedu.cheetahtest.entity.selenium.ActionResult;
 import com.ncedu.cheetahtest.entity.selenium.ActionResultStatus;
 import com.ncedu.cheetahtest.entity.selenium.SeleniumAction;
@@ -102,7 +103,8 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
                 new Date(),
                 testCaseId
         );
-        tcnService.notifyAboutTestCaseExecution(testCaseHistoryId);
+        HistoryTestCaseFull historyTestCaseFull = historyTestCaseDao.getById(testCaseHistoryId);
+        tcnService.notifyAboutTestCaseExecution(historyTestCaseFull);
 
 
         for (int i = 0; i < actionList.size(); i++) {
@@ -141,12 +143,14 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
 
             if (theActionResult.getStatus().equals(ActionResultStatus.FAIL)) {
                 historyTestCaseDao.editTestCaseResultById(testCaseHistoryId,"FAILED");
-                tcnService.notifyAboutTestCaseStatusChange(testCaseHistoryId,TestCaseResult.FAILED);
+                historyTestCaseFull = historyTestCaseDao.getById(testCaseHistoryId);
+                tcnService.notifyAboutTestCaseStatusChange(historyTestCaseFull,TestCaseResult.FAILED);
                 break;
             }
         }
         historyTestCaseDao.editTestCaseResultById(testCaseHistoryId,"COMPLETE");
-        tcnService.notifyAboutTestCaseStatusChange(testCaseHistoryId,TestCaseResult.COMPLETE);
+        historyTestCaseFull = historyTestCaseDao.getById(testCaseHistoryId);
+        tcnService.notifyAboutTestCaseStatusChange(historyTestCaseFull,TestCaseResult.COMPLETE);
         testCaseExecutor.close();
         return actionResults;
     }

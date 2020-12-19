@@ -43,14 +43,12 @@ public class HistoryTestCaseServiceImpl implements HistoryTestCaseService {
     @Override
     public HistoryTestCaseFull create(String result, Date dateCompleted, int testCaseId) {
        int id =  historyTestCaseDao.addTestCase(result, dateCompleted, testCaseId);
-       testCaseNotificationService.notifyAboutTestCaseExecution(id);
        return historyTestCaseDao.getById(id);
     }
 
     @Override
     public HistoryTestCaseFull editHistoryTestCaseStatus(int idHistoryTestCase, TestCaseResult testCaseResult) {
         historyTestCaseDao.editTestCaseResultById(idHistoryTestCase,testCaseResult.toString());
-        testCaseNotificationService.notifyAboutTestCaseStatusChange(idHistoryTestCase,testCaseResult);
         return historyTestCaseDao.getById(idHistoryTestCase);
     }
 }

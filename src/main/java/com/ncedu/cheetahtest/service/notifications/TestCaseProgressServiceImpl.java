@@ -27,11 +27,6 @@ public class TestCaseProgressServiceImpl implements TestCaseProgressService{
         testCaseProgressReport.setCompleted(completed);
         testCaseProgressReport.setIdTestCase(idTestCase);
 
-        //todo Delete that
-        log.info("\n Progress Report About testcase "+idTestCase+ " progress: "+completed.size()+ "/"+ totalActionResults);
-        log.info(testCaseProgressReport.toString());
-        log.info("\n");
-
         int projectId = projectDao.findProjectByTestCaseId(idTestCase).getId();
         List<Integer> userIds = userDao.getUsersIdByProjectId(projectId);
         sendProgressToUsers(userIds,testCaseProgressReport);

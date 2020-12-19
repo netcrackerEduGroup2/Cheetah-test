@@ -33,6 +33,7 @@ public class NotificationsController {
     public void handleRequest(@Header("Authorization") String token, @Payload Message message, Principal principal) {
         log.info("\n\n___________MESSAGE RECEIVED____________");
         log.info(message.toString());
+        log.info("\n_________________________________");
         switch (message.getEvent()) {
             case "delete-notification": {
                 int id = (int) message.getData();
@@ -54,14 +55,11 @@ public class NotificationsController {
     }
 
     private Message getAllNotificationsByUserID(String token, Principal principal) {
-        System.out.println(token);
-        System.out.println(principal.getName());
         int idUser = parseTokenAndGetId(token);
         wsNotificationService.addConnection(idUser, principal.getName());
         Message messageToSend = new Message();
         messageToSend.setEvent("notifications");
         messageToSend.setData(testCaseNotificationService.getAllNotificationsByUserId(idUser));
-        System.out.println(messageToSend);
         return messageToSend;
     }
 

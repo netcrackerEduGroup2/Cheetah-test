@@ -12,6 +12,7 @@ import com.ncedu.cheetahtest.entity.notification.TestCaseNotification;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,9 +29,9 @@ public class TestCaseNotificationServiceImpl implements TestCaseNotificationServ
 
 
     @Override
-    public void notifyAboutTestCaseExecution(int historyTestCaseId) {
+    @Async
+    public void notifyAboutTestCaseExecution(HistoryTestCaseFull historyTestCase) {
         TestCaseNotification testCaseNotification = new TestCaseNotification();
-        HistoryTestCaseFull historyTestCase = historyTestCaseDao.getById(historyTestCaseId);
         if (historyTestCase.getResult() == TestCaseResult.COMPLETE) {
             testCaseNotification.setNotificationStatus(NotificationStatus.COMPLETE);
         } else if (historyTestCase.getResult() == TestCaseResult.FAILED) {
@@ -56,8 +57,8 @@ public class TestCaseNotificationServiceImpl implements TestCaseNotificationServ
     }
 
     @Override
-    public void notifyAboutTestCaseStatusChange(int historyTestCaseId, TestCaseResult testCaseResult) {
-        HistoryTestCaseFull historyTestCase = historyTestCaseDao.getById(historyTestCaseId);
+    @Async
+    public void notifyAboutTestCaseStatusChange(HistoryTestCaseFull historyTestCase, TestCaseResult testCaseResult) {
         int projectId = projectDao.findProjectByTestCaseId(historyTestCase.getIdTestCase()).getId();
         notificationsDao.changeStatusByTestCaseId(historyTestCase.getIdTestCase(), testCaseResult);
         List<Integer> userIds = userDao.getUsersIdByProjectId(projectId);
