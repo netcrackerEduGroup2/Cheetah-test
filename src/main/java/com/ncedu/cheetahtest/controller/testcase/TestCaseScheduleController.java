@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,14 +25,18 @@ public class TestCaseScheduleController {
 
     @GetMapping
     public List<TestCase> createTestCaseSchedule() {
-        return testCaseService.getActiveTestCasesWithExecutionDate();
+        List<TestCase> testCases = testCaseService.getActiveTestCasesWithExecutionDate();
+        for (TestCase testCase: testCases){
+            testCase.setExecutionCronDate(parseToDate(testCase.getExecutionCronDate()));
+        }
+        return testCases;
     }
 
     @PostMapping
     public ResponseEntity<String> createTestCaseSchedule(@RequestBody TestCaseScheduleDto testCaseScheduleDto) {
 
+        testCaseScheduleDto.setExecutionCronDate(parseToCron(testCaseScheduleDto.getExecutionCronDate()));
         testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
-
         testCaseScheduler.createTestCaseSchedule(testCaseScheduleDto.getTestCaseId());
 
         String response = "Test case has been scheduled. Id = " + testCaseScheduleDto.getTestCaseId();
@@ -42,8 +48,8 @@ public class TestCaseScheduleController {
     @PutMapping
     public ResponseEntity<String> updateTestCaseSchedule(@RequestBody TestCaseScheduleDto testCaseScheduleDto) {
 
+        testCaseScheduleDto.setExecutionCronDate(parseToCron(testCaseScheduleDto.getExecutionCronDate()));
         testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
-
         testCaseScheduler.updateTestCaseSchedule(testCaseScheduleDto.getTestCaseId());
 
         String response = "Test case schedule has been updated. Id = " + testCaseScheduleDto.getTestCaseId();
@@ -63,5 +69,31 @@ public class TestCaseScheduleController {
 
         log.info(response);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/test-cases")
+    public List<TestCase> getCalendarTestCases(@RequestParam("title") String title)   {
+        List<TestCase> testCases = testCaseService.getAllActiveTestCasesByTitle(title);
+        for (TestCase testCase: testCases){
+            if(testCase.getExecutionCronDate() != null)
+                testCase.setExecutionCronDate(parseToDate(testCase.getExecutionCronDate()));
+        }
+        return testCases;
+    }
+
+    private static String parseToCron(String date){
+        String month = date.substring(date.indexOf("-") + 1, date.indexOf("-") + 3);
+        String day = date.substring(date.indexOf("-") + 4, date.indexOf("-") + 6);
+        String hour = date.substring(date.indexOf("T") + 1, date.indexOf(":"));
+        String minutes = date.substring(date.indexOf(":") + 1, date.indexOf(":") + 3);
+        return String.format("%s %s %s %s * *", minutes, hour, day, month);
+    }
+
+    private static String parseToDate(String cron){
+        String minutes = cron.substring(0, 2);
+        String hour = cron.substring(3, 5);
+        String day = cron.substring(6, 8);
+        String month = cron.substring(9, 11);
+        return String.format("%s-%s-%sT%s:%s:00+00:00", LocalDate.now().getYear(), month, day, hour, minutes);
     }
 }

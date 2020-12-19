@@ -33,4 +33,6 @@ public interface TestCaseService {
     void deleteExecutionCronDateAndRepeatability(int testCaseId);
 
     List<TestCase> getActiveTestCasesWithExecutionDate();
+
+    List<TestCase> getAllActiveTestCasesByTitle(String title);
 }

@@ -27,6 +27,8 @@ public interface TestCaseDao {
 
     List<TestCase> getActiveTestCasesWithExecutionDate();
 
+    List<TestCase> getAllActiveTestCasesByTitle(String title);
+
     void setExecutionDateToNull(int id);
 
     void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto);
