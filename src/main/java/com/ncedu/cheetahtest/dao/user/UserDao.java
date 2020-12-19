@@ -44,4 +44,10 @@ public interface UserDao {
     void deleteAllWatchersForProject(int projectId);
 
     void addWatchersForProject(int projectId, int[] ids);
+
+    List<User> getActiveUsersPerDays(int days);
+
+    List<User> getActiveUsersPerWeeks(int weeks);
+
+    int getCountActiveUserByRole(String role);
 }

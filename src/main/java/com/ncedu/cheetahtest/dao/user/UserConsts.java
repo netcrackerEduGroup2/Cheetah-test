@@ -18,4 +18,6 @@ public class UserConsts {
     public static final String FIND_WATCHERS_BY_PROJECT_ID = "SELECT id, email, name, role, status FROM users WHERE id IN (SELECT user_id FROM user_project WHERE project_id = ? AND user_status = 'WATCHER')";
     public static final String REMOVE_WATCHERS_FROM_PROJECT = "DELETE FROM user_project WHERE project_id = ? AND user_status = 'WATCHER'";
     public static final String CREATE_WATCHER_SQL = "INSERT INTO user_project(project_id, user_id, user_status) VALUES (?, ?, 'WATCHER')";
+    public static final String COUNT_ACTIVE_USER_BY_ROLE_SQL = "SELECT count(*) FROM users WHERE role::text LIKE ? AND status='ACTIVE';";//TODO
+
 }

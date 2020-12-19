@@ -1,6 +1,8 @@
 package com.ncedu.cheetahtest.dao.user;
 
 import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
+import com.ncedu.cheetahtest.dao.genericdao.CountRowMapper;
+import com.ncedu.cheetahtest.dao.testscenario.CountTestScenarioRowMapper;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.UserDto;
@@ -13,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import static com.ncedu.cheetahtest.dao.testscenario.TestScenarioConsts.GET_TOTAL_ELEMENTS_FROM_SEARCH_BY_ID_TEST_CASE;
 import static com.ncedu.cheetahtest.dao.user.UserConsts.*;
 
 @Repository
@@ -237,5 +240,25 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
             );
         }
     }
+
+    @Override
+    public List<User> getActiveUsersPerDays(int days) {
+        return null;
+    }
+
+    @Override
+    public List<User> getActiveUsersPerWeeks(int weeks) {
+        return null;
+    }
+
+    @Override
+    public int getCountActiveUserByRole(String role) {
+        List<Integer> count = jdbcTemplate.query(COUNT_ACTIVE_USER_BY_ROLE_SQL,
+                preparedStatement -> preparedStatement.setString(1, role),
+                new CountRowMapper());
+        if (count.size() == 1) return count.get(0);
+        else return 0;
+    }
+
 }
 
