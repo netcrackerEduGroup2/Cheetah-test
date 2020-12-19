@@ -1,13 +1,14 @@
 package com.ncedu.cheetahtest.dao.testscenario;
 
-import com.ncedu.cheetahtest.entity.testscenario.ItemDTO;
 import com.ncedu.cheetahtest.entity.testscenario.TestScenario;
 
 import java.util.List;
 
 public interface TestScenarioDao {
 
-    List<TestScenario> findByTitleLike(String title, int idTestCase, int limit, int offset);
+    List<TestScenario> findByTitleLikeAndIdTestCase(String title, int idTestCase, int limit, int offset);
+
+    List<TestScenario> findByTitleLike(String title, int limit, int offset);
 
     TestScenario createTestScenario(TestScenario testScenario);
 
@@ -17,7 +18,9 @@ public interface TestScenarioDao {
 
     void deleteTestScenario(int id);
 
-    int getTotalElements(int idTestcase, String title);
+    int getTotalElementsByTitleAndIdTestCase(int idTestcase, String title);
+
+    int getTotalElementsByTitle(String title);
 
     int getTestScenariosFromTestCaseAmount(int idTestCase);
 
@@ -26,8 +29,4 @@ public interface TestScenarioDao {
     void deactivate(int id);
 
     TestScenario findTestScenarioByTitleExceptCurrent(String title, int id);
-
-    int getAllItemsAmount(int idTestScenario);
-
-    List<ItemDTO> getAllItems(int idTestScenario, int limit, int offset);
 }

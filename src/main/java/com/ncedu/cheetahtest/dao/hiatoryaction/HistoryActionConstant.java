@@ -28,4 +28,19 @@ public class HistoryActionConstant {
     public static final String GET_ALL_ID_HISTORY_TEST_CASE =
             "SELECT id FROM history_test_case;";
 
+    public static final String COUNT_LAST_RUN_DETAILS ="SELECT COUNT(*) FROM action_result " +
+            "INNER JOIN history_test_case htc on htc.id = action_result.id_history_test_case " +
+            "WHERE htc.id = ?";
+    public static final String GET_LAST_RUN_DETAILS_BY_HTC_PAGINATED = "SELECT ar.id as ar_id,a.type as a_type, ar.action_element as ar_element, " +
+            "ar.argument as ar_argument, ar.result as ar_result, ar.screenshot_url as ar_screenshot " +
+            "FROM action_result ar " +
+            "INNER JOIN action a on a.id = ar.id_action " +
+            "INNER JOIN history_test_case htc on htc.id = ar.id_history_test_case " +
+            "WHERE htc.id =? ORDER BY ar.general_order LIMIT ? OFFSET ?";
+    public static final String GET_LAST_RUN_DETAILS = "SELECT ar.id as ar_id,a.type as a_type, ar.action_element as ar_element,ar.argument as ar_argument, " +
+            "ar.result as ar_result, ar.screenshot_url as ar_screenshot " +
+            "FROM action_result ar " +
+            "INNER JOIN action a on a.id = ar.id_action " +
+            "INNER JOIN history_test_case htc on htc.id = ar.id_history_test_case " +
+            "WHERE htc.id =? ORDER BY ar.general_order";
 }

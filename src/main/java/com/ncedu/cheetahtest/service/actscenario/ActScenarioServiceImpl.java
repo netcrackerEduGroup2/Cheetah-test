@@ -37,6 +37,11 @@ public class ActScenarioServiceImpl implements ActScenarioService {
     }
 
     @Override
+    public ActScenario setParametr(int idParam, int id) {
+        return actScenarioDao.setParametr(idParam, id);
+    }
+
+    @Override
     public PaginationActScenario findByTitleLike(String title, int size, int page) {
         PaginationActScenario paginationActScenario = new PaginationActScenario();
         int totalElements = actScenarioDao.totalFindByTitleLike(title);
@@ -61,6 +66,16 @@ public class ActScenarioServiceImpl implements ActScenarioService {
     @Override
     public List<ActScenario> findAllByTitleLike(String title) {
         return actScenarioDao.findAllByTitleLike(title);
+    }
+
+    @Override
+    public List<ActScenario> findByIdInTestScenario(int idTestScenario) {
+        return actScenarioDao.findAllByIdTestScenario(idTestScenario);
+    }
+
+    @Override
+    public List<ActScenario> findAllByIdTestScenarioWithoutParams(int idTestScenario) {
+        return actScenarioDao.findAllByIdTestScenarioWithoutParams(idTestScenario);
     }
 
     @Override

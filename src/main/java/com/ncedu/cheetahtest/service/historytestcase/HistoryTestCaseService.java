@@ -14,4 +14,5 @@ public interface HistoryTestCaseService {
     HistoryTestCaseFull create(String result, Date dateCompleted, int testCaseId);
 
     HistoryTestCaseFull editHistoryTestCaseStatus(int idHistoryTestCase, TestCaseResult testCaseResult);
+
 }

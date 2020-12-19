@@ -4,6 +4,7 @@ import com.ncedu.cheetahtest.dao.actscenario.ActScenarioDao;
 import com.ncedu.cheetahtest.dao.compound.CompoundDao;
 import com.ncedu.cheetahtest.dao.hiatoryaction.HistoryActionDao;
 import com.ncedu.cheetahtest.dao.historytestcase.HistoryTestCaseDao;
+import com.ncedu.cheetahtest.dao.testcase.TestCaseDao;
 import com.ncedu.cheetahtest.entity.actscenario.ActScenario;
 import com.ncedu.cheetahtest.entity.selenium.ActionResult;
 import com.ncedu.cheetahtest.entity.selenium.ActionResultStatus;
@@ -38,6 +39,7 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
     private final HistoryTestCaseDao historyTestCaseDao;
     private final TestCaseProgressService testCaseProgressService;
     private final TestCaseNotificationService tcnService;
+    private final TestCaseDao testCaseDao;
 
     @Override
     @Transactional
@@ -46,7 +48,20 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
         List<ActScenario> actScenarios = actScenarioDao.getAllByTestCaseId(testCaseId);
 
         List<SeleniumAction> seleniumActions = mapActScenarioToSeleniumAction(actScenarios);
-        processActions(seleniumActions, testCaseId);
+
+        List<ActionResult> actionResults = processActions(seleniumActions, testCaseId);
+
+        ActionResult lastActionResult;
+
+        if (!actionResults.isEmpty()) {
+            lastActionResult = actionResults.get(actionResults.size() - 1);
+
+            if (lastActionResult.getStatus() == ActionResultStatus.SUCCESS) {
+                testCaseDao.setResultToSuccess(testCaseId);
+            } else {
+                testCaseDao.setResultToFail(testCaseId);
+            }
+        }
     }
 
     public List<SeleniumAction> mapActScenarioToSeleniumAction(
@@ -68,6 +83,11 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
     }
 
     public List<ActionResult> processActions(List<SeleniumAction> actionList, int testCaseId) {
+
+        if (actionList.isEmpty()) {
+            log.info("No actions in testcase with id=" + testCaseId + ".");
+            return new ArrayList<>();
+        }
 
         TestCaseExecutor testCaseExecutor = applicationContext.getBean(TestCaseExecutorImpl.class);
 

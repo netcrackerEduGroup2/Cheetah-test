@@ -1,9 +1,8 @@
 package com.ncedu.cheetahtest.controller.testcase;
 
-import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.IdsDto;
+import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
-
 import com.ncedu.cheetahtest.service.testcase.crud.TestCaseService;
 import com.ncedu.cheetahtest.service.testcase.runwrapper.TestCaseLauncher;
 import lombok.RequiredArgsConstructor;
@@ -100,7 +99,7 @@ public class TestCaseController {
         return testCase;
     }
 
-    @GetMapping("/run-test-cases")
+    @PostMapping("/run-test-cases")
     public ResponseEntity<String> runTestCases(@RequestBody IdsDto idsDto)   {
         int[] ids = idsDto.getIds();
         for (int testCaseId : ids) {
