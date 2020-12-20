@@ -1,5 +1,6 @@
 package com.ncedu.cheetahtest.dao.user;
 
+import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.UserDto;
@@ -46,4 +47,6 @@ public interface UserDao {
     void deleteAllWatchersForProject(int projectId);
 
     void addWatchersForProject(int projectId, int[] ids);
+
+    List<Project> getProjectsByUserId(int userId);
 }
