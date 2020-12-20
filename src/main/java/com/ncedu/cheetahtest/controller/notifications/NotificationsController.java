@@ -49,7 +49,11 @@ public class NotificationsController {
         }
     }
     private void sendProgressDetails(Message message, String token, Principal principal){
-        // todo
+        int idUser = parseTokenAndGetId(token);
+        String username  = principal.getName();
+        int idTestCase = ((int) message.getData());
+        wsNotificationService.addConnection(idUser,username);
+        wsNotificationService.sendProgressOnDemand(username, idTestCase);
     }
 
     private void deleteNotificationByMessage(Message message, String token, Principal principal) {
@@ -69,7 +73,7 @@ public class NotificationsController {
     }
 
     private void sendMessageByPrincipal(String token, Principal principal) {
-        Message messageToSend = getNotificationsAfterEdit(token, principal);
+        Message messageToSend = getNotificationsAfterEdit(token);
         smTemplate.convertAndSendToUser(principal.getName(), "/queue/notifications", messageToSend);
     }
 
@@ -87,7 +91,7 @@ public class NotificationsController {
         return messageToSend;
     }
 
-    private Message getNotificationsAfterEdit(String token, Principal principal) {
+    private Message getNotificationsAfterEdit(String token) {
         int idUser = parseTokenAndGetId(token);
         Message messageToSend = new Message();
         messageToSend.setEvent("notifications");
