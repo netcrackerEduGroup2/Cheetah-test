@@ -19,4 +19,6 @@ public interface DashboardService {
     List<Integer> getAllToWeekProject();
 
     int getCountArchiveProject();
+
+    int getCountLastDayCreatedProject();
 }

@@ -50,4 +50,9 @@ public class DashboardController {
     public int getArchiveProject() {//todo
         return dashboardService.getCountArchiveProject();
     }
+
+    @GetMapping("/lastday-created-projects")
+    public int getCountLastDayCreatedProject() {//todo
+        return dashboardService.getCountLastDayCreatedProject();
+    }
 }

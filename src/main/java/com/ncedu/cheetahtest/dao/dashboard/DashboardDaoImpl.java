@@ -59,8 +59,7 @@ public class DashboardDaoImpl implements  DashboardDao{
 
     @Override
     public Integer getCountAllProject() {
-        List<Integer> count = jdbcTemplate.query(COUNT_ALL_PROJECT_SQL,
-                new CountRowMapper());
+        List<Integer> count = jdbcTemplate.query(COUNT_ALL_PROJECT_SQL, new CountRowMapper());
         if (count.size() == 1) return count.get(0);
         else return 0;
     }
@@ -85,7 +84,15 @@ public class DashboardDaoImpl implements  DashboardDao{
 
     @Override
     public int getCountArchiveProjects() {
-        List<Integer> count = jdbcTemplate.query(COUNT_ARCHIVED_PROJECTS_SQL,
+        List<Integer> count = jdbcTemplate.query(COUNT_ARCHIVED_PROJECTS_SQL, new CountRowMapper());
+        if (count.size() == 1) return count.get(0);
+        else return 0;
+    }
+
+    @Override
+    public int getCountLastTimeCreatedProject(String days) {
+        List<Integer> count = jdbcTemplate.query(COUNT_LAST_TIME_CREATED_PROJECTS_,
+                preparedStatement -> preparedStatement.setString(1,"'"+days+" days'"),
                 new CountRowMapper());
         if (count.size() == 1) return count.get(0);
         else return 0;

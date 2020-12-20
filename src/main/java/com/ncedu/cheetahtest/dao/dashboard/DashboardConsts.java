@@ -9,4 +9,5 @@ public class DashboardConsts {
     public static final String COUNT_PROJECT_PER_WEEK_SQL = "SELECT count(*) FROM project WHERE create_date > current_timestamp - ?::INTERVAL;";
     public static final String GET_PROJECTS_FOR_USER_SQL ="SELECT p.id, p.title, u.user_status FROM user_project u INNER JOIN project p on p.id = u.project_id WHERE u.user_id = ? AND (u.user_status = 'WATCHER' OR u.user_status = 'DEVELOPER') AND p.status = 'ACTIVE' ORDER BY p.create_date;";
     public static final String COUNT_ARCHIVED_PROJECTS_SQL = "SELECT count(*) FROM project WHERE status = 'INACTIVE'";
+    public static final String COUNT_LAST_TIME_CREATED_PROJECTS_ = "SELECT count(*) FROM project WHERE create_date > current_timestamp - ?::INTERVAL";
 }

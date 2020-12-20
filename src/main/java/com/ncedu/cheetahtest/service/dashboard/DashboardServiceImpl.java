@@ -93,4 +93,9 @@ public class DashboardServiceImpl implements DashboardService{
         return dashboardDao.getCountArchiveProjects();
     }
 
+    @Override
+    public int getCountLastDayCreatedProject() {
+        return dashboardDao.getCountLastTimeCreatedProject(ONE_DAY_INTERVAL);
+    }
+
 }

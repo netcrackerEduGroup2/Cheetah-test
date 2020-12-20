@@ -22,4 +22,6 @@ public interface DashboardDao {
     List<UserProjectsDTO> getProjectsForUser(int id);
 
     int getCountArchiveProjects();
+
+    int getCountLastTimeCreatedProject(String days);
 }
