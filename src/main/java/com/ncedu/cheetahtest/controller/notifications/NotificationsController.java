@@ -37,10 +37,10 @@ public class NotificationsController {
                 this.deleteNotificationByMessage(message);
                 break;
 
-            case "notifications-viewed": {
+            case "notifications-viewed":
                 this.editNotificationsStatusByMessage(message);
                 break;
-            }
+
             default:
                 sendNotificationsToUserByMessage(token, principal);
                 break;
