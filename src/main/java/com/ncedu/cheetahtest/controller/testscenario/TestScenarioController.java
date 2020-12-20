@@ -1,6 +1,9 @@
 package com.ncedu.cheetahtest.controller.testscenario;
 
-import com.ncedu.cheetahtest.entity.testscenario.*;
+import com.ncedu.cheetahtest.entity.testscenario.PaginationTestScenario;
+import com.ncedu.cheetahtest.entity.testscenario.ResponseTestScenario;
+import com.ncedu.cheetahtest.entity.testscenario.TestScenario;
+import com.ncedu.cheetahtest.entity.testscenario.TestScenarioCreatingBody;
 import com.ncedu.cheetahtest.service.testscenario.TestScenarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

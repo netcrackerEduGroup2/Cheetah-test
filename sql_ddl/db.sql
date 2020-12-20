@@ -7,6 +7,8 @@ create type test_case_status as enum ('ACTIVE' , 'INACTIVE');
 create type test_scenario_status as enum ('ACTIVE' , 'INACTIVE');
 create type test_case_result as enum ('FAILED' , 'COMPLETE', 'CREATED');
 create type user_project_status as enum ('WATCHER' , 'DEVELOPER');
+create type read_notification_status as enum ('UNREAD','READ');
+create type notification_status as enum ('COMPLETE', 'FAILED', 'INPROCESS');
 
 create table users
 (
@@ -149,3 +151,13 @@ CREATE TABLE action_result
   id_action       integer              NOT NULL REFERENCES action (id)
 );
 
+CREATE TABLE notifications
+(
+    id                  serial PRIMARY KEY       NOT NULL,
+    user_id             integer                  NOT NULL REFERENCES users (id),
+    notification_status notification_status      NOT NULL,
+    date                timestamp                NOT NULL,
+    test_case_id        integer                  NOT NULL,
+    project_id          integer                  Not Null,
+    read_status         read_notification_status NOT NULL
+);
