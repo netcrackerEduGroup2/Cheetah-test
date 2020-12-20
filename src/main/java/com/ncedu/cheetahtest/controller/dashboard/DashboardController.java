@@ -1,5 +1,6 @@
 package com.ncedu.cheetahtest.controller.dashboard;
 
+import com.ncedu.cheetahtest.entity.dashboard.UserActivityDTO;
 import com.ncedu.cheetahtest.service.dashboard.DashboardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,17 @@ public class DashboardController {
     private final DashboardService dashboardService;
 
     @GetMapping("/admin/count-users")
-    public List<Integer> getAllTestScenariosFromTestCase() {
+    public List<Integer> getUserRolesStatistic() {
         return dashboardService.getUserRolesStatistic();
+    }
+
+    @GetMapping("/admin/users-activity")
+    public List<UserActivityDTO> getActiveUsersForAdminPerDay() {
+        return dashboardService.getActiveUsersForAdminPerDay();
+    }
+
+    @GetMapping("/manager/users-activity")
+    public List<UserActivityDTO> getActiveUsersForManagerPerDay() {
+        return dashboardService.getActiveUsersForManagerPerDay();
     }
 }

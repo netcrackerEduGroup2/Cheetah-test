@@ -1,42 +1,49 @@
 package com.ncedu.cheetahtest.service.dashboard;
 
-import com.ncedu.cheetahtest.dao.genericdao.AbstractActiveDao;
-import com.ncedu.cheetahtest.dao.user.UserDao;
-import com.ncedu.cheetahtest.entity.user.User;
+import com.ncedu.cheetahtest.dao.dashboard.DashboardDao;
+import com.ncedu.cheetahtest.entity.dashboard.UserActivityDTO;
 import com.ncedu.cheetahtest.entity.user.UserRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class DashboardServiceImpl implements DashboardService{
-    private final UserDao userDao;
-
+    private final DashboardDao dashboardDao;
+    private static final String ONE_DAY_INTERVAL = "1";
+    private static final String ONE_WEEK_INTERVAL = "7";
+    private static final String USER_DATE_PATTERN = "HH:mm";
 
     @Override
-    public Map<String, Date> getActiveUsersPerWeek() {
-        return null;
+    public List<UserActivityDTO> getActiveUsersForAdminPerDay() {
+
+        List<UserActivityDTO> usersForAdmin = dashboardDao.getActiveUsersForAdminPerDays(ONE_DAY_INTERVAL);
+        usersForAdmin.forEach(u -> u.setTime(new SimpleDateFormat(USER_DATE_PATTERN)
+                        .format(Timestamp.valueOf(u.getTime()))));
+
+        return usersForAdmin;
     }
 
     @Override
-    public Map<String, Date> getActiveUsersPerDay(Date date) {
-        return null;
+    public List<UserActivityDTO> getActiveUsersForManagerPerDay() {
+        List<UserActivityDTO> usersForManager = dashboardDao.getActiveUsersForManagerPerDays(ONE_DAY_INTERVAL);
+        usersForManager.forEach(u -> u.setTime(new SimpleDateFormat(USER_DATE_PATTERN)
+                .format(Timestamp.valueOf(u.getTime()))));
+
+        return usersForManager;
     }
 
     @Override
     public List<Integer> getUserRolesStatistic() {
-        List roles = new ArrayList();
+        List<Integer> roles = new ArrayList<>();
         for(UserRole role: UserRole.values()){
-            roles.add(userDao.getCountActiveUserByRole(role.toString()));
+            roles.add(dashboardDao.getCountActiveUserByRole(role.toString()));
         }
         return roles;
     }
