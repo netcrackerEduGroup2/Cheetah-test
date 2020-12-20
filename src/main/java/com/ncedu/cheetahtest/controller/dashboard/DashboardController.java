@@ -37,7 +37,7 @@ public class DashboardController {
     }
 
     @GetMapping("/admin/personal-projects")
-    public List<UserProjectsDTO> getProjectsForUser(@RequestParam("id") int id) {//todo
+    public List<UserProjectsDTO> getProjectsForUser(@RequestParam("id") int id) {
         return dashboardService.getProjectsForUser(id);
     }
 

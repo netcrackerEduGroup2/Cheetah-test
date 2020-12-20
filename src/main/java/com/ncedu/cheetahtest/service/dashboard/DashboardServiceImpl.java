@@ -73,9 +73,9 @@ public class DashboardServiceImpl implements DashboardService{
 
     @Override
     public List<UserProjectsDTO> getProjectsForUser(int id) {
+        List<UserProjectsDTO> projectsForUser = dashboardDao.getProjectsForUser(id);;
 
-
-        return null;
+        return projectsForUser;
     }
 
     @Override

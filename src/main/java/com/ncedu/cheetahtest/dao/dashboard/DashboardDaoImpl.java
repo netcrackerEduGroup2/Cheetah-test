@@ -2,6 +2,7 @@ package com.ncedu.cheetahtest.dao.dashboard;
 
 import com.ncedu.cheetahtest.dao.genericdao.CountRowMapper;
 import com.ncedu.cheetahtest.entity.dashboard.UserActivityDTO;
+import com.ncedu.cheetahtest.entity.dashboard.UserProjectsDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -71,5 +72,14 @@ public class DashboardDaoImpl implements  DashboardDao{
                 new CountRowMapper());
         if (count.size() == 1) return count.get(0);
         else return 0;
+    }
+
+    @Override
+    public List<UserProjectsDTO> getProjectsForUser(int id) {
+        return jdbcTemplate.query(
+                GET_PROJECTS_FOR_USER_SQL,
+                preparedStatement -> preparedStatement.setInt(1,id),
+                new UserProjectsDTOMapper()
+        );
     }
 }

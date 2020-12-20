@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.dao.dashboard;
 
 import com.ncedu.cheetahtest.entity.dashboard.UserActivityDTO;
+import com.ncedu.cheetahtest.entity.dashboard.UserProjectsDTO;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface DashboardDao {
     Integer getCountAllProject();
 
     Integer getCountWeekProject(String oneWeekIntervalHours);
+
+    List<UserProjectsDTO> getProjectsForUser(int id);
 }

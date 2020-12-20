@@ -6,5 +6,5 @@ import lombok.Data;
 public class UserProjectsDTO {
     private int id;
     private String title;
-    private String user_status;
+    private String userStatus;
 }
