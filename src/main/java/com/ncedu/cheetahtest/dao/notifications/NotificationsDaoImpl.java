@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.List;
 
+import static com.ncedu.cheetahtest.dao.notifications.NotificationsDaoConsts.*;
+
+
 @Repository
 
 public class NotificationsDaoImpl implements NotificationsDao {
@@ -22,10 +25,8 @@ public class NotificationsDaoImpl implements NotificationsDao {
 
     @Override
     public void createNotification(TestCaseNotification testCaseNotification) {
-        String sql = "INSERT INTO notifications (user_id, notification_status, date, test_case_id, project_id, read_status) " +
-                "VALUES (?,?::notification_status,?,?,?,?::read_notification_status)";
         jdbcTemplate.update(
-                sql,
+                CREATE_NOTIFICATION,
                 testCaseNotification.getUserId(),
                 testCaseNotification.getNotificationStatus().toString(),
                 testCaseNotification.getDate(),
@@ -37,10 +38,8 @@ public class NotificationsDaoImpl implements NotificationsDao {
 
     @Override
     public TestCaseNotification editNotification(TestCaseNotification testCaseNotification, int id) {
-        String sql = "UPDATE notifications SET user_id = ?, notification_status = ?::notification_status, " +
-                "test_case_id = ?,project_id = ? ,read_status =?::read_notification_status WHERE id = ?";
         jdbcTemplate.update(
-                sql,
+                EDIT_NOTIFICATION,
                 testCaseNotification.getUserId(),
                 testCaseNotification.getNotificationStatus().toString(),
                 testCaseNotification.getTestCaseId(),
@@ -53,19 +52,16 @@ public class NotificationsDaoImpl implements NotificationsDao {
 
     @Override
     public void deleteNotification(int id) {
-        String sql = "DELETE FROM notifications WHERE id = ?";
         jdbcTemplate.update(
-                sql,
+                DELETE_NOTIFICATION,
                 id
         );
     }
 
     @Override
     public List<TestCaseNotification> getAllNotificationsByUserId(int userId) {
-        String sql = "SELECT id, notification_status, date, test_case_id, project_id, read_status " +
-                "FROM notifications WHERE user_id = ? ORDER BY read_status";
         return jdbcTemplate.query(
-                sql,
+                GET_ALL_NOTIFICATIONS_BY_USER,
                 preparedStatement -> preparedStatement.setInt(1, userId),
                 new NotificationsRowMapper()
         );
@@ -73,10 +69,8 @@ public class NotificationsDaoImpl implements NotificationsDao {
 
     @Override
     public List<TestCaseNotification> getNotificationsByUserIdPaginated(int userId, int limit, int offset) {
-        String sql = "SELECT id, notification_status, date, test_case_id, project_id, read_status " +
-                "FROM notifications WHERE user_id = ? ORDER BY read_status LIMIT ? OFFSET ?";
         return jdbcTemplate.query(
-                sql,
+                GET_PAGINATED_NOTIFICATIONS,
                 preparedStatement -> {
                     preparedStatement.setInt(1, userId);
                     preparedStatement.setInt(2, limit);
@@ -88,10 +82,8 @@ public class NotificationsDaoImpl implements NotificationsDao {
 
     @Override
     public TestCaseNotification findById(int id) {
-        String sql = "SELECT id, notification_status, date, test_case_id, project_id, read_status " +
-                "FROM notifications WHERE id = ?";
         List<TestCaseNotification> testCaseNotifications = jdbcTemplate.query(
-                sql,
+                FIND_BY_ID,
                 preparedStatement -> preparedStatement.setInt(1, id),
                 new NotificationsRowMapper()
         );
@@ -102,9 +94,8 @@ public class NotificationsDaoImpl implements NotificationsDao {
 
     @Override
     public int countNotificationsByUserId(int userId) {
-        String sql = "SELECT count(*) FROM notifications WHERE user_id = ?";
         List<Integer> counts = jdbcTemplate.query(
-                sql,
+                COUNT_NOTIFICATIONS,
                 preparedStatement -> preparedStatement.setInt(1, userId),
                 new NotificationsCountRowMapper());
         if (counts.size() == 1) {
@@ -114,9 +105,8 @@ public class NotificationsDaoImpl implements NotificationsDao {
 
     @Override
     public void changeStatusByTestCaseId(int idTestCase, TestCaseResult testCaseResult) {
-        String sql = "UPDATE notifications SET notification_status =?::notification_status WHERE test_case_id = ?";
         jdbcTemplate.update(
-                sql,
+                CHANGE_STATUS_BY_TEST_CASE_ID,
                 testCaseResult.toString(),
                 idTestCase
         );

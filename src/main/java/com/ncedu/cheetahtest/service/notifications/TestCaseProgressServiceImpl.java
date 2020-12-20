@@ -2,7 +2,6 @@ package com.ncedu.cheetahtest.service.notifications;
 
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
 import com.ncedu.cheetahtest.dao.user.UserDao;
-import com.ncedu.cheetahtest.entity.notification.TestCaseNotification;
 import com.ncedu.cheetahtest.entity.progress.TestCaseProgressReport;
 import com.ncedu.cheetahtest.entity.selenium.ActionResult;
 import lombok.RequiredArgsConstructor;

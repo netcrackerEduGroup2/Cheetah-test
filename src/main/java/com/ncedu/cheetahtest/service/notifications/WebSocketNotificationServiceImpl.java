@@ -2,7 +2,7 @@ package com.ncedu.cheetahtest.service.notifications;
 
 import com.ncedu.cheetahtest.entity.notification.TestCaseNotification;
 import com.ncedu.cheetahtest.entity.progress.TestCaseProgressReport;
-import com.ncedu.cheetahtest.entity.websocketDTO.Message;
+import com.ncedu.cheetahtest.entity.websocketdto.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;

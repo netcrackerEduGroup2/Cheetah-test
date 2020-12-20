@@ -5,7 +5,6 @@ import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCaseFull;
 import com.ncedu.cheetahtest.entity.notification.ReadStatus;
 import com.ncedu.cheetahtest.entity.notification.TestCaseNotification;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
-import com.ncedu.cheetahtest.entity.testcase.TestCaseStatus;
 
 import java.util.List;
 

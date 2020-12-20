@@ -1,4 +1,4 @@
-package com.ncedu.cheetahtest.entity.websocketDTO;
+package com.ncedu.cheetahtest.entity.websocketdto;
 
 import lombok.Data;
 
