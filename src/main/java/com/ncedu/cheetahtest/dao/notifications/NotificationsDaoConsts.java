@@ -3,7 +3,7 @@ package com.ncedu.cheetahtest.dao.notifications;
 public class NotificationsDaoConsts {
     public static final String CREATE_NOTIFICATION = "INSERT INTO notifications (user_id, notification_status, date, test_case_id, project_id, read_status) " +
             "VALUES (?,?::notification_status,?,?,?,?::read_notification_status)";
-    public static final String EDIT_NOTIFICATION = "UPDATE notifications SET user_id = ?, notification_status = ?::notification_status, " +
+    public static final String EDIT_NOTIFICATION = "UPDATE notifications SET  notification_status = ?::notification_status, " +
             "test_case_id = ?,project_id = ? ,read_status =?::read_notification_status WHERE id = ?";
     public static final String DELETE_NOTIFICATION = "DELETE FROM notifications WHERE id = ?";
     public static final String GET_ALL_NOTIFICATIONS_BY_USER = "SELECT id, notification_status, date, test_case_id, project_id, read_status " +

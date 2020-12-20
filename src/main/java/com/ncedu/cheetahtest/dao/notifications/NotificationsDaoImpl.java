@@ -40,7 +40,6 @@ public class NotificationsDaoImpl implements NotificationsDao {
     public TestCaseNotification editNotification(TestCaseNotification testCaseNotification, int id) {
         jdbcTemplate.update(
                 EDIT_NOTIFICATION,
-                testCaseNotification.getUserId(),
                 testCaseNotification.getNotificationStatus().toString(),
                 testCaseNotification.getTestCaseId(),
                 testCaseNotification.getProjectId(),
