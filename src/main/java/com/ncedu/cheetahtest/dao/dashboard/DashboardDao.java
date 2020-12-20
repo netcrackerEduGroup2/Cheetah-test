@@ -1,5 +1,6 @@
 package com.ncedu.cheetahtest.dao.dashboard;
 
+import com.ncedu.cheetahtest.entity.dashboard.PlannedTestCaseDTO;
 import com.ncedu.cheetahtest.entity.dashboard.UserActivityDTO;
 import com.ncedu.cheetahtest.entity.dashboard.UserProjectsDTO;
 
@@ -24,4 +25,8 @@ public interface DashboardDao {
     int getCountArchiveProjects();
 
     int getCountLastTimeCreatedProject(String days);
+
+    List<PlannedTestCaseDTO> getPlannedTestCasesForManager();
+
+    List<PlannedTestCaseDTO> getPlannedTestCasesForEngineer(int id);
 }

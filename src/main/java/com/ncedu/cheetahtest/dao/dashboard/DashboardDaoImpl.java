@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.dao.dashboard;
 
 import com.ncedu.cheetahtest.dao.genericdao.CountRowMapper;
+import com.ncedu.cheetahtest.entity.dashboard.PlannedTestCaseDTO;
 import com.ncedu.cheetahtest.entity.dashboard.UserActivityDTO;
 import com.ncedu.cheetahtest.entity.dashboard.UserProjectsDTO;
 import lombok.RequiredArgsConstructor;
@@ -96,5 +97,22 @@ public class DashboardDaoImpl implements  DashboardDao{
                 new CountRowMapper());
         if (count.size() == 1) return count.get(0);
         else return 0;
+    }
+
+    @Override
+    public List<PlannedTestCaseDTO> getPlannedTestCasesForManager() {
+        return jdbcTemplate.query(
+                GET_PLANNED_TESTCASES_FOR_MANAGER,
+                new PlannedTestCaseDTOMapper()
+        );
+    }
+
+    @Override
+    public List<PlannedTestCaseDTO> getPlannedTestCasesForEngineer(int id) {
+        return jdbcTemplate.query(
+                GET_PLANNED_TESTCASES_FOR_ENGINEER,
+                preparedStatement -> preparedStatement.setInt(1,id),
+                new PlannedTestCaseDTOMapper()
+        );
     }
 }

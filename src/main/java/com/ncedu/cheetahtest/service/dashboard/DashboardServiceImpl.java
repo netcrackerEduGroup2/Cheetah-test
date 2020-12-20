@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -72,6 +73,22 @@ public class DashboardServiceImpl implements DashboardService{
     }
 
     @Override
+    public List<PlannedTestCaseDTO> getPlannedTestCasesForManager() {
+        List<PlannedTestCaseDTO> plannedTestCaseDTOS = dashboardDao.getPlannedTestCasesForManager();
+        plannedTestCaseDTOS.forEach(tc->tc.setCronDate(parseToStringDate(tc.getCronDate())));
+
+        return plannedTestCaseDTOS;
+    }
+
+    @Override
+    public List<PlannedTestCaseDTO> getPlannedTestCasesForEngineer(int id) {
+        List<PlannedTestCaseDTO> plannedTestCaseDTOS = dashboardDao.getPlannedTestCasesForEngineer(id);
+        plannedTestCaseDTOS.forEach(tc->tc.setCronDate(parseToStringDate(tc.getCronDate())));
+
+        return plannedTestCaseDTOS;
+    }
+
+    @Override
     public List<UserProjectsDTO> getProjectsForUser(int id) {
         List<UserProjectsDTO> projectsForUser = dashboardDao.getProjectsForUser(id);;
 
@@ -96,6 +113,15 @@ public class DashboardServiceImpl implements DashboardService{
     @Override
     public int getCountLastDayCreatedProject() {
         return dashboardDao.getCountLastTimeCreatedProject(ONE_DAY_INTERVAL);
+    }
+
+    private static String parseToStringDate(String cron){
+        String minutes = cron.substring(0, 2);
+        String hour = cron.substring(3, 5);
+        String day = cron.substring(6, 8);
+        String month = cron.substring(9, 11);
+        return String.format("%s.%s.%s %s:%s", day,month,LocalDate.now().getYear(), hour, minutes);
+
     }
 
 }

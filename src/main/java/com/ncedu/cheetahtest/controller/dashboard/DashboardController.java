@@ -55,4 +55,14 @@ public class DashboardController {
     public int getCountLastDayCreatedProject() {//todo
         return dashboardService.getCountLastDayCreatedProject();
     }
+
+    @GetMapping("/manager/planned-testcases")
+    public List<PlannedTestCaseDTO> getPlannedTestCasesForManager() {//TODO check when not null
+        return dashboardService.getPlannedTestCasesForManager();
+    }
+
+    @GetMapping("/engineer/planned-testcases")
+    public List<PlannedTestCaseDTO> getPlannedTestCasesForEngineer(@RequestParam("id") int id) {//TODO check when not null
+        return dashboardService.getPlannedTestCasesForEngineer(id);
+    }
 }

@@ -21,4 +21,8 @@ public interface DashboardService {
     int getCountArchiveProject();
 
     int getCountLastDayCreatedProject();
+
+    List<PlannedTestCaseDTO> getPlannedTestCasesForManager();
+
+    List<PlannedTestCaseDTO> getPlannedTestCasesForEngineer(int id);
 }

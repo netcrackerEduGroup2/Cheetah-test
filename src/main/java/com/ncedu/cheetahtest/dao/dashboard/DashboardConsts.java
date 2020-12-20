@@ -10,4 +10,6 @@ public class DashboardConsts {
     public static final String GET_PROJECTS_FOR_USER_SQL ="SELECT p.id, p.title, u.user_status FROM user_project u INNER JOIN project p on p.id = u.project_id WHERE u.user_id = ? AND (u.user_status = 'WATCHER' OR u.user_status = 'DEVELOPER') AND p.status = 'ACTIVE' ORDER BY p.create_date;";
     public static final String COUNT_ARCHIVED_PROJECTS_SQL = "SELECT count(*) FROM project WHERE status = 'INACTIVE'";
     public static final String COUNT_LAST_TIME_CREATED_PROJECTS_ = "SELECT count(*) FROM project WHERE create_date > current_timestamp - ?::INTERVAL";
+    public static final String GET_PLANNED_TESTCASES_FOR_MANAGER = "SELECT p.id id_project, p.title title_project, tc.id id_testcase, tc.title title_testcase, tc.execution_cron_date cron_date from test_case tc INNER JOIN project p on p.id = tc.project_id WHERE execution_cron_date IS NOT NULL ;";//TODO check
+    public static final String GET_PLANNED_TESTCASES_FOR_ENGINEER = "SELECT p.id id_project, p.title title_project, tc.id id_testcase, tc.title title_testcase, tc.execution_cron_date cron_date FROM test_case tc INNER JOIN (SELECT p.id, p.title FROM project p INNER JOIN user_project up on p.id = up.project_id WHERE up.user_id = ?) p on p.id = tc.project_id WHERE execution_cron_date IS NOT NULL ;";
 }
