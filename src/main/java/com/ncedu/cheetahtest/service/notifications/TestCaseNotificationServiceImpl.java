@@ -75,27 +75,32 @@ public class TestCaseNotificationServiceImpl implements TestCaseNotificationServ
     }
     private List<TestCaseNotification> addTitleAndDescription(
             List<TestCaseNotification> testCaseNotifications){
+        final String TESTCASE= "Test case ";
+        final String FOLLOWLINK = "For more detailed information please, follow the link below:";
+        final String INPROJECT = " in project ";
+
         for (TestCaseNotification testCaseNotification: testCaseNotifications){
             if(testCaseNotification.getNotificationStatus().equals(NotificationStatus.COMPLETE)){
-                testCaseNotification.setTitle("Test case "+testCaseNotification.getTestCaseId()+
-                        " in project "+testCaseNotification.getProjectId()+" successfully ended");
-                testCaseNotification.setDescription("Test case "+testCaseNotification.getTestCaseId()+
-                        " in project "+testCaseNotification.getProjectId()+" successfully ended.\n " +
-                        "For more detailed information please, follow the link below:");
+                testCaseNotification.setTitle(TESTCASE+testCaseNotification.getTestCaseId()+
+                        INPROJECT+testCaseNotification.getProjectId()+" successfully ended");
+                testCaseNotification.setDescription(TESTCASE+testCaseNotification.getTestCaseId()+
+                                INPROJECT+testCaseNotification.getProjectId()+" successfully ended.\n " +
+                                FOLLOWLINK
+                        );
             }
             if(testCaseNotification.getNotificationStatus().equals(NotificationStatus.FAILED)){
-                testCaseNotification.setTitle("Test case "+testCaseNotification.getTestCaseId()+
-                        " in project "+testCaseNotification.getProjectId()+" failed");
-                testCaseNotification.setDescription("Test case "+testCaseNotification.getTestCaseId()+
-                        " in project "+testCaseNotification.getProjectId()+" failed.\n " +
-                        "For more detailed information please, follow the link below:");
+                testCaseNotification.setTitle(TESTCASE+testCaseNotification.getTestCaseId()+
+                        INPROJECT+testCaseNotification.getProjectId()+" failed");
+                testCaseNotification.setDescription(TESTCASE+testCaseNotification.getTestCaseId()+
+                        INPROJECT+testCaseNotification.getProjectId()+" failed.\n " +
+                        FOLLOWLINK);
             }
             else{
-                testCaseNotification.setTitle("Test case "+testCaseNotification.getTestCaseId()+
-                        " in project "+testCaseNotification.getProjectId()+" is in progress of executing");
-                testCaseNotification.setDescription("Test case "+testCaseNotification.getTestCaseId()+
-                        " in project "+testCaseNotification.getProjectId()+" is in progress of executing.\n " +
-                        "For more detailed information please, follow the link below:");
+                testCaseNotification.setTitle(TESTCASE+testCaseNotification.getTestCaseId()+
+                        INPROJECT+testCaseNotification.getProjectId()+" is in progress of executing");
+                testCaseNotification.setDescription(TESTCASE+testCaseNotification.getTestCaseId()+
+                        INPROJECT+testCaseNotification.getProjectId()+" is in progress of executing.\n " +
+                        FOLLOWLINK);
             }
         }
         return testCaseNotifications;
