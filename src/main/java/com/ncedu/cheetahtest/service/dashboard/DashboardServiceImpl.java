@@ -88,4 +88,9 @@ public class DashboardServiceImpl implements DashboardService{
         return projects;
     }
 
+    @Override
+    public int getCountArchiveProject() {
+        return dashboardDao.getCountArchiveProjects();
+    }
+
 }

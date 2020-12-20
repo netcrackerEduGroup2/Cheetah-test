@@ -17,4 +17,6 @@ public interface DashboardService {
     List<UserProjectsDTO> getProjectsForUser(int id);
 
     List<Integer> getAllToWeekProject();
+
+    int getCountArchiveProject();
 }

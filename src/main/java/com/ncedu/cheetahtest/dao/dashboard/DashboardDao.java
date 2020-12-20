@@ -20,4 +20,6 @@ public interface DashboardDao {
     Integer getCountWeekProject(String oneWeekIntervalHours);
 
     List<UserProjectsDTO> getProjectsForUser(int id);
+
+    int getCountArchiveProjects();
 }

@@ -45,4 +45,9 @@ public class DashboardController {
     public List<Integer> getAllToWeekProject() {//todo
         return dashboardService.getAllToWeekProject();
     }
+
+    @GetMapping("/admin/archive-projects")
+    public int getArchiveProject() {//todo
+        return dashboardService.getCountArchiveProject();
+    }
 }

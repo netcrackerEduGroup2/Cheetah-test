@@ -82,4 +82,12 @@ public class DashboardDaoImpl implements  DashboardDao{
                 new UserProjectsDTOMapper()
         );
     }
+
+    @Override
+    public int getCountArchiveProjects() {
+        List<Integer> count = jdbcTemplate.query(COUNT_ARCHIVED_PROJECTS_SQL,
+                new CountRowMapper());
+        if (count.size() == 1) return count.get(0);
+        else return 0;
+    }
 }
