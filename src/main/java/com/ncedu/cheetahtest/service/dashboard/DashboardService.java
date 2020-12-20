@@ -1,6 +1,6 @@
 package com.ncedu.cheetahtest.service.dashboard;
 
-import com.ncedu.cheetahtest.entity.dashboard.UserActivityDTO;
+import com.ncedu.cheetahtest.entity.dashboard.*;
 
 import java.util.*;
 
@@ -11,4 +11,6 @@ public interface DashboardService {
     List<UserActivityDTO> getActiveUsersForManagerPerDay();
 
     List<Integer> getUserRolesStatistic();
+
+    List<ProjectActivityDTO> getProjectActivityForAdminPerWeek();
 }

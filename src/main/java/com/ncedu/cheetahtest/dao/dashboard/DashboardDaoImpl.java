@@ -42,4 +42,17 @@ public class DashboardDaoImpl implements  DashboardDao{
         if (count.size() == 1) return count.get(0);
         else return 0;
     }
+
+    @Override
+    public int getProjectActivitiesPerDayOnWeek(String from, String to) {
+        List<Integer> count = jdbcTemplate.query(
+                COUNT_PROJECTS_CREATED_PER_DAY_ON_WEEK,
+                preparedStatement -> {
+                    preparedStatement.setString(1, "'"+from+" hours'");
+                    preparedStatement.setString(2, "'"+to+" hours'");
+                },
+                new CountRowMapper());
+        if (count.size() == 1) return count.get(0);
+        else return 0;
+    }
 }
