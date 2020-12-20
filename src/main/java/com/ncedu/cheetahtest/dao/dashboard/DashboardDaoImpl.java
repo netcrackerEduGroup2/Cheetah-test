@@ -55,4 +55,21 @@ public class DashboardDaoImpl implements  DashboardDao{
         if (count.size() == 1) return count.get(0);
         else return 0;
     }
+
+    @Override
+    public Integer getCountAllProject() {
+        List<Integer> count = jdbcTemplate.query(COUNT_ALL_PROJECT_SQL,
+                new CountRowMapper());
+        if (count.size() == 1) return count.get(0);
+        else return 0;
+    }
+
+    @Override
+    public Integer getCountWeekProject(String oneWeekIntervalHours) {
+        List<Integer> count = jdbcTemplate.query(COUNT_PROJECT_PER_WEEK_SQL,
+                preparedStatement -> preparedStatement.setString(1, "'"+oneWeekIntervalHours+" hours'"),
+                new CountRowMapper());
+        if (count.size() == 1) return count.get(0);
+        else return 0;
+    }
 }

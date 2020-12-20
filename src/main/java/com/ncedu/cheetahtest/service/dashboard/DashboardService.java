@@ -13,4 +13,8 @@ public interface DashboardService {
     List<Integer> getUserRolesStatistic();
 
     List<ProjectActivityDTO> getProjectActivityForAdminPerWeek();
+
+    List<UserProjectsDTO> getProjectsForUser(int id);
+
+    List<Integer> getAllToWeekProject();
 }

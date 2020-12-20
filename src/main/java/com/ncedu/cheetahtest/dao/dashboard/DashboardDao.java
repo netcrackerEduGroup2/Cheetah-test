@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.dao.dashboard;
 
-import com.ncedu.cheetahtest.entity.dashboard.ProjectActivityDTO;
 import com.ncedu.cheetahtest.entity.dashboard.UserActivityDTO;
 
 import java.util.List;
@@ -14,4 +13,8 @@ public interface DashboardDao {
     int getCountActiveUserByRole(String role);
 
     int getProjectActivitiesPerDayOnWeek(String from, String to);
+
+    Integer getCountAllProject();
+
+    Integer getCountWeekProject(String oneWeekIntervalHours);
 }

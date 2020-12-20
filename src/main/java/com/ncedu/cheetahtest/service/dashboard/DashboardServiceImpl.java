@@ -5,7 +5,6 @@ import com.ncedu.cheetahtest.entity.dashboard.*;
 import com.ncedu.cheetahtest.entity.user.UserRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -18,13 +17,12 @@ import java.util.*;
 public class DashboardServiceImpl implements DashboardService{
     private final DashboardDao dashboardDao;
     private static final String ONE_DAY_INTERVAL = "1";
-    private static final String ONE_WEEK_INTERVAL = "7";
+    private static final String ONE_WEEK_INTERVAL_HOURS = "168";
     private static final String USER_DATE_PATTERN = "HH:mm";
     private static final String USER_DATE_PATTERN_WEEK = "dd.MM 'at' HH:mm";
 
     @Override
     public List<UserActivityDTO> getActiveUsersForAdminPerDay() {
-
         List<UserActivityDTO> usersForAdmin = dashboardDao.getActiveUsersForAdminPerDays(ONE_DAY_INTERVAL);
         usersForAdmin.forEach(u -> u.setTime(new SimpleDateFormat(USER_DATE_PATTERN)
                         .format(Timestamp.valueOf(u.getTime()))));
@@ -69,6 +67,23 @@ public class DashboardServiceImpl implements DashboardService{
         int count = dashboardDao.getProjectActivitiesPerDayOnWeek(String.valueOf(hour), "0");
         String dayOfMonthStr = dayOfMonth + "." + month;
         projects.add(new ProjectActivityDTO(dayOfMonthStr, count));
+
+        return projects;
+    }
+
+    @Override
+    public List<UserProjectsDTO> getProjectsForUser(int id) {
+
+
+        return null;
+    }
+
+    @Override
+    public List<Integer> getAllToWeekProject() {
+        List<Integer> projects = new ArrayList<>();
+
+        projects.add(dashboardDao.getCountAllProject());
+        projects.add(dashboardDao.getCountWeekProject(ONE_WEEK_INTERVAL_HOURS));
 
         return projects;
     }

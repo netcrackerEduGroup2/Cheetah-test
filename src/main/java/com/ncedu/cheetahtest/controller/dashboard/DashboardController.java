@@ -35,4 +35,14 @@ public class DashboardController {
     public List<ProjectActivityDTO> getProjectActivityForAdminPerWeek() {
         return dashboardService.getProjectActivityForAdminPerWeek();
     }
+
+    @GetMapping("/admin/personal-projects")
+    public List<UserProjectsDTO> getProjectsForUser(@RequestParam("id") int id) {//todo
+        return dashboardService.getProjectsForUser(id);
+    }
+
+    @GetMapping("/admin/percent-projects")
+    public List<Integer> getAllToWeekProject() {//todo
+        return dashboardService.getAllToWeekProject();
+    }
 }
