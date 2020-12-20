@@ -15,7 +15,8 @@ public class UserConsts {
     public static final String FIND_USER_BY_EMAIL_NAME_ROLE_SQL = "SELECT * FROM users WHERE email LIKE ? AND name LIKE ? AND role::text LIKE ? AND status='ACTIVE' LIMIT ? OFFSET ?;";
     public static final String COUNT_USER_BY_EMAIL_NAME_ROLE_SQL = "SELECT count(*) FROM users WHERE email LIKE ? AND name LIKE ? AND role::text LIKE ? AND status='ACTIVE';";
     public static final String FIND_BY_EMAIL = "SELECT id, email,name,role,status FROM users WHERE email LIKE CONCAT ('%',?,'%') ORDER BY email LIMIT 5";
-    public static final String FIND_WATCHERS_BY_PROJECT_ID = "SELECT id, email, name, role, status FROM users WHERE id IN (SELECT user_id FROM user_project WHERE project_id = ? AND user_status = 'WATCHER')";
-    public static final String REMOVE_WATCHERS_FROM_PROJECT = "DELETE FROM user_project WHERE project_id = ? AND user_status = 'WATCHER'";
-    public static final String CREATE_WATCHER_SQL = "INSERT INTO user_project(project_id, user_id, user_status) VALUES (?, ?, 'WATCHER')";
+    public static final String FIND_PROJECT_BY_USER_ID = "SELECT p.id, p.title, p.link, p.status, p.create_date " +
+                                                        "   FROM user_project AS up INNER JOIN users AS u ON(up.user_id=u.id) " +
+                                                        "      INNER JOIN project AS p ON(up.project_id=p.id) " +
+                                                        "   WHERE user_id=?;";
 }
