@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.service.notifications;
 
-import com.ncedu.cheetahtest.dao.historytestcase.HistoryTestCaseDao;
 import com.ncedu.cheetahtest.dao.notifications.NotificationsDao;
 import com.ncedu.cheetahtest.dao.notifications.PaginatedTestCaseNotification;
 import com.ncedu.cheetahtest.dao.project.ProjectDao;
@@ -22,7 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TestCaseNotificationServiceImpl implements TestCaseNotificationService {
     private final NotificationsDao notificationsDao;
-    private final HistoryTestCaseDao historyTestCaseDao;
     private final ProjectDao projectDao;
     private final UserDao userDao;
     private final WebSocketNotificationService wsNotificationService;
