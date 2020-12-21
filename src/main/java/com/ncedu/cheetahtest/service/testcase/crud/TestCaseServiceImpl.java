@@ -142,5 +142,10 @@ public class TestCaseServiceImpl implements TestCaseService {
 
 
 
+    @Override
+    public List<TestCase> getAllActiveTestCasesByTitle(String title) {
+        return testCaseDao.getAllActiveTestCasesByTitle(title);
+    }
+
 }
 

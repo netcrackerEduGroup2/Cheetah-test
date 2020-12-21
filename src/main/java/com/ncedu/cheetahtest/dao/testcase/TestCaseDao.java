@@ -28,6 +28,8 @@ public interface TestCaseDao {
 
     String getExecutionDateById(int id);
 
+    List<TestCase> getAllActiveTestCasesByTitle(String title);
+
     void setExecutionDateToNull(int id);
 
 
