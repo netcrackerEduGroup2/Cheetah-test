@@ -41,6 +41,7 @@ public class TestCaseNotificationServiceImpl implements TestCaseNotificationServ
         int projectId = projectDao.findProjectByTestCaseId(historyTestCase.getIdTestCase()).getId();
         testCaseNotification.setProjectId(projectId);
         testCaseNotification.setTestCaseId(historyTestCase.getIdTestCase());
+        testCaseNotification.setHtcId(historyTestCase.getId());
         testCaseNotification.setReadStatus(ReadStatus.UNREAD);
 
         List<Integer> userIds = userDao.getUsersIdByProjectId(projectId);

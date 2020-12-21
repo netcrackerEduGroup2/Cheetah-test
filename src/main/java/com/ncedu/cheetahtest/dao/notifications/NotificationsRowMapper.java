@@ -15,6 +15,7 @@ public class NotificationsRowMapper implements RowMapper<TestCaseNotification> {
     public static final String TESTCASEID = "test_case_id";
     public static final String PROJECTID = "project_id";
     public static final String READSTATUS = "read_status";
+    public static final String HISTORYTESTCASEID = "history_test_case_id";
 
     @Override
     public TestCaseNotification mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -25,7 +26,7 @@ public class NotificationsRowMapper implements RowMapper<TestCaseNotification> {
         testCaseNotification.setTestCaseId(resultSet.getInt(TESTCASEID));
         testCaseNotification.setProjectId(resultSet.getInt(PROJECTID));
         testCaseNotification.setReadStatus(ReadStatus.valueOf(resultSet.getString(READSTATUS)));
-
+        testCaseNotification.setHtcId(resultSet.getInt(HISTORYTESTCASEID));
         return testCaseNotification;
     }
 }

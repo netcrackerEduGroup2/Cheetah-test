@@ -32,7 +32,8 @@ public class NotificationsDaoImpl implements NotificationsDao {
                 testCaseNotification.getDate(),
                 testCaseNotification.getTestCaseId(),
                 testCaseNotification.getProjectId(),
-                testCaseNotification.getReadStatus().toString()
+                testCaseNotification.getReadStatus().toString(),
+                testCaseNotification.getHtcId()
         );
     }
 
