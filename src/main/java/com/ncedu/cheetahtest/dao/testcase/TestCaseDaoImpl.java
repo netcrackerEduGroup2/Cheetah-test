@@ -182,6 +182,11 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
     }
 
     @Override
+    public List<TestCase> getActiveTestCasesWithExecutionDate() {
+        return jdbcTemplate.query(GET_ACTIVE_TEST_CASES_WITH_EXECUTION_DATE, rowMapper);
+    }
+
+    @Override
     public void setExecutionDateToNull(int id) {
         int result = jdbcTemplate.update(SET_EXECUTION_DATE_AND_REPEATABILITY_TO_NULL, id);
         if (result != 1) {
