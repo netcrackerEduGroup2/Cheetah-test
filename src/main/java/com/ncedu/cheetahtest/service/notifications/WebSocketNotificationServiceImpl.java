@@ -59,6 +59,7 @@ public class WebSocketNotificationServiceImpl implements WebSocketNotificationSe
 
         TestCaseProgressReport tcpReport = new TestCaseProgressReport();
         tcpReport.setCompleted(haService.getLastHistoryActionsByTestCaseId(idTestCase));
+        tcpReport.setIdTestCase(idTestCase);
         Message messageToSend = new Message();
         messageToSend.setData(tcpReport);
         messageToSend.setEvent("test-case-execution-actions");

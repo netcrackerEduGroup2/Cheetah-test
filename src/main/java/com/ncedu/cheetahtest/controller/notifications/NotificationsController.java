@@ -51,7 +51,7 @@ public class NotificationsController {
     private void sendProgressDetails(Message message, String token, Principal principal){
         int idUser = parseTokenAndGetId(token);
         String username  = principal.getName();
-        int idTestCase = ((int) message.getData());
+        int idTestCase = Integer.parseInt(message.getData().toString());
         wsNotificationService.addConnection(idUser,username);
         wsNotificationService.sendProgressOnDemand(username, idTestCase);
     }
