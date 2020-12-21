@@ -2,6 +2,9 @@ package com.ncedu.cheetahtest.service.testcase.crud;
 
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
+
+import java.util.List;
 
 public interface TestCaseService {
 
@@ -25,4 +28,11 @@ public interface TestCaseService {
 
     TestCasePaginated findTestCasesByTitlePaginatedAndByProjectId(int page, int size, String keyword, int projectId);
 
+    void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto);
+
+    void deleteExecutionCronDateAndRepeatability(int testCaseId);
+
+    List<TestCase> getActiveTestCasesWithExecutionDate();
+
+    List<TestCase> getAllActiveTestCasesByTitle(String title);
 }

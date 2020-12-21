@@ -15,6 +15,7 @@ public class TestCaseNotification {
     private ReadStatus readStatus;
     private String title;
     private String description;
+    private int htcId;
 
     public TestCaseNotification() {
         this.date = new Date();
