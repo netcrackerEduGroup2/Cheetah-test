@@ -18,8 +18,8 @@ create table users
     name         varchar(100)        not null,
     role         user_role           not null,
     status       user_status         not null,
-    last_request timestamp                   ,
-    photo_url     varchar(300)
+    last_request timestamp,
+    photo_url    varchar(300)
 );
 
 create table reset_token
@@ -69,8 +69,8 @@ CREATE TABLE data_set
 
 CREATE TABLE parameters
 (
-    id          serial PRIMARY KEY  NOT NULL,
-    data_set_id integer             NOT NULL REFERENCES data_set (id)
+    id          serial PRIMARY KEY NOT NULL,
+    data_set_id integer            NOT NULL REFERENCES data_set (id)
         on update cascade on delete cascade,
     type        varchar(300),
     value       varchar(300)
@@ -80,8 +80,8 @@ CREATE TABLE user_project
 (
     id          serial PRIMARY KEY  NOT NULL,
 
-    project_id  integer      NOT NULL REFERENCES project (id),
-    user_id     integer      NOT NULL REFERENCES users (id),
+    project_id  integer             NOT NULL REFERENCES project (id),
+    user_id     integer             NOT NULL REFERENCES users (id),
     user_status user_project_status NOT NULL
 );
 
@@ -132,32 +132,33 @@ create table comp_act_prior
 
 CREATE TABLE history_test_case
 (
-    id              serial PRIMARY KEY  NOT NULL,
-    result          test_case_result    NOT NULL,
-    date_completed  timestamp           NOT NULL,
-    id_test_case    integer             NOT NULL REFERENCES test_case(id)
+    id             serial PRIMARY KEY NOT NULL,
+    result         test_case_result   NOT NULL,
+    date_completed timestamp          NOT NULL,
+    id_test_case   integer            NOT NULL REFERENCES test_case (id)
 );
 
 CREATE TABLE action_result
 (
-  id              serial PRIMARY KEY  NOT NULL,
-  compound_id     integer,
-  result          varchar(300)        NOT NULL,
-  screenshot_url  varchar(300)        NOT NULL,
-  general_order    integer             NOT NULL,
-  id_history_test_case    integer     NOT NULL REFERENCES history_test_case(id),
-  action_element          varchar(300)        NOT NULL,
-  argument         varchar(300)        NOT NULL,
-  id_action       integer              NOT NULL REFERENCES action (id)
+    id                   serial PRIMARY KEY NOT NULL,
+    compound_id          integer,
+    result               varchar(300)       NOT NULL,
+    screenshot_url       varchar(300)       NOT NULL,
+    general_order        integer            NOT NULL,
+    id_history_test_case integer            NOT NULL REFERENCES history_test_case (id),
+    action_element       varchar(300)       NOT NULL,
+    argument             varchar(300)       NOT NULL,
+    id_action            integer            NOT NULL REFERENCES action (id)
 );
 
 CREATE TABLE notifications
 (
-    id                  serial PRIMARY KEY       NOT NULL,
-    user_id             integer                  NOT NULL REFERENCES users (id),
-    notification_status notification_status      NOT NULL,
-    date                timestamp                NOT NULL,
-    test_case_id        integer                  NOT NULL,
-    project_id          integer                  Not Null,
-    read_status         read_notification_status NOT NULL
+    id                   serial PRIMARY KEY       NOT NULL,
+    user_id              integer                  NOT NULL REFERENCES users (id),
+    notification_status  notification_status      NOT NULL,
+    date                 timestamp                NOT NULL,
+    test_case_id         integer                  NOT NULL,
+    project_id           integer                  Not Null,
+    read_status          read_notification_status NOT NULL,
+    history_test_case_id integer                  NOT NULL
 );

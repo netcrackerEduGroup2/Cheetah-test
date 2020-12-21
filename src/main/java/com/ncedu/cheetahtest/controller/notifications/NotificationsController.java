@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.controller.notifications;
 
-import com.ncedu.cheetahtest.dao.notifications.NotificationStatusChangeDTO;
 import com.ncedu.cheetahtest.entity.notification.ReadStatus;
 import com.ncedu.cheetahtest.entity.websocketdto.Message;
 import com.ncedu.cheetahtest.service.notifications.TestCaseNotificationService;
@@ -34,30 +33,48 @@ public class NotificationsController {
 
         switch (message.getEvent()) {
             case "delete-notification":
-                this.deleteNotificationByMessage(message);
+                this.deleteNotificationByMessage(message, token, principal);
                 break;
 
             case "notifications-viewed":
-                this.editNotificationsStatusByMessage(message);
+                this.editNotificationsStatusByMessage(message, token, principal);
                 break;
-
+            case "get-test-case-results-info":
+                this.sendProgressDetails(message, token, principal);
+                break;
             default:
-                sendNotificationsToUserByMessage(token, principal);
+                this.sendNotificationsToUserByMessage(token, principal);
                 break;
 
         }
     }
-
-    private void deleteNotificationByMessage(Message message) {
-        int id = (int) message.getData();
-        this.deleteNotification(id);
+    private void sendProgressDetails(Message message, String token, Principal principal){
+        int idUser = parseTokenAndGetId(token);
+        String username  = principal.getName();
+        int idTestCase = Integer.parseInt(message.getData().toString());
+        wsNotificationService.addConnection(idUser,username);
+        wsNotificationService.sendProgressOnDemand(username, idTestCase);
     }
 
-    private void editNotificationsStatusByMessage(Message message) {
-        List<Integer> notifications = ((NotificationStatusChangeDTO) message.getData()).getNotifications();
+    private void deleteNotificationByMessage(Message message, String token, Principal principal) {
+        int id = (int) message.getData();
+        this.deleteNotification(id);
+        sendMessageByPrincipal(token, principal);
+
+    }
+
+    private void editNotificationsStatusByMessage(Message message, String token, Principal principal) {
+        List<Integer> notifications = ((List<Integer>) message.getData());
         for (int notification : notifications) {
             this.editNotificationStatus(notification);
         }
+        sendMessageByPrincipal(token, principal);
+
+    }
+
+    private void sendMessageByPrincipal(String token, Principal principal) {
+        Message messageToSend = getNotificationsAfterEdit(token);
+        smTemplate.convertAndSendToUser(principal.getName(), "/queue/notifications", messageToSend);
     }
 
     private void sendNotificationsToUserByMessage(String token, Principal principal) {
@@ -68,6 +85,14 @@ public class NotificationsController {
     private Message getAllNotificationsByUserID(String token, Principal principal) {
         int idUser = parseTokenAndGetId(token);
         wsNotificationService.addConnection(idUser, principal.getName());
+        Message messageToSend = new Message();
+        messageToSend.setEvent("notifications");
+        messageToSend.setData(testCaseNotificationService.getAllNotificationsByUserId(idUser));
+        return messageToSend;
+    }
+
+    private Message getNotificationsAfterEdit(String token) {
+        int idUser = parseTokenAndGetId(token);
         Message messageToSend = new Message();
         messageToSend.setEvent("notifications");
         messageToSend.setData(testCaseNotificationService.getAllNotificationsByUserId(idUser));
