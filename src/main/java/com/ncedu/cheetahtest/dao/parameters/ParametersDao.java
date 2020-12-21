@@ -9,6 +9,7 @@ public interface ParametersDao {
     List<Parameter> findByTypeLike(String type , int idDataSet, int limit, int offset);
     List<Parameter> findAllByType(String type , int limit,int offset);
     List<Parameter> findAllByIdDataSet(int idDataSet);
+    List<Parameter> findAllByValue(String value, int idTestCase);
     List<Parameter> findAllByIdTestCase(int idTestCase);
     Parameter createParameter(Parameter parameter);
     Parameter editParameter(Parameter parameter, int id);

@@ -73,6 +73,20 @@ public class ParametersDaoImpl implements ParametersDao {
     }
 
     @Override
+    public List<Parameter> findAllByValue(String value, int idTestCase) {
+
+        return jdbcTemplate.query(
+                FIND_ALL_BY_VALUE,
+                preparedStatement -> {
+                    preparedStatement.setInt(1,idTestCase);
+                    preparedStatement.setString(2,value);
+                    },
+                new ParametersRowMapper()
+        );
+
+    }
+
+    @Override
     public List<Parameter> findAllByIdTestCase(int idTestCase) {
         return jdbcTemplate.query(
                 FIND_ALL_BY_ID_TEST_CASE,
