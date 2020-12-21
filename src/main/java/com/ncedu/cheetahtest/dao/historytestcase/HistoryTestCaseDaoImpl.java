@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.dao.historytestcase;
 
 import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCase;
+import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCaseFull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -9,7 +10,9 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -58,11 +61,12 @@ public class HistoryTestCaseDaoImpl implements HistoryTestCaseDao {
     }
 
     @Override
-    public List<HistoryTestCase> getPage(int size, int page) {
+    public List<HistoryTestCase> getPage(int id, int size, int page) {
         return jdbcTemplate.query(HISTORY_TEST_CASE_FAILED_COMPLETED_PAGINATION,
                 preparedStatement -> {
-                    preparedStatement.setInt(1, size);
-                    preparedStatement.setInt(2, (page - 1) * size);
+                    preparedStatement.setInt(1, id);
+                    preparedStatement.setInt(2, size);
+                    preparedStatement.setInt(3, (page - 1) * size);
                 },
                 new HistoryTestCaseMapper());
     }
@@ -71,5 +75,16 @@ public class HistoryTestCaseDaoImpl implements HistoryTestCaseDao {
     public Integer getCountTestCaseFailedCompleted() {
         return jdbcTemplate.queryForObject(COUNT_TEST_CASE_FAILED_COMPLETED,
                 Integer.class);
+    }
+
+    @Override
+    public HistoryTestCaseFull getById(int id) {
+        List<HistoryTestCaseFull> historyTestCases = jdbcTemplate.query(
+                GET_BY_ID,
+                preparedStatement -> preparedStatement.setInt(1, id),
+                new HistoryTestCaseFullMapper()
+        );
+        if (historyTestCases.size() == 1) return historyTestCases.get(0);
+        else return null;
     }
 }

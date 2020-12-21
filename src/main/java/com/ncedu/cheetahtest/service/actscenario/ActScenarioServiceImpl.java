@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,13 +33,12 @@ public class ActScenarioServiceImpl implements ActScenarioService {
     }
 
     @Override
-    public ActScenario editActScenario(ActScenario actScenario, int id) {
-        return actScenarioDao.editActScenario(actScenario, id);
-    }
-
-    @Override
-    public ActScenario setParametr(int idParam, int id) {
-        return actScenarioDao.setParametr(idParam, id);
+    public List<ActScenario> editActScenario(List<ActScenario> actScenarios) {
+        List<ActScenario> actScenariosWithParams = new ArrayList<>();
+        for (ActScenario actScenario: actScenarios) {
+            actScenariosWithParams.add(actScenarioDao.editActScenario(actScenario));
+        }
+        return actScenariosWithParams;
     }
 
     @Override

@@ -8,9 +8,9 @@ public class HistoryTestCaseConstant {
 
     public static final String HISTORY_TEST_CASE_FAILED_COMPLETED_PAGINATION =
             "SELECT h.id AS h_id, h.result AS h_result, h.date_completed AS " +
-                    "  h_date_completed, t.title AS t_title " +
+                    "  h_date_completed " +
                     " FROM history_test_case AS h INNER JOIN test_case t ON h.id_test_case = t.id " +
-                    " WHERE h.result::text LIKE 'FAILED' OR h.result::text LIKE 'COMPLETE' " +
+                    " WHERE h.id_test_case=? AND (h.result::text LIKE 'FAILED' OR h.result::text LIKE 'COMPLETE') " +
                     " LIMIT ? OFFSET ?; ";
 
     public static final String COUNT_TEST_CASE_FAILED_COMPLETED =
@@ -20,6 +20,7 @@ public class HistoryTestCaseConstant {
 
     public static final String EDIT_HISTORY_TEST_CASE_RESULT =
             "UPDATE history_test_case " +
-                    " SET result = ? " +
+                    " SET result = ?::test_case_result " +
                     " WHERE id = ?; ";
+    public static final String GET_BY_ID = "SELECT id, result, date_completed, id_test_case FROM history_test_case WHERE id = ?";
 }

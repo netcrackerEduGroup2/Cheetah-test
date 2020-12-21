@@ -8,11 +8,11 @@ import java.util.List;
 public interface ActionService {
 
     PaginationAction getActionsByTitle(String title, int size, int page);
-    PaginationAction getActionsInCompound(int idCompound,int size, int page);
+    PaginationAction getActionsInCompound(int idCompound, int size, int page);
     List<Action> getActionsInCompound(int idCompound);
-    Action editActionDescription(String description,int id);
+    Action editActionDescription(String description, int id);
     List<Action> getAllByTitleLike(String title);
-    PaginationAction geActionsByType(String type,int size,int page);
+    PaginationAction geActionsByType(String type, int size, int page);
     Action getActionById(int id);
 
     List<Action> getActionsInCompoundNotPaginated(int idCompound);

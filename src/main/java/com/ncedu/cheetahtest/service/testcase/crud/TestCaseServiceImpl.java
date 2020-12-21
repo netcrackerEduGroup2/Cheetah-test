@@ -6,7 +6,6 @@ import com.ncedu.cheetahtest.dao.testcase.TestCaseDao;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
-import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
 import com.ncedu.cheetahtest.exception.project.ProjectNotFoundException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseAlreadyExistsException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
@@ -135,25 +134,12 @@ public class TestCaseServiceImpl implements TestCaseService {
                 .findTestCasesByTitlePaginatedAndByProjectId(page, size, keyword, projectId);
 
         int totalElements = testCaseDao.getAmountByTitlePaginatedAndByProjectId(keyword, projectId);
-
         return new TestCasePaginated(testCaseList, totalElements);
     }
 
-    @Override
-    @Transactional
-    public void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto) {
-        testCaseDao.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
-    }
 
-    @Override
-    public void deleteExecutionCronDateAndRepeatability(int testCaseId) {
-        testCaseDao.deleteExecutionCronDateAndRepeatability(testCaseId);
-    }
 
-    @Override
-    public List<TestCase> getActiveTestCasesWithExecutionDate() {
-        return testCaseDao.getActiveTestCasesWithExecutionDate();
-    }
+
 
     @Override
     public List<TestCase> getAllActiveTestCasesByTitle(String title) {

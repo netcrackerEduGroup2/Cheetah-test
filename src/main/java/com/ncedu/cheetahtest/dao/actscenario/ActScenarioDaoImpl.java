@@ -33,22 +33,16 @@ public class ActScenarioDaoImpl implements ActScenarioDao {
     }
 
     @Override
-    public ActScenario editActScenario(ActScenario actScenario, int id) {
+    public ActScenario editActScenario(ActScenario actScenario) {
+        System.out.println(actScenario);
         jdbcTemplate.update(
                 EDIT_ACT_SCENARIO,
                 actScenario.getPriority(),
                 actScenario.getActStatus().toString(),
                 actScenario.getParameterId(),
-                id);
-        return this.findById(id);
-    }
-    @Override
-    public ActScenario setParametr(int idParam, int id) {
-        jdbcTemplate.update(
-                SET_PARAMETR,
-                idParam,
-                id);
-        return this.findById(id);
+                actScenario.getId()
+                );
+        return this.findById(actScenario.getId());
     }
 
     @Override

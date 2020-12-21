@@ -6,11 +6,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Component
 public class HtmlMailImpl implements HtmlMail {
 
+  @Override
   public Optional<String> getHtmlWithStringInside(String message, String htmlPath) {
     File file = new File(htmlPath);
 
@@ -25,6 +27,35 @@ public class HtmlMailImpl implements HtmlMail {
 
     } catch (IOException e) {
       e.printStackTrace();
+    }
+
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<String> getHtmlWithStrings(List<String> messages, String htmlPath) {
+
+    File file = new File(htmlPath);
+
+    StringBuilder htmlStringBuilder = new StringBuilder();
+
+    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+
+
+      String tmp = "";
+      int i = 0;
+      while (reader.ready()) {
+        tmp = reader.readLine();
+        while (tmp.contains("%s")){
+          tmp = tmp.replace("%s", messages.get(i++));
+        }
+        htmlStringBuilder.append(tmp);
+      }
+
+      return Optional.of(htmlStringBuilder.toString());
+
+    } catch (IOException e) {
+      e.getMessage();
     }
 
     return Optional.empty();

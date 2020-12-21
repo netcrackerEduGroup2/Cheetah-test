@@ -16,4 +16,6 @@ public interface ProjectDao {
     Project findByProjectId(int id);
 
     void updateProjectById(int id, Project project);
+
+    Project findProjectByTestCaseId(int testCaseId);
 }

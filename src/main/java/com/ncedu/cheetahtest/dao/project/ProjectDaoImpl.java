@@ -37,14 +37,14 @@ public class ProjectDaoImpl extends AbstractDaoImpl<Project> implements ProjectD
         );
 
         List<Project> project = jdbcTemplate.query(
-            ProjectSqlConsts.SELECT_PROJECT_BY_TITLE_QUERY,
-            p -> p.setString(1, projectDto.getProject().getTitle()),
-            new ProjectMapper()
+                ProjectSqlConsts.SELECT_PROJECT_BY_TITLE_QUERY,
+                p -> p.setString(1, projectDto.getProject().getTitle()),
+                new ProjectMapper()
         );
 
         int id = project.get(0).getId();
 
-        for (int watcherId: projectDto.getWatcherIds()) {
+        for (int watcherId : projectDto.getWatcherIds()) {
             jdbcTemplate.update(
                     sqlQueryForUserProjectTable,
                     id,
@@ -78,6 +78,18 @@ public class ProjectDaoImpl extends AbstractDaoImpl<Project> implements ProjectD
         if (projects.size() == 1) return projects.get(0);
 
         return null;
+    }
+
+    @Override
+    public Project findProjectByTestCaseId(int testCaseId) {
+        String sql = ProjectSqlConsts.FIND_PROJECT_BY_ID_TEST_CASE_QUERY;
+        List<Project> projects = jdbcTemplate.query(
+                sql,
+                preparedStatement -> preparedStatement.setInt(1, testCaseId),
+                new ProjectMapper()
+        );
+        if (projects.size() == 1) return projects.get(0);
+        else return null;
     }
 
     @Override
