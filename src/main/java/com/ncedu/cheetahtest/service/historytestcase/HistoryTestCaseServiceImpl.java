@@ -24,8 +24,8 @@ public class HistoryTestCaseServiceImpl implements HistoryTestCaseService {
     private final TestCaseNotificationService testCaseNotificationService;
 
     @Override
-    public HistoryTestCasePagination getPage(int size, int page){
-        List<HistoryTestCase> historyTestCases = historyTestCaseDao.getPage(size, page);
+    public HistoryTestCasePagination getPage(int id, int size, int page){
+        List<HistoryTestCase> historyTestCases = historyTestCaseDao.getPage(id, size, page);
         int total = historyTestCaseDao.getCountTestCaseFailedCompleted();
         List<HistoryTestCaseDto> historyTestCaseDtos = new ArrayList<>();
 

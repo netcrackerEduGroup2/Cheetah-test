@@ -8,8 +8,8 @@ import java.util.List;
 public interface ActScenarioDao {
     ActScenario createActScenario(ActScenario actScenario);
     ActScenario editActScenario(ActScenario actScenario);
-    List<ActScenario> findByTitleLike(String title, int limit,int offset);
-    List<ActScenario> findByTitleInTestScenario(String title, int idTestScenario,int limit, int offset);
+    List<ActScenario> findByTitleLike(String title, int limit, int offset);
+    List<ActScenario> findByTitleInTestScenario(String title, int idTestScenario, int limit, int offset);
     List<ActScenario> findAllByTitleLike(String title);
     List<ActScenario> findAllByTitleInTestScenario(String title, int idTestScenario);
     List<ActScenario> findAllByIdTestScenario(int idTestScenario);
@@ -19,7 +19,7 @@ public interface ActScenarioDao {
     ActScenario findById(int id);
     ActScenario findBySignature(ActScenario actScenario);
     int totalFindByTitleLike(String title);
-    int totalFindByTitleInTestScenario(String title,int idTestScenario);
+    int totalFindByTitleInTestScenario(String title, int idTestScenario);
     void setStatusForAllByIdTestScenario(ActStatus actStatus, int idTestScenario);
     void deleteAllByIdTestScenario(int idTestScenario);
     void deleteAllByIdCompScenario(int idCompScenario);

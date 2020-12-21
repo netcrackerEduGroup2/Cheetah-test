@@ -10,7 +10,7 @@ public interface ActScenarioService {
     ActScenario createActScenario(ActScenario actScenario);
     List<ActScenario> editActScenario(List<ActScenario> actScenarios);
     PaginationActScenario findByTitleLike(String title, int size, int page);
-    PaginationActScenario findByTitleInTestScenario(String title, int idTestScenario,int size, int page);
+    PaginationActScenario findByTitleInTestScenario(String title, int idTestScenario, int size, int page);
     List<ActScenario>findByIdInTestScenario(int idTestScenario);
     List<ActScenario>findAllByIdTestScenarioWithoutParams(int idTestScenario);
     List<ActScenario> findAllByTitleLike(String title);

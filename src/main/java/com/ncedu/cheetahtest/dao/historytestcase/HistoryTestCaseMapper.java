@@ -12,7 +12,6 @@ public class HistoryTestCaseMapper implements RowMapper<HistoryTestCase> {
     public static final String ID = "h_id";
     public static final String RESULT = "h_result";
     public static final String DATA_COMPLETED = "h_date_completed";
-    public static final String TITLE= "t_title";
 
     @Override
     public HistoryTestCase mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -21,7 +20,6 @@ public class HistoryTestCaseMapper implements RowMapper<HistoryTestCase> {
         historyTestCase.setId(resultSet.getInt(ID));
         historyTestCase.setResult(TestCaseResult.valueOf(resultSet.getString(RESULT)));
         historyTestCase.setDataCompleted(resultSet.getTimestamp(DATA_COMPLETED));
-        historyTestCase.setTitle(resultSet.getString(TITLE));
 
         return historyTestCase;
     }

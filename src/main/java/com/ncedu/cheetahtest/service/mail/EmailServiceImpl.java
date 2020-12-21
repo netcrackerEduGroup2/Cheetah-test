@@ -141,7 +141,7 @@ public class EmailServiceImpl implements EmailService{
                 List<String> strs = new ArrayList<>();
                 strs.add((isRepeatable ? "Repeatable " : "One-time ") + "test case");
                 strs.add(userDao.findUserByEmail(email).getName());
-                strs.add(testCaseDao.findTestCaseByProjectIdAndTestCaseId(idProject, idProject).getTitle());
+                strs.add(testCaseDao.findTestCaseByProjectIdAndTestCaseId(idProject, idTestCase).getTitle());
                 strs.add(projectDao.findByProjectId(idProject).getTitle());
 
                 int lineCount = 4;
