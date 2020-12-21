@@ -1,22 +1,24 @@
 package com.ncedu.cheetahtest.dao.testcase;
 
+import com.ncedu.cheetahtest.dao.compound.CompoundRowMapper;
 import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
 import com.ncedu.cheetahtest.exception.general.EntityNotFoundException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-
 import java.util.List;
 
+import static com.ncedu.cheetahtest.dao.compound.CompoundConsts.SELECT_COMPOUND_BY_TITLE_LIKE_WITHOUT_PAGINATION;
 import static com.ncedu.cheetahtest.dao.testcase.TestCaseConsts.*;
 
 @Repository
 public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCaseDao {
 
-    private static final String[] rows = {"id", "title", "project_id", "status", "result"};
+    private static final String[] rows = {"id", "title", "project_id", "status", "result", "execution_cron_date", "repeatable"};
 
     @Autowired
     public TestCaseDaoImpl(JdbcTemplate jdbcTemplate) {
@@ -171,6 +173,15 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
     }
 
     @Override
+    public List<TestCase> getAllActiveTestCasesByTitle(String title) {
+        return jdbcTemplate.query(
+            GET_ALL_ACTIVE_TEST_CASES,
+            preparedStatement -> preparedStatement.setString(1, title),
+            new TestCaseMapper()
+        );
+    }
+
+    @Override
     public void setExecutionDateToNull(int id) {
         int result = jdbcTemplate.update(SET_EXECUTION_DATE_AND_REPEATABILITY_TO_NULL, id);
         if (result != 1) {
@@ -178,7 +189,16 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
         }
     }
 
-
+    @Override
+    public void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto) {
+        int result = jdbcTemplate.update(SET_EXECUTION_DATE_AND_REPEATABILITY,
+                testCaseScheduleDto.getExecutionCronDate(),
+                testCaseScheduleDto.isRepeatable(),
+                testCaseScheduleDto.getTestCaseId());
+        if (result != 1) {
+            throw new TestCaseNotFoundException();
+        }
+    }
 
     @Override
     public void deleteExecutionCronDateAndRepeatability(int testCaseId) {
