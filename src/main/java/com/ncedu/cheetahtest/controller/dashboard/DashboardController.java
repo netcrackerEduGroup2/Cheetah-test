@@ -32,7 +32,7 @@ public class DashboardController {
     }
 
     @GetMapping("/admin/projects-activity")
-    public List<ProjectActivityDTO> getProjectActivityForAdminPerWeek() {
+    public ResponseDTO getProjectActivityForAdminPerWeek() {
         return dashboardService.getProjectActivityForAdminPerWeek();
     }
 
@@ -69,5 +69,10 @@ public class DashboardController {
     @GetMapping("/supp-projects")
     public List<SuppProjectsDTO> getSuppProjects(){
         return  dashboardService.getSuppProjects();
+    }
+
+    @GetMapping("/testcase-statistic")
+    public List<Integer> getTestCaseStatistic(@RequestParam("id") int projectId) {
+        return dashboardService.getTestCaseStatistic(projectId);
     }
 }

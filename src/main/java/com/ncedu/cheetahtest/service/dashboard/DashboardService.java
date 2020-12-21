@@ -12,7 +12,7 @@ public interface DashboardService {
 
     List<Integer> getUserRolesStatistic();
 
-    List<ProjectActivityDTO> getProjectActivityForAdminPerWeek();
+    ResponseDTO getProjectActivityForAdminPerWeek();
 
     List<UserProjectsDTO> getProjectsForUser(int id);
 
@@ -27,4 +27,6 @@ public interface DashboardService {
     List<PlannedTestCaseDTO> getPlannedTestCasesForEngineer(int id);
 
     List<SuppProjectsDTO> getSuppProjects();
+
+    List<Integer> getTestCaseStatistic(int projectId);
 }
