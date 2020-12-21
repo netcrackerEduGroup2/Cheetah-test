@@ -86,14 +86,14 @@ public class TestCaseScheduleController {
         String day = date.substring(date.indexOf("-") + 4, date.indexOf("-") + 6);
         String hour = date.substring(date.indexOf("T") + 1, date.indexOf(":"));
         String minutes = date.substring(date.indexOf(":") + 1, date.indexOf(":") + 3);
-        return String.format("%s %s %s %s * *", minutes, hour, day, month);
+        return String.format("00 %s %s %s %s ?", minutes, hour, day, month);
     }
 
     private static String parseToDate(String cron){
-        String minutes = cron.substring(0, 2);
-        String hour = cron.substring(3, 5);
-        String day = cron.substring(6, 8);
-        String month = cron.substring(9, 11);
+        String minutes = cron.substring(3, 5);
+        String hour = cron.substring(6, 8);
+        String day = cron.substring(9, 11);
+        String month = cron.substring(12, 14);
         return String.format("%s-%s-%sT%s:%s:00+00:00", LocalDate.now().getYear(), month, day, hour, minutes);
     }
 }
