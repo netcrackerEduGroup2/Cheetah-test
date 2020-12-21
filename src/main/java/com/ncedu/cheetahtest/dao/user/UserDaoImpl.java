@@ -221,5 +221,34 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
                 new ProjectMapper()
         );
     }
+
+
+    @Override
+    public void deleteAllWatchersForProject(int projectId) {
+        jdbcTemplate.update(
+                REMOVE_WATCHERS_FROM_PROJECT,
+                projectId);
+
+    }
+
+    @Override
+    public void addWatchersForProject(int projectId, int[] ids) {
+        for (int id : ids) {
+            jdbcTemplate.update(
+                    CREATE_WATCHER_SQL,
+                    projectId,
+                    id
+            );
+        }
+    }
+
+    @Override
+    public List<Integer> getUsersIdByProjectId(int idProject) {
+        return jdbcTemplate.query(
+                GET_USERS_BY_PROJECT_ID,
+                preparedStatement -> preparedStatement.setInt(1, idProject),
+                new UserIdRowMapper()
+        );
+    }
 }
 
