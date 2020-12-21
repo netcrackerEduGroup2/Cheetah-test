@@ -32,4 +32,8 @@ public interface DashboardDao {
     List<PlannedTestCaseDTO> getPlannedTestCasesForEngineer(int id);
 
     List<SuppProjectsDTO> getSuppProjects();
+
+    int getCountTestedCasesByProject(int projectId, String testCaseStatus);
+
+    int getCountPlannedCasesByProject(int projectId);
 }

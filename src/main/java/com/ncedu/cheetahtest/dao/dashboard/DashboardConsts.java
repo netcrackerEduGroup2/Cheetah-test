@@ -13,4 +13,6 @@ public class DashboardConsts {
     public static final String GET_PLANNED_TESTCASES_FOR_MANAGER = "SELECT p.id id_project, p.title title_project, tc.id id_testcase, tc.title title_testcase, tc.execution_cron_date cron_date from test_case tc INNER JOIN project p on p.id = tc.project_id WHERE execution_cron_date IS NOT NULL ;";
     public static final String GET_PLANNED_TESTCASES_FOR_ENGINEER = "SELECT p.id id_project, p.title title_project, tc.id id_testcase, tc.title title_testcase, tc.execution_cron_date cron_date FROM test_case tc INNER JOIN (SELECT p.id, p.title FROM project p INNER JOIN user_project up on p.id = up.project_id WHERE up.user_id = ?) p on p.id = tc.project_id WHERE execution_cron_date IS NOT NULL ;";
     public static final String GET_SUPP_LIST_OF_PROJECTS = "SELECT id, title FROM project WHERE status = 'ACTIVE' ORDER BY create_date DESC;";
+    public static final String COUNT_ENDED_TEST_CASES = "SELECT count(*) FROM history_test_case h INNER JOIN (SELECT tc.id id FROM test_case tc INNER JOIN project p on p.id = tc.project_id WHERE p.id = ? ) tc ON h.id_test_case = tc.id WHERE h.result = ?::test_case_result;";
+    public static final String COUNT_PLANNED_TEST_CASES = "SELECT count(*) FROM test_case tc INNER JOIN project p on p.id = tc.project_id WHERE p.id = ? AND execution_cron_date IS NOT NULL ;";
 }

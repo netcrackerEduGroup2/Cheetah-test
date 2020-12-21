@@ -15,18 +15,20 @@ import java.util.*;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class DashboardServiceImpl implements DashboardService{
+public class DashboardServiceImpl implements DashboardService {
     private final DashboardDao dashboardDao;
     private static final String ONE_DAY_INTERVAL = "1";
     private static final String ONE_WEEK_INTERVAL_HOURS = "168";
     private static final String USER_DATE_PATTERN = "HH:mm";
     private static final String USER_DATE_PATTERN_WEEK = "dd.MM 'at' HH:mm";
+    private static final String TEST_CASE_STATUS_COMPLETE = "COMPLETE";
+    private static final String TEST_CASE_STATUS_FAILED = "FAILED";
 
     @Override
     public List<UserActivityDTO> getActiveUsersForAdminPerDay() {
         List<UserActivityDTO> usersForAdmin = dashboardDao.getActiveUsersForAdminPerDays(ONE_DAY_INTERVAL);
         usersForAdmin.forEach(u -> u.setTime(new SimpleDateFormat(USER_DATE_PATTERN)
-                        .format(Timestamp.valueOf(u.getTime()))));
+                .format(Timestamp.valueOf(u.getTime()))));
 
         return usersForAdmin;
     }
@@ -43,7 +45,7 @@ public class DashboardServiceImpl implements DashboardService{
     @Override
     public List<Integer> getUserRolesStatistic() {
         List<Integer> roles = new ArrayList<>();
-        for(UserRole role: UserRole.values()){
+        for (UserRole role : UserRole.values()) {
             roles.add(dashboardDao.getCountActiveUserByRole(role.toString()));
         }
         return roles;
@@ -57,9 +59,9 @@ public class DashboardServiceImpl implements DashboardService{
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
         int hour = cal.get(Calendar.HOUR_OF_DAY);
 
-        for(int i = 6; i>0 ; i--) {
-            String from = String.valueOf(i*24 + hour);
-            String to = String.valueOf((i-1)*24 + hour);
+        for (int i = 6; i > 0; i--) {
+            String from = String.valueOf(i * 24 + hour);
+            String to = String.valueOf((i - 1) * 24 + hour);
             int count = dashboardDao.getProjectActivitiesPerDayOnWeek(from, to);
 
             String dayOfMonthStr = (dayOfMonth - i) + "." + month;
@@ -76,7 +78,7 @@ public class DashboardServiceImpl implements DashboardService{
     @Override
     public List<PlannedTestCaseDTO> getPlannedTestCasesForManager() {
         List<PlannedTestCaseDTO> plannedTestCaseDTOS = dashboardDao.getPlannedTestCasesForManager();
-        plannedTestCaseDTOS.forEach(tc->tc.setCronDate(parseToStringDate(tc.getCronDate())));
+        plannedTestCaseDTOS.forEach(tc -> tc.setCronDate(parseToStringDate(tc.getCronDate())));
 
         return plannedTestCaseDTOS;
     }
@@ -84,7 +86,7 @@ public class DashboardServiceImpl implements DashboardService{
     @Override
     public List<PlannedTestCaseDTO> getPlannedTestCasesForEngineer(int id) {
         List<PlannedTestCaseDTO> plannedTestCaseDTOS = dashboardDao.getPlannedTestCasesForEngineer(id);
-        plannedTestCaseDTOS.forEach(tc->tc.setCronDate(parseToStringDate(tc.getCronDate())));
+        plannedTestCaseDTOS.forEach(tc -> tc.setCronDate(parseToStringDate(tc.getCronDate())));
 
         return plannedTestCaseDTOS;
     }
@@ -98,14 +100,21 @@ public class DashboardServiceImpl implements DashboardService{
     @Override
     public List<Integer> getTestCaseStatistic(int projectId) {
         List<Integer> testCases = new ArrayList<>();
+        int completed = dashboardDao.getCountTestedCasesByProject(projectId, TEST_CASE_STATUS_COMPLETE);
+        int failed = dashboardDao.getCountTestedCasesByProject(projectId, TEST_CASE_STATUS_FAILED);
+        int planned = dashboardDao.getCountPlannedCasesByProject(projectId);
 
+        testCases.add(completed);
+        testCases.add(failed);
+        testCases.add(planned);
+        testCases.add(completed + failed + planned);
 
         return testCases;
     }
 
     @Override
     public List<UserProjectsDTO> getProjectsForUser(int id) {
-        List<UserProjectsDTO> projectsForUser = dashboardDao.getProjectsForUser(id);;
+        List<UserProjectsDTO> projectsForUser = dashboardDao.getProjectsForUser(id);
 
         return projectsForUser;
     }
@@ -130,12 +139,12 @@ public class DashboardServiceImpl implements DashboardService{
         return dashboardDao.getCountLastTimeCreatedProject(ONE_DAY_INTERVAL);
     }
 
-    private static String parseToStringDate(String cron){
+    private static String parseToStringDate(String cron) {
         String minutes = cron.substring(0, 2);
         String hour = cron.substring(3, 5);
         String day = cron.substring(6, 8);
         String month = cron.substring(9, 11);
-        return String.format("%s.%s.%s %s:%s", day,month,LocalDate.now().getYear(), hour, minutes);//TODO check working when db has not null
+        return String.format("%s.%s.%s %s:%s", day, month, LocalDate.now().getYear(), hour, minutes);//TODO check working when db has not null
     }
 
 }

@@ -67,8 +67,8 @@ public class DashboardController {
     }
 
     @GetMapping("/supp-projects")
-    public List<SuppProjectsDTO> getSuppProjects(){
-        return  dashboardService.getSuppProjects();
+    public List<SuppProjectsDTO> getSuppProjects() {
+        return dashboardService.getSuppProjects();
     }
 
     @GetMapping("/testcase-statistic")
