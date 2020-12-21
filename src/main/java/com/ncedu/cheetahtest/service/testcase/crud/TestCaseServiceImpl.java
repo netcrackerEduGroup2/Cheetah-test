@@ -135,7 +135,6 @@ public class TestCaseServiceImpl implements TestCaseService {
                 .findTestCasesByTitlePaginatedAndByProjectId(page, size, keyword, projectId);
 
         int totalElements = testCaseDao.getAmountByTitlePaginatedAndByProjectId(keyword, projectId);
-
         return new TestCasePaginated(testCaseList, totalElements);
     }
 
