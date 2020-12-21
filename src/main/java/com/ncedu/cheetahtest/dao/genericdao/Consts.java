@@ -78,6 +78,15 @@ public class Consts {
                 selectAllRowsFromTable, tableName);
     }
 
+    public String getActiveById() {
+        return String.format(
+                SELECT_ROWS +
+                FROM_TABLE +
+                WHERE_STATUS_ACTIVE +
+                "AND id = ? LIMIT 1",
+                selectAllRowsFromTable, tableName);
+    }
+
     public String getActiveSearched() {
         return String.format(
                 SELECT_ROWS +

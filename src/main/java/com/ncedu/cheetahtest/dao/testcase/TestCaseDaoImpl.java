@@ -178,7 +178,7 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
 
     @Override
     public void setExecutionDateToNull(int id) {
-        int result = jdbcTemplate.update(SET_EXECUTION_DATE_TO_NULL, id);
+        int result = jdbcTemplate.update(SET_EXECUTION_DATE_AND_REPEATABILITY_TO_NULL, id);
         if (result != 1) {
             throw new TestCaseNotFoundException();
         }
@@ -198,6 +198,24 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
     @Override
     public void deleteExecutionCronDateAndRepeatability(int testCaseId) {
         int result = jdbcTemplate.update(DELETE_EXECUTION_DATE_AND_REPEATABILITY,
+                testCaseId);
+        if (result != 1) {
+            throw new TestCaseNotFoundException();
+        }
+    }
+
+    @Override
+    public void setResultToSuccess(int testCaseId) {
+        int result = jdbcTemplate.update(SET_RESULT_TO_SUCCESS,
+                testCaseId);
+        if (result != 1) {
+            throw new TestCaseNotFoundException();
+        }
+    }
+
+    @Override
+    public void setResultToFail(int testCaseId) {
+        int result = jdbcTemplate.update(SET_RESULT_TO_FAIL,
                 testCaseId);
         if (result != 1) {
             throw new TestCaseNotFoundException();

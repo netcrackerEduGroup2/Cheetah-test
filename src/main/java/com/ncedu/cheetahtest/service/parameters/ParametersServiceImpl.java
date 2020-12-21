@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ParametersServiceImpl implements ParameterService {
     private final ParametersDao parametersDao;
@@ -42,6 +44,16 @@ public class ParametersServiceImpl implements ParameterService {
             );
         }
         return paginationParameter;
+    }
+
+    @Override
+    public List<Parameter> findAllByIdDataSet(int idDataSet) {
+        return parametersDao.findAllByIdDataSet(idDataSet);
+    }
+
+    @Override
+    public List<Parameter> findAllByIdTestCase(int idTestCase) {
+        return parametersDao.findAllByIdTestCase(idTestCase);
     }
 
     @Override

@@ -6,16 +6,18 @@ public class TestCaseConsts {
     private TestCaseConsts() {
     }
 
+    public static final String WHERE_ID_EQUALS_Q = " WHERE id = ? ";
+
     public static final String SELECT_ALL_PARAMS_FROM_TEST_CASE =
             "SELECT id, title, project_id, status, result, repeatable, execution_cron_date " +
-                    "FROM test_case ";
+            "FROM test_case ";
 
     public static final String UPDATE = "UPDATE test_case SET ";
 
     public static final String UPDATE_TEST_CASE_SQL =
             UPDATE + " title = ?, project_id = ?," +
                     " status = ?::test_case_status, result = ?::test_case_result" +
-                    " WHERE id = ?";
+                    WHERE_ID_EQUALS_Q;
 
     public static final String FIND_TEST_CASE_BY_ID =
             SELECT_ALL_PARAMS_FROM_TEST_CASE +
@@ -45,7 +47,7 @@ public class TestCaseConsts {
             "SELECT COUNT(id) " +
             "FROM test_case " +
             "WHERE status = 'ACTIVE' " +
-            "AND project_id = ?" +
+            "AND project_id = ? " +
             "LIMIT 1";
 
     public static final String FIND_BY_TITLE_TEST_CASE_PAGINATED_BY_PROJECT_ID =
@@ -60,7 +62,7 @@ public class TestCaseConsts {
             "FROM test_case " +
             "WHERE status = 'ACTIVE' " +
             "AND title ILIKE ? " +
-            "AND project_id = ?" +
+            "AND project_id = ? " +
             "LIMIT 1";
 
     public static final String FIND_TEST_CASE_BY_PROJECT_ID_AND_TEST_CASE_ID =
@@ -69,7 +71,10 @@ public class TestCaseConsts {
 
     public static final String GET_ACTIVE_TEST_CASES_WITH_EXECUTION_DATE =
             SELECT_ALL_PARAMS_FROM_TEST_CASE +
-            "WHERE execution_cron_date IS NOT NULL ";
+            "WHERE execution_cron_date IS NOT NULL " +
+            "AND status = 'ACTIVE'";
+
+    public static final String SET_EXECUTION_DATE_AND_REPEATABILITY_TO_NULL =
 
     public static final String GET_ALL_ACTIVE_TEST_CASES =
         SELECT_ALL_PARAMS_FROM_TEST_CASE +
@@ -77,17 +82,30 @@ public class TestCaseConsts {
 
     public static final String SET_EXECUTION_DATE_TO_NULL =
             UPDATE +
-            "execution_cron_date = NULL " +
-            "where id = ?";
+            "execution_cron_date = NULL, " +
+            "repeatable = NULL " +
+            WHERE_ID_EQUALS_Q;
 
     public static final String SET_EXECUTION_DATE_AND_REPEATABILITY =
             UPDATE +
             "execution_cron_date = ?, " +
-            "repeatable = ?" +
-            "WHERE id = ?";
+            "repeatable = ? " +
+            WHERE_ID_EQUALS_Q +
+            "AND status = 'ACTIVE'";
 
     public static final String DELETE_EXECUTION_DATE_AND_REPEATABILITY =
             UPDATE +
-            "execution_cron_date = null " +
-            "WHERE id = ?";
+            "execution_cron_date = NULL, " +
+            "repeatable = NULL " +
+            WHERE_ID_EQUALS_Q;
+
+    public static final String SET_RESULT_TO_SUCCESS =
+            UPDATE +
+            "result = 'COMPLETE' " +
+            WHERE_ID_EQUALS_Q;
+
+    public static final String SET_RESULT_TO_FAIL =
+            UPDATE +
+            "result = 'FAILED' " +
+            WHERE_ID_EQUALS_Q;
 }

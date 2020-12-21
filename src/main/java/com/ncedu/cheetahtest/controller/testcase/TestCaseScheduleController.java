@@ -2,10 +2,12 @@ package com.ncedu.cheetahtest.controller.testcase;
 
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
+import com.ncedu.cheetahtest.exception.testcase.InvalidCronExpressionException;
 import com.ncedu.cheetahtest.service.testcase.crud.TestCaseService;
 import com.ncedu.cheetahtest.service.testcase.scheduling.TestCaseScheduler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.CronExpression;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +40,13 @@ public class TestCaseScheduleController {
         testCaseScheduleDto.setExecutionCronDate(parseToCron(testCaseScheduleDto.getExecutionCronDate()));
         testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
         testCaseScheduler.createTestCaseSchedule(testCaseScheduleDto.getTestCaseId());
+        boolean isValidCron = CronExpression.isValidExpression(testCaseScheduleDto.getExecutionCronDate());
+
+        if (!isValidCron) {
+            throw new InvalidCronExpressionException();
+        }
+
+        testCaseScheduler.createTestCaseSchedule(testCaseScheduleDto);
 
         String response = "Test case has been scheduled. Id = " + testCaseScheduleDto.getTestCaseId();
 
@@ -51,6 +60,13 @@ public class TestCaseScheduleController {
         testCaseScheduleDto.setExecutionCronDate(parseToCron(testCaseScheduleDto.getExecutionCronDate()));
         testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
         testCaseScheduler.updateTestCaseSchedule(testCaseScheduleDto.getTestCaseId());
+        boolean isValidCron = CronExpression.isValidExpression(testCaseScheduleDto.getExecutionCronDate());
+
+        if (!isValidCron) {
+            throw new InvalidCronExpressionException();
+        }
+
+        testCaseScheduler.updateTestCaseSchedule(testCaseScheduleDto);
 
         String response = "Test case schedule has been updated. Id = " + testCaseScheduleDto.getTestCaseId();
 

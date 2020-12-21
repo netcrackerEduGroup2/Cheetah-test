@@ -34,4 +34,8 @@ public interface TestCaseDao {
     void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto);
 
     void deleteExecutionCronDateAndRepeatability(int testCaseId);
+
+    void setResultToSuccess(int testCaseId);
+
+    void setResultToFail(int testCaseId);
 }

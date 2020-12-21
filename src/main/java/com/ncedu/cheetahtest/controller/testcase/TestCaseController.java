@@ -100,7 +100,7 @@ public class TestCaseController {
         return testCase;
     }
 
-    @GetMapping("/run-test-cases")
+    @PostMapping("/run-test-cases")
     public ResponseEntity<String> runTestCases(@RequestBody IdsDto idsDto)   {
         int[] ids = idsDto.getIds();
         for (int testCaseId : ids) {

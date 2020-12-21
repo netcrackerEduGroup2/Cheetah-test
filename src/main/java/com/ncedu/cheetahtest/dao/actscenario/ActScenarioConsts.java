@@ -5,6 +5,7 @@ public class ActScenarioConsts {
             "VALUES (?,?,?,?::action_status,?)";
     public static final String EDIT_ACT_SCENARIO = "UPDATE act_scenario SET priority = ?, action_status = ?::action_status,param_id = ? " +
             "WHERE id = ?";
+    public static final String SET_PARAMETR = "UPDATE act_scenario SET priority = ? WHERE id = ?;";
     public static final String FIND_BY_TITLE_LIKE = "SELECT s.id as s_id, s.action_id as s_action_id, s.test_scenario_id as s_test_scenario_id," +
             " s.priority as s_priority, s.action_status as s_action_status, s.param_id as s_param_id, a.title as a_title," +
             "a.type as a_type , p.type as p_type , p.value as p_value " +
@@ -27,6 +28,22 @@ public class ActScenarioConsts {
             "FROM act_scenario s INNER JOIN action a ON a.id = s.action_id " +
             "INNER JOIN parameters p ON s.param_id = p.id " +
             "WHERE a.title LIKE CONCAT('%',?,'%') AND s.test_scenario_id = ? ORDER BY s.priority LIMIT ? OFFSET ?";
+    public static final String FIND_BY_ID_IN_TEST_SCENARIO_WITHOUT_PARAMS =
+            "SELECT s.id as s_id, s.action_id as s_action_id, s.test_scenario_id as s_test_scenario_id," +
+            " s.priority as s_priority, s.action_status as s_action_status, s.param_id as s_param_id," +
+            " a.title as a_title, a.type as a_type " +
+            "FROM act_scenario s INNER JOIN action a ON a.id = s.action_id " +
+            "WHERE s.test_scenario_id = ? " +
+            "ORDER BY s.priority;";
+    public static final String FIND_BY_ID_IN_TEST_SCENARIO =
+            "SELECT s.id as s_id, s.action_id as s_action_id, s.test_scenario_id as s_test_scenario_id," +
+                    " s.priority as s_priority, s.action_status as s_action_status, s.param_id as s_param_id," +
+                    " a.title as a_title, a.type as a_type ," +
+                    " p.type as p_type , p.value as p_value " +
+                    "FROM act_scenario s INNER JOIN action a ON a.id = s.action_id " +
+                    "INNER JOIN parameters p ON s.param_id = p.id " +
+                    "WHERE s.test_scenario_id = ? " +
+                    "ORDER BY s.priority;";
     public static final String DELETE_ACT_SCENARIO = "DELETE FROM act_scenario WHERE id =?";
     public static final String SET_STATUS = "UPDATE act_scenario SET action_status = ?::action_status WHERE id = ?";
     public static final String FIND_BY_ID = "SELECT s.id as s_id, s.action_id as s_action_id, s.test_scenario_id as s_test_scenario_id," +

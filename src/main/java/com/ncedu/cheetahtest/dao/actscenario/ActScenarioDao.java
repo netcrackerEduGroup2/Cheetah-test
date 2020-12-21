@@ -8,10 +8,13 @@ import java.util.List;
 public interface ActScenarioDao {
     ActScenario createActScenario(ActScenario actScenario);
     ActScenario editActScenario(ActScenario actScenario, int id);
+    ActScenario setParametr(int idParam, int id);
     List<ActScenario> findByTitleLike(String title, int limit,int offset);
     List<ActScenario> findByTitleInTestScenario(String title, int idTestScenario,int limit, int offset);
     List<ActScenario> findAllByTitleLike(String title);
     List<ActScenario> findAllByTitleInTestScenario(String title, int idTestScenario);
+    List<ActScenario> findAllByIdTestScenario(int idTestScenario);
+    List<ActScenario> findAllByIdTestScenarioWithoutParams(int idTestScenario);
     void deleteActScenario(int id);
     ActScenario setStatus(ActStatus actStatus, int id);
     ActScenario findById(int id);
