@@ -25,4 +25,6 @@ public interface DashboardService {
     List<PlannedTestCaseDTO> getPlannedTestCasesForManager();
 
     List<PlannedTestCaseDTO> getPlannedTestCasesForEngineer(int id);
+
+    List<SuppProjectsDTO> getSuppProjects();
 }

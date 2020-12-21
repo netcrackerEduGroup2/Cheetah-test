@@ -89,6 +89,12 @@ public class DashboardServiceImpl implements DashboardService{
     }
 
     @Override
+    public List<SuppProjectsDTO> getSuppProjects() {
+        List<SuppProjectsDTO> suppProjectsDTOS = dashboardDao.getSuppProjects();
+        return suppProjectsDTOS;
+    }
+
+    @Override
     public List<UserProjectsDTO> getProjectsForUser(int id) {
         List<UserProjectsDTO> projectsForUser = dashboardDao.getProjectsForUser(id);;
 
@@ -120,8 +126,7 @@ public class DashboardServiceImpl implements DashboardService{
         String hour = cron.substring(3, 5);
         String day = cron.substring(6, 8);
         String month = cron.substring(9, 11);
-        return String.format("%s.%s.%s %s:%s", day,month,LocalDate.now().getYear(), hour, minutes);
-
+        return String.format("%s.%s.%s %s:%s", day,month,LocalDate.now().getYear(), hour, minutes);//TODO check working when db has not null
     }
 
 }

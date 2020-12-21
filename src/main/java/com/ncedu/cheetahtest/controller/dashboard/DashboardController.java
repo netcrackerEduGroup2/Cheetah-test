@@ -36,23 +36,23 @@ public class DashboardController {
         return dashboardService.getProjectActivityForAdminPerWeek();
     }
 
-    @GetMapping("/admin/personal-projects")
+    @GetMapping("/personal-projects")
     public List<UserProjectsDTO> getProjectsForUser(@RequestParam("id") int id) {
         return dashboardService.getProjectsForUser(id);
     }
 
     @GetMapping("/admin/percent-projects")
-    public List<Integer> getAllToWeekProject() {//todo
+    public List<Integer> getAllToWeekProject() {
         return dashboardService.getAllToWeekProject();
     }
 
     @GetMapping("/admin/archive-projects")
-    public int getArchiveProject() {//todo
+    public int getArchiveProject() {
         return dashboardService.getCountArchiveProject();
     }
 
     @GetMapping("/lastday-created-projects")
-    public int getCountLastDayCreatedProject() {//todo
+    public int getCountLastDayCreatedProject() {
         return dashboardService.getCountLastDayCreatedProject();
     }
 
@@ -64,5 +64,10 @@ public class DashboardController {
     @GetMapping("/engineer/planned-testcases")
     public List<PlannedTestCaseDTO> getPlannedTestCasesForEngineer(@RequestParam("id") int id) {//TODO check when not null
         return dashboardService.getPlannedTestCasesForEngineer(id);
+    }
+
+    @GetMapping("/supp-projects")
+    public List<SuppProjectsDTO> getSuppProjects(){
+        return  dashboardService.getSuppProjects();
     }
 }
