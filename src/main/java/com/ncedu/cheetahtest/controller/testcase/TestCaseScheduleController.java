@@ -22,94 +22,97 @@ import java.util.List;
 @Slf4j
 public class TestCaseScheduleController {
 
-    private final TestCaseService testCaseService;
-    private final TestCaseScheduler testCaseScheduler;
+  private final TestCaseService testCaseService;
+  private final TestCaseScheduler testCaseScheduler;
 
-    @GetMapping
-    public List<TestCase> createTestCaseSchedule() {
-        List<TestCase> testCases = testCaseService.getActiveTestCasesWithExecutionDate();
-        for (TestCase testCase: testCases){
-            testCase.setExecutionCronDate(parseToDate(testCase.getExecutionCronDate()));
-        }
-        return testCases;
+  @GetMapping
+  public List<TestCase> createTestCaseSchedule() {
+    List<TestCase> testCases = testCaseService.getActiveTestCasesWithExecutionDate();
+    for (TestCase testCase : testCases) {
+      testCase.setExecutionCronDate(parseToDate(testCase.getExecutionCronDate()));
+    }
+    return testCases;
+  }
+
+  @PostMapping
+  public ResponseEntity<String> createTestCaseSchedule(@RequestBody TestCaseScheduleDto testCaseScheduleDto) {
+
+    testCaseScheduleDto.setExecutionCronDate(parseToCron(testCaseScheduleDto.getExecutionCronDate()));
+
+    testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
+
+    boolean isValidCron = CronExpression.isValidExpression(testCaseScheduleDto.getExecutionCronDate());
+
+    if (!isValidCron) {
+      throw new InvalidCronExpressionException();
     }
 
-    @PostMapping
-    public ResponseEntity<String> createTestCaseSchedule(@RequestBody TestCaseScheduleDto testCaseScheduleDto) {
+    testCaseScheduler.createTestCaseSchedule(testCaseScheduleDto);
 
-        testCaseScheduleDto.setExecutionCronDate(parseToCron(testCaseScheduleDto.getExecutionCronDate()));
-        testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
-        testCaseScheduler.createTestCaseSchedule(testCaseScheduleDto.getTestCaseId());
-        boolean isValidCron = CronExpression.isValidExpression(testCaseScheduleDto.getExecutionCronDate());
+    String response = "Test case has been scheduled. Id = " + testCaseScheduleDto.getTestCaseId();
 
-        if (!isValidCron) {
-            throw new InvalidCronExpressionException();
-        }
+    log.info(response);
+    return ResponseEntity.ok(response);
+  }
 
-        testCaseScheduler.createTestCaseSchedule(testCaseScheduleDto);
+  @PutMapping
+  public ResponseEntity<String> updateTestCaseSchedule(@RequestBody TestCaseScheduleDto testCaseScheduleDto) {
 
-        String response = "Test case has been scheduled. Id = " + testCaseScheduleDto.getTestCaseId();
+    testCaseScheduleDto.setExecutionCronDate(parseToCron(testCaseScheduleDto.getExecutionCronDate()));
 
-        log.info(response);
-        return ResponseEntity.ok(response);
+    testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
+
+    boolean isValidCron = CronExpression.isValidExpression(testCaseScheduleDto.getExecutionCronDate());
+
+    if (!isValidCron) {
+      throw new InvalidCronExpressionException();
     }
 
-    @PutMapping
-    public ResponseEntity<String> updateTestCaseSchedule(@RequestBody TestCaseScheduleDto testCaseScheduleDto) {
+    testCaseScheduler.updateTestCaseSchedule(testCaseScheduleDto);
 
-        testCaseScheduleDto.setExecutionCronDate(parseToCron(testCaseScheduleDto.getExecutionCronDate()));
-        testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
-        testCaseScheduler.updateTestCaseSchedule(testCaseScheduleDto.getTestCaseId());
-        boolean isValidCron = CronExpression.isValidExpression(testCaseScheduleDto.getExecutionCronDate());
+    String response = "Test case schedule has been updated. Id = " + testCaseScheduleDto.getTestCaseId();
 
-        if (!isValidCron) {
-            throw new InvalidCronExpressionException();
-        }
+    log.info(response);
+    return ResponseEntity.ok(response);
+  }
 
-        testCaseScheduler.updateTestCaseSchedule(testCaseScheduleDto);
+  @DeleteMapping("/{testCaseId}")
+  public ResponseEntity<String> updateTestCaseSchedule(@PathVariable int testCaseId) {
 
-        String response = "Test case schedule has been updated. Id = " + testCaseScheduleDto.getTestCaseId();
+    testCaseService.deleteExecutionCronDateAndRepeatability(testCaseId);
 
-        log.info(response);
-        return ResponseEntity.ok(response);
+    testCaseScheduler.deleteTestCaseSchedule(testCaseId);
+
+    String response = "Test case schedule has been deleted. Id = " + testCaseId;
+
+    log.info(response);
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/test-cases")
+  public List<TestCase> getCalendarTestCases(@RequestParam("title") String title) {
+    List<TestCase> testCases = testCaseService.getAllActiveTestCasesByTitle(title);
+    for (TestCase testCase : testCases) {
+      if (testCase.getExecutionCronDate() != null) {
+        testCase.setExecutionCronDate(parseToDate(testCase.getExecutionCronDate()));
+      }
     }
+    return testCases;
+  }
 
-    @DeleteMapping("/{testCaseId}")
-    public ResponseEntity<String> updateTestCaseSchedule(@PathVariable int testCaseId) {
+  private static String parseToCron(String date) {
+    String month = date.substring(date.indexOf("-") + 1, date.indexOf("-") + 3);
+    String day = date.substring(date.indexOf("-") + 4, date.indexOf("-") + 6);
+    String hour = date.substring(date.indexOf("T") + 1, date.indexOf(":"));
+    String minutes = date.substring(date.indexOf(":") + 1, date.indexOf(":") + 3);
+    return String.format("00 %s %s %s %s ?", minutes, hour, day, month);
+  }
 
-        testCaseService.deleteExecutionCronDateAndRepeatability(testCaseId);
-
-        testCaseScheduler.deleteTestCaseSchedule(testCaseId);
-
-        String response = "Test case schedule has been deleted. Id = " + testCaseId;
-
-        log.info(response);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/test-cases")
-    public List<TestCase> getCalendarTestCases(@RequestParam("title") String title)   {
-        List<TestCase> testCases = testCaseService.getAllActiveTestCasesByTitle(title);
-        for (TestCase testCase: testCases){
-            if(testCase.getExecutionCronDate() != null)
-                testCase.setExecutionCronDate(parseToDate(testCase.getExecutionCronDate()));
-        }
-        return testCases;
-    }
-
-    private static String parseToCron(String date){
-        String month = date.substring(date.indexOf("-") + 1, date.indexOf("-") + 3);
-        String day = date.substring(date.indexOf("-") + 4, date.indexOf("-") + 6);
-        String hour = date.substring(date.indexOf("T") + 1, date.indexOf(":"));
-        String minutes = date.substring(date.indexOf(":") + 1, date.indexOf(":") + 3);
-        return String.format("00 %s %s %s %s ?", minutes, hour, day, month);
-    }
-
-    private static String parseToDate(String cron){
-        String minutes = cron.substring(3, 5);
-        String hour = cron.substring(6, 8);
-        String day = cron.substring(9, 11);
-        String month = cron.substring(12, 14);
-        return String.format("%s-%s-%sT%s:%s:00+00:00", LocalDate.now().getYear(), month, day, hour, minutes);
-    }
+  private static String parseToDate(String cron) {
+    String minutes = cron.substring(3, 5);
+    String hour = cron.substring(6, 8);
+    String day = cron.substring(9, 11);
+    String month = cron.substring(12, 14);
+    return String.format("%s-%s-%sT%s:%s:00+00:00", LocalDate.now().getYear(), month, day, hour, minutes);
+  }
 }
