@@ -10,6 +10,9 @@ public class SeleniumAction {
     private String element;
     private String argument;
 
+    public SeleniumAction(){
+        compoundId = null;
+    }
     public SeleniumAction(Integer actionId, Integer compoundId, String actionType, String element, String argument) {
         this.actionId = actionId;
         this.compoundId = compoundId;

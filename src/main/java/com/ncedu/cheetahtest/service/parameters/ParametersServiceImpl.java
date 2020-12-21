@@ -47,6 +47,11 @@ public class ParametersServiceImpl implements ParameterService {
     }
 
     @Override
+    public List<Parameter> findAllByValue(String value, int idTestCase) {
+        return parametersDao.findAllByValue(value, idTestCase);
+    }
+
+    @Override
     public List<Parameter> findAllByIdDataSet(int idDataSet) {
         return parametersDao.findAllByIdDataSet(idDataSet);
     }
