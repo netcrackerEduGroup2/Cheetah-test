@@ -9,9 +9,9 @@ import java.util.List;
 public interface CompoundService {
 
     Compound createCompound(Compound compound, List<Action> actions);
-    PaginationCompound getCompoundsByTitleLike(String title,int size, int page);
+    PaginationCompound getCompoundsByTitleLike(String title, int size, int page);
     List<Compound> getCompoundsByTitleLike(String title);
     Compound editCompoundProperties(Compound compound, int id);
     void deleteCompound(int idCompound);
-    Compound editCompound(Compound compound,int id, List<Action> actions);
+    Compound editCompound(Compound compound, int id, List<Action> actions);
 }

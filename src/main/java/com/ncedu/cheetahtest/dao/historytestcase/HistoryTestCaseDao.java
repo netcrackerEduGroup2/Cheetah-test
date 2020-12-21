@@ -13,5 +13,5 @@ public interface HistoryTestCaseDao {
 
     Integer getCountTestCaseFailedCompleted();
 
-    List<HistoryTestCase> getPage(int size, int page);
+    List<HistoryTestCase> getPage(int id, int size, int page);
 }

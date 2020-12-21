@@ -11,7 +11,7 @@ public interface ActScenarioService {
     ActScenario editActScenario(ActScenario actScenario, int id);
     ActScenario setParametr(int idParam, int id);
     PaginationActScenario findByTitleLike(String title, int size, int page);
-    PaginationActScenario findByTitleInTestScenario(String title, int idTestScenario,int size, int page);
+    PaginationActScenario findByTitleInTestScenario(String title, int idTestScenario, int size, int page);
     List<ActScenario>findByIdInTestScenario(int idTestScenario);
     List<ActScenario>findAllByIdTestScenarioWithoutParams(int idTestScenario);
     List<ActScenario> findAllByTitleLike(String title);
