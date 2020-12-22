@@ -37,15 +37,16 @@ public class TestCaseScheduleController {
   @PostMapping
   public ResponseEntity<String> createTestCaseSchedule(@RequestBody TestCaseScheduleDto testCaseScheduleDto) {
 
-    testCaseScheduleDto.setExecutionCronDate(parseToCron(testCaseScheduleDto.getExecutionCronDate()));
+    String cron = parseToCron(testCaseScheduleDto.getExecutionCronDate());
 
-    testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
-
-    boolean isValidCron = CronExpression.isValidExpression(testCaseScheduleDto.getExecutionCronDate());
-
+    boolean isValidCron = CronExpression.isValidExpression(cron);
     if (!isValidCron) {
       throw new InvalidCronExpressionException();
     }
+
+    testCaseScheduleDto.setExecutionCronDate(cron);
+
+    testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
 
     testCaseScheduler.createTestCaseSchedule(testCaseScheduleDto);
 
@@ -58,15 +59,16 @@ public class TestCaseScheduleController {
   @PutMapping
   public ResponseEntity<String> updateTestCaseSchedule(@RequestBody TestCaseScheduleDto testCaseScheduleDto) {
 
-    testCaseScheduleDto.setExecutionCronDate(parseToCron(testCaseScheduleDto.getExecutionCronDate()));
+    String cron = parseToCron(testCaseScheduleDto.getExecutionCronDate());
 
-    testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
-
-    boolean isValidCron = CronExpression.isValidExpression(testCaseScheduleDto.getExecutionCronDate());
-
+    boolean isValidCron = CronExpression.isValidExpression(cron);
     if (!isValidCron) {
       throw new InvalidCronExpressionException();
     }
+
+    testCaseScheduleDto.setExecutionCronDate(cron);
+
+    testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
 
     testCaseScheduler.updateTestCaseSchedule(testCaseScheduleDto);
 
