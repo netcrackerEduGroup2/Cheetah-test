@@ -94,12 +94,6 @@ public class TestCaseConsts {
         SELECT_ALL_PARAMS_FROM_TEST_CASE +
             "WHERE status = 'ACTIVE' AND title LIKE CONCAT ('%',?,'%')";
 
-    public static final String SET_EXECUTION_DATE_TO_NULL =
-            UPDATE +
-            "execution_cron_date = NULL, " +
-            "repeatable = NULL " +
-            WHERE_ID_EQUALS_Q;
-
     public static final String SET_EXECUTION_DATE_AND_REPEATABILITY =
             UPDATE +
             "execution_cron_date = ?, " +
