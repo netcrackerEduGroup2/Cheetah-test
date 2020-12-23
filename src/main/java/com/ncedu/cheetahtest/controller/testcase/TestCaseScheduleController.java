@@ -115,6 +115,6 @@ public class TestCaseScheduleController {
     String hour = cron.substring(6, 8);
     String day = cron.substring(9, 11);
     String month = cron.substring(12, 14);
-    return String.format("%s-%s-%sT%s:%s:00+00:00", LocalDate.now().getYear(), month, day, hour, minutes);
+    return String.format("%s-%s-%sT%s:%s:00", LocalDate.now().getYear(), month, day, hour, minutes);
   }
 }
