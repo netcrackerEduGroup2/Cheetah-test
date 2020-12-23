@@ -1,5 +1,6 @@
 package com.ncedu.cheetahtest.dao.testcase;
 
+import com.ncedu.cheetahtest.dao.compound.CompoundRowMapper;
 import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.ncedu.cheetahtest.dao.compound.CompoundConsts.SELECT_COMPOUND_BY_TITLE_LIKE_WITHOUT_PAGINATION;
 import static com.ncedu.cheetahtest.dao.testcase.TestCaseConsts.*;
 
 @Repository
@@ -158,6 +160,25 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
         }
 
         return 0;
+    }
+
+    @Override
+    public boolean getTestCaseRepeatable(int id) {
+        return jdbcTemplate.queryForObject(CHECK_REPEATEBLE_TEST_CASE, Boolean.class, id);
+    }
+
+    @Override
+    public String getExecutionDateById(int id) {
+        return jdbcTemplate.queryForObject(GET__EXECUTION_DATE_BY_ID, String.class, id);
+    }
+
+    @Override
+    public List<TestCase> getAllActiveTestCasesByTitle(String title) {
+        return jdbcTemplate.query(
+            GET_ALL_ACTIVE_TEST_CASES,
+            preparedStatement -> preparedStatement.setString(1, title),
+            new TestCaseMapper()
+        );
     }
 
     @Override

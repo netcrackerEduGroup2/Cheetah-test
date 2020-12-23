@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.controller.userprofile;
 
-import com.ncedu.cheetahtest.entity.testcase.IdsDto;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.UserDto;
 import com.ncedu.cheetahtest.entity.user.UserPaginatedDto;
@@ -78,11 +77,16 @@ public class UserController {
         return userService.findUsersByName(page, size, title);
     }
 
+    @GetMapping("/url-user-photo")
+    public String getUserPhoto(@RequestParam("email") String email){
+        return userService.findUserByEmail(email).getPhotoUrl();
+    }
 
     @PostMapping("/uploadUserPhoto")
     public String uploadFile(@RequestPart(value = "file") MultipartFile file,
-                             @RequestParam("id") int id) {
-        return this.amazonClientService.uploadUserPhoto(file, id);
+                             @RequestParam("email") String email) {
+        return this.amazonClientService.uploadUserPhoto(file,
+                userService.findUserByEmail(email).getId());
     }
 
     @DeleteMapping("/deleteUserPhoto")
@@ -95,17 +99,6 @@ public class UserController {
         return userService.findByEmail(email);
     }
 
-    @GetMapping("/watchers/{projectId}")
-    public List<UserDto> getByProjectId(@PathVariable int projectId) {
-        return userService.getWatchersByProjectId(projectId);
-    }
-
-
-    @PutMapping("/watchers/{projectId}")
-    public IdsDto getByProjectId(@PathVariable int projectId, @RequestBody IdsDto idsDto) {
-        userService.saveWatchers(projectId, idsDto.getIds());
-        return idsDto;
-    }
 }
 
 class UserToUpdate {

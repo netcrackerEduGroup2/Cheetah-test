@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.dao.hiatoryaction;
 
 import com.ncedu.cheetahtest.entity.historyacrion.HistoryAction;
+import com.ncedu.cheetahtest.entity.selenium.ActionResult;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface HistoryActionDao {
 
 
     List<HistoryAction> getHistoryActionByTestHistoryId(int testCaseHistoryId);
+
+    List<ActionResult> getHistoryActionsByTestCaseId(int idTestCase);
 }

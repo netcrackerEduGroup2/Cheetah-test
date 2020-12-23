@@ -69,16 +69,30 @@ public class TestCaseConsts {
             SELECT_ALL_PARAMS_FROM_TEST_CASE +
             "WHERE project_id = ? AND id = ?";
 
+    public static final String CHECK_REPEATEBLE_TEST_CASE =
+            "SELECT repeatable " +
+            "   FROM test_case " +
+            "   WHERE id=?; ";
+
+    public static final String GET__EXECUTION_DATE_BY_ID =
+            "SELECT execution_cron_date " +
+            "   FROM test_case " +
+            "   WHERE id=?; ";
+  
     public static final String GET_ACTIVE_TEST_CASES_WITH_EXECUTION_DATE =
             SELECT_ALL_PARAMS_FROM_TEST_CASE +
             "WHERE execution_cron_date IS NOT NULL " +
             "AND status = 'ACTIVE'";
 
     public static final String SET_EXECUTION_DATE_AND_REPEATABILITY_TO_NULL =
-            UPDATE +
+        UPDATE +
             "execution_cron_date = NULL, " +
             "repeatable = NULL " +
             WHERE_ID_EQUALS_Q;
+
+    public static final String GET_ALL_ACTIVE_TEST_CASES =
+        SELECT_ALL_PARAMS_FROM_TEST_CASE +
+            "WHERE status = 'ACTIVE' AND title LIKE CONCAT ('%',?,'%')";
 
     public static final String SET_EXECUTION_DATE_AND_REPEATABILITY =
             UPDATE +

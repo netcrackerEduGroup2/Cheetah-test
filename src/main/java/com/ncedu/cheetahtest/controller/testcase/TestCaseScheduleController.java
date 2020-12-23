@@ -11,6 +11,8 @@ import org.quartz.CronExpression;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,58 +22,99 @@ import java.util.List;
 @Slf4j
 public class TestCaseScheduleController {
 
-    private final TestCaseService testCaseService;
-    private final TestCaseScheduler testCaseScheduler;
+  private final TestCaseService testCaseService;
+  private final TestCaseScheduler testCaseScheduler;
 
-    @GetMapping
-    public List<TestCase> createTestCaseSchedule() {
-        return testCaseService.getActiveTestCasesWithExecutionDate();
+  @GetMapping
+  public List<TestCase> createTestCaseSchedule() {
+    List<TestCase> testCases = testCaseService.getActiveTestCasesWithExecutionDate();
+    for (TestCase testCase : testCases) {
+      testCase.setExecutionCronDate(parseToDate(testCase.getExecutionCronDate()));
+    }
+    return testCases;
+  }
+
+  @PostMapping
+  public ResponseEntity<String> createTestCaseSchedule(@RequestBody TestCaseScheduleDto testCaseScheduleDto) {
+
+    String cron = parseToCron(testCaseScheduleDto.getExecutionCronDate());
+
+    boolean isValidCron = CronExpression.isValidExpression(cron);
+    if (!isValidCron) {
+      throw new InvalidCronExpressionException();
     }
 
-    @PostMapping
-    public ResponseEntity<String> createTestCaseSchedule(@RequestBody TestCaseScheduleDto testCaseScheduleDto) {
+    testCaseScheduleDto.setExecutionCronDate(cron);
 
-        boolean isValidCron = CronExpression.isValidExpression(testCaseScheduleDto.getExecutionCronDate());
+    testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
 
-        if (!isValidCron) {
-            throw new InvalidCronExpressionException();
-        }
+    testCaseScheduler.createTestCaseSchedule(testCaseScheduleDto);
 
-        testCaseScheduler.createTestCaseSchedule(testCaseScheduleDto);
+    String response = "Test case has been scheduled. Id = " + testCaseScheduleDto.getTestCaseId();
 
-        String response = "Test case has been scheduled. Id = " + testCaseScheduleDto.getTestCaseId();
+    log.info(response);
+    return ResponseEntity.ok(response);
+  }
 
-        log.info(response);
-        return ResponseEntity.ok(response);
+  @PutMapping
+  public ResponseEntity<String> updateTestCaseSchedule(@RequestBody TestCaseScheduleDto testCaseScheduleDto) {
+
+    String cron = parseToCron(testCaseScheduleDto.getExecutionCronDate());
+
+    boolean isValidCron = CronExpression.isValidExpression(cron);
+    if (!isValidCron) {
+      throw new InvalidCronExpressionException();
     }
 
-    @PutMapping
-    public ResponseEntity<String> updateTestCaseSchedule(@RequestBody TestCaseScheduleDto testCaseScheduleDto) {
+    testCaseScheduleDto.setExecutionCronDate(cron);
 
-        boolean isValidCron = CronExpression.isValidExpression(testCaseScheduleDto.getExecutionCronDate());
+    testCaseService.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
 
-        if (!isValidCron) {
-            throw new InvalidCronExpressionException();
-        }
+    testCaseScheduler.updateTestCaseSchedule(testCaseScheduleDto);
 
-        testCaseScheduler.updateTestCaseSchedule(testCaseScheduleDto);
+    String response = "Test case schedule has been updated. Id = " + testCaseScheduleDto.getTestCaseId();
 
-        String response = "Test case schedule has been updated. Id = " + testCaseScheduleDto.getTestCaseId();
+    log.info(response);
+    return ResponseEntity.ok(response);
+  }
 
-        log.info(response);
-        return ResponseEntity.ok(response);
+  @DeleteMapping("/{testCaseId}")
+  public ResponseEntity<String> updateTestCaseSchedule(@PathVariable int testCaseId) {
+
+    testCaseService.deleteExecutionCronDateAndRepeatability(testCaseId);
+
+    testCaseScheduler.deleteTestCaseSchedule(testCaseId);
+
+    String response = "Test case schedule has been deleted. Id = " + testCaseId;
+
+    log.info(response);
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/test-cases")
+  public List<TestCase> getCalendarTestCases(@RequestParam("title") String title) {
+    List<TestCase> testCases = testCaseService.getAllActiveTestCasesByTitle(title);
+    for (TestCase testCase : testCases) {
+      if (testCase.getExecutionCronDate() != null) {
+        testCase.setExecutionCronDate(parseToDate(testCase.getExecutionCronDate()));
+      }
     }
+    return testCases;
+  }
 
-    @DeleteMapping("/{testCaseId}")
-    public ResponseEntity<String> updateTestCaseSchedule(@PathVariable int testCaseId) {
+  private static String parseToCron(String date) {
+    String month = date.substring(date.indexOf("-") + 1, date.indexOf("-") + 3);
+    String day = date.substring(date.indexOf("-") + 4, date.indexOf("-") + 6);
+    String hour = date.substring(date.indexOf("T") + 1, date.indexOf(":"));
+    String minutes = date.substring(date.indexOf(":") + 1, date.indexOf(":") + 3);
+    return String.format("00 %s %s %s %s ?", minutes, hour, day, month);
+  }
 
-        testCaseService.deleteExecutionCronDateAndRepeatability(testCaseId);
-
-        testCaseScheduler.deleteTestCaseSchedule(testCaseId);
-
-        String response = "Test case schedule has been deleted. Id = " + testCaseId;
-
-        log.info(response);
-        return ResponseEntity.ok(response);
-    }
+  private static String parseToDate(String cron) {
+    String minutes = cron.substring(3, 5);
+    String hour = cron.substring(6, 8);
+    String day = cron.substring(9, 11);
+    String month = cron.substring(12, 14);
+    return String.format("%s-%s-%sT%s:%s:00+00:00", LocalDate.now().getYear(), month, day, hour, minutes);
+  }
 }

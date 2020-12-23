@@ -25,13 +25,19 @@ public interface TestCaseDao {
 
     int getAmountByTitlePaginatedAndByProjectId(String keyword, int projectId);
 
+    boolean getTestCaseRepeatable(int id);
+
+    String getExecutionDateById(int id);
+
+    List<TestCase> getAllActiveTestCasesByTitle(String title);
+
     List<TestCase> getActiveTestCasesWithExecutionDate();
 
     void setExecutionDateToNull(int id);
 
-    void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto);
-
     void deleteExecutionCronDateAndRepeatability(int testCaseId);
+
+    void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto);
 
     void setResultToSuccess(int testCaseId);
 

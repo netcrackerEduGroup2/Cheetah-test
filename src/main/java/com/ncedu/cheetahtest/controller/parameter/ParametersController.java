@@ -37,6 +37,13 @@ public class ParametersController {
                                               @RequestParam("page") int page){
         return parameterService.findAllByType(type,size,page);
     }
+
+    @GetMapping("/all-params/value={value}")
+    public List<Parameter> findAllByValue(@PathVariable String value,
+                                          @RequestParam("idTestCase") int idTestCase){
+        return parameterService.findAllByValue(value, idTestCase);
+    }
+
     @GetMapping("/all/{idDataSet}")
     public List<Parameter> findAllByIdDataSet(@PathVariable int idDataSet){
         return parameterService.findAllByIdDataSet(idDataSet);

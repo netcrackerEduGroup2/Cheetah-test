@@ -20,140 +20,144 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TestCaseServiceImpl implements TestCaseService {
 
-    private final TestCaseDao testCaseDao;
-    private final AbstractActiveDao<TestCase> testCaseGenDao;
-    private final ProjectDao projectDao;
+  private final TestCaseDao testCaseDao;
+  private final AbstractActiveDao<TestCase> testCaseGenDao;
+  private final ProjectDao projectDao;
 
-    @Override
-    @Transactional
-    public TestCasePaginated getTestCases(int page, int size) {
-        List<TestCase> testCaseList = testCaseGenDao.getActivePaginated(page, size);
-        int totalElements = testCaseGenDao.getAmountActiveElements();
+  @Override
+  @Transactional
+  public TestCasePaginated getTestCases(int page, int size) {
+    List<TestCase> testCaseList = testCaseGenDao.getActivePaginated(page, size);
+    int totalElements = testCaseGenDao.getAmountActiveElements();
 
-        return new TestCasePaginated(testCaseList, totalElements);
+    return new TestCasePaginated(testCaseList, totalElements);
+  }
+
+  @Override
+  @Transactional
+  public TestCasePaginated getAllTestCases(int page, int size) {
+
+    List<TestCase> testCaseList = testCaseGenDao.getAllPaginated(page, size);
+    int totalElements = testCaseGenDao.getAmountAllElements();
+
+    return new TestCasePaginated(testCaseList, totalElements);
+  }
+
+  @Override
+  @Transactional
+  public void save(TestCase testCase) {
+    TestCase testCaseWithSameTitle = testCaseDao
+        .findTestCaseByTitleExceptCurrent(
+            testCase.getTitle(),
+            testCase.getId());
+
+    if (testCaseWithSameTitle == null) {
+      testCaseDao.save(testCase);
+    } else {
+      throw new TestCaseAlreadyExistsException();
+    }
+  }
+
+  @Override
+  @Transactional
+  public TestCase findTestCaseByProjectIdAndTestCaseId(int projectId, int id) {
+    TestCase testCase = testCaseDao.findTestCaseByProjectIdAndTestCaseId(projectId, id);
+
+    if (testCase == null) {
+      throw new TestCaseNotFoundException();
     }
 
-    @Override
-    @Transactional
-    public TestCasePaginated getAllTestCases(int page, int size) {
+    return testCase;
+  }
 
-        List<TestCase> testCaseList = testCaseGenDao.getAllPaginated(page, size);
-        int totalElements = testCaseGenDao.getAmountAllElements();
+  @Override
+  @Transactional
+  public void deactivateTestCase(int id) {
+    testCaseDao.deactivate(id);
+  }
 
-        return new TestCasePaginated(testCaseList, totalElements);
+  @Override
+  public TestCasePaginated findTestCasesByTitlePaginated(int page, int size, String title) {
+    List<TestCase> testCaseList = testCaseGenDao
+        .findActiveByTitlePaginated(page, size, title);
+
+    int totalElements = testCaseGenDao.getSearchedActiveTotalElements(title);
+
+    return new TestCasePaginated(testCaseList, totalElements);
+  }
+
+  @Override
+  @Transactional
+  public TestCasePaginated findAllTestCasesByTitlePaginated(
+      int page, int size, String title) {
+
+    List<TestCase> testCaseList = testCaseGenDao
+        .findAllByTitlePaginated(page, size, title);
+
+    int totalElements = testCaseGenDao.getSearchedAllTotalElements(title);
+
+    return new TestCasePaginated(testCaseList, totalElements);
+  }
+
+  @Override
+  @Transactional
+  public int createTestCase(TestCase testCase) {
+    TestCase testCaseWithSameTitle = testCaseDao
+        .findTestCaseByTitleExceptCurrent(
+            testCase.getTitle(),
+            testCase.getId());
+
+    Project project = projectDao.findByProjectId(testCase.getProjectId());
+
+    if (project == null) {
+      throw new ProjectNotFoundException();
+    }
+    if (testCaseWithSameTitle != null) {
+      throw new TestCaseAlreadyExistsException();
     }
 
-    @Override
-    @Transactional
-    public void save(TestCase testCase) {
-        TestCase testCaseWithSameTitle = testCaseDao
-                .findTestCaseByTitleExceptCurrent(
-                        testCase.getTitle(),
-                        testCase.getId());
+    return testCaseDao.createTestCase(testCase);
+  }
 
-        if (testCaseWithSameTitle == null) {
-            testCaseDao.save(testCase);
-        } else {
-            throw new TestCaseAlreadyExistsException();
-        }
-    }
+  @Override
+  @Transactional
+  public TestCasePaginated getActiveTestCasesPaginatedByProjectId(int page, int size, int projectId) {
+    List<TestCase> testCaseList = testCaseDao.getActiveTestCasesPaginatedByProjectId(page, size, projectId);
+    int totalElements = testCaseDao.getAmountActiveElementsByProjectId(projectId);
 
-    @Override
-    @Transactional
-    public TestCase findTestCaseByProjectIdAndTestCaseId(int projectId, int id) {
-        TestCase testCase = testCaseDao.findTestCaseByProjectIdAndTestCaseId(projectId, id);
+    return new TestCasePaginated(testCaseList, totalElements);
+  }
 
-        if (testCase == null) {
-            throw new TestCaseNotFoundException();
-        }
+  @Override
+  @Transactional
+  public TestCasePaginated findTestCasesByTitlePaginatedAndByProjectId(int page, int size, String keyword,
+      int projectId) {
+    List<TestCase> testCaseList = testCaseDao
+        .findTestCasesByTitlePaginatedAndByProjectId(page, size, keyword, projectId);
 
-        return testCase;
-    }
+    int totalElements = testCaseDao.getAmountByTitlePaginatedAndByProjectId(keyword, projectId);
+    return new TestCasePaginated(testCaseList, totalElements);
+  }
 
-    @Override
-    @Transactional
-    public void deactivateTestCase(int id) {
-        testCaseDao.deactivate(id);
-    }
+  @Override
+  @Transactional
+  public void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto) {
+    testCaseDao.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
+  }
 
-    @Override
-    public TestCasePaginated findTestCasesByTitlePaginated(int page, int size, String title) {
-        List<TestCase> testCaseList = testCaseGenDao
-                .findActiveByTitlePaginated(page, size, title);
+  @Override
+  public void deleteExecutionCronDateAndRepeatability(int testCaseId) {
+    testCaseDao.deleteExecutionCronDateAndRepeatability(testCaseId);
+  }
 
-        int totalElements = testCaseGenDao.getSearchedActiveTotalElements(title);
+  @Override
+  public List<TestCase> getActiveTestCasesWithExecutionDate() {
+    return testCaseDao.getActiveTestCasesWithExecutionDate();
+  }
 
-        return new TestCasePaginated(testCaseList, totalElements);
-    }
-
-    @Override
-    @Transactional
-    public TestCasePaginated findAllTestCasesByTitlePaginated(
-            int page, int size, String title) {
-
-        List<TestCase> testCaseList = testCaseGenDao
-                .findAllByTitlePaginated(page, size, title);
-
-        int totalElements = testCaseGenDao.getSearchedAllTotalElements(title);
-
-        return new TestCasePaginated(testCaseList, totalElements);
-    }
-
-    @Override
-    @Transactional
-    public int createTestCase(TestCase testCase) {
-        TestCase testCaseWithSameTitle = testCaseDao
-                .findTestCaseByTitleExceptCurrent(
-                        testCase.getTitle(),
-                        testCase.getId());
-
-        Project project = projectDao.findByProjectId(testCase.getProjectId());
-
-        if (project == null) {
-            throw new ProjectNotFoundException();
-        }
-        if (testCaseWithSameTitle != null) {
-            throw new TestCaseAlreadyExistsException();
-        }
-
-        return testCaseDao.createTestCase(testCase);
-    }
-
-    @Override
-    @Transactional
-    public TestCasePaginated getActiveTestCasesPaginatedByProjectId(int page, int size, int projectId) {
-        List<TestCase> testCaseList = testCaseDao.getActiveTestCasesPaginatedByProjectId(page, size, projectId);
-        int totalElements = testCaseDao.getAmountActiveElementsByProjectId(projectId);
-
-        return new TestCasePaginated(testCaseList, totalElements);
-    }
-
-    @Override
-    @Transactional
-    public TestCasePaginated findTestCasesByTitlePaginatedAndByProjectId(int page, int size, String keyword, int projectId) {
-        List<TestCase> testCaseList = testCaseDao
-                .findTestCasesByTitlePaginatedAndByProjectId(page, size, keyword, projectId);
-
-        int totalElements = testCaseDao.getAmountByTitlePaginatedAndByProjectId(keyword, projectId);
-
-        return new TestCasePaginated(testCaseList, totalElements);
-    }
-
-    @Override
-    @Transactional
-    public void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto) {
-        testCaseDao.updateExecutionCronDateAndRepeatability(testCaseScheduleDto);
-    }
-
-    @Override
-    public void deleteExecutionCronDateAndRepeatability(int testCaseId) {
-        testCaseDao.deleteExecutionCronDateAndRepeatability(testCaseId);
-    }
-
-    @Override
-    public List<TestCase> getActiveTestCasesWithExecutionDate() {
-        return testCaseDao.getActiveTestCasesWithExecutionDate();
-    }
-
+  @Override
+  public List<TestCase> getAllActiveTestCasesByTitle(String title) {
+    return testCaseDao.getAllActiveTestCasesByTitle(title);
+  }
 }
 
