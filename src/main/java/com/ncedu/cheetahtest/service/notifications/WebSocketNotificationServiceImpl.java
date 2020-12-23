@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class WebSocketNotificationServiceImpl implements WebSocketNotificationService {
@@ -23,7 +24,7 @@ public class WebSocketNotificationServiceImpl implements WebSocketNotificationSe
     public WebSocketNotificationServiceImpl(SimpMessagingTemplate simpMessagingTemplate, HistoryActionService haService) {
         this.simpMessagingTemplate = simpMessagingTemplate;
         this.haService = haService;
-        this.connections = new HashMap<>();
+        this.connections = new ConcurrentHashMap<>();
     }
 
     @Override
