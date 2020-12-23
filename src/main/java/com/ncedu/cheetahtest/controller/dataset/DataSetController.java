@@ -30,9 +30,9 @@ public class DataSetController {
             @RequestParam("idTestCase") int idTestCase){
         return dataSetService.findByTitleLike(title,idTestCase,size,page);
     }
-    @PutMapping
+    @PutMapping("/{id}")
     public DataSet editDataSet(@RequestBody DataSet dataSet,
-                               @RequestParam("id") int id){
+                               @PathVariable int id){
         return dataSetService.editDataSet(dataSet,id);
     }
     @DeleteMapping

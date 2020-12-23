@@ -45,7 +45,12 @@ public class DataSetServiceImpl implements DataSetService {
 
     @Override
     public DataSet editDataSet(DataSet dataSet, int id) {
-        return dataSetDao.editDataSet(dataSet, id);
+        try {
+            return dataSetDao.editDataSet(dataSet, id);
+        } catch (DataIntegrityViolationException ex) {
+            throw new EntityAlreadyExistException();
+        }
+
     }
 
     @Override
