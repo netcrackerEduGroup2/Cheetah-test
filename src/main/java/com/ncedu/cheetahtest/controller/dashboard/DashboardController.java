@@ -37,8 +37,8 @@ public class DashboardController {
     }
 
     @GetMapping("/personal-projects")
-    public List<UserProjectsDTO> getProjectsForUser(@RequestParam("id") int id) {
-        return dashboardService.getProjectsForUser(id);
+    public List<UserProjectsDTO> getProjectsForUser(@RequestParam("id") int userId) {
+        return dashboardService.getProjectsForUser(userId);
     }
 
     @GetMapping("/admin/percent-projects")
@@ -57,13 +57,13 @@ public class DashboardController {
     }
 
     @GetMapping("/manager/planned-testcases")
-    public List<PlannedTestCaseDTO> getPlannedTestCasesForManager() {//TODO check when not null
+    public List<PlannedTestCaseDTO> getPlannedTestCasesForManager() {
         return dashboardService.getPlannedTestCasesForManager();
     }
 
     @GetMapping("/engineer/planned-testcases")
-    public List<PlannedTestCaseDTO> getPlannedTestCasesForEngineer(@RequestParam("id") int id) {//TODO check when not null
-        return dashboardService.getPlannedTestCasesForEngineer(id);
+    public List<PlannedTestCaseDTO> getPlannedTestCasesForEngineer(@RequestParam("id") int userId) {
+        return dashboardService.getPlannedTestCasesForEngineer(userId);
     }
 
     @GetMapping("/supp-projects")

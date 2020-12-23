@@ -71,8 +71,7 @@ public class DashboardServiceImpl implements DashboardService {
         String dayOfMonthStr = dayOfMonth + "." + month;
         projects.add(new ProjectActivityDTO(dayOfMonthStr, count));
 
-        ResponseDTO responseDTO = new ResponseDTO(projects);
-        return responseDTO;
+        return new ResponseDTO(projects);
     }
 
     @Override
@@ -93,8 +92,7 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public List<SuppProjectsDTO> getSuppProjects() {
-        List<SuppProjectsDTO> suppProjectsDTOS = dashboardDao.getSuppProjects();
-        return suppProjectsDTOS;
+        return dashboardDao.getSuppProjects();
     }
 
     @Override
@@ -114,9 +112,8 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public List<UserProjectsDTO> getProjectsForUser(int id) {
-        List<UserProjectsDTO> projectsForUser = dashboardDao.getProjectsForUser(id);
 
-        return projectsForUser;
+        return dashboardDao.getProjectsForUser(id);
     }
 
     @Override
@@ -140,11 +137,11 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     private static String parseToStringDate(String cron) {
-        String minutes = cron.substring(0, 2);
-        String hour = cron.substring(3, 5);
-        String day = cron.substring(6, 8);
-        String month = cron.substring(9, 11);
-        return String.format("%s.%s.%s %s:%s", day, month, LocalDate.now().getYear(), hour, minutes);//TODO check working when db has not null
+        String minutes = cron.substring(3, 5);
+        String hour = cron.substring(6, 8);
+        String day = cron.substring(9, 11);
+        String month = cron.substring(12, 14);
+        return String.format("%s.%s.%s at %s:%s", day, month, LocalDate.now().getYear(), hour, minutes);
     }
 
 }
