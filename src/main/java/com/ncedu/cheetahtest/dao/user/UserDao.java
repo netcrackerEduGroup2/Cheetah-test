@@ -47,4 +47,5 @@ public interface UserDao {
     void addWatchersForProject(int projectId, int[] ids);
 
     List<Project> getProjectsByUserId(int userId);
+
 }
