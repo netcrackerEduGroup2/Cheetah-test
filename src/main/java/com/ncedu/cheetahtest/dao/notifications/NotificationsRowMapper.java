@@ -22,7 +22,7 @@ public class NotificationsRowMapper implements RowMapper<TestCaseNotification> {
         TestCaseNotification testCaseNotification = new TestCaseNotification();
         testCaseNotification.setId(resultSet.getInt(ID));
         testCaseNotification.setNotificationStatus(NotificationStatus.valueOf(resultSet.getString(NOTIFICATIONSTATUS)));
-        testCaseNotification.setDate(resultSet.getDate(DATE));
+        testCaseNotification.setDate(resultSet.getTimestamp(DATE));
         testCaseNotification.setTestCaseId(resultSet.getInt(TESTCASEID));
         testCaseNotification.setProjectId(resultSet.getInt(PROJECTID));
         testCaseNotification.setReadStatus(ReadStatus.valueOf(resultSet.getString(READSTATUS)));

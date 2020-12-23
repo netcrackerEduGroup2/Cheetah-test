@@ -77,17 +77,15 @@ public class AmazonClientService {
             fileUrl = "https://" + bucketName + endpointUrl + "/screenshots/" + fileName;
             uploadFileTos3bucket("screenshots/" + fileName, file);
 
-            try {
+
                 if (file.delete()) {
                     log.info(file.getName() + " deleted locally");
                 } else {
                     log.info("failed locally deleting file");
                 }
-            } catch (Exception e) {
-                log.error(e.toString());
-            }
+
         } catch (Exception e) {
-            log.error(e.toString());
+            log.error(e.toString());//TODO
         }
         return fileUrl;
     }
