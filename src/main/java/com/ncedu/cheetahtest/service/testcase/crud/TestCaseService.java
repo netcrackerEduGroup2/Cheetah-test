@@ -38,5 +38,5 @@ public interface TestCaseService {
     List<TestCase> getAllActiveTestCasesByTitle(String title);
 
     PaginationContainer<TestCase> findTestCasesByTitlePaginatedAndByProjectIdAndResult
-            (int page, int size, String keyword, TestCaseResult result, int projectId);
+            (int page, int size, String keyword, String result, int projectId);
 }

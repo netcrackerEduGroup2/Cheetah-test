@@ -8,6 +8,7 @@ import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
+import com.ncedu.cheetahtest.exception.general.InvalidParametersException;
 import com.ncedu.cheetahtest.exception.project.ProjectNotFoundException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseAlreadyExistsException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
@@ -164,12 +165,18 @@ public class TestCaseServiceImpl implements TestCaseService {
   @Override
   @Transactional
   public PaginationContainer<TestCase> findTestCasesByTitlePaginatedAndByProjectIdAndResult(
-          int page, int size, String keyword, TestCaseResult result, int projectId) {
-    List<TestCase> testCaseList = testCaseDao
-            .findTestCasesByTitlePaginatedAndByProjectIdAndResult(page, size, keyword, result, projectId);
+          int page, int size, String keyword, String result, int projectId) {
+    try {
+      TestCaseResult testCaseResult = TestCaseResult.valueOf(result);
+      List<TestCase> testCaseList = testCaseDao
+              .findTestCasesByTitlePaginatedAndByProjectIdAndResult(page, size, keyword, testCaseResult, projectId);
 
-    int totalElements = testCaseDao.getAmountByTitlePaginatedAndByProjectIdAndResult(keyword, result, projectId);
-    return new PaginationContainer<>(testCaseList, totalElements);
+      int totalElements = testCaseDao.getAmountByTitlePaginatedAndByProjectIdAndResult(keyword, testCaseResult, projectId);
+      return new PaginationContainer<>(testCaseList, totalElements);
+
+    } catch (IllegalArgumentException e) {
+      throw new InvalidParametersException();
+    }
   }
 }
 

@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "${frontend.ulr}")
@@ -65,8 +67,9 @@ public class TestCaseController {
             @RequestParam int size,
             @RequestParam String result,
             @RequestParam String keyword) {
+
         return testCaseService.findTestCasesByTitlePaginatedAndByProjectIdAndResult(
-                page, size, keyword, TestCaseResult.valueOf(result), projectId);
+                page, size, keyword, result, projectId);
     }
 
     // Active and Inactive test cases
