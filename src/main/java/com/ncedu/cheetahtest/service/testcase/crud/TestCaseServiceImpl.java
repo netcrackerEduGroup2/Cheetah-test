@@ -6,6 +6,7 @@ import com.ncedu.cheetahtest.dao.testcase.TestCaseDao;
 import com.ncedu.cheetahtest.entity.pagination.PaginationContainer;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
 import com.ncedu.cheetahtest.exception.project.ProjectNotFoundException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseAlreadyExistsException;
@@ -30,7 +31,7 @@ public class TestCaseServiceImpl implements TestCaseService {
     List<TestCase> testCaseList = testCaseGenDao.getActivePaginated(page, size);
     int totalElements = testCaseGenDao.getAmountActiveElements();
 
-    return new PaginationContainer(testCaseList, totalElements);
+    return new PaginationContainer<>(testCaseList, totalElements);
   }
 
   @Override
@@ -40,7 +41,7 @@ public class TestCaseServiceImpl implements TestCaseService {
     List<TestCase> testCaseList = testCaseGenDao.getAllPaginated(page, size);
     int totalElements = testCaseGenDao.getAmountAllElements();
 
-    return new PaginationContainer(testCaseList, totalElements);
+    return new PaginationContainer<>(testCaseList, totalElements);
   }
 
   @Override
@@ -83,7 +84,7 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     int totalElements = testCaseGenDao.getSearchedActiveTotalElements(title);
 
-    return new PaginationContainer(testCaseList, totalElements);
+    return new PaginationContainer<>(testCaseList, totalElements);
   }
 
   @Override
@@ -96,7 +97,7 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     int totalElements = testCaseGenDao.getSearchedAllTotalElements(title);
 
-    return new PaginationContainer(testCaseList, totalElements);
+    return new PaginationContainer<>(testCaseList, totalElements);
   }
 
   @Override
@@ -125,7 +126,7 @@ public class TestCaseServiceImpl implements TestCaseService {
     List<TestCase> testCaseList = testCaseDao.getActiveTestCasesPaginatedByProjectId(page, size, projectId);
     int totalElements = testCaseDao.getAmountActiveElementsByProjectId(projectId);
 
-    return new PaginationContainer(testCaseList, totalElements);
+    return new PaginationContainer<>(testCaseList, totalElements);
   }
 
   @Override
@@ -136,7 +137,7 @@ public class TestCaseServiceImpl implements TestCaseService {
         .findTestCasesByTitlePaginatedAndByProjectId(page, size, keyword, projectId);
 
     int totalElements = testCaseDao.getAmountByTitlePaginatedAndByProjectId(keyword, projectId);
-    return new PaginationContainer(testCaseList, totalElements);
+    return new PaginationContainer<>(testCaseList, totalElements);
   }
 
   @Override
@@ -158,6 +159,17 @@ public class TestCaseServiceImpl implements TestCaseService {
   @Override
   public List<TestCase> getAllActiveTestCasesByTitle(String title) {
     return testCaseDao.getAllActiveTestCasesByTitle(title);
+  }
+
+  @Override
+  @Transactional
+  public PaginationContainer<TestCase> findTestCasesByTitlePaginatedAndByProjectIdAndResult(
+          int page, int size, String keyword, TestCaseResult result, int projectId) {
+    List<TestCase> testCaseList = testCaseDao
+            .findTestCasesByTitlePaginatedAndByProjectIdAndResult(page, size, keyword, result, projectId);
+
+    int totalElements = testCaseDao.getAmountByTitlePaginatedAndByProjectIdAndResult(keyword, result, projectId);
+    return new PaginationContainer<>(testCaseList, totalElements);
   }
 }
 

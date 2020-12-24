@@ -3,6 +3,7 @@ package com.ncedu.cheetahtest.controller.testcase;
 import com.ncedu.cheetahtest.entity.pagination.PaginationContainer;
 import com.ncedu.cheetahtest.entity.generalentity.IdsDto;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 import com.ncedu.cheetahtest.service.testcase.crud.TestCaseService;
 import com.ncedu.cheetahtest.service.testcase.runwrapper.TestCaseLauncher;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,16 @@ public class TestCaseController {
         return testCaseService.findTestCasesByTitlePaginatedAndByProjectId(page, size, keyword, projectId);
     }
 
+    @GetMapping("/projects/{projectId}/test-cases/search/findByTitleAndResult")
+    public PaginationContainer<TestCase> findTestCasesByTitlePaginatedAndByProjectIdAndResult(
+            @PathVariable int projectId,
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String result,
+            @RequestParam String keyword) {
+        return testCaseService.findTestCasesByTitlePaginatedAndByProjectIdAndResult(
+                page, size, keyword, TestCaseResult.valueOf(result), projectId);
+    }
 
     // Active and Inactive test cases
     @GetMapping("/all-test-cases")
