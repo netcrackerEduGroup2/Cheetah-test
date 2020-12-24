@@ -1,9 +1,6 @@
 package com.ncedu.cheetahtest.dao.genericdao;
 
 import com.ncedu.cheetahtest.exception.general.InvalidParametersException;
-import org.apache.tomcat.util.bcel.Const;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
