@@ -1,16 +1,16 @@
 package com.ncedu.cheetahtest.service.testcase.crud;
 
+import com.ncedu.cheetahtest.entity.pagination.PaginationContainer;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
-import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
 
 import java.util.List;
 
 public interface TestCaseService {
 
-    TestCasePaginated getTestCases(int page, int size);
+    PaginationContainer<TestCase> getTestCases(int page, int size);
 
-    TestCasePaginated getAllTestCases(int page, int size);
+    PaginationContainer<TestCase> getAllTestCases(int page, int size);
 
     void save(TestCase testCase);
 
@@ -18,15 +18,15 @@ public interface TestCaseService {
 
     void deactivateTestCase(int id);
 
-    TestCasePaginated findTestCasesByTitlePaginated(int page, int size, String title);
+    PaginationContainer<TestCase> findTestCasesByTitlePaginated(int page, int size, String title);
 
-    TestCasePaginated findAllTestCasesByTitlePaginated(int page, int size, String title);
+    PaginationContainer<TestCase> findAllTestCasesByTitlePaginated(int page, int size, String title);
 
     int createTestCase(TestCase testCase);
 
-    TestCasePaginated getActiveTestCasesPaginatedByProjectId(int page, int size, int projectId);
+    PaginationContainer<TestCase> getActiveTestCasesPaginatedByProjectId(int page, int size, int projectId);
 
-    TestCasePaginated findTestCasesByTitlePaginatedAndByProjectId(int page, int size, String keyword, int projectId);
+    PaginationContainer<TestCase> findTestCasesByTitlePaginatedAndByProjectId(int page, int size, String keyword, int projectId);
 
     void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto);
 
