@@ -13,9 +13,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 
 @Service
@@ -40,7 +40,7 @@ public class TestCaseSchedulerImpl implements TestCaseScheduler {
         this.testCaseGenDao = testCaseGenDao;
         this.testCaseService = testCaseService;
 
-        testCaseScheduleMap = new HashMap<>();
+        testCaseScheduleMap = new ConcurrentHashMap<>();
     }
 
     @Override

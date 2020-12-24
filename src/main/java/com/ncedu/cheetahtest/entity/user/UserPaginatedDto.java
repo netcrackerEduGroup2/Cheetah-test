@@ -1,16 +1,14 @@
 package com.ncedu.cheetahtest.entity.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserPaginatedDto {
-    @NonNull private List<UserDto> users;
-
-    @NonNull private int totalElements;
+    private List<UserDto> users;
+    private int totalElements;
 
 }

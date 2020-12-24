@@ -1,14 +1,13 @@
 package com.ncedu.cheetahtest.entity.testcase;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class TestCasePaginated {
-    @NonNull private List<TestCase> testCaseList;
-    @NonNull private int totalElements;
+    private List<TestCase> testCaseList;
+    private int totalElements;
 }

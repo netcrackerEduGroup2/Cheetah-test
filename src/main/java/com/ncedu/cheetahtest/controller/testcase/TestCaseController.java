@@ -99,12 +99,13 @@ public class TestCaseController {
         return testCase;
     }
 
-    @PostMapping("/run-test-cases")
+    @PostMapping("/test-cases/run")
     public ResponseEntity<String> runTestCases(@RequestBody IdsDto idsDto)   {
         int[] ids = idsDto.getIds();
         for (int testCaseId : ids) {
             testCaseLauncher.formActionForSelenium(testCaseId);
         }
+
         return ResponseEntity.ok("Test cases are being executed.");
     }
 }
