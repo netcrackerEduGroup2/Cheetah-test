@@ -1,6 +1,9 @@
 package com.ncedu.cheetahtest.dao.genericdao;
 
 import com.ncedu.cheetahtest.exception.general.InvalidParametersException;
+import org.apache.tomcat.util.bcel.Const;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,19 +14,13 @@ import java.util.Objects;
 public abstract class AbstractDaoImpl<T> implements AbstractActiveDao<T> {
 
     protected final RowMapper<T> rowMapper;
-
     protected final JdbcTemplate jdbcTemplate;
-
-    protected final String tableName;
-
     protected final Consts commonConsts;
 
-    protected AbstractDaoImpl(RowMapper<T> rowMapper, JdbcTemplate jdbcTemplate,
-                           String[] rows, String tableName) {
+    protected AbstractDaoImpl(RowMapper<T> rowMapper, JdbcTemplate jdbcTemplate, Consts commonConsts) {
         this.rowMapper = rowMapper;
         this.jdbcTemplate = jdbcTemplate;
-        this.tableName = tableName;
-        this.commonConsts = new Consts(rows, tableName);
+        this.commonConsts = commonConsts;
     }
 
     @Override

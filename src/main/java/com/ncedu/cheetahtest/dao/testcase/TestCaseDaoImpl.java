@@ -1,28 +1,30 @@
 package com.ncedu.cheetahtest.dao.testcase;
 
-import com.ncedu.cheetahtest.dao.compound.CompoundRowMapper;
 import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
+import com.ncedu.cheetahtest.dao.genericdao.Consts;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
 import com.ncedu.cheetahtest.exception.general.EntityNotFoundException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.ncedu.cheetahtest.dao.compound.CompoundConsts.SELECT_COMPOUND_BY_TITLE_LIKE_WITHOUT_PAGINATION;
 import static com.ncedu.cheetahtest.dao.testcase.TestCaseConsts.*;
 
 @Repository
 public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCaseDao {
 
     private static final String[] rows = {"id", "title", "project_id", "status", "result", "execution_cron_date", "repeatable"};
+    public static final String TABLE_NAME = "test_case";
 
-    @Autowired
-    public TestCaseDaoImpl(JdbcTemplate jdbcTemplate) {
-        super(new TestCaseMapper(), jdbcTemplate, rows, "test_case");
+    public TestCaseDaoImpl(JdbcTemplate jdbcTemplate,
+                           TestCaseMapper testCaseMapper,
+                           ApplicationContext applicationContext) {
+
+        super(testCaseMapper, jdbcTemplate, applicationContext.getBean(Consts.class, rows, TABLE_NAME));
     }
 
     @Override

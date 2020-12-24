@@ -2,10 +2,12 @@ package com.ncedu.cheetahtest.dao.project;
 
 import com.ncedu.cheetahtest.entity.project.Project;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class ProjectMapper implements RowMapper<Project> {
     private static final String ID = "id";
     private static final String TITLE = "title";

@@ -1,12 +1,14 @@
 package com.ncedu.cheetahtest.dao.user;
 
 import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
+import com.ncedu.cheetahtest.dao.genericdao.Consts;
 import com.ncedu.cheetahtest.dao.project.ProjectMapper;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.user.ResetToken;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
@@ -19,14 +21,20 @@ import static com.ncedu.cheetahtest.dao.user.UserConsts.*;
 @Repository
 public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
 
+    private final UserRowMapper userRowMapper;
     private static final String[] rows =
             {"id", "email", "password", "name",
                     "role", "status", "last_request"};
 
+    private static final String TABLE_NAME = "users";
+
     @Autowired
-    public UserDaoImpl(JdbcTemplate jdbcTemplate) {
-        super(new UserRowMapper(), jdbcTemplate,
-                rows, "users");
+    public UserDaoImpl(JdbcTemplate jdbcTemplate,
+                       UserRowMapper userRowMapper,
+                       ApplicationContext applicationContext) {
+        super(userRowMapper, jdbcTemplate, applicationContext.getBean(Consts.class, rows, TABLE_NAME));
+
+        this.userRowMapper = userRowMapper;
     }
 
     @Override
@@ -48,7 +56,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
         List<User> users = jdbcTemplate.query(
                 FIND_USER_BY_EMAIL_SQL,
                 preparedStatement -> preparedStatement.setString(1, email),
-                new UserRowMapper());
+                userRowMapper);
         if (users.size() == 1) {
             return users.get(0);
         }
@@ -65,7 +73,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
                     preparedStatement.setString(1, email);
                     preparedStatement.setString(2, password);
                 },
-                new UserRowMapper());
+                userRowMapper);
 
         if (users.size() == 1) {
             return users.get(0);
@@ -92,7 +100,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
         List<User> users = jdbcTemplate.query(
                 FIND_USER_BY_TOKEN_SQL,
                 preparedStatement -> preparedStatement.setString(1, token),
-                new UserRowMapper()
+                userRowMapper
         );
 
         if (users.size() == 1) {
@@ -154,7 +162,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
         List<User> users = jdbcTemplate.query(
                 FIND_USER_BY_ID_SQL,
                 preparedStatement -> preparedStatement.setLong(1, id),
-                new UserRowMapper()
+                userRowMapper
         );
 
         if (users.size() == 1) {
@@ -165,7 +173,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
 
     @Override
     public List<User> getAllActiveUser(){
-        return jdbcTemplate.query(FIND_ALL_ACTIVE_USERS_SQL, new UserRowMapper());
+        return jdbcTemplate.query(FIND_ALL_ACTIVE_USERS_SQL, userRowMapper);
     }
 
     @Override
@@ -186,7 +194,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
                     preparatedStatemetn.setInt(4, size);
                     preparatedStatemetn.setInt(5, (page - 1) * size);
                 },
-                new UserRowMapper());
+                userRowMapper);
     }
 
     @Override

@@ -3,10 +3,12 @@ package com.ncedu.cheetahtest.dao.testscenario;
 import com.ncedu.cheetahtest.entity.testscenario.StatusTestScenario;
 import com.ncedu.cheetahtest.entity.testscenario.TestScenario;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class TestScenarioMapper implements RowMapper<TestScenario> {
     public static final String ID = "id";
     public static final String TITLE = "title";

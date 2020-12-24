@@ -1,9 +1,12 @@
 package com.ncedu.cheetahtest.dao.testscenario;
 
+import com.amazonaws.services.devicefarm.model.Test;
 import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
+import com.ncedu.cheetahtest.dao.genericdao.Consts;
 import com.ncedu.cheetahtest.entity.testscenario.TestScenario;
 import com.ncedu.cheetahtest.exception.general.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -15,10 +18,15 @@ import static com.ncedu.cheetahtest.dao.testscenario.TestScenarioConsts.*;
 public class TestScenarioDaoImpl extends AbstractDaoImpl<TestScenario> implements TestScenarioDao {
 
     private static final String[] rows = {"id", "title", "description", "status", "test_case_id"};
+    private final TestScenarioMapper testScenarioMapper;
+    private static final String TABLE_NAME = "test_scenario";
 
     @Autowired
-    public TestScenarioDaoImpl(JdbcTemplate jdbcTemplate) {
-        super(new TestScenarioMapper(), jdbcTemplate, rows, "test_scenario");
+    public TestScenarioDaoImpl(JdbcTemplate jdbcTemplate,
+                               TestScenarioMapper testScenarioMapper,
+                               ApplicationContext applicationContext) {
+        super(testScenarioMapper, jdbcTemplate, applicationContext.getBean(Consts.class, rows, TABLE_NAME));
+        this.testScenarioMapper = testScenarioMapper;
     }
 
     @Override
@@ -31,7 +39,7 @@ public class TestScenarioDaoImpl extends AbstractDaoImpl<TestScenario> implement
                     preparedStatement.setInt(3, limit);
                     preparedStatement.setInt(4, offset);
                 },
-                new TestScenarioMapper());
+                testScenarioMapper);
     }
 
     @Override
@@ -43,7 +51,7 @@ public class TestScenarioDaoImpl extends AbstractDaoImpl<TestScenario> implement
                     preparedStatement.setInt(2, limit);
                     preparedStatement.setInt(3, offset);
                 },
-                new TestScenarioMapper());
+                testScenarioMapper);
     }
 
     @Override
@@ -55,7 +63,7 @@ public class TestScenarioDaoImpl extends AbstractDaoImpl<TestScenario> implement
                     preparedStatement.setInt(2, limit);
                     preparedStatement.setInt(3, offset);
                 },
-                new TestScenarioMapper()
+                testScenarioMapper
         );
     }
 
@@ -127,7 +135,7 @@ public class TestScenarioDaoImpl extends AbstractDaoImpl<TestScenario> implement
         List<TestScenario> testScenarios = jdbcTemplate.query(
                 FIND_BY_TITLE,
                 preparedStatement -> preparedStatement.setString(1, title),
-                new TestScenarioMapper()
+                testScenarioMapper
         );
         if (testScenarios.size() == 1) {
             return testScenarios.get(0);
@@ -150,7 +158,7 @@ public class TestScenarioDaoImpl extends AbstractDaoImpl<TestScenario> implement
                     preparedStatement.setString(1, title);
                     preparedStatement.setInt(2, id);
                 },
-                new TestScenarioMapper()
+                testScenarioMapper
         );
 
         if (testScenarios.size() == 1) {
