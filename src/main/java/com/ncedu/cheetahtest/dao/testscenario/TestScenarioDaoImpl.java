@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.dao.testscenario;
 
-import com.amazonaws.services.devicefarm.model.Test;
 import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
 import com.ncedu.cheetahtest.dao.genericdao.Consts;
 import com.ncedu.cheetahtest.entity.testscenario.TestScenario;

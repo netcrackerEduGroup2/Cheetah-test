@@ -17,7 +17,7 @@ import java.util.List;
 public class ProjectDaoImpl extends AbstractDaoImpl<Project> implements ProjectDao {
     private final JdbcTemplate jdbcTemplate;
     private static final String[] rows = {"id", "title", "link", "status", "create_date"};
-    public static final String TABLE_NAME = "test_case";
+    public static final String TABLE_NAME = "project";
 
     @Autowired
     public ProjectDaoImpl(JdbcTemplate jdbcTemplate,
