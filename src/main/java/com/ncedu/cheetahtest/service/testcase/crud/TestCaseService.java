@@ -2,7 +2,6 @@ package com.ncedu.cheetahtest.service.testcase.crud;
 
 import com.ncedu.cheetahtest.entity.pagination.PaginationContainer;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
-import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
 
 import java.util.List;

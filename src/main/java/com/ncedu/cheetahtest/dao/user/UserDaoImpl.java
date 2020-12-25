@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+
 import static com.ncedu.cheetahtest.dao.user.UserConsts.*;
 
 @Repository

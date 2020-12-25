@@ -2,7 +2,7 @@ package com.ncedu.cheetahtest.service.dashboard;
 
 import com.ncedu.cheetahtest.entity.dashboard.*;
 
-import java.util.*;
+import java.util.List;
 
 public interface DashboardService {
 

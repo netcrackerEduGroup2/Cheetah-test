@@ -1,17 +1,14 @@
 package com.ncedu.cheetahtest.controller.testcase;
 
-import com.ncedu.cheetahtest.entity.pagination.PaginationContainer;
 import com.ncedu.cheetahtest.entity.generalentity.IdsDto;
+import com.ncedu.cheetahtest.entity.pagination.PaginationContainer;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
-import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 import com.ncedu.cheetahtest.service.testcase.crud.TestCaseService;
 import com.ncedu.cheetahtest.service.testcase.runwrapper.TestCaseLauncher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
 
 @RestController
 @RequestMapping("/api")

@@ -1,6 +1,5 @@
 package com.ncedu.cheetahtest.dao.dashboard;
 
-import com.ncedu.cheetahtest.entity.dashboard.UserActivityDTO;
 import com.ncedu.cheetahtest.entity.dashboard.UserProjectsDTO;
 import org.springframework.jdbc.core.RowMapper;
 
