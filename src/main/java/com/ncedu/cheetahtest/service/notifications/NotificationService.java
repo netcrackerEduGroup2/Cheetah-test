@@ -1,5 +1,7 @@
 package com.ncedu.cheetahtest.service.notifications;
 
+import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCaseFull;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 import com.ncedu.cheetahtest.entity.websocketdto.Message;
 
 import java.security.Principal;
@@ -20,4 +22,11 @@ public interface NotificationService {
     Message getNotificationsAfterEdit(String token);
 
     int parseTokenAndGetId(String token);
+
+
+    void notifyAboutTestCaseExecution(HistoryTestCaseFull historyTestCase);
+
+    void notifyAboutTestCaseStatusChange(HistoryTestCaseFull historyTestCase, TestCaseResult testCaseResult);
+
+
 }
