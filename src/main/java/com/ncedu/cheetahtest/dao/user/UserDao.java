@@ -48,4 +48,6 @@ public interface UserDao {
 
     List<Project> getProjectsByUserId(int userId);
 
+    List<User> getWatchersByProjectId(int projectId);
+
 }

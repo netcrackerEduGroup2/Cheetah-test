@@ -1,5 +1,6 @@
 package com.ncedu.cheetahtest.controller.userprofile;
 
+import com.ncedu.cheetahtest.entity.generalentity.IdsDto;
 import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.UserDto;
 import com.ncedu.cheetahtest.entity.user.UserPaginatedDto;
@@ -97,6 +98,18 @@ public class UserController {
     @GetMapping
     public List<UserDto> findByEmail(@RequestParam("email") String email) {
         return userService.findByEmail(email);
+    }
+
+    @GetMapping("/watchers/{projectId}")
+    public List<UserDto> getByProjectId(@PathVariable int projectId) {
+        return userService.getWatchersByProjectId(projectId);
+    }
+
+
+    @PutMapping("/watchers/{projectId}")
+    public IdsDto getByProjectId(@PathVariable int projectId, @RequestBody IdsDto idsDto) {
+        userService.saveWatchers(projectId, idsDto.getIds());
+        return idsDto;
     }
 
 }
