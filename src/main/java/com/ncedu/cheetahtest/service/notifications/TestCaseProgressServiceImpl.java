@@ -1,7 +1,5 @@
 package com.ncedu.cheetahtest.service.notifications;
 
-import com.ncedu.cheetahtest.dao.project.ProjectDao;
-import com.ncedu.cheetahtest.dao.user.UserDao;
 import com.ncedu.cheetahtest.entity.progress.TestCaseProgressReport;
 import com.ncedu.cheetahtest.entity.selenium.ActionResult;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +15,6 @@ import java.util.List;
 public class TestCaseProgressServiceImpl implements TestCaseProgressService{
     private final WebSocketNotificationService wsNotificationService;
 
-    private final ProjectDao projectDao;
-    private final UserDao userDao;
 
 
     @Override
@@ -29,16 +25,7 @@ public class TestCaseProgressServiceImpl implements TestCaseProgressService{
         testCaseProgressReport.setCompleted(completed);
         testCaseProgressReport.setIdTestCase(idTestCase);
 
-        int projectId = projectDao.findProjectByTestCaseId(idTestCase).getId();
-        List<Integer> userIds = userDao.getUsersIdByProjectId(projectId);
-        sendProgressToUsers(userIds,testCaseProgressReport);
+        wsNotificationService.sendProgressToAllUsers(testCaseProgressReport);
     }
 
-
-    private void sendProgressToUsers(List<Integer> userIds, TestCaseProgressReport testCaseProgressReport) {
-        for (int userId : userIds) {
-            wsNotificationService.sendProgressToUser(userId,testCaseProgressReport);
-
-        }
-    }
 }

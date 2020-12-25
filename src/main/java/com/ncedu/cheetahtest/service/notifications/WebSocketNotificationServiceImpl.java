@@ -56,6 +56,16 @@ public class WebSocketNotificationServiceImpl implements WebSocketNotificationSe
     }
 
     @Override
+    public void sendProgressToAllUsers(TestCaseProgressReport testCaseProgressReport) {
+        Message message = new Message();
+        message.setEvent("test-case-execution-actions");
+        message.setData(testCaseProgressReport);
+
+        connections.forEach((id,username)->
+                simpMessagingTemplate.convertAndSendToUser(username, "/queue/notifications", message));
+    }
+
+    @Override
     public void sendProgressOnDemand(String username, int idTestCase) {
 
         TestCaseProgressReport tcpReport = new TestCaseProgressReport();
