@@ -116,7 +116,9 @@ public class UserServiceImpl implements UserService {
     public UserPaginatedDto getAllActiveUser(int size, int page) {
         List<User> users = userGenDao.getActivePaginated(page, size);
         int total = userGenDao.getAmountActiveElements();
-        return mapUserToUserDto(users, total);
+
+        List<UserDto> usersDto =  mapUserToUserDto(users);
+        return new UserPaginatedDto(usersDto, total);
     }
 
     @Override
@@ -124,10 +126,31 @@ public class UserServiceImpl implements UserService {
                                                          int size, int page) {
         List<User> users = userDao.getSearchUserByNameEmailRole(name, email, role, size, page);
         int total = userDao.getCountSearchUserByNameEmailRole(name, email, role);
-        return mapUserToUserDto(users, total);
+
+        List<UserDto> usersDto =  mapUserToUserDto(users);
+        return new UserPaginatedDto(usersDto, total);
     }
 
-    private UserPaginatedDto mapUserToUserDto(List<User> users, int total) {
+    @Override
+    public List<UserDto> findByEmail(String email) {
+        return userDao.findByEmail(email);
+    }
+
+    @Override
+    public List<UserDto> getWatchersByProjectId(int projectId) {
+        List<User> users = userDao.getWatchersByProjectId(projectId);
+        return mapUserToUserDto(users);
+    }
+
+    @Override
+    @Transactional
+    public void saveWatchers(int projectId, int[] ids) {
+        userDao.deleteAllWatchersForProject(projectId);
+        userDao.addWatchersForProject(projectId, ids);
+    }
+
+
+    private List<UserDto> mapUserToUserDto(List<User> users) {
         List<UserDto> usersDto = new ArrayList<>();
 
         for (User user : users) {
@@ -140,12 +163,6 @@ public class UserServiceImpl implements UserService {
                             user.getStatus()
                     ));
         }
-        return new UserPaginatedDto(usersDto, total);
+        return usersDto;
     }
-
-    @Override
-    public List<UserDto> findByEmail(String email) {
-        return userDao.findByEmail(email);
-    }
-
 }
