@@ -54,9 +54,9 @@ public class ParametersController {
         return parameterService.findAllByIdTestCase(idTestCase);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public Parameter editParameter(@RequestBody Parameter parameter,
-                                   @RequestParam("id") int id){
+                                    @PathVariable("id") int id){
         return parameterService.editParameter(parameter,id);
     }
     @DeleteMapping
