@@ -62,13 +62,9 @@ public class ActScenarioController {
                                                      @PathVariable int idTestScenario){
         return actScenarioService.findAllByTitleInTestScenario(title, idTestScenario);
     }
-    @PutMapping("/test-scenarios/act-scenarios/{idActScen}")
-    public ActScenario editActScenario(@RequestBody ActScenario actScenario, @PathVariable int idActScen){
-        return actScenarioService.editActScenario(actScenario,idActScen);
-    }
-    @PutMapping("/test-scenarios/act-scenarios/set/{idActScen}")
-    public ActScenario setParametr(@RequestBody ActScenario actScenario, @PathVariable int idActScen){
-        return actScenarioService.setParametr(actScenario.getParameterId(),idActScen);
+    @PutMapping("/test-scenarios/act-scenarios")
+    public List<ActScenario> editActScenario(@RequestBody List<ActScenario> actScenarios){
+        return actScenarioService.editActScenario(actScenarios);
     }
     @DeleteMapping("/test-scenarios/act-scenarios/{idActScen}")
     public ActScenarioResponseStatus deleteActScenario(@PathVariable int idActScen){

@@ -1,14 +1,17 @@
 package com.ncedu.cheetahtest.controller.testcase;
 
-import com.ncedu.cheetahtest.entity.testcase.IdsDto;
+import com.ncedu.cheetahtest.entity.pagination.PaginationContainer;
+import com.ncedu.cheetahtest.entity.generalentity.IdsDto;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
-import com.ncedu.cheetahtest.entity.testcase.TestCasePaginated;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 import com.ncedu.cheetahtest.service.testcase.crud.TestCaseService;
 import com.ncedu.cheetahtest.service.testcase.runwrapper.TestCaseLauncher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/api")
@@ -21,13 +24,13 @@ public class TestCaseController {
     private final TestCaseLauncher testCaseLauncher;
 
     @GetMapping("/test-cases")
-    public TestCasePaginated getActiveTestCases(@RequestParam int page,
-                                                @RequestParam int size) {
+    public PaginationContainer<TestCase> getActiveTestCases(@RequestParam int page,
+                                                        @RequestParam int size) {
         return testCaseService.getTestCases(page, size);
     }
 
     @GetMapping("/projects/{projectId}/test-cases")
-    public TestCasePaginated getActiveTestCasesPaginatedByProjectId(
+    public PaginationContainer<TestCase> getActiveTestCasesPaginatedByProjectId(
             @RequestParam int page,
             @RequestParam int size,
             @PathVariable int projectId) {
@@ -41,7 +44,7 @@ public class TestCaseController {
     }
 
     @GetMapping("/test-cases/search/findByTitle")
-    public TestCasePaginated findTestCasesByTitlePaginated(
+    public PaginationContainer<TestCase> findTestCasesByTitlePaginated(
             @RequestParam int page,
             @RequestParam int size,
             @RequestParam String keyword) {
@@ -49,7 +52,7 @@ public class TestCaseController {
     }
 
     @GetMapping("/projects/{projectId}/test-cases/search/findByTitle")
-    public TestCasePaginated findTestCasesByTitlePaginatedAndByProjectId(
+    public PaginationContainer<TestCase> findTestCasesByTitlePaginatedAndByProjectId(
             @PathVariable int projectId,
             @RequestParam int page,
             @RequestParam int size,
@@ -57,17 +60,28 @@ public class TestCaseController {
         return testCaseService.findTestCasesByTitlePaginatedAndByProjectId(page, size, keyword, projectId);
     }
 
+    @GetMapping("/projects/{projectId}/test-cases/search/findByTitleAndResult")
+    public PaginationContainer<TestCase> findTestCasesByTitlePaginatedAndByProjectIdAndResult(
+            @PathVariable int projectId,
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String result,
+            @RequestParam String keyword) {
+
+        return testCaseService.findTestCasesByTitlePaginatedAndByProjectIdAndResult(
+                page, size, keyword, result, projectId);
+    }
 
     // Active and Inactive test cases
     @GetMapping("/all-test-cases")
-    public TestCasePaginated getAllTestCases(@RequestParam int page,
+    public PaginationContainer<TestCase> getAllTestCases(@RequestParam int page,
                                              @RequestParam int size) {
         return testCaseService.getAllTestCases(page, size);
     }
 
     // Active and Inactive test cases
     @GetMapping("/all-test-cases/search/findByTitle")
-    public TestCasePaginated findAllTestCasesByTitlePaginated(
+    public PaginationContainer<TestCase> findAllTestCasesByTitlePaginated(
             @RequestParam int page,
             @RequestParam int size,
             @RequestParam String keyword) {
@@ -99,12 +113,13 @@ public class TestCaseController {
         return testCase;
     }
 
-    @PostMapping("/run-test-cases")
+    @PostMapping("/test-cases/run")
     public ResponseEntity<String> runTestCases(@RequestBody IdsDto idsDto)   {
         int[] ids = idsDto.getIds();
         for (int testCaseId : ids) {
             testCaseLauncher.formActionForSelenium(testCaseId);
         }
+
         return ResponseEntity.ok("Test cases are being executed.");
     }
 }

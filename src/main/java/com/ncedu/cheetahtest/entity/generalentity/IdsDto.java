@@ -1,4 +1,4 @@
-package com.ncedu.cheetahtest.entity.testcase;
+package com.ncedu.cheetahtest.entity.generalentity;
 
 import lombok.Data;
 

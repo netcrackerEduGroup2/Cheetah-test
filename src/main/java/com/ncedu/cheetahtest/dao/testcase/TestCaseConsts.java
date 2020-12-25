@@ -85,10 +85,14 @@ public class TestCaseConsts {
             "AND status = 'ACTIVE'";
 
     public static final String SET_EXECUTION_DATE_AND_REPEATABILITY_TO_NULL =
-            UPDATE +
+        UPDATE +
             "execution_cron_date = NULL, " +
             "repeatable = NULL " +
             WHERE_ID_EQUALS_Q;
+
+    public static final String GET_ALL_ACTIVE_TEST_CASES =
+        SELECT_ALL_PARAMS_FROM_TEST_CASE +
+            "WHERE status = 'ACTIVE' AND title LIKE CONCAT ('%',?,'%')";
 
     public static final String SET_EXECUTION_DATE_AND_REPEATABILITY =
             UPDATE +
@@ -112,4 +116,21 @@ public class TestCaseConsts {
             UPDATE +
             "result = 'FAILED' " +
             WHERE_ID_EQUALS_Q;
+
+    public static final String FIND_BY_TITLE_TEST_CASE_PAGINATED_BY_PROJECT_ID_AND_RESULT =
+            SELECT_ALL_PARAMS_FROM_TEST_CASE +
+            "WHERE project_id = ? " +
+            "AND status = 'ACTIVE' " +
+            "AND title ILIKE ? " +
+            "AND result = ?::test_case_result " +
+            "ORDER BY id LIMIT ? OFFSET ?";
+
+    public static final String GET_AMOUNT_OF_ACTIVE_TEST_CASES_BY_PROJECT_ID_AND_ILIKE_AND_RESULT =
+            "SELECT COUNT(id) " +
+            "FROM test_case " +
+            "WHERE status = 'ACTIVE' " +
+            "AND title ILIKE ? " +
+            "AND result = ?::test_case_result " +
+            "AND project_id = ? " +
+            "LIMIT 1";;
 }

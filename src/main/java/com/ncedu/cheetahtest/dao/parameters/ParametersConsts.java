@@ -12,6 +12,10 @@ public class ParametersConsts {
             "FROM parameters p INNER JOIN data_set d ON d.id = p.data_set_id " +
             "WHERE d.test_case_id = ? " +
             "ORDER BY p.data_set_id ;";
+    public static final String FIND_ALL_BY_VALUE = "SELECT p.id, p.data_set_id, p.type, p.value " +
+            "FROM parameters p INNER JOIN data_set d ON d.id = p.data_set_id " +
+            "WHERE d.test_case_id = ? AND p.value LIKE LOWER(CONCAT('%',?,'%')) " +
+            "ORDER BY p.data_set_id ;";
     public static final String FIND_BY_TITLE_LIKE = "SELECT id, data_set_id, type, value " +
             "FROM parameters WHERE type LIKE CONCAT('%',?,'%') AND data_set_id=? " +
             "ORDER BY type limit ? offset ?";

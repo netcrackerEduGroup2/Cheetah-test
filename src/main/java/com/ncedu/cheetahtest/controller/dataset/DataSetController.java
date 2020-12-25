@@ -7,6 +7,8 @@ import com.ncedu.cheetahtest.service.dataset.DataSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+
 @RestController
 @CrossOrigin(origins = "${frontend.ulr}")
 @RequestMapping("/api/data-set")
@@ -30,9 +32,10 @@ public class DataSetController {
             @RequestParam("idTestCase") int idTestCase){
         return dataSetService.findByTitleLike(title,idTestCase,size,page);
     }
+
     @PutMapping("/{id}")
     public DataSet editDataSet(@RequestBody DataSet dataSet,
-                               @PathVariable int id){
+                               @PathVariable("id") int id){
         return dataSetService.editDataSet(dataSet,id);
     }
     @DeleteMapping

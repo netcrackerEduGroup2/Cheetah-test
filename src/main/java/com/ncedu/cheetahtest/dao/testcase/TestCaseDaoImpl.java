@@ -1,10 +1,13 @@
 package com.ncedu.cheetahtest.dao.testcase;
 
 import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
+import com.ncedu.cheetahtest.dao.genericdao.Consts;
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
 import com.ncedu.cheetahtest.exception.general.EntityNotFoundException;
 import com.ncedu.cheetahtest.exception.testcase.TestCaseNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -15,11 +18,14 @@ import static com.ncedu.cheetahtest.dao.testcase.TestCaseConsts.*;
 @Repository
 public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCaseDao {
 
-    private static final String[] rows = {"id", "title", "project_id", "status", "result"};
+    private static final String[] rows = {"id", "title", "project_id", "status", "result", "execution_cron_date", "repeatable"};
+    public static final String TABLE_NAME = "test_case";
 
-    @Autowired
-    public TestCaseDaoImpl(JdbcTemplate jdbcTemplate) {
-        super(new TestCaseMapper(), jdbcTemplate, rows, "test_case");
+    public TestCaseDaoImpl(JdbcTemplate jdbcTemplate,
+                           TestCaseMapper testCaseMapper,
+                           ApplicationContext applicationContext) {
+
+        super(testCaseMapper, jdbcTemplate, applicationContext.getBean(Consts.class, rows, TABLE_NAME));
     }
 
     @Override
@@ -170,6 +176,20 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
     }
 
     @Override
+    public List<TestCase> getAllActiveTestCasesByTitle(String title) {
+        return jdbcTemplate.query(
+                GET_ALL_ACTIVE_TEST_CASES,
+                preparedStatement -> preparedStatement.setString(1, title),
+                new TestCaseMapper()
+        );
+    }
+
+    @Override
+    public List<TestCase> getActiveTestCasesWithExecutionDate() {
+        return jdbcTemplate.query(GET_ACTIVE_TEST_CASES_WITH_EXECUTION_DATE, rowMapper);
+    }
+
+    @Override
     public void setExecutionDateToNull(int id) {
         int result = jdbcTemplate.update(SET_EXECUTION_DATE_AND_REPEATABILITY_TO_NULL, id);
         if (result != 1) {
@@ -177,7 +197,16 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
         }
     }
 
-
+    @Override
+    public void updateExecutionCronDateAndRepeatability(TestCaseScheduleDto testCaseScheduleDto) {
+        int result = jdbcTemplate.update(SET_EXECUTION_DATE_AND_REPEATABILITY,
+                testCaseScheduleDto.getExecutionCronDate(),
+                testCaseScheduleDto.isRepeatable(),
+                testCaseScheduleDto.getTestCaseId());
+        if (result != 1) {
+            throw new TestCaseNotFoundException();
+        }
+    }
 
     @Override
     public void deleteExecutionCronDateAndRepeatability(int testCaseId) {
@@ -204,5 +233,44 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
         if (result != 1) {
             throw new TestCaseNotFoundException();
         }
+    }
+
+    @Override
+    public List<TestCase> findTestCasesByTitlePaginatedAndByProjectIdAndResult(
+            int page, int size,
+            String keyword, TestCaseResult result,
+            int projectId) {
+
+        int offset = getOffset(page, size);
+        return jdbcTemplate.query(
+                FIND_BY_TITLE_TEST_CASE_PAGINATED_BY_PROJECT_ID_AND_RESULT,
+                preparedStatement -> {
+                    preparedStatement.setInt(1, projectId);
+                    preparedStatement.setString(2, "%" + keyword + "%");
+                    preparedStatement.setString(3, result.toString());
+                    preparedStatement.setInt(4, size);
+                    preparedStatement.setInt(5, offset);
+                },
+                rowMapper
+        );
+    }
+
+    @Override
+    public int getAmountByTitlePaginatedAndByProjectIdAndResult(String keyword, TestCaseResult result, int projectId) {
+        List<Integer> amount = jdbcTemplate.query(
+                GET_AMOUNT_OF_ACTIVE_TEST_CASES_BY_PROJECT_ID_AND_ILIKE_AND_RESULT,
+                preparedStatement -> {
+                    preparedStatement.setString(1, "%" + keyword + "%");
+                    preparedStatement.setString(2, result.toString());
+                    preparedStatement.setInt(3, projectId);
+                },
+                (resultSet, i) -> resultSet.getInt(1)
+        );
+
+        if (amount.size() == 1) {
+            return amount.get(0);
+        }
+
+        return 0;
     }
 }

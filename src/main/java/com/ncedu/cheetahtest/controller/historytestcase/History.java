@@ -20,9 +20,10 @@ public class History {
     public History(HistoryTestCaseService historyTestCaseService) { this.historyTestCaseService = historyTestCaseService;}
 
     @GetMapping("/test-case")
-    public HistoryTestCasePagination getHistoryTestCase(@RequestParam("size") int size,
+    public HistoryTestCasePagination getHistoryTestCase(@RequestParam("id")int id,
+                                                        @RequestParam("size") int size,
                                                         @RequestParam("page") int page){
-        return historyTestCaseService.getPage(size, page);
+        return historyTestCaseService.getPage(id, size, page);
     }
     @PostMapping
     public HistoryTestCaseFull createHistoryTestCase(@RequestBody HistoryTestCaseFull historyTestCaseFull){

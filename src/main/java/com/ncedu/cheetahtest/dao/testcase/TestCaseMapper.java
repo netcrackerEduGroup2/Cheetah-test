@@ -4,11 +4,12 @@ import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseStatus;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
+@Component
 public class TestCaseMapper implements RowMapper<TestCase> {
 
     public static final String ID = "id";
@@ -16,6 +17,8 @@ public class TestCaseMapper implements RowMapper<TestCase> {
     public static final String PROJECT_ID = "project_id";
     public static final String STATUS = "status";
     public static final String RESULT = "result";
+    public static final String EXECUTION_CRON_DATE = "execution_cron_date";
+    public static final String REPEATABLE = "repeatable";
 
     @Override
     public TestCase mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -26,6 +29,8 @@ public class TestCaseMapper implements RowMapper<TestCase> {
         testCase.setProjectId(resultSet.getInt(PROJECT_ID));
         testCase.setStatus(TestCaseStatus.valueOf(resultSet.getString(STATUS)));
         testCase.setResult(TestCaseResult.valueOf(resultSet.getString(RESULT)));
+        testCase.setExecutionCronDate(resultSet.getString(EXECUTION_CRON_DATE));
+        testCase.setRepeatable(resultSet.getBoolean(REPEATABLE));
 
         return testCase;
     }

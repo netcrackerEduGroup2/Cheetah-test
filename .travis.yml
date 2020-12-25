@@ -11,10 +11,10 @@ branches:
 
 addons:
   sonarcloud:
-    organization: netcrackergroup2
+    organization: netcrackeredugroup2
     token: $SONARCLOUD_SECURED_TOKEN
 script:
-- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=NetCrackerGroup2_Cheetah-test
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=netcrackerEduGroup2_Cheetah-test
 
 deploy:
   provider: heroku
