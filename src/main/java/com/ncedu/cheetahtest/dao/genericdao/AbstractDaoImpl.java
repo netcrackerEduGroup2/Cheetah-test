@@ -11,19 +11,13 @@ import java.util.Objects;
 public abstract class AbstractDaoImpl<T> implements AbstractActiveDao<T> {
 
     protected final RowMapper<T> rowMapper;
-
     protected final JdbcTemplate jdbcTemplate;
-
-    protected final String tableName;
-
     protected final Consts commonConsts;
 
-    protected AbstractDaoImpl(RowMapper<T> rowMapper, JdbcTemplate jdbcTemplate,
-                           String[] rows, String tableName) {
+    protected AbstractDaoImpl(RowMapper<T> rowMapper, JdbcTemplate jdbcTemplate, Consts commonConsts) {
         this.rowMapper = rowMapper;
         this.jdbcTemplate = jdbcTemplate;
-        this.tableName = tableName;
-        this.commonConsts = new Consts(rows, tableName);
+        this.commonConsts = commonConsts;
     }
 
     @Override

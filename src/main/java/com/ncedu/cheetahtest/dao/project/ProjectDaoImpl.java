@@ -1,9 +1,11 @@
 package com.ncedu.cheetahtest.dao.project;
 
 import com.ncedu.cheetahtest.dao.genericdao.AbstractDaoImpl;
+import com.ncedu.cheetahtest.dao.genericdao.Consts;
 import com.ncedu.cheetahtest.entity.project.Project;
 import com.ncedu.cheetahtest.entity.project.ProjectDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -15,11 +17,13 @@ import java.util.List;
 public class ProjectDaoImpl extends AbstractDaoImpl<Project> implements ProjectDao {
     private final JdbcTemplate jdbcTemplate;
     private static final String[] rows = {"id", "title", "link", "status", "create_date"};
-
+    public static final String TABLE_NAME = "project";
 
     @Autowired
-    public ProjectDaoImpl(JdbcTemplate jdbcTemplate) {
-        super(new ProjectMapper(), jdbcTemplate, rows, "project");
+    public ProjectDaoImpl(JdbcTemplate jdbcTemplate,
+                          ProjectMapper projectMapper,
+                          ApplicationContext applicationContext) {
+        super(projectMapper, jdbcTemplate, applicationContext.getBean(Consts.class, rows, TABLE_NAME));
         this.jdbcTemplate = jdbcTemplate;
     }
 

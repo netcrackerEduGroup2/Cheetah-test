@@ -1,5 +1,11 @@
 package com.ncedu.cheetahtest.dao.genericdao;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class Consts {
 
     public static final String SELECT_ROWS = "SELECT %s ";
@@ -10,9 +16,12 @@ public class Consts {
     public static final String ILIKE = " ILIKE ? ";
     public static final String LIMIT_1 = "LIMIT 1 ";
 
-    private final String selectAllRowsFromTable;
-    private final String tableName;
+    private String selectAllRowsFromTable;
+    private String tableName;
     private String findBy;
+
+    public Consts() {
+    }
 
     public Consts(String[] rows, String tableName) {
         selectAllRowsFromTable = formatArrayIntoString(rows);

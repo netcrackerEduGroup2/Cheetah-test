@@ -1,6 +1,7 @@
 package com.ncedu.cheetahtest.dao.testcase;
 
 import com.ncedu.cheetahtest.entity.testcase.TestCase;
+import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseScheduleDto;
 
 import java.util.List;
@@ -42,4 +43,8 @@ public interface TestCaseDao {
     void setResultToSuccess(int testCaseId);
 
     void setResultToFail(int testCaseId);
+
+    List<TestCase> findTestCasesByTitlePaginatedAndByProjectIdAndResult(int page, int size, String keyword, TestCaseResult result, int projectId);
+
+    int getAmountByTitlePaginatedAndByProjectIdAndResult(String keyword, TestCaseResult result, int projectId);
 }

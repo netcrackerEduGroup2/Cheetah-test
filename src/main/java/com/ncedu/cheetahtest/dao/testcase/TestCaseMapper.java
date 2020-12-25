@@ -4,11 +4,12 @@ import com.ncedu.cheetahtest.entity.testcase.TestCase;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseResult;
 import com.ncedu.cheetahtest.entity.testcase.TestCaseStatus;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
+@Component
 public class TestCaseMapper implements RowMapper<TestCase> {
 
     public static final String ID = "id";

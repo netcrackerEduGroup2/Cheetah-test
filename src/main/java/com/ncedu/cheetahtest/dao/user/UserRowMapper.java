@@ -4,10 +4,12 @@ import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.entity.user.UserRole;
 import com.ncedu.cheetahtest.entity.user.UserStatus;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class UserRowMapper implements RowMapper<User> {
 
     public static final String ID = "id";
