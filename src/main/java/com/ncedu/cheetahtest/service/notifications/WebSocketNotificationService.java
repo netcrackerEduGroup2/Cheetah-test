@@ -14,4 +14,6 @@ public interface WebSocketNotificationService {
 
     void sendProgressOnDemand(String username, int idTestCase);
 
+    void sendProgressToAllUsers(TestCaseProgressReport testCaseProgressReport);
+
 }

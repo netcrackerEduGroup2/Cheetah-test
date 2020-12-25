@@ -29,16 +29,7 @@ public class TestCaseProgressServiceImpl implements TestCaseProgressService{
         testCaseProgressReport.setCompleted(completed);
         testCaseProgressReport.setIdTestCase(idTestCase);
 
-        int projectId = projectDao.findProjectByTestCaseId(idTestCase).getId();
-        List<Integer> userIds = userDao.getUsersIdByProjectId(projectId);
-        sendProgressToUsers(userIds,testCaseProgressReport);
+        wsNotificationService.sendProgressToAllUsers(testCaseProgressReport);
     }
 
-
-    private void sendProgressToUsers(List<Integer> userIds, TestCaseProgressReport testCaseProgressReport) {
-        for (int userId : userIds) {
-            wsNotificationService.sendProgressToUser(userId,testCaseProgressReport);
-
-        }
-    }
 }
