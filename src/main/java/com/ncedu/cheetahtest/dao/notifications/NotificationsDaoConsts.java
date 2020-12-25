@@ -7,7 +7,7 @@ public class NotificationsDaoConsts {
             "test_case_id = ?,project_id = ? ,read_status =?::read_notification_status WHERE id = ?";
     public static final String DELETE_NOTIFICATION = "DELETE FROM notifications WHERE id = ?";
     public static final String GET_ALL_NOTIFICATIONS_BY_USER = "SELECT id, notification_status, date, test_case_id, project_id, read_status , history_test_case_id " +
-            "FROM notifications WHERE user_id = ? ORDER BY read_status";
+            "FROM notifications WHERE user_id = ? ORDER BY read_status, date DESC";
     public static final String GET_PAGINATED_NOTIFICATIONS = "SELECT id, notification_status, date, test_case_id, project_id, read_status ,history_test_case_id " +
             "FROM notifications WHERE user_id = ? ORDER BY read_status LIMIT ? OFFSET ?";
     public static final String FIND_BY_ID = "SELECT id, notification_status, date, test_case_id, project_id, read_status , history_test_case_id " +
