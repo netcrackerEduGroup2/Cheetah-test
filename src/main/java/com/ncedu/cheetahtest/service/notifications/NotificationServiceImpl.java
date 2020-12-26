@@ -91,8 +91,15 @@ public class NotificationServiceImpl implements NotificationService {
         String body = splitString[1];
         org.apache.tomcat.util.codec.binary.Base64 base64Url = new Base64(true);
         body = new String(base64Url.decode(body));
-        int idIndex = body.indexOf("\"id\":");
-        return Integer.parseInt(body.substring(idIndex + 5, idIndex + 6));
+        splitString = body.split(",");
+        for(String row : splitString){
+            if(row.contains("\"id\":")){
+                body = row;
+                break;
+            }
+        }
+        String id = body.replaceFirst("\"id\":","");
+        return Integer.parseInt(id);
     }
 
     @Override
@@ -179,3 +186,4 @@ public class NotificationServiceImpl implements NotificationService {
         testCaseNotificationService.editReadStatus(ReadStatus.READ, id);
     }
 }
+
