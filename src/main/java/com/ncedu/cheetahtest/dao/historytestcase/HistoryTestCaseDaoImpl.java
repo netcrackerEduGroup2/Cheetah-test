@@ -72,9 +72,9 @@ public class HistoryTestCaseDaoImpl implements HistoryTestCaseDao {
     }
 
     @Override
-    public Integer getCountTestCaseFailedCompleted() {
+    public Integer getCountTestCaseFailedCompleted(int idTestCase) {
         return jdbcTemplate.queryForObject(COUNT_TEST_CASE_FAILED_COMPLETED,
-                Integer.class);
+                Integer.class, idTestCase);
     }
 
     @Override
