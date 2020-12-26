@@ -9,6 +9,7 @@ import com.ncedu.cheetahtest.entity.compound.PaginationCompound;
 import com.ncedu.cheetahtest.service.action.ActionService;
 import com.ncedu.cheetahtest.service.compound.CompoundService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,12 +33,12 @@ public class LibraryController {
         return compoundService.createCompound(compoundCreationBody.getCompound(), compoundCreationBody.getActions());
     }
 
-    @GetMapping("/all") // findCompoundsByTitleLike WITHOUT pagination
+    @GetMapping("/all")
     public List<Compound> findCompoundsByTitleLike(@RequestParam("title") String title) {
         return compoundService.getCompoundsByTitleLike(title);
     }
 
-    @GetMapping // findCompoundsByTitleLike WITH pagination
+    @GetMapping
     public PaginationCompound findCompoundsByTitleLike(@RequestParam("title") String title,
                                                        @RequestParam("size") int size,
                                                        @RequestParam("page") int page) {
@@ -70,10 +71,9 @@ public class LibraryController {
     }
 
     @DeleteMapping("/{idCompound}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
     public CompoundStatusResponse deleteCompound(@PathVariable int idCompound) {
         compoundService.deleteCompound(idCompound);
         return new CompoundStatusResponse("Success");
     }
-
-
 }

@@ -23,7 +23,7 @@ public class AuthController {
     public static final String SUBJECT = "Account create";
     private static final String HTML_PATH = "src/main/resources/mail/register-email.html";
 
-    @Value("${frontend.ulr}/login?token=")
+    @Value("${frontend.ulr}/reset-password?token=")
     private String FRONT_URL;
 
     private AuthService authService;
