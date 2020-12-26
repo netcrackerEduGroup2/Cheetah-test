@@ -5,7 +5,6 @@
         <title></title>
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href=".././styles/image.css">
         <style>
             body {
                 display: flex;
@@ -52,19 +51,10 @@
                 margin: auto;
             }
 
-            .button-site{
-                display: block;
-                position: relative;
-                text-align: center;
-                margin: auto;
-                background: #D9B18C;
-                border-radius: 5px;
-            }
-
         </style>
     </head>
     <body>
-        <input type="image" src="https://aws-cheetahtest-bucket.s3.eu-central-1.amazonaws.com/mail.png" class="image-cheetah" disabled>
+        <input type="image" src="cid:topImageId" class="image-cheetah" disabled>
         <div class="block-title">
             <h2>%s</h2>
         </div>
@@ -76,10 +66,8 @@
                 <p>&emsp;&emsp;Actions in a test case:</p>
                 <p>&emsp;&emsp;Title&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Type
                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Description <br>
-                    %s
-                    <button type="submit" class="button-site">
-                        <a href="%s">To site</a>
-                    </button>
+                %s
+                </p>
             </div>
         </div>
 

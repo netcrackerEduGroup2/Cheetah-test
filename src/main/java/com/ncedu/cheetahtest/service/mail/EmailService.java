@@ -11,6 +11,7 @@ public interface EmailService {
 
     void sendTestCaseReportToAddresses(List<String> emails, int idTestCase, int idProject);
 
-    void sendGenerateTestCaseReportToAddresses(List<String> emails, int idTestCase, int idProject,
-                                               int idHTC, String pathHTML);
+    void sendGenerateTestCaseReportToAddresses(List<String> emails, int idTestCase, int idProject, String pathHTML);
+
+    void sendSpecificReport(SpecificReport specificReport, String pathHTML);
 }

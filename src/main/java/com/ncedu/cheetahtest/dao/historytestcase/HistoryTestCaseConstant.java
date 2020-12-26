@@ -16,7 +16,7 @@ public class HistoryTestCaseConstant {
     public static final String COUNT_TEST_CASE_FAILED_COMPLETED =
             "SELECT count(*) " +
             "   FROM history_test_case " +
-            "   WHERE id_test_case=? AND (result::text LIKE 'FAILED' OR result::text LIKE 'COMPLETE'); ";
+            "   WHERE result::text LIKE 'FAILED' OR result::text LIKE 'COMPLETE'; ";
 
     public static final String EDIT_HISTORY_TEST_CASE_RESULT =
             "UPDATE history_test_case " +

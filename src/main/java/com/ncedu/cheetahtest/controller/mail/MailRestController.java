@@ -68,20 +68,20 @@ public class MailRestController {
             return new ResponseEntity<>(new GenericResponse(SUCCESS), HttpStatus.OK);
     }
 
-    @PostMapping("/projects/{idProject}/test-cases/{idTestCase}/send-generate-report/{idHTC}")
+    @PostMapping("/projects/{idProject}/test-cases/{idTestCase}/send-generate-report")
     public ResponseEntity<GenericResponse> sendGenerateTestCaseMassage(@PathVariable int idTestCase,
                                                                        @PathVariable int idProject,
-                                                                       @PathVariable int idHTC,
                                                                        @RequestBody List<String> emails){
         emailService
                 .sendGenerateTestCaseReportToAddresses(emails, idTestCase,
-                        idProject, idHTC,HTML_GENERATE_ONE_TEST_CASE);
+                        idProject,HTML_GENERATE_ONE_TEST_CASE);
         return new ResponseEntity<>(new GenericResponse(SUCCESS), HttpStatus.OK);
     }
 
     @PostMapping("/specific-report")
     public ResponseEntity<GenericResponse> sendSpecificReport(@RequestBody SpecificReport specificReport){
 
+        emailService.sendSpecificReport(specificReport, HTML_SPECIFIC_REPORT);
         return new ResponseEntity<>(new GenericResponse(SUCCESS), HttpStatus.OK);
     }
 
