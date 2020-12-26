@@ -18,7 +18,7 @@ public class TestScenarioConsts {
             "WHERE title LIKE concat('%',?,'%') AND status = 'ACTIVE'::test_scenario_status;";
 
     public static final String FIND_BY_TITLE = "SELECT id,title,description,status,test_case_id FROM test_scenario " +
-            "WHERE lower(title) = ?";
+            "WHERE title = ?";
 
     public static final String FIND_BY_TITLE_AND_ID_TEST_CASE_LIKE = "SELECT id,title,description,status,test_case_id " +
             "FROM test_scenario WHERE title LIKE CONCAT('%',?,'%') AND test_case_id=? AND status = 'ACTIVE'::test_scenario_status " +
