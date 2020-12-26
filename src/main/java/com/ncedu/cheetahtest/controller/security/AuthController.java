@@ -8,6 +8,7 @@ import com.ncedu.cheetahtest.entity.user.User;
 import com.ncedu.cheetahtest.service.mail.EmailService;
 import com.ncedu.cheetahtest.service.security.AuthService;
 import com.ncedu.cheetahtest.service.user.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "${frontend.ulr}")
+@RequiredArgsConstructor
 public class AuthController {
     public static final String SUBJECT = "Account create";
     private static final String HTML_PATH = "src/main/resources/mail/register-email.html";
@@ -26,16 +28,9 @@ public class AuthController {
     @Value("${frontend.ulr}/login?token=")
     private String FRONT_URL;
 
-    private AuthService authService;
-    private UserService userService;
-    private EmailService emailService;
-
-    @Autowired
-    public AuthController(AuthService authService, UserService userService, EmailService emailService) {
-        this.authService = authService;
-        this.userService = userService;
-        this.emailService = emailService;
-    }
+    private final AuthService authService;
+    private final UserService userService;
+    private final EmailService emailService;
 
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterDto registerDto) {
@@ -46,11 +41,11 @@ public class AuthController {
         userService.createPasswordResetTokenForUser(user, token);
         emailService.sendMessageWithAttachment(registerDto.getEmail(), constructUrl(token), SUBJECT, HTML_PATH);
 
-    return ResponseEntity.ok(new RegisterResponse("success"));
-  }
+        return ResponseEntity.ok(new RegisterResponse("success"));
+    }
 
-  @PostMapping("/login")
-  public ResponseEntity<AccessTokenDto> login(@Valid @RequestBody LoginDto loginDto) {
+    @PostMapping("/login")
+    public ResponseEntity<AccessTokenDto> login(@Valid @RequestBody LoginDto loginDto) {
         AccessTokenDto accessTokenDto = authService.login(loginDto);
         return  ResponseEntity.ok(accessTokenDto);
     }
@@ -58,5 +53,4 @@ public class AuthController {
     private String constructUrl(String token) {
         return FRONT_URL + token;
     }
-
 }
