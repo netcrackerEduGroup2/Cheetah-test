@@ -43,4 +43,5 @@ public class HistoryActionConstant {
             "INNER JOIN action a on a.id = ar.id_action " +
             "INNER JOIN history_test_case htc on htc.id = ar.id_history_test_case " +
             "WHERE htc.id =? ORDER BY ar.general_order";
+
 }
