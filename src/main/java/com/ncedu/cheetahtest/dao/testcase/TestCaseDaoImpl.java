@@ -167,6 +167,9 @@ public class TestCaseDaoImpl extends AbstractDaoImpl<TestCase> implements TestCa
 
     @Override
     public boolean getTestCaseRepeatable(int id) {
+        if(jdbcTemplate.queryForObject(CHECK_REPEATEBLE_TEST_CASE, Boolean.class, id) == null){
+            return false;
+        }
         return jdbcTemplate.queryForObject(CHECK_REPEATEBLE_TEST_CASE, Boolean.class, id);
     }
 
