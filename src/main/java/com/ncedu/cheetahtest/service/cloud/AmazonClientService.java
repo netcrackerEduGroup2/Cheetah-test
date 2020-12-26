@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ncedu.cheetahtest.exception.helpers.FailedFileUploadingException;
 import com.ncedu.cheetahtest.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,8 @@ import java.util.Objects;
 public class AmazonClientService {
     private AmazonS3 s3client;
     private final UserService userService;
+    private static final String USER_PHOTO_PASS = "userPhoto/";
+    private static final String SCREENSHOT_PASS = "screenshots/";
 
     @Value("${cloud.aws.endpointUrl}")
     private String endpointUrl;
@@ -45,47 +48,27 @@ public class AmazonClientService {
 
     // its maximum permitted size of 20971520 bytes.
     public String uploadUserPhoto(MultipartFile multipartFile, int id) {
-        String fileUrl = "";
+        String fileUrl;
         try {
             File file = convertMultiPartToFile(multipartFile);
-            String fileName = generateFileName(multipartFile);
-            fileUrl = "https://" + bucketName + endpointUrl + "/userPhoto/" + fileName;
-            uploadFileTos3bucket("userPhoto/" + fileName, file);
-
-            try {
-                if (file.delete()) {
-                    log.info(file.getName() + " deleted locally");
-                } else {
-                    log.info("failed locally deleting file");
-                }
-            } catch (Exception e) {
-                log.error(e.toString());
-            }
+            fileUrl = getUrl(file, generateFileName(multipartFile), USER_PHOTO_PASS);
 
             userService.setUserPhotoUrl(id, fileUrl);
         } catch (Exception e) {
             log.error(e.toString());
+            throw new FailedFileUploadingException();
         }
         return fileUrl;
     }
 
     // its maximum permitted size of 20971520 bytes.
     public String uploadScreenshot(File file) {
-        String fileUrl = "";
+        String fileUrl;
         try {
-            String fileName = generateFileName(file);
-            fileUrl = "https://" + bucketName + endpointUrl + "/screenshots/" + fileName;
-            uploadFileTos3bucket("screenshots/" + fileName, file);
-
-
-                if (file.delete()) {
-                    log.info(file.getName() + " deleted locally");
-                } else {
-                    log.info("failed locally deleting file");
-                }
-
+            fileUrl = getUrl(file, generateFileName(file), SCREENSHOT_PASS);
         } catch (Exception e) {
-            log.error(e.toString());//TODO
+            log.error(e.toString());
+            throw new FailedFileUploadingException();
         }
         return fileUrl;
     }
@@ -97,6 +80,19 @@ public class AmazonClientService {
         }
 
         return convFile;
+    }
+
+    private String getUrl(File file, String s, String userPhotoPass) {
+        String fileUrl;
+        fileUrl = "https://" + bucketName + endpointUrl + "/"+ userPhotoPass + s;
+        uploadFileTos3bucket(userPhotoPass + s, file);
+
+        if (file.delete()) {
+            log.info(file.getName() + " deleted locally");
+        } else {
+            log.info("failed locally deleting file");
+        }
+        return fileUrl;
     }
 
     private String generateFileName(MultipartFile multiPart) {
@@ -114,13 +110,13 @@ public class AmazonClientService {
 
     public String deleteUserPhotoFromS3Bucket(String fileUrl) {
         String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
-        s3client.deleteObject(new DeleteObjectRequest(bucketName, "userPhoto/" + fileName));
+        s3client.deleteObject(new DeleteObjectRequest(bucketName, USER_PHOTO_PASS + fileName));
         return "Successfully deleted";
     }
 
     public String deleteScreenshotFromS3Bucket(String fileUrl) {
         String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
-        s3client.deleteObject(new DeleteObjectRequest(bucketName, "screenshots/" + fileName));
+        s3client.deleteObject(new DeleteObjectRequest(bucketName, SCREENSHOT_PASS + fileName));
         return "Successfully deleted";
     }
 }
