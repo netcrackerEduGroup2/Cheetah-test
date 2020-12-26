@@ -2,7 +2,7 @@ package com.ncedu.cheetahtest.dao.dashboard;
 
 import com.ncedu.cheetahtest.dao.genericdao.CountRowMapper;
 import com.ncedu.cheetahtest.entity.dashboard.PlannedTestCaseDTO;
-import com.ncedu.cheetahtest.entity.dashboard.SuppProjectsDTO;
+import com.ncedu.cheetahtest.entity.dashboard.ProjectsSuppListDTO;
 import com.ncedu.cheetahtest.entity.dashboard.UserActivityDTO;
 import com.ncedu.cheetahtest.entity.dashboard.UserProjectsDTO;
 import lombok.RequiredArgsConstructor;
@@ -118,7 +118,7 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public List<SuppProjectsDTO> getSuppProjects() {
+    public List<ProjectsSuppListDTO> getSuppProjects() {
         return jdbcTemplate.query(
                 GET_SUPP_LIST_OF_PROJECTS,
                 new SuppProjectsDTOMapper()

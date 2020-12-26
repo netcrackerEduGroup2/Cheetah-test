@@ -1,7 +1,7 @@
 package com.ncedu.cheetahtest.dao.dashboard;
 
 import com.ncedu.cheetahtest.entity.dashboard.PlannedTestCaseDTO;
-import com.ncedu.cheetahtest.entity.dashboard.SuppProjectsDTO;
+import com.ncedu.cheetahtest.entity.dashboard.ProjectsSuppListDTO;
 import com.ncedu.cheetahtest.entity.dashboard.UserActivityDTO;
 import com.ncedu.cheetahtest.entity.dashboard.UserProjectsDTO;
 
@@ -31,7 +31,7 @@ public interface DashboardDao {
 
     List<PlannedTestCaseDTO> getPlannedTestCasesForEngineer(int id);
 
-    List<SuppProjectsDTO> getSuppProjects();
+    List<ProjectsSuppListDTO> getSuppProjects();
 
     int getCountTestedCasesByProject(int projectId, String testCaseStatus);
 

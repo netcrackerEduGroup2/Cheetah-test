@@ -1,11 +1,14 @@
 package com.ncedu.cheetahtest.entity.dashboard;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
 public class ProjectActivityDTO {
-    private String name;
-    private int value;
+    @JsonProperty("name")
+    private String date;
+    @JsonProperty("value")
+    private int count;
 }
