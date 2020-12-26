@@ -20,9 +20,11 @@ import java.util.List;
 public class DashboardServiceImpl implements DashboardService {
     private final DashboardDao dashboardDao;
     private static final String ONE_DAY_INTERVAL = "1";
+    private static final int DAYS_IN_WEEK = 7;
+    private static final int HOURS_IN_DAY = 24;
     private static final String ONE_WEEK_INTERVAL_HOURS = "168";
     private static final String USER_DATE_PATTERN = "HH:mm";
-    private static final String USER_DATE_PATTERN_WEEK = "dd.MM 'at' HH:mm";
+    private static final String SHEDULED_DATE_PATTERN = "%s.%s.%s at %s:%s";
     private static final String TEST_CASE_STATUS_COMPLETE = "COMPLETE";
     private static final String TEST_CASE_STATUS_FAILED = "FAILED";
 
@@ -61,9 +63,9 @@ public class DashboardServiceImpl implements DashboardService {
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
         int hour = cal.get(Calendar.HOUR_OF_DAY);
 
-        for (int i = 6; i > 0; i--) {
-            String from = String.valueOf(i * 24 + hour);
-            String to = String.valueOf((i - 1) * 24 + hour);
+        for (int i = (DAYS_IN_WEEK - 1); i > 0; i--) {
+            String from = String.valueOf(i * HOURS_IN_DAY + hour);
+            String to = String.valueOf((i - 1) * HOURS_IN_DAY + hour);
             int count = dashboardDao.getProjectActivitiesPerDayOnWeek(from, to);
 
             String dayOfMonthStr = (dayOfMonth - i) + "." + month;
@@ -143,7 +145,7 @@ public class DashboardServiceImpl implements DashboardService {
         String hour = cron.substring(6, 8);
         String day = cron.substring(9, 11);
         String month = cron.substring(12, 14);
-        return String.format("%s.%s.%s at %s:%s", day, month, LocalDate.now().getYear(), hour, minutes);
+        return String.format(SHEDULED_DATE_PATTERN, day, month, LocalDate.now().getYear(), hour, minutes);
     }
 
 }
