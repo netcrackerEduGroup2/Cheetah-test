@@ -54,7 +54,7 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public ResponseDTO getProjectActivityForAdminPerWeek() {
+    public List<ProjectActivityDTO> getProjectActivityForAdminPerWeek() {
         List<ProjectActivityDTO> projects = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
         int month = cal.get(Calendar.MONTH) + 1;
@@ -73,7 +73,7 @@ public class DashboardServiceImpl implements DashboardService {
         String dayOfMonthStr = dayOfMonth + "." + month;
         projects.add(new ProjectActivityDTO(dayOfMonthStr, count));
 
-        return new ResponseDTO(projects);
+        return projects;
     }
 
     @Override
@@ -93,7 +93,7 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public List<SuppProjectsDTO> getSuppProjects() {
+    public List<ProjectsSuppListDTO> getProjectsSuppList() {
         return dashboardDao.getSuppProjects();
     }
 
