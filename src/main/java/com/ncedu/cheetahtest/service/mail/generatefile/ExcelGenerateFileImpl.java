@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static com.ncedu.cheetahtest.service.mail.MailConsts.BR;
 
@@ -40,7 +42,10 @@ public class ExcelGenerateFileImpl implements GenerateFile, GenerateExcel {
 
     @Override
     public void createSheet(String name) {
-        this.sheet = this.workbook.createSheet(name);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd&HH-mm-ss");
+        LocalDateTime now = LocalDateTime.now();
+
+        this.sheet = this.workbook.createSheet(name + dtf.format(now));
     }
 
     @Override
