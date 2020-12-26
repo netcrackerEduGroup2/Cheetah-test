@@ -81,7 +81,7 @@ public class NotificationServiceImpl implements NotificationService {
         int idUser = parseTokenAndGetId(token);
         Message messageToSend = new Message();
         messageToSend.setEvent("notifications");
-        messageToSend.setData(testCaseNotificationService.getAllNotificationsByUserId(idUser));
+        messageToSend.setData(this.addTitleAndDescription(testCaseNotificationService.getAllNotificationsByUserId(idUser)));
         return messageToSend;
     }
 
