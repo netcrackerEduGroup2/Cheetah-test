@@ -24,9 +24,9 @@ import java.util.Objects;
 @Slf4j
 public class TestCaseExecutorImpl implements TestCaseExecutor {
 
-    private AmazonClientService amazonClientService;
-    private ActionExecutorProvider actionExecutorProvider;
-    private WebDriver webDriver;
+    private final AmazonClientService amazonClientService;
+    private final ActionExecutorProvider actionExecutorProvider;
+    private final WebDriver webDriver;
 
     @Autowired
     public TestCaseExecutorImpl(AmazonClientService amazonClientService, ActionExecutorProvider actionExecutorProvider, WebDriver webDriver) {

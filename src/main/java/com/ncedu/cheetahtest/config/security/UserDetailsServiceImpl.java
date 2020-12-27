@@ -12,7 +12,7 @@ import java.util.Date;
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public UserDetailsServiceImpl(UserService userService) {

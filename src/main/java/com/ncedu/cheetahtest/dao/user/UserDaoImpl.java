@@ -42,7 +42,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
     public void createDeveloper(User user) {
 
         jdbcTemplate.update(
-                CREATE_DEVELOPER_SQL,
+                CREATE_USER_SQL,
                 user.getEmail(),
                 user.getPass(),
                 user.getName(),

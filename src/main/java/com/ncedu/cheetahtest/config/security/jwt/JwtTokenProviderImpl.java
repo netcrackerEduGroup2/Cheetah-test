@@ -57,17 +57,11 @@ public class JwtTokenProviderImpl implements JwtTokenProvider{
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
-        } catch (ExpiredJwtException e) {
-            log.info("Token expired");
-        } catch (UnsupportedJwtException e) {
-            log.info("Unsupported jwt");
-        } catch (MalformedJwtException e) {
-            log.info("Malformed jwt");
-        } catch (SignatureException e) {
-            log.info("Invalid signature");
+        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException e) {
+            return false;
         } catch (Exception e) {
-            log.info("invalid token");
+            log.warn(e.getMessage());
+            return false;
         }
-        return false;
     }
 }
