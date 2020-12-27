@@ -7,13 +7,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static com.ncedu.cheetahtest.service.mail.MailConsts.BR;
+import static com.ncedu.cheetahtest.service.mail.MailConst.BR;
 
 @Slf4j
 @Component
@@ -22,7 +21,6 @@ public class ExcelGenerateFileImpl implements GenerateFile, GenerateExcel {
     private Workbook workbook;
     private Sheet sheet;
     private Row row;
-    private XSSFFont font;
     private CellStyle headerStyle;
 
     @Autowired
@@ -32,13 +30,10 @@ public class ExcelGenerateFileImpl implements GenerateFile, GenerateExcel {
     }
 
     @Override
-    public void createFile(String filePath) throws FileNotFoundException, IOException {
+    public void createFile(String filePath) throws IOException {
         FileOutputStream outputStream = new FileOutputStream(filePath);
         workbook.write(outputStream);
     }
-
-    @Override
-    public void closeFile() { }
 
     @Override
     public void createSheet(String name) {

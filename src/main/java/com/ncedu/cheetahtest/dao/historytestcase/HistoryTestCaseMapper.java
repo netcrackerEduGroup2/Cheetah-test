@@ -10,8 +10,8 @@ import java.sql.SQLException;
 public class HistoryTestCaseMapper implements RowMapper<HistoryTestCase> {
 
     public static final String ID = "h_id";
-    public static final String RESULT = "h_result";
-    public static final String DATA_COMPLETED = "h_date_completed";
+    private static final String RESULT = "h_result";
+    private static final String DATA_COMPLETED = "h_date_completed";
 
     @Override
     public HistoryTestCase mapRow(ResultSet resultSet, int i) throws SQLException {

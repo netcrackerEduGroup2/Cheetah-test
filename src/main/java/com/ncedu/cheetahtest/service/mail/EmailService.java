@@ -1,7 +1,5 @@
 package com.ncedu.cheetahtest.service.mail;
 
-import com.ncedu.cheetahtest.entity.mail.SpecificReport;
-
 import java.util.List;
 
 public interface EmailService {

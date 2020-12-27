@@ -29,7 +29,6 @@ public class MailRestController {
     public static final String SUBJECT = "Password reset";
     private static final String HTML_PATH = "src/main/resources/mail/email.html";
     private static final String HTML_GENERATE_ONE_TEST_CASE = "src/main/resources/mail/generate-one-test-case.html";
-    private static final String HTML_SPECIFIC_REPORT = "src/main/resources/mail/specific-report.html";
     private static final String SUCCESS = "Success";
 
     @Value("${frontend.ulr}/reset-password?token=")
@@ -79,11 +78,6 @@ public class MailRestController {
         return new ResponseEntity<>(new GenericResponse(SUCCESS), HttpStatus.OK);
     }
 
-    @PostMapping("/specific-report")
-    public ResponseEntity<GenericResponse> sendSpecificReport(@RequestBody SpecificReport specificReport){
-
-        return new ResponseEntity<>(new GenericResponse(SUCCESS), HttpStatus.OK);
-    }
 
     @PostMapping("/save-password")
     public ResponseEntity<GenericResponse> changePassword(@RequestBody PasswordDTO passwordDTO) {

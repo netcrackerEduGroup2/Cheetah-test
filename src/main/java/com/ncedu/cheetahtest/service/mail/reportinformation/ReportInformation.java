@@ -4,7 +4,6 @@ package com.ncedu.cheetahtest.service.mail.reportinformation;
 import com.ncedu.cheetahtest.entity.action.Action;
 import com.ncedu.cheetahtest.entity.actscenario.ActScenario;
 import com.ncedu.cheetahtest.entity.historyacrion.HistoryAction;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 

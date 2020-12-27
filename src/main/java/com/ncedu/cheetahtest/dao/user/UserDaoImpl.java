@@ -206,9 +206,8 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
         } else {
             preparateRole = role.toUpperCase();
         }
-        return jdbcTemplate.queryForObject(COUNT_USER_BY_EMAIL_NAME_ROLE_SQL,
-                new Object[]{"%" + email + "%", "%" + name + "%", preparateRole},
-                Integer.class);
+        return jdbcTemplate.queryForObject(COUNT_USER_BY_EMAIL_NAME_ROLE_SQL, Integer.class,
+                "%" + email + "%", "%" + name + "%", preparateRole);
     }
 
     @Override
