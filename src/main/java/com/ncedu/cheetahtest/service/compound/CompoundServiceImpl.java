@@ -91,7 +91,6 @@ public class CompoundServiceImpl implements CompoundService {
 
 
     @Override
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
     public void deleteCompound(int idCompound) {
         compActPriorDao.deleteByIdCompound(idCompound);
         compoundDao.removeCompoundById(idCompound);
