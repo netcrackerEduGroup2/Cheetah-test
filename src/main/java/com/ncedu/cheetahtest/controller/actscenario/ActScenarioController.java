@@ -33,7 +33,6 @@ public class ActScenarioController {
         return actScenarioService.findByTitleLike(title,size,page);
     }
 
-    //same as without /all but doesn`t have pagination
     @GetMapping("/test-scenarios/act-scenarios/all")
     public List<ActScenario> findAllByTitle(@RequestParam("title") String title){
         return actScenarioService.findAllByTitleLike(title);
