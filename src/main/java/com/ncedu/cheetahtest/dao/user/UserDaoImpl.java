@@ -52,21 +52,17 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
 
     }
 
-    private User findUserByAnyInFrstPosition(String any){
+    @Override
+    public User findUserByEmail(String email) {
         List<User> users = jdbcTemplate.query(
                 FIND_USER_BY_EMAIL_SQL,
-                preparedStatement -> preparedStatement.setString(1, any),
+                preparedStatement -> preparedStatement.setString(1, email),
                 userRowMapper);
         if (users.size() == 1) {
             return users.get(0);
         }
 
         return null;
-    }
-
-    @Override
-    public User findUserByEmail(String email) {
-        return findUserByAnyInFrstPosition(email);
     }
 
     @Override
@@ -102,8 +98,17 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
     @Override
     public User findUserByToken(String token) {
 
+        List<User> users = jdbcTemplate.query(
+                FIND_USER_BY_TOKEN_SQL,
+                preparedStatement -> preparedStatement.setString(1, token),
+                userRowMapper
+        );
 
-        return findUserByAnyInFrstPosition(token);
+        if (users.size() == 1) {
+            return users.get(0);
+        }
+
+        return null;
     }
 
     @Override
