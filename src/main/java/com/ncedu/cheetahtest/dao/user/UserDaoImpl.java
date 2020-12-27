@@ -52,17 +52,21 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
 
     }
 
-    @Override
-    public User findUserByEmail(String email) {
+    private User findUserByAnyInFrstPosition(String any){
         List<User> users = jdbcTemplate.query(
                 FIND_USER_BY_EMAIL_SQL,
-                preparedStatement -> preparedStatement.setString(1, email),
+                preparedStatement -> preparedStatement.setString(1, any),
                 userRowMapper);
         if (users.size() == 1) {
             return users.get(0);
         }
 
         return null;
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return findUserByAnyInFrstPosition(email);
     }
 
     @Override
@@ -98,17 +102,8 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
     @Override
     public User findUserByToken(String token) {
 
-        List<User> users = jdbcTemplate.query(
-                FIND_USER_BY_TOKEN_SQL,
-                preparedStatement -> preparedStatement.setString(1, token),
-                userRowMapper
-        );
 
-        if (users.size() == 1) {
-            return users.get(0);
-        }
-
-        return null;
+        return findUserByAnyInFrstPosition(token);
     }
 
     @Override
@@ -206,9 +201,8 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao {
         } else {
             preparateRole = role.toUpperCase();
         }
-        return jdbcTemplate.queryForObject(COUNT_USER_BY_EMAIL_NAME_ROLE_SQL,
-                new Object[]{"%" + email + "%", "%" + name + "%", preparateRole},
-                Integer.class);
+        return jdbcTemplate.queryForObject(COUNT_USER_BY_EMAIL_NAME_ROLE_SQL, Integer.class,
+                "%" + email + "%", "%" + name + "%", preparateRole);
     }
 
     @Override

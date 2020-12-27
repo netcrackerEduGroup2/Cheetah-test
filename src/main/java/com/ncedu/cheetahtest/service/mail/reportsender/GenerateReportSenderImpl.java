@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static com.ncedu.cheetahtest.service.mail.MailConsts.*;
+import static com.ncedu.cheetahtest.service.mail.MailConst.*;
 
 @Slf4j
 @Component
@@ -91,7 +91,7 @@ public class GenerateReportSenderImpl implements ReportSender {
 
     private List<String> reverseListAndAddHeigthCSS(List<String> strs, int rowCountExcel){
         Collections.reverse(strs);
-        strs.add("height: " + (Integer.toString(rowCountExcel * 120)) + "px;");
+        strs.add("height: " + (rowCountExcel * 120) + "px;");
         Collections.reverse(strs);
         return strs;
     }
@@ -103,8 +103,9 @@ public class GenerateReportSenderImpl implements ReportSender {
         emailSender.send(message);
     }
 
-    private MimeMessageHelper setMimeMessageHelperEmail(MimeMessageHelper helper, String email)
+    private MimeMessageHelper setMimeMessageHelperEmail(MimeMessage message, String email)
             throws MessagingException {
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setFrom(Objects.requireNonNull(environment.getProperty(NET_CRACKER_USERNAME)));
         helper.setTo(email);
         return helper;
@@ -114,8 +115,7 @@ public class GenerateReportSenderImpl implements ReportSender {
     public void sendReport(String email, int idTestCase, int idProject, int idHTC, String pathHTML) {
         MimeMessage message = emailSender.createMimeMessage();
         try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper = setMimeMessageHelperEmail(helper, email);
+            MimeMessageHelper helper = setMimeMessageHelperEmail(message, email);
             boolean isRepeatable = reportInformation.isRepeatableByIdTestCase(idTestCase);
             List<String> strs = createTitleHTML(email,idTestCase,idProject,isRepeatable);
             message.setSubject(createTitleEmail(strs.get(1), strs.get(2), isRepeatable));
@@ -136,7 +136,8 @@ public class GenerateReportSenderImpl implements ReportSender {
             }
             strs.add(stringBuilder.toString());
             strs.add(FRONT_URL);
-            helper.setText("", htmlMail.getHtmlWithStrings(reverseListAndAddHeigthCSS(strs, rowCountExcel), pathHTML)
+            helper.setText("",
+                    htmlMail.getHtmlWithStrings(reverseListAndAddHeigthCSS(strs, rowCountExcel), pathHTML)
                     .orElseThrow(FileNotFoundException::new));
             sendEmailAndAddXLS(message, helper);
             log.info(LOG_SEND_EMAIL + email);
@@ -145,7 +146,7 @@ public class GenerateReportSenderImpl implements ReportSender {
         } catch (FileNotFoundException e) {
             log.error(String.format(HTML_NOT_FOUND, e.getMessage()));
         } catch (IOException e) {
-            log.error(String.format(CANNT_SAVE_MESSAG, e.getMessage()));
+            log.error(String.format(CANT_SAVE_MESSAGE, e.getMessage()));
         }
     }
 }

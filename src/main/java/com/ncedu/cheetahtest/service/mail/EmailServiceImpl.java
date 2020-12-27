@@ -1,7 +1,5 @@
 package com.ncedu.cheetahtest.service.mail;
 
-
-import com.ncedu.cheetahtest.entity.mail.SpecificReport;
 import com.ncedu.cheetahtest.service.mail.reportsender.ReportSender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,7 @@ import java.util.Objects;
 @Slf4j
 public class EmailServiceImpl implements EmailService{
 
-    static final String NET_CRACKER_USERNAME = "spring.mail.username";
+    private static final String NET_CRACKER_USERNAME = "spring.mail.username";
 
     private final JavaMailSender emailSender;
     private final HtmlMail htmlMail;

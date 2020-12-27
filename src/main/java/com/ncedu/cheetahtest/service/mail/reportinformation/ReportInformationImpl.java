@@ -9,11 +9,7 @@ import com.ncedu.cheetahtest.dao.user.UserDao;
 import com.ncedu.cheetahtest.entity.action.Action;
 import com.ncedu.cheetahtest.entity.actscenario.ActScenario;
 import com.ncedu.cheetahtest.entity.historyacrion.HistoryAction;
-import com.ncedu.cheetahtest.service.mail.HtmlMail;
-import com.ncedu.cheetahtest.service.mail.generatefile.ExcelGenerateFileImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -30,9 +26,9 @@ public class ReportInformationImpl implements ReportInformation {
     private HistoryActionDao historyActionDao;
 
     @Autowired
-    public ReportInformationImpl(JavaMailSender emailSender, HtmlMail htmlMail, Environment environment, UserDao userDao,
-                                    TestCaseDao testCaseDao, ProjectDao projectDao, ActScenarioDao actScenarioDao, ActionDao actionDao,
-                                    HistoryActionDao historyActionDao, ExcelGenerateFileImpl excelGenerateFile){
+    public ReportInformationImpl(UserDao userDao, TestCaseDao testCaseDao, ProjectDao projectDao,
+                                 ActScenarioDao actScenarioDao, ActionDao actionDao,
+                                 HistoryActionDao historyActionDao){
         this.userDao = userDao;
         this.testCaseDao = testCaseDao;
         this.projectDao = projectDao;

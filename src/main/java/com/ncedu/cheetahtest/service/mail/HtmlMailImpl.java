@@ -40,24 +40,18 @@ public class HtmlMailImpl implements HtmlMail {
     StringBuilder htmlStringBuilder = new StringBuilder();
 
     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-
-
-      String tmp = "";
       int i = 0;
       while (reader.ready()) {
-        tmp = reader.readLine();
+        String tmp = reader.readLine();
         while (tmp.contains("%s")){
           tmp = tmp.replace("%s", messages.get(i++));
         }
         htmlStringBuilder.append(tmp);
       }
-
       return Optional.of(htmlStringBuilder.toString());
-
     } catch (IOException e) {
       e.getMessage();
     }
-
     return Optional.empty();
   }
 }
