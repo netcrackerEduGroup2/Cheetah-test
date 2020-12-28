@@ -6,6 +6,7 @@ import com.ncedu.cheetahtest.dao.hiatoryaction.HistoryActionDao;
 import com.ncedu.cheetahtest.dao.historytestcase.HistoryTestCaseDao;
 import com.ncedu.cheetahtest.dao.testcase.TestCaseDao;
 import com.ncedu.cheetahtest.entity.actscenario.ActScenario;
+import com.ncedu.cheetahtest.entity.generalentity.IdsDto;
 import com.ncedu.cheetahtest.entity.historytestcase.HistoryTestCaseFull;
 import com.ncedu.cheetahtest.entity.selenium.ActionResult;
 import com.ncedu.cheetahtest.entity.selenium.ActionResultStatus;
@@ -44,7 +45,6 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
 
     @Override
     @Transactional
-    @Async
     public void formActionForSelenium(int testCaseId) {
         List<ActScenario> actScenarios = actScenarioDao.getAllByTestCaseId(testCaseId);
 
@@ -62,6 +62,15 @@ public class TestCaseLauncherImpl implements TestCaseLauncher {
             } else {
                 testCaseDao.setResultToFail(testCaseId);
             }
+        }
+    }
+
+    @Override
+    @Async
+    public void runTestCases(IdsDto idsDto) {
+        int[] ids = idsDto.getIds();
+        for (int testCaseId : ids) {
+            formActionForSelenium(testCaseId);
         }
     }
 
